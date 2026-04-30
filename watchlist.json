@@ -1,0 +1,39 @@
+{
+  "updated_at": "2026-04-28",
+  "week": "Sem. 18 · 2026",
+  "universe_size": 187,
+  "stocks": [
+    {"rank": 1,  "ticker": "NVDA",    "name": "NVIDIA",             "market": "Nasdaq",   "sector": "Semi-conducteurs",   "score": 94, "stars": 5, "badge": "IA",    "change": "new"},
+    {"rank": 2,  "ticker": "ASML.AS", "name": "ASML Holding",       "market": "Euronext", "sector": "Équip. semi.",        "score": 88, "stars": 5, "badge": "EU",    "change": "stable"},
+    {"rank": 3,  "ticker": "MSFT",    "name": "Microsoft",          "market": "Nasdaq",   "sector": "Cloud & IA",         "score": 83, "stars": 4, "badge": null,    "change": "stable"},
+    {"rank": 4,  "ticker": "NOVO-B.CO","name": "Novo Nordisk",      "market": "OMX",      "sector": "Pharma GLP-1",       "score": 81, "stars": 4, "badge": "EU",    "change": "up"},
+    {"rank": 5,  "ticker": "GOOGL",   "name": "Alphabet",           "market": "Nasdaq",   "sector": "Search & Cloud",     "score": 79, "stars": 4, "badge": null,    "change": "stable"},
+    {"rank": 6,  "ticker": "AVGO",    "name": "Broadcom",           "market": "Nasdaq",   "sector": "Semi. & réseaux",    "score": 77, "stars": 4, "badge": null,    "change": "up"},
+    {"rank": 7,  "ticker": "SU.PA",   "name": "Schneider Electric", "market": "Euronext", "sector": "Énergie & IA",       "score": 76, "stars": 4, "badge": "EU",    "change": "stable"},
+    {"rank": 8,  "ticker": "AIR.PA",  "name": "Airbus",             "market": "Euronext", "sector": "Aéronautique",       "score": 75, "stars": 4, "badge": "EU",    "change": "down"},
+    {"rank": 9,  "ticker": "AMZN",    "name": "Amazon",             "market": "Nasdaq",   "sector": "E-comm. & Cloud",    "score": 74, "stars": 3, "badge": null,    "change": "stable"},
+    {"rank": 10, "ticker": "SAF.PA",  "name": "Safran",             "market": "Euronext", "sector": "Propulsion aviation", "score": 72, "stars": 3, "badge": "EU",   "change": "stable"},
+    {"rank": 11, "ticker": "META",    "name": "Meta Platforms",     "market": "Nasdaq",   "sector": "Social & IA",        "score": 71, "stars": 3, "badge": null,    "change": "new"},
+    {"rank": 12, "ticker": "SAP.DE",  "name": "SAP",                "market": "Xetra",    "sector": "Logiciel ERP",       "score": 70, "stars": 3, "badge": "EU",    "change": "stable"},
+    {"rank": 13, "ticker": "LLY",     "name": "Eli Lilly",          "market": "NYSE",     "sector": "Pharma obésité",     "score": 69, "stars": 3, "badge": null,    "change": "down"},
+    {"rank": 14, "ticker": "RMS.PA",  "name": "Hermès",             "market": "Euronext", "sector": "Luxe premium",       "score": 68, "stars": 3, "badge": "EU",    "change": "stable"},
+    {"rank": 15, "ticker": "REL.L",   "name": "RELX",               "market": "LSE",      "sector": "Data & analytics",   "score": 67, "stars": 3, "badge": "EU",    "change": "up"},
+    {"rank": 16, "ticker": "SIE.DE",  "name": "Siemens",            "market": "Xetra",    "sector": "Industrie 4.0",      "score": 66, "stars": 3, "badge": "EU",    "change": "stable"},
+    {"rank": 17, "ticker": "AI.PA",   "name": "Air Liquide",        "market": "Euronext", "sector": "Gaz industriels",    "score": 65, "stars": 3, "badge": "EU",    "change": "stable"},
+    {"rank": 18, "ticker": "ADYEN.AS","name": "Adyen",              "market": "Euronext", "sector": "Fintech paiements",  "score": 63, "stars": 3, "badge": "EU",    "change": "stable"},
+    {"rank": 19, "ticker": "V",       "name": "Visa",               "market": "NYSE",     "sector": "Réseaux paiement",   "score": 62, "stars": 3, "badge": null,    "change": "stable"},
+    {"rank": 20, "ticker": "MC.PA",   "name": "LVMH",               "market": "Euronext", "sector": "Luxe diversifié",    "score": 60, "stars": 3, "badge": "EU",    "change": "down"},
+    {"rank": 21, "ticker": "TSLA",    "name": "Tesla",              "market": "Nasdaq",   "sector": "Véhicules élec.",    "score": 58, "stars": 3, "badge": null,    "change": "new"},
+    {"rank": 22, "ticker": "CAP.PA",  "name": "Capgemini",          "market": "Euronext", "sector": "Services numériques","score": 57, "stars": 3, "badge": "EU",    "change": "stable"},
+    {"rank": 23, "ticker": "VWS.CO",  "name": "Vestas Wind",        "market": "OMX",      "sector": "Éolien offshore",    "score": 56, "stars": 3, "badge": "EU",    "change": "up"},
+    {"rank": 24, "ticker": "ISRG",    "name": "Intuitive Surgical", "market": "Nasdaq",   "sector": "Chirurgie robot.",   "score": 55, "stars": 3, "badge": null,    "change": "new"},
+    {"rank": 25, "ticker": "KER.PA",  "name": "Kering",             "market": "Euronext", "sector": "Luxe multi-marques", "score": 53, "stars": 2, "badge": "EU",    "change": "down"}
+  ],
+  "changelog": [
+    {"action": "in",  "ticker": "META",  "name": "Meta Platforms",     "score": 71, "reason": "Momentum RSI repassé au-dessus de 55, croissance revenus publicitaires IA +28 %"},
+    {"action": "in",  "ticker": "TSLA",  "name": "Tesla",              "score": 58, "reason": "Rebond technique confirmé au-dessus de la MM50 après correction de 32 %"},
+    {"action": "in",  "ticker": "ISRG",  "name": "Intuitive Surgical", "score": 55, "reason": "Score fondamental solide, carnet de commandes da Vinci 5 en accélération"},
+    {"action": "out", "ticker": "NFLX",  "name": "Netflix",            "score": 51, "reason": "Score momentum dégradé, RSI suracheté à 74, valorisation tendue vs croissance"},
+    {"action": "out", "ticker": "ASPI",  "name": "Ampere Semi",        "score": 48, "reason": "Guidance révisée à la baisse, momentum sectoriel défavorable ce trimestre"}
+  ]
+}
