@@ -193,7 +193,7 @@ def main():
 
             nouvelle_pos = {
                 "ticker":         stock["ticker"],
-                "nom":            stock["nom"],
+                "nom":            stock.get("nom") or stock.get("name", stock["ticker"]),
                 "market":         stock["market"],
                 "sector":         stock["sector"],
                 "date_achat":     today,
@@ -211,7 +211,7 @@ def main():
                 "date":    today,
                 "type":    "ACHAT",
                 "ticker":  stock["ticker"],
-                "nom":     stock["nom"],
+                "nom":     stock.get("nom") or stock.get("name", stock["ticker"]),
                 "qte":     quantite,
                 "prix":    prix,
                 "montant": montant,
