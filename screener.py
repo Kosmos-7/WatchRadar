@@ -47,36 +47,34 @@ def finnhub_fundamentals(ticker):
 def valider_fondamentaux(yf_data, fh_data):
     """
     Compare les données YF et Finnhub.
-    Retourne un facteur de confiance entre 0.7 et 1.0.
-    Les valeurs aberrantes sont pénalisées.
+    Retourne toujours un tuple (confiance: float, alertes: list).
     """
     if not fh_data:
-        return 1.0  # Pas de données Finnhub → on fait confiance à YF
+        return (1.0, [])
 
     confiance = 1.0
     alertes = []
 
-    # Vérification marge nette
-    yf_margin  = yf_data.get("profitMargins") or 0
-    fh_margin  = (fh_data.get("net_margin") or 0) / 100 if fh_data.get("net_margin") else 0
+    try:
+        yf_margin = yf_data.get("profitMargins") or 0
+        fh_margin = (fh_data.get("net_margin") or 0) / 100 if fh_data.get("net_margin") else 0
+        if fh_margin and abs(yf_margin - fh_margin) > 0.15:
+            confiance -= 0.1
+            alertes.append(f"Marge nette discordante YF:{yf_margin:.1%} vs FH:{fh_margin:.1%}")
 
-    if fh_margin and abs(yf_margin - fh_margin) > 0.15:
-        confiance -= 0.1
-        alertes.append(f"Marge nette discordante YF:{yf_margin:.1%} vs FH:{fh_margin:.1%}")
+        yf_de = yf_data.get("debtToEquity") or 0
+        fh_de = fh_data.get("debt_equity") or 0
+        if fh_de and yf_de and abs(yf_de - fh_de * 100) > 100:
+            confiance -= 0.1
 
-    # Vérification dette/fonds propres
-    yf_de = yf_data.get("debtToEquity") or 0
-    fh_de = fh_data.get("debt_equity") or 0
-    if fh_de and yf_de and abs(yf_de - fh_de * 100) > 100:
-        confiance -= 0.1
+        rev_growth = yf_data.get("revenueGrowth") or 0
+        if rev_growth > 3.0:
+            confiance -= 0.15
+            alertes.append(f"Croissance CA suspectement élevée : {rev_growth:.0%}")
+    except Exception:
+        pass
 
-    # Valeurs aberrantes YF seul (croissance > 300% suspect)
-    rev_growth = yf_data.get("revenueGrowth") or 0
-    if rev_growth > 3.0:
-        confiance -= 0.15
-        alertes.append(f"Croissance CA suspectement élevée : {rev_growth:.0%}")
-
-    return max(0.7, confiance), alertes
+    return (max(0.7, confiance), alertes)
 
 # ── UNIVERS ──────────────────────────────────────────────────────────────────
 UNIVERS = [
@@ -308,6 +306,11 @@ def main():
     # Top 25
     resultats.sort(key=lambda x: -x["score"])
     top25 = resultats[:25]
+
+    if not top25:
+        print("❌ Aucune action scorée — vérifiez la connexion réseau ou les tickers.")
+        return
+
     current_tickers = {s["ticker"] for s in top25}
 
     # Changelog
