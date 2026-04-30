@@ -1,17 +1,22 @@
 # .github/workflows/watchlist.yml
-# Tourne chaque lundi à 8h UTC — génère watchlist.json et le commit automatiquement
+# Tourne chaque lundi à 8h UTC
+# 1. screener.py   → génère watchlist.json (25 meilleures actions)
+# 2. portfolio_agent.py → lit watchlist.json, ajuste le portefeuille, génère portfolio.json
 
-name: Update watchlist
+name: Update watchlist & portfolio
 
 on:
   schedule:
     - cron: '0 8 * * 1'   # Chaque lundi 8h00 UTC
-  workflow_dispatch:        # Déclenchement manuel depuis l'interface GitHub
+  workflow_dispatch:        # Déclenchement manuel depuis GitHub
+
+permissions:
+  contents: write           # Nécessaire pour committer les JSON
 
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
 
     steps:
       - name: Checkout repo
@@ -21,23 +26,25 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip'
 
       - name: Install dependencies
-        run: pip install yfinance pandas ta requests
+        run: pip install -r requirements.txt
 
-      - name: Run screener
+      - name: Run screener (watchlist.json)
         run: python screener.py
 
-      - name: Commit watchlist.json
+      - name: Run portfolio agent (portfolio.json)
+        run: python portfolio_agent.py
+
+      - name: Commit JSON files
         run: |
           git config user.email "bot@watchradar.fr"
           git config user.name "WatchRadar Bot"
-          git add watchlist.json
+          git add watchlist.json portfolio.json
           if git diff --staged --quiet; then
-            echo "Aucun changement dans la watchlist cette semaine."
+            echo "Aucun changement cette semaine."
           else
             WEEK=$(python -c "from datetime import date; d=date.today(); print(f'Sem. {d.isocalendar()[1]} · {d.year}')")
-            git commit -m "watchlist: mise à jour $WEEK"
+            git commit -m "update: $WEEK — watchlist + portfolio"
             git push
           fi
