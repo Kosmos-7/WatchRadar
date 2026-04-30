@@ -365,7 +365,7 @@ def main():
     try:
         response = client.messages.create(
             model="claude-sonnet-4-6",
-            max_tokens=2000,
+            max_tokens=5000,
             system="""Tu es l'IA de gestion du portefeuille fictif WatchRadar.
 Tu raisonnes sur des décisions d'investissement fictives à partir de données réelles.
 Tu es analytique, honnête sur tes erreurs, et transparent sur ton raisonnement.
@@ -436,8 +436,8 @@ Ne jamais inclure de balises markdown ou de backticks.""",
         "vs_benchmark":        vs_bench,
         "statut_survie":       statut,
         "trimestres_negatifs": trim_neg,
-        "mode_panique":        contexte.get("mode_panique", False),
-        "perf_cac_semaine":    contexte.get("cac40", {}).get("perf_semaine", 0),
+        "mode_panique": bool(contexte.get("mode_panique", False)),
+        "perf_cac_semaine": float(contexte.get("cac40", {}).get("perf_semaine", 0)),
         "positions":           sorted(positions, key=lambda x: -x.get("performance", 0)),
         "liquidites":          round(liquidites, 2),
         "pct_liquidites":      round(liquidites / capital_actuel * 100, 1) if capital_actuel > 0 else 0,
