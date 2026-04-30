@@ -364,7 +364,7 @@ def main():
 
     try:
         response = client.messages.create(
-            model="claude-sonnet-4-20250514",
+            model="claude-sonnet-4-6",
             max_tokens=2000,
             system="""Tu es l'IA de gestion du portefeuille fictif WatchRadar.
 Tu raisonnes sur des décisions d'investissement fictives à partir de données réelles.
