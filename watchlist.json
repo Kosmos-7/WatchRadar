@@ -33,7 +33,7 @@
       "score": 95,
       "stars": 5,
       "badge": null,
-      "change": "new",
+      "change": "stable",
       "rank": 3
     },
     {
@@ -77,7 +77,7 @@
       "score": 93,
       "stars": 5,
       "badge": null,
-      "change": "new",
+      "change": "stable",
       "rank": 7
     },
     {
@@ -88,7 +88,7 @@
       "score": 93,
       "stars": 5,
       "badge": null,
-      "change": "new",
+      "change": "stable",
       "rank": 8
     },
     {
@@ -99,7 +99,7 @@
       "score": 93,
       "stars": 5,
       "badge": null,
-      "change": "new",
+      "change": "stable",
       "rank": 9
     },
     {
@@ -110,8 +110,19 @@
       "score": 91,
       "stars": 5,
       "badge": null,
-      "change": "new",
+      "change": "stable",
       "rank": 10
+    },
+    {
+      "ticker": "AMZN",
+      "name": "Amazon.com, Inc.",
+      "market": "NMS",
+      "sector": "Conso. cycl.",
+      "score": 90,
+      "stars": 5,
+      "badge": null,
+      "change": "stable",
+      "rank": 11
     },
     {
       "ticker": "SU.PA",
@@ -122,7 +133,7 @@
       "stars": 5,
       "badge": "EU",
       "change": "stable",
-      "rank": 11
+      "rank": 12
     },
     {
       "ticker": "ASM.AS",
@@ -132,8 +143,8 @@
       "score": 88,
       "stars": 5,
       "badge": "EU",
-      "change": "new",
-      "rank": 12
+      "change": "stable",
+      "rank": 13
     },
     {
       "ticker": "LSEG.L",
@@ -143,8 +154,8 @@
       "score": 88,
       "stars": 5,
       "badge": "EU",
-      "change": "new",
-      "rank": 13
+      "change": "stable",
+      "rank": 14
     },
     {
       "ticker": "DB1.DE",
@@ -154,8 +165,8 @@
       "score": 86,
       "stars": 5,
       "badge": null,
-      "change": "new",
-      "rank": 14
+      "change": "stable",
+      "rank": 15
     },
     {
       "ticker": "COST",
@@ -165,8 +176,8 @@
       "score": 85,
       "stars": 5,
       "badge": null,
-      "change": "new",
-      "rank": 15
+      "change": "stable",
+      "rank": 16
     },
     {
       "ticker": "TXN",
@@ -176,8 +187,8 @@
       "score": 85,
       "stars": 5,
       "badge": null,
-      "change": "new",
-      "rank": 16
+      "change": "stable",
+      "rank": 17
     },
     {
       "ticker": "GS",
@@ -187,8 +198,8 @@
       "score": 84,
       "stars": 5,
       "badge": null,
-      "change": "new",
-      "rank": 17
+      "change": "stable",
+      "rank": 18
     },
     {
       "ticker": "CS.PA",
@@ -198,8 +209,8 @@
       "score": 83,
       "stars": 5,
       "badge": "EU",
-      "change": "new",
-      "rank": 18
+      "change": "stable",
+      "rank": 19
     },
     {
       "ticker": "AMD",
@@ -209,8 +220,8 @@
       "score": 83,
       "stars": 5,
       "badge": null,
-      "change": "new",
-      "rank": 19
+      "change": "stable",
+      "rank": 20
     },
     {
       "ticker": "PANW",
@@ -220,8 +231,8 @@
       "score": 83,
       "stars": 5,
       "badge": null,
-      "change": "new",
-      "rank": 20
+      "change": "stable",
+      "rank": 21
     },
     {
       "ticker": "IFX.DE",
@@ -231,8 +242,8 @@
       "score": 81,
       "stars": 5,
       "badge": null,
-      "change": "new",
-      "rank": 21
+      "change": "stable",
+      "rank": 22
     },
     {
       "ticker": "AI.PA",
@@ -243,7 +254,7 @@
       "stars": 5,
       "badge": "EU",
       "change": "stable",
-      "rank": 22
+      "rank": 23
     },
     {
       "ticker": "TTE.PA",
@@ -253,8 +264,8 @@
       "score": 80,
       "stars": 5,
       "badge": "EU",
-      "change": "new",
-      "rank": 23
+      "change": "stable",
+      "rank": 24
     },
     {
       "ticker": "BESI.AS",
@@ -264,91 +275,9 @@
       "score": 80,
       "stars": 5,
       "badge": "EU",
-      "change": "new",
-      "rank": 24
-    },
-    {
-      "ticker": "AMZN",
-      "name": "Amazon.com, Inc.",
-      "market": "NMS",
-      "sector": "Conso. cycl.",
-      "score": 80,
-      "stars": 5,
-      "badge": null,
       "change": "stable",
       "rank": 25
     }
   ],
-  "changelog": [
-    {
-      "action": "in",
-      "ticker": "JPM",
-      "name": "JP Morgan Chase & Co.",
-      "score": 95,
-      "reason": "Score 95/100 — entrée dans le top 25 cette semaine"
-    },
-    {
-      "action": "in",
-      "ticker": "BLK",
-      "name": "BlackRock, Inc.",
-      "score": 93,
-      "reason": "Score 93/100 — entrée dans le top 25 cette semaine"
-    },
-    {
-      "action": "in",
-      "ticker": "ETN",
-      "name": "Eaton Corporation, PLC",
-      "score": 93,
-      "reason": "Score 93/100 — entrée dans le top 25 cette semaine"
-    },
-    {
-      "action": "in",
-      "ticker": "ADI",
-      "name": "Analog Devices, Inc.",
-      "score": 93,
-      "reason": "Score 93/100 — entrée dans le top 25 cette semaine"
-    },
-    {
-      "action": "in",
-      "ticker": "ENR.DE",
-      "name": "Siemens Energy AG     ",
-      "score": 91,
-      "reason": "Score 91/100 — entrée dans le top 25 cette semaine"
-    },
-    {
-      "action": "out",
-      "ticker": "VWS.CO",
-      "name": "VWS.CO",
-      "score": 0,
-      "reason": "Score insuffisant pour rester dans le top 25"
-    },
-    {
-      "action": "out",
-      "ticker": "MC.PA",
-      "name": "MC.PA",
-      "score": 0,
-      "reason": "Score insuffisant pour rester dans le top 25"
-    },
-    {
-      "action": "out",
-      "ticker": "REL.L",
-      "name": "REL.L",
-      "score": 0,
-      "reason": "Score insuffisant pour rester dans le top 25"
-    },
-    {
-      "action": "out",
-      "ticker": "SAP.DE",
-      "name": "SAP.DE",
-      "score": 0,
-      "reason": "Score insuffisant pour rester dans le top 25"
-    },
-    {
-      "action": "out",
-      "ticker": "AIR.PA",
-      "name": "AIR.PA",
-      "score": 0,
-      "reason": "Score insuffisant pour rester dans le top 25"
-    }
-  ]
+  "changelog": []
 }
