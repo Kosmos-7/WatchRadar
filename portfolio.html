@@ -12,29 +12,28 @@
     --text: #ede9e0; --text2: #8c8880; --text3: #5a5854;
     --gold: #c9a84c; --gold2: #a07830;
     --green: #4cad6e; --red: #d96060; --orange: #e07840;
-    --blue: #5b8fc9; --radius: 8px; --radius-lg: 14px;
+    --radius: 8px; --radius-lg: 14px;
   }
   body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.6; }
   header { border-bottom: 1px solid var(--border); padding: 1.25rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: rgba(12,12,11,0.92); backdrop-filter: blur(12px); z-index: 100; }
   .brand { font-family: Georgia, serif; font-size: 1.25rem; color: var(--text); text-decoration: none; }
   .brand span { color: var(--gold); }
   nav { display: flex; gap: 1.5rem; }
-  nav a { font-size: 0.82rem; color: var(--text3); text-decoration: none; transition: color 0.15s; }
+  nav a { font-size: 0.82rem; color: var(--text3); text-decoration: none; }
   nav a:hover { color: var(--text2); }
   nav a.active { color: var(--text); }
   main { max-width: 820px; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
 
-  /* HERO */
   .fictif-badge { display: inline-flex; align-items: center; gap: 7px; background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.2); border-radius: 100px; padding: 4px 12px; font-family: 'Courier New', monospace; font-size: 0.68rem; color: var(--gold); letter-spacing: 0.8px; margin-bottom: 1rem; text-transform: uppercase; }
   .hero h1 { font-family: Georgia, serif; font-size: 1.75rem; font-weight: normal; letter-spacing: -0.4px; margin-bottom: 0.5rem; }
   .hero p { color: var(--text2); font-size: 0.88rem; max-width: 580px; line-height: 1.7; margin-bottom: 0.75rem; }
   .update-line { font-family: 'Courier New', monospace; font-size: 0.7rem; color: var(--text3); }
 
-  /* SURVIE */
+  /* SURVIVAL */
   .survival-block { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 2rem; }
-  .survival-block.alive  { border-top: 3px solid var(--green); }
-  .survival-block.dead   { border-top: 3px solid var(--red); }
-  .survival-block.panic  { border-top: 3px solid var(--orange); }
+  .survival-block.alive { border-top: 3px solid var(--green); }
+  .survival-block.dead  { border-top: 3px solid var(--red); }
+  .survival-block.panic { border-top: 3px solid var(--orange); }
   .survival-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; }
   .survival-title { font-family: Georgia, serif; font-size: 1rem; font-weight: normal; }
   .status-pill { display: flex; align-items: center; gap: 6px; font-family: 'Courier New', monospace; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; }
@@ -46,9 +45,9 @@
   .th-value { font-family: Georgia, serif; font-size: 1.3rem; }
   .th-sub { font-family: 'Courier New', monospace; font-size: 0.65rem; margin-top: 2px; color: var(--text3); }
   .perf-track { position: relative; height: 6px; background: var(--surface2); border-radius: 3px; overflow: visible; margin-top: 0.75rem; }
-  .perf-fill { height: 6px; border-radius: 3px; background: var(--green); max-width: 100%; }
-  .perf-danger-line { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--red); border-radius: 1px; opacity: 0.7; left: 20%; }
-  .perf-target-line { position: absolute; top: -4px; bottom: -4px; width: 1px; background: var(--text3); border-radius: 1px; left: 50%; }
+  .perf-fill { height: 6px; border-radius: 3px; background: var(--green); }
+  .perf-danger { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--red); border-radius: 1px; opacity: 0.7; left: 20%; }
+  .perf-target { position: absolute; top: -4px; bottom: -4px; width: 1px; background: var(--text3); left: 50%; }
 
   /* RULES */
   .rules-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 2rem; }
@@ -66,43 +65,49 @@
   .kpi-value { font-family: Georgia, serif; font-size: 1.5rem; line-height: 1; }
   .kpi-sub { font-family: 'Courier New', monospace; font-size: 0.68rem; margin-top: 3px; color: var(--text3); }
   .up { color: var(--green); }
-  .down { color: var(--red); }
+  .dn { color: var(--red); }
 
   /* CHART */
   .chart-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 2rem; }
   .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem; }
   .chart-header h2 { font-family: Georgia, serif; font-size: 1rem; font-weight: normal; color: var(--text2); }
   .legend { display: flex; gap: 1rem; flex-wrap: wrap; }
-  .legend-item { display: flex; align-items: center; gap: 5px; font-family: 'Courier New', monospace; font-size: 0.65rem; color: var(--text3); }
-  .ldot { width: 8px; height: 2px; border-radius: 1px; }
+  .li { display: flex; align-items: center; gap: 5px; font-family: 'Courier New', monospace; font-size: 0.65rem; color: var(--text3); }
+  .ld { width: 8px; height: 2px; border-radius: 1px; }
 
-  /* SECTION TITLE */
-  .section-title { font-family: 'Courier New', monospace; font-size: 0.65rem; color: var(--text3); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  /* SECTION */
+  .sec-title { font-family: 'Courier New', monospace; font-size: 0.65rem; color: var(--text3); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
 
   /* POSITIONS */
   .pos-header { display: grid; grid-template-columns: 1fr 60px 85px 85px 75px 80px; gap: 8px; padding: 0 1rem 0.5rem; font-family: 'Courier New', monospace; font-size: 0.63rem; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; }
   .pos-row { display: grid; grid-template-columns: 1fr 60px 85px 85px 75px 80px; gap: 8px; align-items: center; padding: 0.8rem 1rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); margin-bottom: 5px; transition: border-color 0.15s; }
   .pos-row:hover { border-color: var(--border2); }
   .pos-name { font-weight: 500; font-size: 0.88rem; }
-  .pos-ticker { font-family: 'Courier New', monospace; font-size: 0.68rem; color: var(--text3); margin-top: 1px; }
+  .pos-tkr { font-family: 'Courier New', monospace; font-size: 0.68rem; color: var(--text3); margin-top: 1px; }
   .mn { font-family: 'Courier New', monospace; font-size: 0.78rem; color: var(--text2); }
-  .perf-pill { display: inline-flex; font-family: 'Courier New', monospace; font-size: 0.72rem; padding: 2px 7px; border-radius: 4px; }
-  .perf-up { background: rgba(76,173,110,0.1); color: var(--green); }
-  .perf-dn { background: rgba(217,96,96,0.1); color: var(--red); }
+  .pp { display: inline-flex; font-family: 'Courier New', monospace; font-size: 0.72rem; padding: 2px 7px; border-radius: 4px; }
+  .pp-up { background: rgba(76,173,110,0.1); color: var(--green); }
+  .pp-dn { background: rgba(217,96,96,0.1); color: var(--red); }
   .ww { display: flex; align-items: center; gap: 5px; }
   .wt { flex: 1; height: 3px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
   .wf { height: 3px; border-radius: 2px; }
   .wl { font-family: 'Courier New', monospace; font-size: 0.65rem; color: var(--text3); min-width: 30px; text-align: right; }
 
-  /* ORDERS */
-  .order-row { display: grid; grid-template-columns: 100px 55px 1fr 85px; gap: 10px; align-items: start; padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); font-size: 0.82rem; }
-  .order-row:first-child { border-top: 1px solid var(--border); }
+  /* ORDERS — enrichis */
+  .order-card { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); margin-bottom: 6px; overflow: hidden; }
+  .order-card-header { display: grid; grid-template-columns: 100px 60px 1fr auto; gap: 10px; align-items: center; padding: 0.75rem 1rem; cursor: pointer; }
   .order-date { font-family: 'Courier New', monospace; font-size: 0.7rem; color: var(--text3); }
-  .order-type { font-family: 'Courier New', monospace; font-size: 0.65rem; padding: 2px 6px; border-radius: 3px; text-align: center; }
-  .buy  { background: rgba(76,173,110,0.1); color: var(--green); }
-  .sell { background: rgba(217,96,96,0.1); color: var(--red); }
-  .order-reason { font-size: 0.78rem; color: var(--text2); line-height: 1.4; }
-  .order-amount { font-family: 'Courier New', monospace; font-size: 0.75rem; color: var(--text3); text-align: right; }
+  .order-type { font-family: 'Courier New', monospace; font-size: 0.65rem; padding: 3px 8px; border-radius: 4px; text-align: center; }
+  .buy  { background: rgba(76,173,110,0.1); color: var(--green); border: 1px solid rgba(76,173,110,0.2); }
+  .sell { background: rgba(217,96,96,0.1); color: var(--red); border: 1px solid rgba(217,96,96,0.2); }
+  .order-summary { font-size: 0.82rem; color: var(--text); font-weight: 500; }
+  .order-amount { font-family: 'Courier New', monospace; font-size: 0.75rem; color: var(--text3); text-align: right; white-space: nowrap; }
+  .order-detail { display: none; padding: 0 1rem 0.85rem; border-top: 1px solid var(--border); }
+  .order-detail.open { display: block; }
+  .order-raison { font-size: 0.78rem; color: var(--text2); line-height: 1.6; margin-top: 0.5rem; }
+  .order-breakdown { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 0.5rem; }
+  .ob-item { font-family: 'Courier New', monospace; font-size: 0.65rem; color: var(--text3); background: var(--surface2); padding: 2px 8px; border-radius: 3px; }
+  .expand-hint { font-family: 'Courier New', monospace; font-size: 0.6rem; color: var(--text3); }
 
   /* BIAIS */
   .bias-block { background: var(--surface2); border: 1px solid var(--border); border-left: 3px solid var(--orange); border-radius: var(--radius); padding: 1rem; margin-bottom: 2rem; }
@@ -113,41 +118,11 @@
   /* PANIC */
   .panic-banner { background: rgba(224,120,64,0.08); border: 1px solid rgba(224,120,64,0.3); border-radius: var(--radius); padding: 0.85rem 1.1rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: var(--orange); }
 
-  /* DISCLAIMER */
   .disclaimer { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; font-size: 0.75rem; color: var(--text3); line-height: 1.6; margin-bottom: 2rem; }
 
-  /* LOADING */
-  .loading-block { display: flex; flex-direction: column; gap: 10px; }
-  .skel { border-radius: var(--radius); background: var(--surface); overflow: hidden; position: relative; }
-  .skel::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent); animation: sh 1.4s infinite; }
-  @keyframes sh { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
-
-  /* CHAT */
-  .chat-bubble { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 52px; height: 52px; background: var(--gold); border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.5); transition: transform 0.15s; }
-  .chat-bubble:hover { transform: scale(1.06); }
-  .chat-bubble svg { width: 22px; height: 22px; fill: #0c0c0b; }
-  .chat-panel { position: fixed; bottom: 5.5rem; right: 1.5rem; width: 340px; max-height: 520px; background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius-lg); display: flex; flex-direction: column; z-index: 999; overflow: hidden; opacity: 0; pointer-events: none; transform: translateY(12px); transition: opacity 0.2s, transform 0.2s; }
-  .chat-panel.open { opacity: 1; pointer-events: all; transform: translateY(0); }
-  .chat-header { padding: 1rem 1.1rem 0.75rem; border-bottom: 1px solid var(--border); }
-  .chat-header-top { display: flex; justify-content: space-between; align-items: center; }
-  .chat-title { font-size: 0.88rem; font-weight: 500; }
-  .chat-close { background: none; border: none; color: var(--text3); font-size: 1.1rem; cursor: pointer; }
-  .chat-subtitle { font-size: 0.72rem; color: var(--text3); margin-top: 3px; }
-  .chat-messages { flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 0.6rem; }
-  .msg { max-width: 88%; padding: 0.6rem 0.85rem; border-radius: 10px; font-size: 0.82rem; line-height: 1.55; }
-  .msg-ai { background: var(--surface2); color: var(--text2); align-self: flex-start; border-bottom-left-radius: 3px; }
-  .msg-user { background: rgba(201,168,76,0.12); color: var(--text); align-self: flex-end; border-bottom-right-radius: 3px; border: 1px solid rgba(201,168,76,0.15); }
-  .msg-typing { display: flex; gap: 4px; align-items: center; padding: 0.75rem 0.85rem; }
-  .td { width: 5px; height: 5px; border-radius: 50%; background: var(--text3); animation: blink 1.2s infinite; }
-  .td:nth-child(2){animation-delay:.2s} .td:nth-child(3){animation-delay:.4s}
-  @keyframes blink{0%,80%,100%{opacity:.2}40%{opacity:1}}
-  .chat-input-wrap { padding: 0.75rem; border-top: 1px solid var(--border); display: flex; gap: 8px; }
-  .chat-input { flex: 1; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.55rem 0.75rem; font-size: 0.82rem; color: var(--text); resize: none; outline: none; font-family: inherit; line-height: 1.4; max-height: 100px; }
-  .chat-input:focus { border-color: var(--border2); }
-  .chat-input::placeholder { color: var(--text3); }
-  .chat-send { background: var(--gold); border: none; border-radius: var(--radius); width: 34px; height: 34px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; align-self: flex-end; }
-  .chat-send svg { width: 14px; height: 14px; fill: #0c0c0b; }
-  .chat-footer-note { padding: 0.4rem 0.75rem 0.6rem; text-align: center; font-family: 'Courier New', monospace; font-size: 0.6rem; color: var(--text3); }
+  .skel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; position: relative; }
+  .skel::after { content:''; position:absolute; inset:0; background:linear-gradient(90deg,transparent,rgba(255,255,255,.03),transparent); animation:sh 1.4s infinite; }
+  @keyframes sh{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
 
   footer { border-top: 1px solid var(--border); padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
   .footer-legal { font-size: 0.7rem; color: var(--text3); max-width: 480px; line-height: 1.5; }
@@ -156,14 +131,12 @@
   @media(max-width:640px){
     main{padding:2rem 1rem 5rem}
     .kpi-grid{grid-template-columns:1fr 1fr}
-    .threshold-row{grid-template-columns:1fr}
-    .rules-grid{grid-template-columns:1fr}
+    .threshold-row,.rules-grid{grid-template-columns:1fr}
     .pos-header,.pos-row{grid-template-columns:1fr 60px 70px 65px}
     .pos-header span:nth-child(n+5),.pos-row>*:nth-child(n+5){display:none}
-    .order-row{grid-template-columns:80px 45px 1fr}
-    .order-row>*:last-child{display:none}
+    .order-card-header{grid-template-columns:80px 50px 1fr}
+    .order-card-header>*:last-child{display:none}
     header{padding:1rem}
-    .chat-panel{width:calc(100vw - 2rem);right:1rem}
   }
 </style>
 </head>
@@ -181,47 +154,47 @@
   <div class="hero">
     <div class="fictif-badge">⬡ Portefeuille 100 % fictif · Prix réels du marché</div>
     <h1>L'IA joue sa survie.</h1>
-    <p>Capital fictif de 10 000 €. L'IA investit selon sa propre watchlist, analyse ses erreurs chaque semaine, et ajuste en continu. Si elle sous-performe durablement, elle le reconnaît publiquement.</p>
+    <p>Capital fictif de 10 000 €. L'IA investit automatiquement selon sa watchlist, documente chaque décision d'achat et de vente, et analyse ses erreurs chaque semaine.</p>
     <div class="update-line" id="update-line">Chargement…</div>
   </div>
 
   <div id="panic-banner" style="display:none" class="panic-banner">
-    ⚠️ Mode panique activé cette semaine — aucun ordre exécuté (Règle 03 : zéro ajustement en période de forte baisse de marché).
+    ⚠️ Mode panique activé cette semaine — aucun ordre exécuté (Règle 03).
   </div>
 
   <div id="survival-block" class="survival-block alive">
-    <div class="loading-block"><div class="skel" style="height:120px"></div></div>
+    <div class="skel" style="height:140px"></div>
   </div>
 
   <div class="rules-block">
     <div class="rules-title">Les règles que l'IA s'impose</div>
     <div class="rules-grid">
-      <div class="rule"><div class="rule-num">Règle 01 · Patience</div><div class="rule-title">Aucune vente avant 90 jours</div><p>Sauf signal fondamental majeur (guidance révisée, fraude, etc.). Évite la surréaction aux fluctuations normales.</p></div>
-      <div class="rule"><div class="rule-num">Règle 02 · Taille</div><div class="rule-title">Maximum 30 % sur un titre</div><p>Aucune conviction ne justifie une concentration excessive. Le portefeuille reste diversifié en permanence.</p></div>
-      <div class="rule"><div class="rule-num">Règle 03 · Calme</div><div class="rule-title">Zéro ajustement en panique</div><p>Si le CAC40 chute de plus de 5 % sur la semaine, l'IA observe sans agir. Les décisions sous pression sont statistiquement mauvaises.</p></div>
-      <div class="rule"><div class="rule-num">Règle 04 · Honnêteté</div><div class="rule-title">Chaque erreur documentée</div><p>Aucune mauvaise position passée sous silence. Si l'IA a tort, elle l'écrit ici et intègre la leçon.</p></div>
-      <div class="rule"><div class="rule-num">Règle 05 · Humilité</div><div class="rule-title">Le feedback prime</div><p>Les retours des utilisateurs peuvent remettre en question une thèse. L'IA lit et intègre chaque signal pertinent.</p></div>
-      <div class="rule"><div class="rule-num">Règle 06 · Survie</div><div class="rule-title">Deux trimestres négatifs = zéro</div><p>Si l'IA sous-performe le CAC40 deux trimestres de suite, elle publie un post-mortem et repart de zéro.</p></div>
+      <div class="rule"><div class="rule-num">Règle 01 · Patience</div><div class="rule-title">Aucune vente avant 90 jours</div><p>Sauf signal fondamental majeur. Évite la surréaction aux fluctuations normales.</p></div>
+      <div class="rule"><div class="rule-num">Règle 02 · Taille</div><div class="rule-title">Maximum 30 % sur un titre</div><p>Aucune conviction ne justifie une concentration excessive.</p></div>
+      <div class="rule"><div class="rule-num">Règle 03 · Calme</div><div class="rule-title">Zéro ajustement en panique</div><p>Si le CAC40 chute de plus de 5 % sur la semaine, l'IA n'agit pas.</p></div>
+      <div class="rule"><div class="rule-num">Règle 04 · Honnêteté</div><div class="rule-title">Chaque décision documentée</div><p>Chaque achat et vente est expliqué avec les données qui ont motivé la décision.</p></div>
+      <div class="rule"><div class="rule-num">Règle 05 · Sources</div><div class="rule-title">Données multi-sources</div><p>Yahoo Finance pour le momentum, Finnhub pour valider les fondamentaux. Les anomalies sont signalées.</p></div>
+      <div class="rule"><div class="rule-num">Règle 06 · Survie</div><div class="rule-title">Deux trimestres négatifs = zéro</div><p>Sous-performance durable = post-mortem public + remise à zéro de la méthodologie.</p></div>
     </div>
   </div>
 
   <div class="kpi-grid" id="kpi-grid">
-    <div class="kpi"><div class="kpi-label">Valeur actuelle</div><div class="kpi-value skel" style="height:28px;width:100px;border-radius:4px"></div></div>
-    <div class="kpi"><div class="kpi-label">vs CAC 40</div><div class="kpi-value skel" style="height:28px;width:80px;border-radius:4px"></div></div>
-    <div class="kpi"><div class="kpi-label">Positions</div><div class="kpi-value skel" style="height:28px;width:60px;border-radius:4px"></div></div>
-    <div class="kpi"><div class="kpi-label">Statut survie</div><div class="kpi-value skel" style="height:28px;width:80px;border-radius:4px"></div></div>
+    <div class="kpi"><div class="kpi-label">Valeur actuelle</div><div class="skel" style="height:28px;margin-top:4px"></div></div>
+    <div class="kpi"><div class="kpi-label">vs CAC 40</div><div class="skel" style="height:28px;margin-top:4px"></div></div>
+    <div class="kpi"><div class="kpi-label">Positions</div><div class="skel" style="height:28px;margin-top:4px"></div></div>
+    <div class="kpi"><div class="kpi-label">Statut</div><div class="skel" style="height:28px;margin-top:4px"></div></div>
   </div>
 
   <div class="chart-block">
     <div class="chart-header">
       <h2>Performance depuis le lancement</h2>
       <div class="legend">
-        <div class="legend-item"><div class="ldot" style="background:var(--gold)"></div>WatchRadar IA</div>
-        <div class="legend-item"><div class="ldot" style="background:var(--text3)"></div>CAC 40</div>
-        <div class="legend-item"><div class="ldot" style="background:var(--red);opacity:.5"></div>Ligne rouge</div>
+        <div class="li"><div class="ld" style="background:var(--gold)"></div>WatchRadar</div>
+        <div class="li"><div class="ld" style="background:var(--text3)"></div>CAC 40</div>
+        <div class="li"><div class="ld" style="background:var(--red);opacity:.5"></div>Ligne rouge</div>
       </div>
     </div>
-    <svg id="perf-chart" style="width:100%;overflow:visible" viewBox="0 0 560 180" xmlns="http://www.w3.org/2000/svg">
+    <svg style="width:100%;overflow:visible" viewBox="0 0 560 180">
       <line x1="40" y1="10" x2="40" y2="155" stroke="#2a2a26" stroke-width="0.5"/>
       <line x1="160" y1="10" x2="160" y2="155" stroke="#2a2a26" stroke-width="0.5"/>
       <line x1="280" y1="10" x2="280" y2="155" stroke="#2a2a26" stroke-width="0.5"/>
@@ -230,13 +203,13 @@
       <line x1="40" y1="138" x2="520" y2="138" stroke="#3a3a34" stroke-width="0.5" stroke-dasharray="3,3"/>
       <line x1="40" y1="155" x2="520" y2="155" stroke="#d96060" stroke-width="1" stroke-opacity="0.4" stroke-dasharray="4,4"/>
       <text x="4" y="141" font-family="Courier New" font-size="9" fill="#5a5854">100</text>
-      <polyline id="chart-cac" points="40,138 160,125 280,114 400,105 520,99" fill="none" stroke="#5a5854" stroke-width="1.5" stroke-linejoin="round"/>
-      <polygon id="chart-area" points="40,138 160,111 280,81 400,63 520,47 520,155 40,155" fill="url(#goldGrad)" opacity="0.06"/>
-      <polyline id="chart-portfolio" points="40,138 160,111 280,81 400,63 520,47" fill="none" stroke="#c9a84c" stroke-width="2" stroke-linejoin="round"/>
+      <polyline points="40,138 160,125 280,114 400,105 520,99" fill="none" stroke="#5a5854" stroke-width="1.5" stroke-linejoin="round"/>
+      <polygon id="chart-area" points="40,138 160,111 280,81 400,63 520,47 520,155 40,155" fill="url(#gg)" opacity="0.06"/>
+      <polyline id="chart-line" points="40,138 160,111 280,81 400,63 520,47" fill="none" stroke="#c9a84c" stroke-width="2" stroke-linejoin="round"/>
       <circle id="chart-dot" cx="520" cy="47" r="4" fill="#c9a84c"/>
-      <rect id="chart-label-bg" x="480" y="28" width="54" height="16" rx="3" fill="#1e1e1b" stroke="#3a3a34" stroke-width="0.5"/>
-      <text id="chart-label" x="507" y="40" font-family="Courier New" font-size="9" fill="#c9a84c" text-anchor="middle">+14,3 %</text>
-      <defs><linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c9a84c"/><stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/></linearGradient></defs>
+      <rect x="480" y="28" width="56" height="16" rx="3" fill="#1e1e1b" stroke="#3a3a34" stroke-width="0.5"/>
+      <text id="chart-label" x="508" y="40" font-family="Courier New" font-size="9" fill="#c9a84c" text-anchor="middle">+14,3 %</text>
+      <defs><linearGradient id="gg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c9a84c"/><stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/></linearGradient></defs>
       <text x="40" y="168" font-family="Courier New" font-size="9" fill="#5a5854" text-anchor="middle">Jan</text>
       <text x="160" y="168" font-family="Courier New" font-size="9" fill="#5a5854" text-anchor="middle">Fév</text>
       <text x="280" y="168" font-family="Courier New" font-size="9" fill="#5a5854" text-anchor="middle">Mar</text>
@@ -246,29 +219,23 @@
   </div>
 
   <div style="margin-bottom:2rem">
-    <div class="section-title">Positions ouvertes · Prix mis à jour chaque semaine</div>
+    <div class="sec-title">Positions ouvertes · Mis à jour chaque lundi</div>
     <div class="pos-header"><span>Action</span><span style="text-align:right">Qté</span><span style="text-align:right">Px achat</span><span style="text-align:right">Px actuel</span><span style="text-align:right">Perf.</span><span>Poids</span></div>
-    <div id="positions-list">
-      <div class="loading-block">
-        <div class="skel" style="height:60px"></div>
-        <div class="skel" style="height:60px"></div>
-        <div class="skel" style="height:60px"></div>
-      </div>
-    </div>
+    <div id="positions-list"><div class="skel" style="height:60px;margin-bottom:5px"></div><div class="skel" style="height:60px;margin-bottom:5px"></div><div class="skel" style="height:60px"></div></div>
   </div>
 
   <div style="margin-bottom:2rem">
-    <div class="section-title">Journal des ordres · Horodatés · Automatiques</div>
+    <div class="sec-title">Journal des ordres · Cliquez pour voir le détail de chaque décision</div>
     <div id="orders-list"></div>
   </div>
 
   <div id="bias-block" style="display:none" class="bias-block">
-    <div class="bias-title">⚠ Biais identifiés automatiquement</div>
+    <div class="bias-title">⚠ Biais détectés automatiquement</div>
     <div id="bias-items"></div>
   </div>
 
   <div class="disclaimer">
-    <strong style="color:var(--text2)">Portefeuille 100 % fictif.</strong> Aucune somme réelle n'est investie. Les prix sont les cours réels du marché au moment de chaque ordre simulé. Contenu purement informatif. Ne constitue pas un conseil en investissement au sens AMF.
+    <strong style="color:var(--text2)">Portefeuille 100 % fictif.</strong> Aucune somme réelle investie. Prix réels du marché au moment de chaque ordre simulé. Contenu purement informatif. Ne constitue pas un conseil en investissement au sens AMF.
   </div>
 </main>
 
@@ -277,179 +244,124 @@
   <div class="footer-right" id="footer-week">Bêta<br><a href="mailto:contact@watchradar.fr" style="color:var(--text3);text-decoration:none;">contact@watchradar.fr</a></div>
 </footer>
 
-<button class="chat-bubble" onclick="toggleChat()">
-  <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
-</button>
-
-<div class="chat-panel" id="chatPanel">
-  <div class="chat-header">
-    <div class="chat-header-top"><div class="chat-title">Réagir au portefeuille</div><button class="chat-close" onclick="toggleChat()">✕</button></div>
-    <div class="chat-subtitle">L'IA écoute · Vos critiques améliorent la méthode</div>
-  </div>
-  <div class="chat-messages" id="chatMessages"></div>
-  <div class="chat-input-wrap">
-    <textarea class="chat-input" id="chatInput" placeholder="Vous auriez fait quoi différemment ?" rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
-    <button class="chat-send" onclick="sendMessage()"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
-  </div>
-  <div class="chat-footer-note">Retours intégrés à chaque révision hebdomadaire</div>
-</div>
-
 <script>
-const API_KEY = 'VOTRE_CLE_API_ICI';
-let PORTFOLIO_DATA = null;
+let orderCount = 0;
 
-// ── RENDER ───────────────────────────────────────────────────────────────────
+function fmt(n, d=2) { return Number(n).toFixed(d); }
+function fmtEur(n) { return Number(n).toLocaleString('fr-FR',{maximumFractionDigits:0}) + ' €'; }
+function sign(n) { return n >= 0 ? '+' : ''; }
+
+function renderOrder(o, idx) {
+  const bd = o.breakdown || {};
+  const perf = o.perf != null ? `${sign(o.perf)}${fmt(o.perf, 1)}%` : '';
+
+  const breakdownHTML = o.type === 'ACHAT' && Object.keys(bd).length > 0 ? `
+    <div class="order-breakdown">
+      ${bd.momentum != null ? `<span class="ob-item">Momentum : ${bd.momentum}/40</span>` : ''}
+      ${bd.fondamentaux != null ? `<span class="ob-item">Fondamentaux : ${bd.fondamentaux}/40</span>` : ''}
+      ${bd.analystes != null ? `<span class="ob-item">Analystes : ${bd.analystes}/20</span>` : ''}
+      ${bd.rev_growth_pct ? `<span class="ob-item">CA +${bd.rev_growth_pct}%/an</span>` : ''}
+      ${bd.net_margin_pct ? `<span class="ob-item">Marge ${bd.net_margin_pct}%</span>` : ''}
+      ${(bd.sources||[]).length ? `<span class="ob-item">Sources : ${bd.sources.join(' + ')}</span>` : ''}
+    </div>` : '';
+
+  const perfBadge = perf ? `<span style="font-family:'Courier New',monospace;font-size:0.72rem;padding:2px 6px;border-radius:3px;background:${o.perf >= 0 ? 'rgba(76,173,110,0.1)' : 'rgba(217,96,96,0.1)'};color:${o.perf >= 0 ? 'var(--green)' : 'var(--red)'}">${perf}</span>` : '';
+
+  return `
+    <div class="order-card">
+      <div class="order-card-header" onclick="toggleOrder(${idx})">
+        <div class="order-date">${o.date}</div>
+        <div class="order-type ${o.type === 'ACHAT' ? 'buy' : 'sell'}">${o.type}</div>
+        <div class="order-summary">${o.nom} ${perfBadge}</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="order-amount">${fmtEur(o.montant)}</div>
+          <div class="expand-hint">↓</div>
+        </div>
+      </div>
+      <div class="order-detail" id="order-${idx}">
+        <div class="order-raison">${o.raison}</div>
+        ${breakdownHTML}
+        ${o.jours ? `<div style="margin-top:0.4rem;font-family:'Courier New',monospace;font-size:0.65rem;color:var(--text3)">${o.jours} jours détenus</div>` : ''}
+      </div>
+    </div>`;
+}
+
+function toggleOrder(idx) {
+  const el = document.getElementById('order-' + idx);
+  if (el) el.classList.toggle('open');
+}
+
 async function loadPortfolio() {
   try {
     const res  = await fetch('portfolio.json?v=' + Date.now());
-    const data = await res.json();
-    PORTFOLIO_DATA = data;
-    render(data);
+    const d    = await res.json();
+
+    document.getElementById('update-line').textContent = `Mis à jour · ${d.updated_at} · ${d.week}`;
+    document.getElementById('footer-week').innerHTML = `${d.week}<br><a href="mailto:contact@watchradar.fr" style="color:var(--text3);text-decoration:none;">contact@watchradar.fr</a>`;
+    document.getElementById('chart-label').textContent = `${sign(d.performance)}${fmt(d.performance, 1)} %`;
+
+    if (d.mode_panique) document.getElementById('panic-banner').style.display = 'block';
+
+    // Survival
+    const sb = document.getElementById('survival-block');
+    const alive = d.statut_survie === 'en_vie';
+    const panic = d.mode_panique;
+    sb.className = `survival-block ${panic ? 'panic' : alive ? 'alive' : 'dead'}`;
+    const sc = panic ? 'var(--orange)' : alive ? 'var(--green)' : 'var(--red)';
+    const sl = panic ? 'Mode panique' : alive ? 'En vie · Seuil respecté' : 'Réinitialisation';
+    const pp = Math.max(5, Math.min(98, 50 + d.vs_benchmark * 3));
+    sb.innerHTML = `
+      <div class="survival-header">
+        <div class="survival-title">Statut de survie · ${d.week}</div>
+        <div class="status-pill" style="color:${sc}"><div class="sdot" style="background:${sc}"></div>${sl}</div>
+      </div>
+      <div class="survival-desc">L'IA doit <strong>battre le CAC 40 sur 12 mois glissants</strong>. Deux trimestres consécutifs sous le CAC40 = post-mortem public + remise à zéro. <strong>Transparence totale.</strong></div>
+      <div class="threshold-row">
+        <div class="th"><div class="th-label">Performance actuelle</div><div class="th-value ${d.performance>=0?'up':'dn'}">${sign(d.performance)}${fmt(d.performance,1)} %</div><div class="th-sub">depuis jan. ${new Date().getFullYear()}</div></div>
+        <div class="th"><div class="th-label">CAC 40 (même période)</div><div class="th-value" style="color:var(--text2)">${sign(d.benchmark_cac40)}${fmt(d.benchmark_cac40,1)} %</div><div class="th-sub">benchmark principal</div></div>
+        <div class="th"><div class="th-label">Ligne rouge</div><div class="th-value" style="color:var(--red)">CAC − 5 %</div><div class="th-sub">seuil de réinitialisation</div></div>
+      </div>
+      <div class="perf-track"><div class="perf-danger"></div><div class="perf-target"></div><div class="perf-fill" style="width:${pp}%"></div></div>`;
+
+    // KPI
+    document.getElementById('kpi-grid').innerHTML = `
+      <div class="kpi"><div class="kpi-label">Valeur actuelle</div><div class="kpi-value">${fmtEur(d.capital_actuel)}</div><div class="kpi-sub ${d.performance>=0?'up':'dn'}">${sign(d.performance)}${fmt(d.performance,1)} % depuis jan.</div></div>
+      <div class="kpi"><div class="kpi-label">vs CAC 40</div><div class="kpi-value ${d.vs_benchmark>=0?'up':'dn'}">${sign(d.vs_benchmark)}${fmt(d.vs_benchmark,1)} pp</div><div class="kpi-sub">CAC40 : ${sign(d.benchmark_cac40)}${fmt(d.benchmark_cac40,1)} %</div></div>
+      <div class="kpi"><div class="kpi-label">Positions ouvertes</div><div class="kpi-value">${d.nb_positions}</div><div class="kpi-sub">${d.nb_positives} pos. · ${d.nb_negatives} nég.</div></div>
+      <div class="kpi"><div class="kpi-label">Statut survie</div><div class="kpi-value" style="font-size:1rem;color:${sc}">${alive?'En vie':'Réinit.'}</div><div class="kpi-sub">${d.trimestres_negatifs} trim. nég.</div></div>`;
+
+    // Positions
+    const pos = d.positions || [];
+    document.getElementById('positions-list').innerHTML = pos.length === 0
+      ? '<div style="padding:1rem;color:var(--text3);font-size:0.82rem">Aucune position ouverte.</div>'
+      : pos.map(p => {
+          const wfBg = p.performance < 0 ? 'var(--red);opacity:0.5' : 'var(--gold2)';
+          return `<div class="pos-row">
+            <div><div class="pos-name">${p.nom}</div><div class="pos-tkr">${p.ticker} · ${p.market}</div></div>
+            <div class="mn" style="text-align:right">${p.quantite}</div>
+            <div class="mn" style="text-align:right">${fmt(p.prix_achat)} €</div>
+            <div class="mn" style="text-align:right">${fmt(p.prix_actuel)} €</div>
+            <div><span class="pp ${p.performance>=0?'pp-up':'pp-dn'}">${sign(p.performance)}${fmt(p.performance,1)} %</span></div>
+            <div><div class="ww"><div class="wt"><div class="wf" style="width:${Math.min(p.poids*3.3,100)}%;background:${wfBg}"></div></div><div class="wl">${fmt(p.poids,1)} %</div></div></div>
+          </div>`;
+        }).join('') +
+        `<div style="padding:0.75rem 1rem;display:flex;justify-content:space-between;font-family:'Courier New',monospace;font-size:0.72rem;color:var(--text3)"><span>Liquidités</span><span>${fmtEur(d.liquidites)} · ${fmt(d.pct_liquidites,1)} %</span></div>`;
+
+    // Ordres
+    const ordres = (d.ordres || []).slice(0, 15);
+    document.getElementById('orders-list').innerHTML = ordres.map((o, i) => renderOrder(o, i)).join('');
+
+    // Biais
+    const biais = d.biais_detectes || [];
+    if (biais.length > 0) {
+      document.getElementById('bias-block').style.display = 'block';
+      document.getElementById('bias-items').innerHTML = biais.map(b => `<div class="bias-item">${b}</div>`).join('');
+    }
+
   } catch(e) {
     document.getElementById('positions-list').innerHTML =
       '<div style="padding:1rem;color:var(--text3);font-size:0.82rem">Impossible de charger portfolio.json.</div>';
   }
-}
-
-function fmt(n, dec=2) { return Number(n).toFixed(dec); }
-function fmtEur(n) { return Number(n).toLocaleString('fr-FR', {minimumFractionDigits:0, maximumFractionDigits:0}) + ' €'; }
-function sign(n) { return n >= 0 ? '+' : ''; }
-function colorClass(n) { return n >= 0 ? 'up' : 'down'; }
-function perfColor(n) { return n >= 0 ? 'var(--green)' : '#8bc34a'; }
-
-function render(d) {
-  // Meta
-  document.getElementById('update-line').textContent = `Mis à jour · ${d.updated_at} · ${d.week}`;
-  document.getElementById('footer-week').innerHTML = `${d.week}<br><a href="mailto:contact@watchradar.fr" style="color:var(--text3);text-decoration:none;">contact@watchradar.fr</a>`;
-
-  // Panic
-  if (d.mode_panique) document.getElementById('panic-banner').style.display = 'block';
-
-  // Survival block
-  const sb = document.getElementById('survival-block');
-  const isAlive = d.statut_survie === 'en_vie';
-  const isPanic = d.mode_panique;
-  sb.className = `survival-block ${isPanic ? 'panic' : isAlive ? 'alive' : 'dead'}`;
-  const statusColor = isPanic ? 'var(--orange)' : isAlive ? 'var(--green)' : 'var(--red)';
-  const statusLabel = isPanic ? 'Mode panique' : isAlive ? 'En vie · Seuil respecté' : 'Réinitialisation';
-  const perfPct = Math.min(80 + d.vs_benchmark * 2, 98);
-
-  sb.innerHTML = `
-    <div class="survival-header">
-      <div><div class="survival-title">Statut de survie · ${d.week}</div></div>
-      <div class="status-pill" style="color:${statusColor}"><div class="sdot" style="background:${statusColor}"></div>${statusLabel}</div>
-    </div>
-    <div class="survival-desc">
-      L'IA doit <strong>battre le CAC 40 sur 12 mois glissants</strong>. Si elle sous-performe deux trimestres consécutifs, elle reconnaît publiquement l'échec et reconstruit sa grille de zéro. <strong>La transparence est la seule règle non négociable.</strong>
-    </div>
-    <div class="threshold-row">
-      <div class="th"><div class="th-label">Performance actuelle</div><div class="th-value ${colorClass(d.performance)}">${sign(d.performance)}${fmt(d.performance, 1)} %</div><div class="th-sub">depuis jan. 2026</div></div>
-      <div class="th"><div class="th-label">CAC 40 (même période)</div><div class="th-value" style="color:var(--text2)">${sign(d.benchmark_cac40)}${fmt(d.benchmark_cac40, 1)} %</div><div class="th-sub">benchmark principal</div></div>
-      <div class="th"><div class="th-label">Ligne rouge</div><div class="th-value" style="color:var(--red)">CAC − 5 %</div><div class="th-sub">seuil de réinitialisation</div></div>
-    </div>
-    <div class="perf-track">
-      <div class="perf-danger-line"></div>
-      <div class="perf-target-line"></div>
-      <div class="perf-fill" style="width:${Math.max(5, Math.min(98, perfPct))}%"></div>
-    </div>`;
-
-  // KPI
-  document.getElementById('kpi-grid').innerHTML = `
-    <div class="kpi"><div class="kpi-label">Valeur actuelle</div><div class="kpi-value">${fmtEur(d.capital_actuel)}</div><div class="kpi-sub ${colorClass(d.performance)}">${sign(d.performance)}${fmt(d.performance, 1)} % depuis jan.</div></div>
-    <div class="kpi"><div class="kpi-label">vs CAC 40</div><div class="kpi-value ${colorClass(d.vs_benchmark)}">${sign(d.vs_benchmark)}${fmt(d.vs_benchmark, 1)} pp</div><div class="kpi-sub">CAC40 : ${sign(d.benchmark_cac40)}${fmt(d.benchmark_cac40, 1)} %</div></div>
-    <div class="kpi"><div class="kpi-label">Positions ouvertes</div><div class="kpi-value">${d.nb_positions}</div><div class="kpi-sub">${d.nb_positives} positives · ${d.nb_negatives} neg.</div></div>
-    <div class="kpi"><div class="kpi-label">Statut survie</div><div class="kpi-value" style="font-size:1rem;color:${statusColor}">${isAlive ? 'En vie' : 'Réinit.'}</div><div class="kpi-sub">${d.trimestres_negatifs} trimestre(s) négatif(s)</div></div>`;
-
-  // Chart label
-  document.getElementById('chart-label').textContent = `${sign(d.performance)}${fmt(d.performance, 1)} %`;
-
-  // Positions
-  const pos = d.positions || [];
-  document.getElementById('positions-list').innerHTML = pos.length === 0
-    ? '<div style="padding:1rem;color:var(--text3);font-size:0.82rem">Aucune position ouverte.</div>'
-    : pos.map(p => {
-        const wfBg = p.performance < 0 ? 'var(--red);opacity:0.5' : 'var(--gold2)';
-        return `<div class="pos-row">
-          <div><div class="pos-name">${p.nom}</div><div class="pos-ticker">${p.ticker} · ${p.market}</div></div>
-          <div class="mn" style="text-align:right">${p.quantite}</div>
-          <div class="mn" style="text-align:right">${fmt(p.prix_achat)} €</div>
-          <div class="mn" style="text-align:right">${fmt(p.prix_actuel)} €</div>
-          <div><span class="perf-pill ${p.performance >= 0 ? 'perf-up' : 'perf-dn'}">${sign(p.performance)}${fmt(p.performance, 1)} %</span></div>
-          <div><div class="ww"><div class="wt"><div class="wf" style="width:${Math.min(p.poids * 3.3, 100)}%;background:${wfBg}"></div></div><div class="wl">${fmt(p.poids, 1)} %</div></div></div>
-        </div>`;
-      }).join('') +
-      `<div style="padding:0.75rem 1rem;display:flex;justify-content:space-between;font-family:'Courier New',monospace;font-size:0.72rem;color:var(--text3)">
-        <span>Liquidités</span><span>${fmtEur(d.liquidites)} · ${fmt(d.pct_liquidites, 1)} %</span>
-      </div>`;
-
-  // Orders
-  const ordres = d.ordres || [];
-  document.getElementById('orders-list').innerHTML = ordres.slice(0, 10).map(o => `
-    <div class="order-row">
-      <div class="order-date">${o.date}</div>
-      <div class="order-type ${o.type === 'ACHAT' ? 'buy' : 'sell'}">${o.type}</div>
-      <div class="order-reason"><strong style="color:var(--text)">${o.nom}</strong> — ${o.raison}</div>
-      <div class="order-amount">${fmtEur(o.montant)}</div>
-    </div>`).join('');
-
-  // Biais
-  const biais = d.biais_detectes || [];
-  if (biais.length > 0) {
-    document.getElementById('bias-block').style.display = 'block';
-    document.getElementById('bias-items').innerHTML = biais.map(b => `<div class="bias-item">${b}</div>`).join('');
-  }
-}
-
-// ── CHAT ────────────────────────────────────────────────────────────────────
-function getSystem() {
-  const d = PORTFOLIO_DATA;
-  if (!d) return '';
-  const pos = (d.positions || []).map(p => `${p.nom} (${sign(p.performance)}${fmt(p.performance,1)}%)`).join(', ');
-  return `Tu es l'IA de gestion du portefeuille fictif WatchRadar. Tu joues ta survie : battre le CAC40 sur 12 mois ou tu te réinitialises publiquement.
-
-Portefeuille actuel : capital ${fmtEur(d.capital_actuel)} (${sign(d.performance)}${fmt(d.performance,1)}% vs CAC40 ${sign(d.benchmark_cac40)}${fmt(d.benchmark_cac40,1)}%).
-Positions : ${pos}.
-Statut : ${d.statut_survie}.
-
-Comportement : tu défends tes positions si la critique est superficielle. Tu admets tes erreurs si l'argument est solide — en une phrase. "Excellente remarque" est interdit. Tu ne donnes pas de conseils d'investissement. Maximum 3 phrases par réponse. Tu parles à la première personne.`;
-}
-
-let msgs=[], isOpen=false, ready=false;
-
-function toggleChat(){isOpen=!isOpen;document.getElementById('chatPanel').classList.toggle('open',isOpen);if(isOpen&&!ready){ready=true;callAI(null)}}
-function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px'}
-function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage()}}
-
-function addMsg(role,text){
-  const el=document.createElement('div');
-  el.className='msg '+(role==='user'?'msg-user':'msg-ai');
-  el.textContent=text;
-  document.getElementById('chatMessages').appendChild(el);
-  document.getElementById('chatMessages').scrollTop=99999;
-}
-
-function typing(show){
-  const id='typ';
-  if(show){const el=document.createElement('div');el.id=id;el.className='msg msg-ai msg-typing';el.innerHTML='<div class="td"></div><div class="td"></div><div class="td"></div>';document.getElementById('chatMessages').appendChild(el);document.getElementById('chatMessages').scrollTop=99999;}
-  else{const t=document.getElementById(id);if(t)t.remove();}
-}
-
-async function callAI(userText){
-  if(userText)msgs.push({role:'user',content:userText});
-  typing(true);
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:280,system:getSystem(),messages:msgs})});
-    const data=await res.json();typing(false);
-    const reply=data.content?.[0]?.text||'Erreur de connexion.';
-    msgs.push({role:'assistant',content:reply});addMsg('ai',reply);
-  }catch{typing(false);addMsg('ai','Connexion impossible. Écrivez-nous à contact@watchradar.fr !');}
-}
-
-async function sendMessage(){
-  const input=document.getElementById('chatInput');
-  const text=input.value.trim();if(!text)return;
-  input.value='';input.style.height='auto';
-  addMsg('user',text);await callAI(text);
 }
 
 loadPortfolio();
