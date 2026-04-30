@@ -2,15 +2,15 @@
   "updated_at": "2026-04-30",
   "week": "Sem. 18 · 2026",
   "capital_initial": 10000.0,
-  "capital_actuel": 13347.63,
-  "performance": 33.48,
+  "capital_actuel": 13368.59,
+  "performance": 33.69,
   "benchmark_cac40": -0.98,
-  "benchmark_msci": 5.3,
-  "vs_benchmark": 34.46,
+  "benchmark_msci": 5.38,
+  "vs_benchmark": 34.67,
   "statut_survie": "en_vie",
   "trimestres_negatifs": 0,
   "mode_panique": false,
-  "perf_cac_semaine": -3.68,
+  "perf_cac_semaine": -0.53,
   "positions": [
     {
       "ticker": "ASML.AS",
@@ -25,7 +25,7 @@
       "valeur_actuelle": 3667.2,
       "performance": 88.06,
       "score_entree": 88,
-      "poids": 27.5
+      "poids": 27.4
     },
     {
       "ticker": "NVDA",
@@ -34,13 +34,13 @@
       "sector": "Semi-conducteurs",
       "date_achat": "2026-01-02",
       "prix_achat": 115.0,
-      "prix_actuel": 200.88,
+      "prix_actuel": 201.76,
       "quantite": 20,
       "montant_investi": 2300.0,
-      "valeur_actuelle": 4017.6,
-      "performance": 74.68,
+      "valeur_actuelle": 4035.2,
+      "performance": 75.44,
       "score_entree": 94,
-      "poids": 30.1
+      "poids": 30.2
     },
     {
       "ticker": "AMZN",
@@ -49,13 +49,13 @@
       "sector": "Conso. cycl.",
       "date_achat": "2026-04-30",
       "prix_achat": 259.27,
-      "prix_actuel": 262.8,
+      "prix_actuel": 264.14,
       "quantite": 2,
       "montant_investi": 518.54,
-      "valeur_actuelle": 525.6,
-      "performance": 1.36,
+      "valeur_actuelle": 528.28,
+      "performance": 1.88,
       "score_entree": 90,
-      "poids": 3.9
+      "poids": 4.0
     },
     {
       "ticker": "AVGO",
@@ -64,43 +64,13 @@
       "sector": "Technologie",
       "date_achat": "2026-04-30",
       "prix_achat": 413.21,
-      "prix_actuel": 415.83,
+      "prix_actuel": 415.62,
       "quantite": 1,
       "montant_investi": 413.21,
-      "valeur_actuelle": 415.83,
-      "performance": 0.63,
+      "valeur_actuelle": 415.62,
+      "performance": 0.58,
       "score_entree": 100,
       "poids": 3.1
-    },
-    {
-      "ticker": "ADI",
-      "nom": "Analog Devices, Inc.",
-      "market": "NMS",
-      "sector": "Technologie",
-      "date_achat": "2026-04-30",
-      "prix_achat": 401.01,
-      "prix_actuel": 401.91,
-      "quantite": 1,
-      "montant_investi": 401.01,
-      "valeur_actuelle": 401.91,
-      "performance": 0.22,
-      "score_entree": 93,
-      "poids": 3.0
-    },
-    {
-      "ticker": "BLK",
-      "nom": "BlackRock, Inc.",
-      "market": "NYQ",
-      "sector": "Finance",
-      "date_achat": "2026-04-30",
-      "prix_achat": 1060.9,
-      "prix_actuel": 1062.87,
-      "quantite": 1,
-      "montant_investi": 1060.9,
-      "valeur_actuelle": 1062.87,
-      "performance": 0.19,
-      "score_entree": 93,
-      "poids": 8.0
     },
     {
       "ticker": "ETN",
@@ -109,13 +79,43 @@
       "sector": "Industrie",
       "date_achat": "2026-04-30",
       "prix_achat": 430.55,
-      "prix_actuel": 431.12,
+      "prix_actuel": 432.42,
       "quantite": 1,
       "montant_investi": 430.55,
-      "valeur_actuelle": 431.12,
-      "performance": 0.13,
+      "valeur_actuelle": 432.42,
+      "performance": 0.43,
       "score_entree": 93,
       "poids": 3.2
+    },
+    {
+      "ticker": "BLK",
+      "nom": "BlackRock, Inc.",
+      "market": "NYQ",
+      "sector": "Finance",
+      "date_achat": "2026-04-30",
+      "prix_achat": 1060.9,
+      "prix_actuel": 1063.17,
+      "quantite": 1,
+      "montant_investi": 1060.9,
+      "valeur_actuelle": 1063.17,
+      "performance": 0.21,
+      "score_entree": 93,
+      "poids": 8.0
+    },
+    {
+      "ticker": "V",
+      "nom": "Visa Inc.",
+      "market": "NYQ",
+      "sector": "Finance",
+      "date_achat": "2026-04-30",
+      "prix_achat": 330.69,
+      "prix_actuel": 331.15,
+      "quantite": 2,
+      "montant_investi": 661.38,
+      "valeur_actuelle": 662.3,
+      "performance": 0.14,
+      "score_entree": 93,
+      "poids": 5.0
     },
     {
       "ticker": "ADYEN.AS",
@@ -148,34 +148,34 @@
       "poids": 4.1
     },
     {
-      "ticker": "V",
-      "nom": "Visa Inc.",
-      "market": "NYQ",
-      "sector": "Finance",
-      "date_achat": "2026-04-30",
-      "prix_achat": 330.69,
-      "prix_actuel": 330.52,
-      "quantite": 2,
-      "montant_investi": 661.38,
-      "valeur_actuelle": 661.04,
-      "performance": -0.05,
-      "score_entree": 93,
-      "poids": 5.0
-    },
-    {
       "ticker": "JPM",
       "nom": "JP Morgan Chase & Co.",
       "market": "NYQ",
       "sector": "Finance",
       "date_achat": "2026-04-30",
       "prix_achat": 313.77,
-      "prix_actuel": 313.62,
+      "prix_actuel": 313.74,
       "quantite": 2,
       "montant_investi": 627.54,
-      "valeur_actuelle": 627.24,
-      "performance": -0.05,
+      "valeur_actuelle": 627.48,
+      "performance": -0.01,
       "score_entree": 95,
       "poids": 4.7
+    },
+    {
+      "ticker": "ADI",
+      "nom": "Analog Devices, Inc.",
+      "market": "NMS",
+      "sector": "Technologie",
+      "date_achat": "2026-04-30",
+      "prix_achat": 401.01,
+      "prix_actuel": 399.7,
+      "quantite": 1,
+      "montant_investi": 401.01,
+      "valeur_actuelle": 399.7,
+      "performance": -0.33,
+      "score_entree": 93,
+      "poids": 3.0
     }
   ],
   "liquidites": 36.98,
@@ -363,9 +363,18 @@
     }
   ],
   "biais_detectes": [
-    "Concentration excessive : 30.1% sur une position. Règle 02 sous tension."
+    "Biais de récence sur les nouvelles positions (0j de détention) : tendance à vouloir évaluer trop tôt des positions qui n'ont pas encore eu le temps d'exprimer leur thèse d'investissement",
+    "Surpondération technologie (ASML, NVDA, AVGO, ADI, ADYEN représentent plus de 60% du portefeuille) — risque sectoriel concentré en cas de rotation value ou hausse des taux",
+    "Biais de confirmation : les scores élevés de la watchlist sur les positions déjà détenues peuvent renforcer un biais de statu quo et dissuader de vendre même quand un rééquilibrage serait pertinent",
+    "Liquidités quasi nulles (37€) : impossibilité de saisir une opportunité opportuniste — à surveiller pour un prochain rééquilibrage"
   ],
   "nb_positions": 11,
   "nb_positives": 7,
-  "nb_negatives": 2
+  "nb_negatives": 2,
+  "analyse_claude": {
+    "analyse_macro": "Le marché présente une configuration favorable cette semaine : pas de mode panique, CAC40 en légère baisse (-0.5% hebdo, -1.0% YTD) tandis que le MSCI World progresse de +0.7% (+5.4% YTD), indiquant une divergence positive en faveur des marchés internationaux, notamment américains et technologiques. Ce contexte valide la surpondération du portefeuille en technologie US et en valeurs mondiales plutôt qu'en actifs français. La stabilité des marchés permet des décisions rationnelles sans contrainte de panique.",
+    "conviction_globale": "haussier",
+    "message_utilisateurs": "Bonjour à toutes et tous. Cette semaine, WatchRadar affiche une performance YTD de +33.7% contre -1.0% pour le CAC40, soit une surperformance de +34.5 points de pourcentage. Aucune transaction n'est effectuée cette semaine pour plusieurs raisons : d'abord, 9 de nos 11 positions ont été initiées récemment (0j de détention) et sont soumises à la règle des 90 jours — les vendre serait enfreindre nos règles de survie sans signal fondamental majeur ; ensuite, nos liquidités (37€) ne permettent aucun nouvel achat significatif ; enfin, le contexte de marché est stable et non-panique, il n'y a pas d'urgence à agir. Les points à surveiller : la concentration technologique (>60% du portefeuille) reste un risque sectoriel réel, et l'amélioration notable des scores d'ADI (93→100) et de JPM confirme que les nouvelles positions méritent d'être conservées avec patience. Prochain bilan dans 2-3 semaines quand les positions récentes auront suffisamment de recul pour être évaluées sur leurs mérites propres.",
+    "nb_decisions": 5
+  }
 }
