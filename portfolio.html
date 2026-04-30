@@ -224,6 +224,18 @@
     <div id="positions-list"><div class="skel" style="height:60px;margin-bottom:5px"></div><div class="skel" style="height:60px;margin-bottom:5px"></div><div class="skel" style="height:60px"></div></div>
   </div>
 
+  <div id="claude-analysis" style="display:none;margin-bottom:2rem">
+    <div class="sec-title">Analyse de l'IA cette semaine</div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:var(--radius-lg);padding:1.25rem">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;flex-wrap:wrap;gap:0.5rem">
+        <div style="font-family:Georgia,serif;font-size:0.95rem;font-weight:normal;color:var(--text2)">Raisonnement de l'IA</div>
+        <div id="conviction-badge" style="font-family:'Courier New',monospace;font-size:0.65rem;padding:3px 10px;border-radius:100px;text-transform:uppercase;letter-spacing:1px"></div>
+      </div>
+      <div id="analyse-macro" style="font-size:0.85rem;color:var(--text2);line-height:1.7;margin-bottom:1rem"></div>
+      <div id="message-users" style="font-size:0.82rem;color:var(--text3);line-height:1.65;border-top:1px solid var(--border);padding-top:0.75rem;font-style:italic"></div>
+    </div>
+  </div>
+
   <div style="margin-bottom:2rem">
     <div class="sec-title">Journal des ordres · Cliquez pour voir le détail de chaque décision</div>
     <div id="orders-list"></div>
@@ -350,6 +362,20 @@ async function loadPortfolio() {
     // Ordres
     const ordres = (d.ordres || []).slice(0, 15);
     document.getElementById('orders-list').innerHTML = ordres.map((o, i) => renderOrder(o, i)).join('');
+
+    // Analyse Claude
+    const ac = d.analyse_claude;
+    if (ac && ac.analyse_macro) {
+      document.getElementById('claude-analysis').style.display = 'block';
+      const convColors = { haussier: 'var(--green)', neutre: 'var(--text3)', baissier: 'var(--red)' };
+      const convColor  = convColors[ac.conviction_globale] || 'var(--text3)';
+      document.getElementById('conviction-badge').textContent  = ac.conviction_globale || 'neutre';
+      document.getElementById('conviction-badge').style.cssText = `font-family:'Courier New',monospace;font-size:0.65px;padding:3px 10px;border-radius:100px;text-transform:uppercase;letter-spacing:1px;background:${convColor}22;color:${convColor};border:1px solid ${convColor}44`;
+      document.getElementById('analyse-macro').textContent  = ac.analyse_macro;
+      if (ac.message_utilisateurs) {
+        document.getElementById('message-users').textContent = `"${ac.message_utilisateurs}"`;
+      }
+    }
 
     // Biais
     const biais = d.biais_detectes || [];

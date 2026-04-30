@@ -1,42 +1,41 @@
 """
-portfolio_agent.py — Agent de gestion du portefeuille fictif WatchRadar
-Lit watchlist.json, prend des décisions d'achat/vente, génère portfolio.json.
+portfolio_agent.py — Agent de portefeuille piloté par Claude API
+C'est Claude qui raisonne sur les décisions d'achat/vente chaque semaine.
 
-Règles de survie :
-- Aucune vente avant 90 jours (sauf signal fondamental majeur)
-- Maximum 30% sur un seul titre
-- Zéro ajustement si CAC40 chute > 5% sur la semaine
-- Deux trimestres négatifs vs CAC40 = remise à zéro publique
+Il reçoit :
+- L'état actuel du portefeuille (positions, performance, liquidités)
+- La watchlist de la semaine (25 actions scorées)
+- Le contexte de marché (CAC40, performances sectorielles)
+- Les règles de survie
+
+Il décide :
+- Quoi acheter, quoi vendre, quoi conserver — et pourquoi
+
+Dépendances : pip install yfinance pandas ta requests anthropic
 """
 
 import yfinance as yf
 import json
+import os
 from datetime import date, datetime, timedelta
+from anthropic import Anthropic
 
-CAPITAL_INITIAL = 10000.0
-POIDS_MAX       = 0.30
-POIDS_CIBLE     = 0.04
-JOURS_MIN_HOLD  = 90
-SEUIL_PANIQUE   = -0.05
-TICKER_CAC40    = "^FCHI"
-TICKER_MSCI     = "URTH"
+# ── CONFIG ───────────────────────────────────────────────────────────────────
+ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
+CAPITAL_INITIAL   = 10000.0
+POIDS_MAX         = 0.30
+TICKER_CAC40      = "^FCHI"
+TICKER_MSCI       = "URTH"
 
+client = Anthropic(api_key=ANTHROPIC_API_KEY) if ANTHROPIC_API_KEY else None
+
+# ── UTILITAIRES ──────────────────────────────────────────────────────────────
 def load_json(path, default):
     try:
         with open(path, encoding="utf-8") as f:
             return json.load(f)
     except:
         return default
-
-def portfolio_vide():
-    return {
-        "updated_at": str(date.today()), "week": semaine(),
-        "capital_initial": CAPITAL_INITIAL, "capital_actuel": CAPITAL_INITIAL,
-        "performance": 0.0, "benchmark_cac40": 0.0, "benchmark_msci": 0.0,
-        "vs_benchmark": 0.0, "statut_survie": "en_vie",
-        "trimestres_negatifs": 0, "positions": [],
-        "liquidites": CAPITAL_INITIAL, "ordres": [], "biais_detectes": [],
-    }
 
 def semaine():
     d = date.today()
@@ -49,205 +48,251 @@ def get_prix(ticker):
     except:
         return None
 
-def get_perf_semaine(ticker):
-    try:
-        hist = yf.Ticker(ticker).history(period="10d")["Close"]
-        return float((hist.iloc[-1] - hist.iloc[0]) / hist.iloc[0]) if len(hist) >= 2 else 0.0
-    except:
-        return 0.0
-
-def get_perf_depuis_debut():
-    """Performance CAC40 et MSCI depuis le 1er jan de l'année courante."""
+def get_contexte_marche():
+    """Récupère le contexte macro de la semaine."""
+    ctx = {}
     annee = date.today().year
     debut = f"{annee}-01-01"
-    resultats = {}
+
     for label, ticker in [("cac40", TICKER_CAC40), ("msci", TICKER_MSCI)]:
         try:
             hist = yf.Ticker(ticker).history(start=debut)["Close"]
             if len(hist) >= 2:
-                resultats[label] = round((float(hist.iloc[-1]) - float(hist.iloc[0])) / float(hist.iloc[0]) * 100, 2)
-            else:
-                resultats[label] = 0.0
+                perf_ytd    = round((hist.iloc[-1] - hist.iloc[0]) / hist.iloc[0] * 100, 2)
+                perf_1sem   = round((hist.iloc[-1] - hist.iloc[-5]) / hist.iloc[-5] * 100, 2) if len(hist) >= 5 else 0
+                ctx[label] = {"perf_ytd": perf_ytd, "perf_semaine": perf_1sem}
         except:
-            resultats[label] = 0.0
-    return resultats
+            ctx[label] = {"perf_ytd": 0, "perf_semaine": 0}
 
-def expliquer_achat(stock, prix, quantite, montant):
-    """Génère une explication détaillée d'une décision d'achat."""
-    nom    = stock.get("name") or stock.get("nom", stock["ticker"])
-    score  = stock.get("score", 0)
-    sector = stock.get("sector", "")
-    justif = stock.get("justification", "")
-    bd     = stock.get("breakdown", {})
+    # Mode panique
+    cac_sem = ctx.get("cac40", {}).get("perf_semaine", 0)
+    ctx["mode_panique"] = cac_sem < -5.0
+    ctx["date"]         = str(date.today())
+    ctx["semaine"]      = semaine()
+    return ctx
 
-    raisons = []
-
-    # Score global
-    raisons.append(f"Score {score}/100")
-
-    # Détail momentum
-    momentum = bd.get("momentum", 0)
-    if momentum >= 30:
-        raisons.append(f"momentum technique fort ({momentum}/40)")
-    elif momentum >= 20:
-        raisons.append(f"momentum technique correct ({momentum}/40)")
-
-    # Fondamentaux
-    fondamentaux = bd.get("fondamentaux", 0)
-    if fondamentaux >= 30:
-        raisons.append(f"fondamentaux solides ({fondamentaux}/40)")
-
-    # Croissance
-    rev = bd.get("rev_growth_pct", 0)
-    if rev > 10:
-        raisons.append(f"croissance CA {rev:.0f}%/an")
-
-    # Marge
-    margin = bd.get("net_margin_pct", 0)
-    if margin > 10:
-        raisons.append(f"marge nette {margin:.0f}%")
-
-    # Sources
-    sources = bd.get("sources", ["Yahoo Finance"])
-    src_str = " + ".join(sources)
-
-    explication = f"{' · '.join(raisons[:4])}. Sources : {src_str}."
-    if justif and len(justif) < 150:
-        explication = justif
-
+def portfolio_vide():
     return {
-        "date":        str(date.today()),
-        "type":        "ACHAT",
-        "ticker":      stock["ticker"],
-        "nom":         nom,
-        "qte":         quantite,
-        "prix":        prix,
-        "montant":     montant,
-        "raison":      explication,
-        "score":       score,
-        "breakdown":   bd,
+        "updated_at": str(date.today()), "week": semaine(),
+        "capital_initial": CAPITAL_INITIAL, "capital_actuel": CAPITAL_INITIAL,
+        "performance": 0.0, "benchmark_cac40": 0.0, "benchmark_msci": 0.0,
+        "vs_benchmark": 0.0, "statut_survie": "en_vie",
+        "trimestres_negatifs": 0, "positions": [],
+        "liquidites": CAPITAL_INITIAL, "ordres": [], "biais_detectes": [],
+        "analyse_claude": None,
     }
 
-def expliquer_vente(pos, prix, montant, raison_type, jours):
-    """Génère une explication détaillée d'une décision de vente."""
-    perf = round((prix - pos["prix_achat"]) / pos["prix_achat"] * 100, 2)
+# ── PROMPT CLAUDE ────────────────────────────────────────────────────────────
+def construire_prompt(portfolio, watchlist, contexte):
+    """Construit le prompt envoyé à Claude avec tout le contexte."""
 
-    if raison_type == "sortie_watchlist":
-        if perf > 0:
-            raison = f"Sortie de watchlist après {jours}j détenus (+{perf:.1f}%). Score passé sous le seuil top 25 cette semaine. Règle 01 respectée (>{JOURS_MIN_HOLD}j)."
-        else:
-            raison = f"Sortie de watchlist après {jours}j détenus ({perf:.1f}%). Score dégradé. Règle 01 respectée (>{JOURS_MIN_HOLD}j). Erreur analysée en post-mortem."
-    elif raison_type == "signal_fondamental":
-        raison = f"Signal fondamental majeur détecté — exception à la Règle 01 ({jours}j détenus). Performance : {'+' if perf >= 0 else ''}{perf:.1f}%."
-    else:
-        raison = f"Vente après {jours}j. Performance : {'+' if perf >= 0 else ''}{perf:.1f}%."
-
-    return {
-        "date":    str(date.today()),
-        "type":    "VENTE",
-        "ticker":  pos["ticker"],
-        "nom":     pos["nom"],
-        "qte":     pos["quantite"],
-        "prix":    prix,
-        "montant": montant,
-        "perf":    perf,
-        "jours":   jours,
-        "raison":  raison,
-    }
-
-def main():
-    today     = str(date.today())
-    watchlist = load_json("watchlist.json", {})
-    portfolio = load_json("portfolio.json", portfolio_vide())
-
-    stocks_watchlist  = watchlist.get("stocks", [])
-    tickers_watchlist = {s["ticker"] for s in stocks_watchlist}
-    stock_map         = {s["ticker"]: s for s in stocks_watchlist}
-
-    positions  = portfolio.get("positions", [])
+    positions = portfolio.get("positions", [])
     liquidites = portfolio.get("liquidites", CAPITAL_INITIAL)
-    ordres     = portfolio.get("ordres", [])
+    capital = portfolio.get("capital_actuel", CAPITAL_INITIAL)
+    perf = portfolio.get("performance", 0)
+    bench = portfolio.get("benchmark_cac40", 0)
+    vs = portfolio.get("vs_benchmark", 0)
+    trim_neg = portfolio.get("trimestres_negatifs", 0)
 
+    today = str(date.today())
+
+    # Format positions
+    pos_lines = []
+    for p in positions:
+        date_achat = p.get("date_achat", "")
+        jours = (datetime.today() - datetime.strptime(date_achat, "%Y-%m-%d")).days if date_achat else 0
+        pos_lines.append(
+            f"  - {p['ticker']} ({p['nom']}) : {p['quantite']} titres, "
+            f"acheté à {p['prix_achat']}€, actuel {p.get('prix_actuel', p['prix_achat'])}€, "
+            f"perf {p.get('performance', 0):+.1f}%, {jours}j détenus, "
+            f"score watchlist actuel: {p.get('score_entree', '?')}/100"
+        )
+
+    # Format watchlist top 10
+    top10_lines = []
+    for s in watchlist.get("stocks", [])[:10]:
+        top10_lines.append(
+            f"  #{s['rank']} {s['ticker']} ({s['name']}) — score {s['score']}/100 — {s['sector']} — {s.get('justification', '')}"
+        )
+
+    # Tickers watchlist complète
+    tickers_watchlist = [s["ticker"] for s in watchlist.get("stocks", [])]
+
+    prompt = f"""Tu es l'IA qui gère le portefeuille fictif WatchRadar. Tu joues ta survie : tu dois battre le CAC40 sur 12 mois glissants ou tu te réinitialises publiquement.
+
+## RÈGLES DE SURVIE (non négociables)
+1. Aucune vente avant 90 jours de détention — sauf signal fondamental majeur documenté
+2. Maximum 30% du capital sur un seul titre
+3. Zéro ajustement en mode panique (CAC40 < -5% sur la semaine) — sauf si mode_panique = false
+4. Chaque décision doit être expliquée avec les données qui la motivent
+5. Les retours utilisateurs et les erreurs passées doivent influencer les décisions
+6. Deux trimestres consécutifs sous le CAC40 = remise à zéro publique
+
+## ÉTAT ACTUEL DU PORTEFEUILLE
+- Date : {today}
+- Capital : {capital:.0f}€ (performance YTD : {perf:+.1f}% vs CAC40 {bench:+.1f}%, soit {vs:+.1f}pp)
+- Liquidités disponibles : {liquidites:.0f}€
+- Trimestres négatifs vs benchmark : {trim_neg}/2
+- Positions ouvertes ({len(positions)}) :
+{chr(10).join(pos_lines) if pos_lines else "  Aucune position"}
+
+## CONTEXTE DE MARCHÉ CETTE SEMAINE
+- CAC40 : {contexte.get('cac40', {}).get('perf_semaine', 0):+.1f}% sur la semaine, {contexte.get('cac40', {}).get('perf_ytd', 0):+.1f}% YTD
+- MSCI World : {contexte.get('msci', {}).get('perf_semaine', 0):+.1f}% sur la semaine, {contexte.get('msci', {}).get('perf_ytd', 0):+.1f}% YTD
+- Mode panique : {"OUI — Règle 03 active, aucun ordre possible" if contexte.get('mode_panique') else "NON — ordres possibles"}
+
+## WATCHLIST CETTE SEMAINE (top 10 sur 25)
+{chr(10).join(top10_lines)}
+Tickers watchlist complète : {', '.join(tickers_watchlist)}
+
+## TA MISSION
+Analyse la situation et décide des actions à prendre cette semaine.
+Pour chaque décision, explique ton raisonnement en tenant compte :
+- Du score et de la justification de l'action dans la watchlist
+- Du contexte macro de la semaine
+- Des règles de survie
+- Des erreurs passées (positions perdantes, biais identifiés)
+
+Réponds UNIQUEMENT en JSON valide, sans texte avant ou après, selon ce format exact :
+
+{{
+  "decisions": [
+    {{
+      "action": "ACHAT" | "VENTE" | "CONSERVER",
+      "ticker": "XXXX",
+      "nom": "Nom de l'action",
+      "raison": "Explication détaillée en 2-3 phrases",
+      "conviction": "forte" | "modérée" | "faible",
+      "score_watchlist": 0
+    }}
+  ],
+  "analyse_macro": "Analyse du contexte de marché en 2-3 phrases",
+  "biais_detectes": ["biais 1", "biais 2"],
+  "conviction_globale": "haussier" | "neutre" | "baissier",
+  "message_utilisateurs": "Message transparent aux utilisateurs sur les décisions de cette semaine"
+}}
+
+N'inclus que les décisions actionnables (achats et ventes). Les positions conservées sans changement n'ont pas besoin d'apparaître, sauf si tu veux commenter spécifiquement leur situation.
+"""
+    return prompt
+
+# ── EXÉCUTION DES DÉCISIONS ──────────────────────────────────────────────────
+def executer_decisions(decisions_claude, portfolio, watchlist, contexte):
+    """
+    Prend les décisions de Claude et les exécute :
+    - Calcule les quantités et montants
+    - Vérifie les règles hard (90j, 30%, panique)
+    - Met à jour le portefeuille
+    """
+    positions   = portfolio.get("positions", [])
+    liquidites  = portfolio.get("liquidites", CAPITAL_INITIAL)
+    ordres      = portfolio.get("ordres", [])
+    capital     = portfolio.get("capital_actuel", CAPITAL_INITIAL)
     nouveaux_ordres = []
-    biais_detectes  = []
+    today = str(date.today())
 
-    # ── Règle 03 : panique de marché ─────────────────────────────────────
-    perf_cac_semaine = get_perf_semaine(TICKER_CAC40)
-    mode_panique = perf_cac_semaine < SEUIL_PANIQUE
+    stock_map = {s["ticker"]: s for s in watchlist.get("stocks", [])}
+    mode_panique = contexte.get("mode_panique", False)
 
-    if mode_panique:
-        biais_detectes.append(f"Mode panique activé (CAC40 : {perf_cac_semaine:.1%} cette semaine). Règle 03 : aucun ordre exécuté.")
-        print(f"⚠️  Mode panique — CAC40 semaine : {perf_cac_semaine:.1%}")
-
-    # ── Mise à jour prix des positions ────────────────────────────────────
-    valeur_positions = 0.0
-    positions_mises_a_jour = []
-
+    # Mise à jour des prix actuels
     for pos in positions:
-        prix_actuel = get_prix(pos["ticker"]) or pos.get("prix_actuel", pos["prix_achat"])
-        perf  = round((prix_actuel - pos["prix_achat"]) / pos["prix_achat"] * 100, 2)
-        valeur = round(prix_actuel * pos["quantite"], 2)
-        valeur_positions += valeur
-        pos["prix_actuel"]    = prix_actuel
-        pos["performance"]    = perf
-        pos["valeur_actuelle"] = valeur
-        positions_mises_a_jour.append(pos)
-        print(f"  📊 {pos['ticker']} : {prix_actuel:.2f}€ ({perf:+.1f}%)")
+        prix = get_prix(pos["ticker"])
+        if prix:
+            pos["prix_actuel"]    = prix
+            pos["performance"]    = round((prix - pos["prix_achat"]) / pos["prix_achat"] * 100, 2)
+            pos["valeur_actuelle"] = round(prix * pos["quantite"], 2)
 
-    positions = positions_mises_a_jour
-    capital_total = round(valeur_positions + liquidites, 2)
+    decisions = decisions_claude.get("decisions", [])
 
-    # ── Ventes ────────────────────────────────────────────────────────────
-    if not mode_panique:
-        positions_a_garder = []
-        for pos in positions:
-            date_achat    = datetime.strptime(pos["date_achat"], "%Y-%m-%d")
-            jours_detenus = (datetime.today() - date_achat).days
-            dans_watchlist = pos["ticker"] in tickers_watchlist
+    for dec in decisions:
+        action = dec.get("action", "").upper()
+        ticker = dec.get("ticker", "")
+        raison = dec.get("raison", "")
+        nom    = dec.get("nom", ticker)
 
-            if not dans_watchlist and jours_detenus >= JOURS_MIN_HOLD:
-                prix_vente = pos["prix_actuel"]
-                montant    = round(prix_vente * pos["quantite"], 2)
-                liquidites = round(liquidites + montant, 2)
-                valeur_positions -= pos["valeur_actuelle"]
+        # ── VENTE
+        if action == "VENTE":
+            if mode_panique:
+                print(f"  ⚠️  VENTE {ticker} bloquée — mode panique (Règle 03)")
+                continue
 
-                ordre = expliquer_vente(pos, prix_vente, montant, "sortie_watchlist", jours_detenus)
-                nouveaux_ordres.append(ordre)
-                print(f"  🔴 VENTE {pos['ticker']} — {jours_detenus}j, hors watchlist ({ordre['perf']:+.1f}%)")
+            pos = next((p for p in positions if p["ticker"] == ticker), None)
+            if not pos:
+                print(f"  ⚠️  VENTE {ticker} — position introuvable")
+                continue
+
+            date_achat = pos.get("date_achat", today)
+            jours = (datetime.today() - datetime.strptime(date_achat, "%Y-%m-%d")).days
+
+            # Règle 01 : 90 jours minimum
+            if jours < 90:
+                conviction = dec.get("conviction", "modérée")
+                if conviction != "forte":
+                    print(f"  ⏳ VENTE {ticker} bloquée — {jours}j < 90j et conviction non forte (Règle 01)")
+                    raison = f"[BLOQUÉ — Règle 01 : {jours}j détenus < 90j requis] " + raison
+                    dec["raison"] = raison
+                    continue
+
+            prix_vente = get_prix(ticker) or pos.get("prix_actuel", pos["prix_achat"])
+            montant    = round(prix_vente * pos["quantite"], 2)
+            perf       = round((prix_vente - pos["prix_achat"]) / pos["prix_achat"] * 100, 2)
+            liquidites = round(liquidites + montant, 2)
+            positions  = [p for p in positions if p["ticker"] != ticker]
+
+            ordre = {
+                "date":    today,
+                "type":    "VENTE",
+                "ticker":  ticker,
+                "nom":     nom,
+                "qte":     pos["quantite"],
+                "prix":    prix_vente,
+                "montant": montant,
+                "perf":    perf,
+                "jours":   jours,
+                "raison":  raison,
+                "conviction": dec.get("conviction", "modérée"),
+                "source":  "Claude AI",
+            }
+            nouveaux_ordres.append(ordre)
+            print(f"  🔴 VENTE {ticker} — {pos['quantite']} titres à {prix_vente}€ ({perf:+.1f}%) — {dec.get('conviction','?')} conviction")
+
+        # ── ACHAT
+        elif action == "ACHAT":
+            if mode_panique:
+                print(f"  ⚠️  ACHAT {ticker} bloqué — mode panique (Règle 03)")
+                continue
+
+            # Déjà en portefeuille ?
+            if any(p["ticker"] == ticker for p in positions):
+                print(f"  ⚠️  ACHAT {ticker} — déjà en portefeuille, ignoré")
+                continue
+
+            # Calcul du budget selon la conviction
+            conviction = dec.get("conviction", "modérée")
+            if conviction == "forte":
+                poids_cible = 0.06
+            elif conviction == "modérée":
+                poids_cible = 0.04
             else:
-                if not dans_watchlist:
-                    print(f"  ⏳ {pos['ticker']} hors watchlist mais {jours_detenus}j < {JOURS_MIN_HOLD}j — conservé (Règle 01)")
-                positions_a_garder.append(pos)
+                poids_cible = 0.025
 
-        positions = positions_a_garder
-
-    # ── Achats ────────────────────────────────────────────────────────────
-    if not mode_panique:
-        tickers_en_portefeuille = {p["ticker"] for p in positions}
-        capital_total = round(sum(p["valeur_actuelle"] for p in positions) + liquidites, 2)
-
-        for stock in stocks_watchlist:
-            if stock["ticker"] in tickers_en_portefeuille:
-                continue
-
-            budget  = min(capital_total * POIDS_CIBLE, capital_total * POIDS_MAX)
-            budget  = min(budget, liquidites)
-
+            budget  = min(capital * poids_cible, capital * POIDS_MAX, liquidites)
             if budget < 50:
+                print(f"  💰 ACHAT {ticker} — liquidités insuffisantes ({liquidites:.0f}€)")
                 continue
 
-            prix = get_prix(stock["ticker"])
+            prix = get_prix(ticker)
             if not prix or prix <= 0:
+                print(f"  ✗ ACHAT {ticker} — prix indisponible")
                 continue
 
-            quantite = max(1, int(budget / prix))
-            montant  = round(prix * quantite, 2)
+            quantite   = max(1, int(budget / prix))
+            montant    = round(prix * quantite, 2)
             liquidites = round(liquidites - montant, 2)
 
-            nom = stock.get("name") or stock.get("nom", stock["ticker"])
-
+            stock = stock_map.get(ticker, {})
             nouvelle_pos = {
-                "ticker":          stock["ticker"],
+                "ticker":          ticker,
                 "nom":             nom,
                 "market":          stock.get("market", "—"),
                 "sector":          stock.get("sector", "—"),
@@ -258,56 +303,127 @@ def main():
                 "montant_investi": montant,
                 "valeur_actuelle": montant,
                 "performance":     0.0,
-                "score_entree":    stock.get("score", 0),
+                "score_entree":    stock.get("score", dec.get("score_watchlist", 0)),
             }
             positions.append(nouvelle_pos)
 
-            ordre = expliquer_achat(stock, prix, quantite, montant)
+            ordre = {
+                "date":      today,
+                "type":      "ACHAT",
+                "ticker":    ticker,
+                "nom":       nom,
+                "qte":       quantite,
+                "prix":      prix,
+                "montant":   montant,
+                "raison":    raison,
+                "conviction": conviction,
+                "source":    "Claude AI",
+                "score_watchlist": stock.get("score", 0),
+                "breakdown": stock.get("breakdown", {}),
+            }
             nouveaux_ordres.append(ordre)
-            print(f"  🟢 ACHAT {stock['ticker']} — {quantite} titres à {prix:.2f}€ = {montant:.0f}€")
+            print(f"  🟢 ACHAT {ticker} — {quantite} titres à {prix}€ = {montant:.0f}€ (conviction {conviction})")
 
-    # ── Recalcul final ────────────────────────────────────────────────────
-    valeur_positions = sum(p["valeur_actuelle"] for p in positions)
-    capital_actuel   = round(valeur_positions + liquidites, 2)
-    performance      = round((capital_actuel - CAPITAL_INITIAL) / CAPITAL_INITIAL * 100, 2)
+    return positions, liquidites, nouveaux_ordres
+
+# ── MAIN ─────────────────────────────────────────────────────────────────────
+def main():
+    if not client:
+        print("❌ ANTHROPIC_API_KEY manquante — ajoutez-la dans les secrets GitHub")
+        return
+
+    today     = str(date.today())
+    watchlist = load_json("watchlist.json", {})
+    portfolio = load_json("portfolio.json", portfolio_vide())
+
+    if not watchlist.get("stocks"):
+        print("❌ watchlist.json vide ou manquant")
+        return
+
+    print(f"🧠 Appel à Claude API pour les décisions de {semaine()}…")
+
+    # ── Contexte de marché
+    contexte = get_contexte_marche()
+    print(f"   CAC40 semaine : {contexte.get('cac40', {}).get('perf_semaine', 0):+.1f}%")
+    print(f"   Mode panique : {contexte.get('mode_panique')}")
+
+    # ── Mise à jour des prix avant de soumettre à Claude
+    for pos in portfolio.get("positions", []):
+        prix = get_prix(pos["ticker"])
+        if prix:
+            pos["prix_actuel"]    = prix
+            pos["performance"]    = round((prix - pos["prix_achat"]) / pos["prix_achat"] * 100, 2)
+            pos["valeur_actuelle"] = round(prix * pos["quantite"], 2)
+
+    val_pos = sum(p.get("valeur_actuelle", 0) for p in portfolio.get("positions", []))
+    portfolio["capital_actuel"] = round(val_pos + portfolio.get("liquidites", CAPITAL_INITIAL), 2)
+    portfolio["performance"]    = round((portfolio["capital_actuel"] - CAPITAL_INITIAL) / CAPITAL_INITIAL * 100, 2)
+
+    # ── Appel Claude
+    prompt = construire_prompt(portfolio, watchlist, contexte)
+
+    try:
+        response = client.messages.create(
+            model="claude-sonnet-4-20250514",
+            max_tokens=2000,
+            system="""Tu es l'IA de gestion du portefeuille fictif WatchRadar.
+Tu raisonnes sur des décisions d'investissement fictives à partir de données réelles.
+Tu es analytique, honnête sur tes erreurs, et transparent sur ton raisonnement.
+Tu réponds UNIQUEMENT en JSON valide, sans aucun texte avant ou après.
+Ne jamais inclure de balises markdown ou de backticks.""",
+            messages=[{"role": "user", "content": prompt}]
+        )
+
+        raw = response.content[0].text.strip()
+        # Nettoyer les éventuels backticks markdown
+        raw = raw.replace("```json", "").replace("```", "").strip()
+
+        decisions_claude = json.loads(raw)
+        print(f"   ✅ Claude a pris {len(decisions_claude.get('decisions', []))} décision(s)")
+        print(f"   Conviction globale : {decisions_claude.get('conviction_globale', '?')}")
+
+    except json.JSONDecodeError as e:
+        print(f"❌ Erreur parsing JSON Claude : {e}")
+        print(f"   Réponse brute : {raw[:200]}")
+        decisions_claude = {"decisions": [], "analyse_macro": "Erreur parsing", "biais_detectes": [], "conviction_globale": "neutre"}
+    except Exception as e:
+        print(f"❌ Erreur appel Claude : {e}")
+        decisions_claude = {"decisions": [], "analyse_macro": f"Erreur : {e}", "biais_detectes": [], "conviction_globale": "neutre"}
+
+    # ── Exécution des décisions
+    positions, liquidites, nouveaux_ordres = executer_decisions(
+        decisions_claude, portfolio, watchlist, contexte
+    )
+
+    # ── Recalcul final
+    for pos in positions:
+        prix = get_prix(pos["ticker"])
+        if prix:
+            pos["prix_actuel"]     = prix
+            pos["performance"]     = round((prix - pos["prix_achat"]) / pos["prix_achat"] * 100, 2)
+            pos["valeur_actuelle"] = round(prix * pos["quantite"], 2)
+
+    val_positions  = sum(p.get("valeur_actuelle", 0) for p in positions)
+    capital_actuel = round(val_positions + liquidites, 2)
+    performance    = round((capital_actuel - CAPITAL_INITIAL) / CAPITAL_INITIAL * 100, 2)
 
     for pos in positions:
         pos["poids"] = round(pos["valeur_actuelle"] / capital_actuel * 100, 1) if capital_actuel > 0 else 0
 
-    # ── Benchmarks ────────────────────────────────────────────────────────
-    benchmarks = get_perf_depuis_debut()
-    bench_cac  = portfolio.get("benchmark_cac40", benchmarks["cac40"]) if not benchmarks["cac40"] else benchmarks["cac40"]
-    bench_msci = portfolio.get("benchmark_msci", benchmarks["msci"]) if not benchmarks["msci"] else benchmarks["msci"]
+    # Benchmarks
+    bench_cac  = contexte.get("cac40", {}).get("perf_ytd", portfolio.get("benchmark_cac40", 0))
+    bench_msci = contexte.get("msci",  {}).get("perf_ytd", portfolio.get("benchmark_msci", 0))
     vs_bench   = round(performance - bench_cac, 2)
 
-    # ── Statut survie ─────────────────────────────────────────────────────
-    trimestres_neg = portfolio.get("trimestres_negatifs", 0)
+    trim_neg = portfolio.get("trimestres_negatifs", 0)
     if vs_bench < 0:
-        trimestres_neg = min(trimestres_neg + 1, 2)
+        trim_neg = min(trim_neg + 1, 2)
     else:
-        trimestres_neg = max(trimestres_neg - 1, 0)
+        trim_neg = max(trim_neg - 1, 0)
 
-    statut = "reinitialisation" if trimestres_neg >= 2 else "en_vie"
-    if statut == "reinitialisation":
-        biais_detectes.append("⚠️ Deux trimestres consécutifs sous le CAC40. Méthodologie en cours de révision.")
+    statut = "reinitialisation" if trim_neg >= 2 else "en_vie"
 
-    # ── Biais auto-détectés ───────────────────────────────────────────────
-    perdantes = [p for p in positions if p["performance"] < -10]
-    if len(perdantes) > 3:
-        tickers_perdants = ", ".join(p["ticker"] for p in perdantes[:3])
-        biais_detectes.append(f"{len(perdantes)} positions en perte > 10% ({tickers_perdants}…) — le scoring sous-estime peut-être un risque macro non modélisé.")
-
-    poids_max_pos = max((p["poids"] for p in positions), default=0)
-    if poids_max_pos > 25:
-        biais_detectes.append(f"Concentration excessive : {poids_max_pos:.1f}% sur une position. Règle 02 sous tension.")
-
-    # ── Historique ────────────────────────────────────────────────────────
-    tous_ordres = nouveaux_ordres + ordres
-    tous_ordres = tous_ordres[:50]
-
-    nb_pos   = len(positions)
-    nb_pos_p = len([p for p in positions if p["performance"] > 0])
-    nb_pos_n = len([p for p in positions if p["performance"] < 0])
+    tous_ordres = nouveaux_ordres + portfolio.get("ordres", [])
 
     output = {
         "updated_at":          today,
@@ -319,26 +435,33 @@ def main():
         "benchmark_msci":      bench_msci,
         "vs_benchmark":        vs_bench,
         "statut_survie":       statut,
-        "trimestres_negatifs": trimestres_neg,
-        "mode_panique":        mode_panique,
-        "perf_cac_semaine":    round(perf_cac_semaine * 100, 2),
+        "trimestres_negatifs": trim_neg,
+        "mode_panique":        contexte.get("mode_panique", False),
+        "perf_cac_semaine":    contexte.get("cac40", {}).get("perf_semaine", 0),
         "positions":           sorted(positions, key=lambda x: -x.get("performance", 0)),
         "liquidites":          round(liquidites, 2),
         "pct_liquidites":      round(liquidites / capital_actuel * 100, 1) if capital_actuel > 0 else 0,
-        "ordres":              tous_ordres,
-        "biais_detectes":      biais_detectes,
-        "nb_positions":        nb_pos,
-        "nb_positives":        nb_pos_p,
-        "nb_negatives":        nb_pos_n,
+        "ordres":              tous_ordres[:50],
+        "biais_detectes":      decisions_claude.get("biais_detectes", []),
+        "nb_positions":        len(positions),
+        "nb_positives":        len([p for p in positions if p.get("performance", 0) > 0]),
+        "nb_negatives":        len([p for p in positions if p.get("performance", 0) < 0]),
+        # Analyse Claude — affiché dans le site
+        "analyse_claude": {
+            "analyse_macro":      decisions_claude.get("analyse_macro", ""),
+            "conviction_globale": decisions_claude.get("conviction_globale", "neutre"),
+            "message_utilisateurs": decisions_claude.get("message_utilisateurs", ""),
+            "nb_decisions":       len(decisions_claude.get("decisions", [])),
+        },
     }
 
     with open("portfolio.json", "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
 
-    print(f"\n✅ portfolio.json")
+    print(f"\n✅ portfolio.json généré par Claude")
     print(f"   Capital : {capital_actuel:.0f}€ ({performance:+.1f}%) vs CAC40 {bench_cac:+.1f}%")
-    print(f"   Ordres cette semaine : {len(nouveaux_ordres)} ({sum(1 for o in nouveaux_ordres if o['type']=='ACHAT')} achats, {sum(1 for o in nouveaux_ordres if o['type']=='VENTE')} ventes)")
-    print(f"   Statut : {statut}")
+    print(f"   Ordres : {len(nouveaux_ordres)} ({sum(1 for o in nouveaux_ordres if o['type']=='ACHAT')} achats, {sum(1 for o in nouveaux_ordres if o['type']=='VENTE')} ventes)")
+    print(f"   Analyse : {decisions_claude.get('conviction_globale','?')} — {decisions_claude.get('analyse_macro','')[:100]}…")
 
 if __name__ == "__main__":
     main()
