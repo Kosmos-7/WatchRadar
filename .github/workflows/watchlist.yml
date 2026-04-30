@@ -1,17 +1,13 @@
 # .github/workflows/watchlist.yml
-# Tourne chaque lundi à 8h UTC
-# 1. screener.py   → génère watchlist.json (25 meilleures actions)
-# 2. portfolio_agent.py → lit watchlist.json, ajuste le portefeuille, génère portfolio.json
-
 name: Update watchlist & portfolio
 
 on:
   schedule:
-    - cron: '0 8 * * 1'   # Chaque lundi 8h00 UTC
-  workflow_dispatch:        # Déclenchement manuel depuis GitHub
+    - cron: '0 8 * * 1'
+  workflow_dispatch:
 
 permissions:
-  contents: write           # Nécessaire pour committer les JSON
+  contents: write
 
 jobs:
   update:
@@ -31,9 +27,13 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run screener (watchlist.json)
+        env:
+          FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
         run: python screener.py
 
       - name: Run portfolio agent (portfolio.json)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python portfolio_agent.py
 
       - name: Commit JSON files
