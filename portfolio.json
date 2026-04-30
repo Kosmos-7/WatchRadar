@@ -1,0 +1,88 @@
+{
+  "updated_at": "2026-04-28",
+  "week": "Sem. 18 · 2026",
+  "capital_initial": 10000.0,
+  "capital_actuel": 11430.0,
+  "performance": 14.3,
+  "benchmark_cac40": 6.1,
+  "benchmark_msci": 8.2,
+  "vs_benchmark": 8.2,
+  "statut_survie": "en_vie",
+  "trimestres_negatifs": 0,
+  "mode_panique": false,
+  "perf_cac_semaine": 0.4,
+  "nb_positions": 5,
+  "nb_positives": 4,
+  "nb_negatives": 1,
+  "positions": [
+    {
+      "ticker": "NVDA",    "nom": "NVIDIA",           "market": "Nasdaq",   "sector": "Semi-conducteurs",
+      "date_achat": "2026-01-02", "prix_achat": 115.00, "prix_actuel": 156.20,
+      "quantite": 20, "montant_investi": 2300.0, "valeur_actuelle": 3124.0,
+      "performance": 35.8, "score_entree": 94, "poids": 27.3
+    },
+    {
+      "ticker": "MSFT",    "nom": "Microsoft",         "market": "Nasdaq",   "sector": "Cloud & IA",
+      "date_achat": "2026-01-02", "prix_achat": 400.00, "prix_actuel": 448.60,
+      "quantite": 5, "montant_investi": 2000.0, "valeur_actuelle": 2243.0,
+      "performance": 12.2, "score_entree": 83, "poids": 19.6
+    },
+    {
+      "ticker": "AIR.PA",  "nom": "Airbus",            "market": "Euronext", "sector": "Aéronautique",
+      "date_achat": "2026-01-02", "prix_achat": 155.00, "prix_actuel": 178.50,
+      "quantite": 10, "montant_investi": 1550.0, "valeur_actuelle": 1785.0,
+      "performance": 15.2, "score_entree": 75, "poids": 15.6
+    },
+    {
+      "ticker": "ASML.AS", "nom": "ASML Holding",      "market": "Euronext", "sector": "Équip. semi.",
+      "date_achat": "2026-01-02", "prix_achat": 650.00, "prix_actuel": 724.80,
+      "quantite": 3, "montant_investi": 1950.0, "valeur_actuelle": 2174.4,
+      "performance": 11.5, "score_entree": 88, "poids": 19.0
+    },
+    {
+      "ticker": "MC.PA",   "nom": "LVMH",              "market": "Euronext", "sector": "Luxe diversifié",
+      "date_achat": "2026-01-02", "prix_achat": 600.00, "prix_actuel": 542.00,
+      "quantite": 2, "montant_investi": 1200.0, "valeur_actuelle": 1084.0,
+      "performance": -9.7, "score_entree": 60, "poids": 9.5
+    }
+  ],
+  "liquidites": 1000.0,
+  "pct_liquidites": 8.7,
+  "ordres": [
+    {
+      "date": "2026-02-15", "type": "VENTE", "ticker": "SAP.DE", "nom": "SAP",
+      "qte": 10, "prix": 198.40, "montant": 1984.0,
+      "raison": "Sortie de watchlist — guidance révisée à la baisse (signal fondamental), Règle 01 exception justifiée"
+    },
+    {
+      "date": "2026-01-02", "type": "ACHAT", "ticker": "MC.PA", "nom": "LVMH",
+      "qte": 2, "prix": 600.00, "montant": 1200.0,
+      "raison": "Entrée watchlist — score 60/100 · Luxe diversifié"
+    },
+    {
+      "date": "2026-01-02", "type": "ACHAT", "ticker": "AIR.PA", "nom": "Airbus",
+      "qte": 10, "prix": 155.00, "montant": 1550.0,
+      "raison": "Entrée watchlist — score 75/100 · Aéronautique"
+    },
+    {
+      "date": "2026-01-02", "type": "ACHAT", "ticker": "ASML.AS", "nom": "ASML Holding",
+      "qte": 3, "prix": 650.00, "montant": 1950.0,
+      "raison": "Entrée watchlist — score 88/100 · Équip. semi."
+    },
+    {
+      "date": "2026-01-02", "type": "ACHAT", "ticker": "MSFT", "nom": "Microsoft",
+      "qte": 5, "prix": 400.00, "montant": 2000.0,
+      "raison": "Entrée watchlist — score 83/100 · Cloud & IA"
+    },
+    {
+      "date": "2026-01-02", "type": "ACHAT", "ticker": "NVDA", "nom": "NVIDIA",
+      "qte": 20, "prix": 115.00, "montant": 2300.0,
+      "raison": "Entrée watchlist — score 94/100 · Semi-conducteurs"
+    }
+  ],
+  "biais_detectes": [
+    "Biais de confirmation sur LVMH — données cherchées en faveur de la thèse, pas contre.",
+    "Sous-pondération systématique des valeurs à forte valorisation (NVDA) — peur irrationnelle du prix élevé.",
+    "Surconfiance dans les critères quantitatifs — le scoring ne capte pas le risque géopolitique Chine."
+  ]
+}
