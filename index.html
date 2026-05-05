@@ -895,9 +895,10 @@ function renderCard(s) {
   })();
 
   // ── Régression ──
-  const regZ   = bd.regression_z    != null ? bd.regression_z   : null;
-  const regSig = bd.regression_signal || '';
-  const regPente = bd.regression_pente_pct != null ? bd.regression_pente_pct : null;
+  const regZ      = bd.regression_z    != null ? bd.regression_z   : null;
+  const regSig    = bd.regression_signal || '';
+  const regPente  = bd.regression_pente_pct != null ? bd.regression_pente_pct : null;
+  const regWindow = bd.regression_window_years != null ? bd.regression_window_years : null;
   const mm21v  = bd.mm21  != null ? bd.mm21.toLocaleString('fr-FR', {maximumFractionDigits:2}) : null;
   const mm200v = bd.mm200 != null ? bd.mm200.toLocaleString('fr-FR', {maximumFractionDigits:2}) : null;
 
@@ -916,7 +917,8 @@ function renderCard(s) {
     };
     const c = sigColors[regSig] || sigColors['neutre'];
     const zStr = regZ >= 0 ? `+${regZ.toFixed(2)}σ` : `${regZ.toFixed(2)}σ`;
-    const penteStr = regPente != null ? ` · tendance ${regPente >= 0 ? '+' : ''}${regPente}%/an` : '';
+    const penteStr  = regPente  != null ? ` · tendance ${regPente >= 0 ? '+' : ''}${regPente}%/an` : '';
+    const windowStr = regWindow != null ? ` · base ${regWindow} ans` : '';
     return `
       <div class="reg-band">
         <div class="reg-band-header">
@@ -930,7 +932,7 @@ function renderCard(s) {
         <div class="reg-ticks">
           <span>−3σ</span><span>−2σ</span><span>−1σ</span><span style="color:var(--green)">0</span><span>+1σ</span><span>+2σ</span><span>+3σ</span>
         </div>
-        <div style="margin-top:5px;font-family:'Courier New',monospace;font-size:0.6rem;color:${c.fg}">${zStr}${penteStr}</div>
+        <div style="margin-top:5px;font-family:'Courier New',monospace;font-size:0.6rem;color:${c.fg}">${zStr}${penteStr}${windowStr}</div>
       </div>`;
   })() : '';
 

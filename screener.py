@@ -497,6 +497,7 @@ def score_ticker(ticker):
             "regression_z":          regression_z,
             "regression_signal":     reg_signal,
             "regression_pente_pct":  reg_pente,
+            "regression_window_years": 10 if yf_sector in _TECH_SECTORS else (round(len(close_reg) / 252) if len(close_reg) < _REG_DAYS_STD else 20),
             # Fondamentaux
             "rev_growth_pct":        round(rev_growth * 100, 1),
             "net_margin_pct":        round(margins * 100, 1),
