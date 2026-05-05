@@ -222,6 +222,13 @@
   .skel::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent); animation: shimmer 1.4s infinite; }
   @keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
 
+  /* ── SORT BAR ── */
+  .sort-bar { display:flex; align-items:center; gap:8px; margin-bottom:0.75rem; flex-wrap:wrap; }
+  .sort-lbl { font-family:'Courier New',monospace; font-size:0.6rem; color:var(--text3); text-transform:uppercase; letter-spacing:1px; }
+  .srt { font-family:'Courier New',monospace; font-size:0.62rem; padding:3px 10px; border-radius:100px; border:1px solid var(--border); background:var(--surface); color:var(--text3); cursor:pointer; transition:all 0.15s; }
+  .srt:hover { color:var(--text2); border-color:var(--border2); background:var(--surface2); }
+  .srt.active { color:var(--text); background:var(--surface2); border-color:var(--border2); }
+
   /* ── HOW IT WORKS ── */
   .how { margin-top: 3.5rem; padding-top: 2rem; border-top: 1px solid var(--border); }
   .how h2 { font-family: Georgia, serif; font-size: 1.05rem; font-weight: normal; color: var(--text2); margin-bottom: 1.25rem; }
@@ -332,6 +339,13 @@
     <button class="fbtn f-zone" onclick="setFilter('zone','surachat',this)">Surachat</button>
     <button class="fbtn f-zone" onclick="setFilter('zone','survente',this)">Survente</button>
     <span class="filter-count" id="filter-count"></span>
+  </div>
+
+  <div class="sort-bar" id="sort-bar" style="display:none">
+    <span class="sort-lbl">Trier</span>
+    <button class="srt active" onclick="setSort('score',this)">Score global</button>
+    <button class="srt" onclick="setSort('fondamentaux',this)">Fondamentaux</button>
+    <button class="srt" onclick="setSort('momentum',this)">Momentum</button>
   </div>
 
   <div class="list-header">
@@ -476,6 +490,14 @@
 <script>
 let allStocks = [];
 let activeFilters = { regime: 'all', zone: 'all' };
+let currentSort = 'score';
+
+function setSort(field, btn) {
+  currentSort = field;
+  document.querySelectorAll('.srt').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
 
 function setFilter(type, value, btn) {
   activeFilters[type] = value;
@@ -498,8 +520,13 @@ function applyFilters() {
   if (activeFilters.zone !== 'all') {
     filtered = filtered.filter(s => (s.breakdown || {}).regression_signal === activeFilters.zone);
   }
-  const top  = filtered.filter(s => s.rank <= 10);
-  const rest = filtered.filter(s => s.rank > 10);
+  filtered = [...filtered].sort((a, b) => {
+    if (currentSort === 'fondamentaux') return (b.breakdown?.fondamentaux||0) - (a.breakdown?.fondamentaux||0);
+    if (currentSort === 'momentum')     return (b.breakdown?.momentum||0) - (a.breakdown?.momentum||0);
+    return b.score - a.score;
+  });
+  const top  = filtered.slice(0, 10);
+  const rest = filtered.slice(10);
   const empty = '<div style="padding:1.5rem 0;color:var(--text3);font-size:0.82rem;font-family:\'Courier New\',monospace">Aucune action ne correspond aux filtres.</div>';
   document.getElementById('stocks-top').innerHTML    = top.length  ? top.map(renderCard).join('')  : empty;
   document.getElementById('stocks-bottom').innerHTML = rest.length ? rest.map(renderCard).join('') : '';
@@ -766,6 +793,7 @@ async function loadWatchlist() {
 
     allStocks = stocks;
     document.getElementById('filter-bar').style.display = 'flex';
+    document.getElementById('sort-bar').style.display = 'flex';
     applyFilters();
     document.getElementById('show-more-wrap').style.display = 'block';
 

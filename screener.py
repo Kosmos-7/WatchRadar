@@ -13,9 +13,11 @@ Momentum     (40 pts) = Croisement MM21/MM200 (20 pts, fraîcheur + volume)
                        + RSI (10 pts, gradué : zone 40-60 = 10, 35-65 = 5)
                        + Volume (5 pts)
                        + Régression log-linéaire (5 pts)
-Fondamentaux (50 pts) = Rev. growth (15) + Marges nettes (10)
+Fondamentaux (50 pts) = Rev. growth (15) + Marges nettes (10) + FCF margin (5)
                        + PEG ratio (15) + EPS growth (5) + Dette (5)
+                       [FCF complémentaire : +5 si >15%, +3 si >5% — cap 50 pts]
 Analystes    (10 pts) = Reco consensus (signal lagging, réduit vs momentum)
+Pénalité     Death Cross récent ≤30j : −5 pts | ≤60j : −3 pts
 
 Croisement MM21/MM200 — études de référence :
   Win rate moyen après Golden Cross : 66.7 % (S&P 500, 20 ans)
@@ -495,8 +497,11 @@ def score_ticker(ticker):
         details["reg_z"]               = regression_z
         details["reg_signal"]          = reg_signal
 
-        # Fondamentaux (50 pts)
+        # Fondamentaux (50 pts, cap strict)
         earnings_growth = info.get("earningsGrowth") or 0
+        fcf        = info.get("freeCashflow")  or 0
+        total_rev  = info.get("totalRevenue")  or 1
+        fcf_margin = fcf / total_rev if total_rev > 0 else 0
         fund_pts = 0
         # Revenue growth (0-15 pts)
         if rev_growth > 0.10:   fund_pts += 15
@@ -504,6 +509,9 @@ def score_ticker(ticker):
         # Marges nettes (0-10 pts)
         if margins > 0.10:      fund_pts += 10
         elif margins > 0:       fund_pts += 5
+        # Free Cash Flow margin (0-5 pts, complémentaire aux marges)
+        if fcf_margin > 0.15:   fund_pts += 5
+        elif fcf_margin > 0.05: fund_pts += 3
         # PEG ratio (0-15 pts) — sous-valorisation relative à la croissance
         if   0 < peg < 1:       fund_pts += 15
         elif 0 < peg < 2:       fund_pts += 10
@@ -533,6 +541,14 @@ def score_ticker(ticker):
             score = min(score + 3, 100)
 
         score = round(score * confiance)
+
+        # Pénalité Death Cross récent — signal baissier actif non compensable
+        death_pen = 0
+        if cross_info["regime"] == "death":
+            dc_days = cross_info["days_since_cross"]
+            if   dc_days <= 30: death_pen = -5
+            elif dc_days <= 60: death_pen = -3
+        score = max(0, score + death_pen)
         stars = 5 if score >= 80 else 4 if score >= 65 else 3 if score >= 50 else 2
 
         exchange = info.get("exchange", "")
@@ -576,6 +592,8 @@ def score_ticker(ticker):
             # Fondamentaux
             "rev_growth_pct":        round(rev_growth * 100, 1),
             "net_margin_pct":        round(margins * 100, 1),
+            "fcf_margin_pct":        round(fcf_margin * 100, 1),
+            "death_pen":             death_pen,
             "confiance":             round(confiance, 2),
             "sources":               ["Yahoo Finance"] + (["Finnhub"] if fh_data else []),
             **({"news_alert": news_alert} if news_alert else {}),
@@ -601,6 +619,39 @@ def score_ticker(ticker):
         return None
 
 # ── CHANGELOG ────────────────────────────────────────────────────────────────
+def raison_sortie(prev_stock):
+    """Génère une raison de sortie spécifique à partir du breakdown de la semaine précédente."""
+    bd    = prev_stock.get("breakdown", {})
+    score = prev_stock.get("score", 0)
+    parts = []
+
+    regime = bd.get("cross_regime", "")
+    days   = bd.get("cross_days_ago", 999)
+    if regime == "death":
+        tag = f"récent ({days}j)" if days <= 60 else "confirmé"
+        parts.append(f"Death Cross {tag}")
+
+    mo = bd.get("momentum", 0)
+    if mo < 15:
+        parts.append(f"momentum faible ({mo}/40)")
+
+    fund = bd.get("fondamentaux", 0)
+    if fund < 20:
+        parts.append(f"fondamentaux insuffisants ({fund}/50)")
+
+    reg = bd.get("regression_signal", "")
+    if reg == "surachat":
+        z = bd.get("regression_z", 0)
+        parts.append(f"cours en surachat régression (+{z:.1f}σ)")
+
+    rsi_v = bd.get("rsi", 50)
+    if rsi_v > 70:
+        parts.append(f"RSI surachat ({rsi_v:.0f})")
+
+    if not parts:
+        return f"Score {score}/100 — insuffisant pour rester dans le top 25 cette semaine."
+    return f"Score {score}/100 — " + ", ".join(parts) + "."
+
 def load_previous(path="watchlist.json"):
     try:
         with open(path, encoding="utf-8") as f:
@@ -665,7 +716,7 @@ def main():
         changelog.append({"action":"in","ticker":s["ticker"],"name":s["name"],"score":s["score"],"reason":s["justification"]})
     for t in sorties[:5]:
         prev = previous[t]
-        changelog.append({"action":"out","ticker":t,"name":prev.get("name",t),"score":prev.get("score",0),"reason":"Score insuffisant pour rester dans le top 25 cette semaine."})
+        changelog.append({"action":"out","ticker":t,"name":prev.get("name",t),"score":prev.get("score",0),"reason":raison_sortie(prev)})
 
     for i, s in enumerate(top25):
         s["rank"] = i + 1

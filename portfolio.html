@@ -166,6 +166,10 @@
   .bias-item { font-size: 0.79rem; color: var(--text2); line-height: 1.65; padding: 4px 0; display: flex; gap: 8px; }
   .bias-item::before { content: '→'; color: var(--orange); flex-shrink: 0; }
 
+  /* ── SHOW MORE ── */
+  .btn-show { background:transparent; border:1px solid var(--border2); border-radius:100px; padding:0.5rem 1.5rem; font-size:0.8rem; color:var(--text2); cursor:pointer; transition:all 0.18s; font-family:inherit; }
+  .btn-show:hover { border-color:var(--gold); color:var(--gold); box-shadow:0 0 20px rgba(232,168,32,0.12); }
+
   /* ── DISCLAIMER ── */
   .disclaimer { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; font-size: 0.75rem; color: var(--text3); line-height: 1.65; }
 
@@ -290,6 +294,7 @@
 
   <div style="margin-bottom:1.75rem">
     <div class="sec-label">Journal des ordres · Cliquez pour le détail</div>
+    <div id="orders-stats"></div>
     <div id="orders-list"></div>
   </div>
 
@@ -387,6 +392,16 @@ function orderTypeClass(t) {
 }
 
 function renderOrder(o, idx) {
+  const isVente = o.type === 'VENTE';
+  const perfBadge = isVente && o.perf != null
+    ? `<span class="perf-badge ${o.perf >= 0 ? 'perf-up' : 'perf-dn'}" style="font-size:0.63rem">${sign(o.perf)}${fmt(o.perf,1)} %</span>`
+    : '';
+  const scoreBadge = o.type === 'ACHAT' && o.score_watchlist
+    ? `<span style="font-family:'Courier New',monospace;font-size:0.62rem;color:var(--text3);background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:1px 6px">score ${o.score_watchlist}</span>`
+    : '';
+  const joursInfo = isVente && o.jours != null
+    ? `<span style="font-family:'Courier New',monospace;font-size:0.62rem;color:var(--text3)">${o.jours}j</span>`
+    : '';
   return `
     <div class="order-card">
       <div class="order-header" onclick="toggleOrder(${idx})">
@@ -394,6 +409,8 @@ function renderOrder(o, idx) {
         <div class="order-type ${orderTypeClass(o.type)}">${o.type}</div>
         <div class="order-name">${o.nom}</div>
         <div class="order-right">
+          ${joursInfo}
+          ${perfBadge}${scoreBadge}
           <div class="order-amount">${o.montant > 0 ? fmtEur(o.montant) : '—'}</div>
           <div class="expand-hint">↓</div>
         </div>
@@ -409,6 +426,11 @@ function renderOrder(o, idx) {
 function toggleOrder(idx) {
   const el = document.getElementById('order-' + idx);
   if (el) el.classList.toggle('open');
+}
+
+function showAllOrdres() {
+  const all = window._allOrdres || [];
+  document.getElementById('orders-list').innerHTML = all.map((o, i) => renderOrder(o, i)).join('');
 }
 
 async function loadPortfolio() {
@@ -541,9 +563,41 @@ async function loadPortfolio() {
         <span><span class="liq-value">${fmtEur(d.liquidites)}</span><span class="liq-pct">${fmt(d.pct_liquidites,1)} %</span></span>
       </div>`;
 
-    // Ordres
-    const ordres = (d.ordres || []).slice(0, 15);
-    document.getElementById('orders-list').innerHTML = ordres.map((o, i) => renderOrder(o, i)).join('');
+    // Ordres — stats P&L réalisé
+    const allOrdres = d.ordres || [];
+    const ventes = allOrdres.filter(o => o.type === 'VENTE' && o.perf != null);
+    if (ventes.length > 0) {
+      const wins    = ventes.filter(o => o.perf > 0).length;
+      const winRate = Math.round(wins / ventes.length * 100);
+      const avgPerf = ventes.reduce((s, o) => s + o.perf, 0) / ventes.length;
+      const pnlEur  = ventes.reduce((s, o) => s + (o.montant * o.perf / 100), 0);
+      const statsEl = document.getElementById('orders-stats');
+      if (statsEl) statsEl.innerHTML = `
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:0.75rem">
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:0.6rem 0.9rem;min-width:100px">
+            <div style="font-family:'Courier New',monospace;font-size:0.58rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">Trades clôturés</div>
+            <div style="font-family:Georgia,serif;font-size:1.1rem">${ventes.length}</div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:0.6rem 0.9rem;min-width:100px">
+            <div style="font-family:'Courier New',monospace;font-size:0.58rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">Win rate</div>
+            <div style="font-family:Georgia,serif;font-size:1.1rem;color:${winRate>=50?'var(--green)':'var(--red)'}">${winRate} %</div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:0.6rem 0.9rem;min-width:100px">
+            <div style="font-family:'Courier New',monospace;font-size:0.58rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">Perf. moy.</div>
+            <div style="font-family:Georgia,serif;font-size:1.1rem;color:${avgPerf>=0?'var(--green)':'var(--red)'}">${sign(avgPerf)}${fmt(avgPerf,1)} %</div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:0.6rem 0.9rem;min-width:100px">
+            <div style="font-family:'Courier New',monospace;font-size:0.58rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">P&L réalisé</div>
+            <div style="font-family:Georgia,serif;font-size:1.1rem;color:${pnlEur>=0?'var(--green)':'var(--red)'}">${sign(pnlEur)}${fmtEur(Math.abs(pnlEur))}</div>
+          </div>
+        </div>`;
+    }
+    const shown = allOrdres.slice(0, 20);
+    const hasMore = allOrdres.length > 20;
+    document.getElementById('orders-list').innerHTML =
+      shown.map((o, i) => renderOrder(o, i)).join('') +
+      (hasMore ? `<div style="text-align:center;padding:1rem 0"><button class="btn-show" onclick="showAllOrdres()">Voir les ${allOrdres.length - 20} suivants ↓</button></div>` : '');
+    window._allOrdres = allOrdres;
 
     // Analyse Claude
     const ac = d.analyse_claude;
