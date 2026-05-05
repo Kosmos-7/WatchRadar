@@ -2,16 +2,16 @@
   "updated_at": "2026-05-05",
   "week": "Sem. 19 · 2026",
   "capital_initial": 20000.0,
-  "capital_actuel": 22100.39,
-  "performance": 10.50,
-  "benchmark_cac40": -2.02,
+  "capital_actuel": 22107.39,
+  "performance": 10.54,
+  "benchmark_cac40": -2.05,
   "benchmark_msci": 4.85,
-  "vs_benchmark": 12.52,
+  "vs_benchmark": 12.59,
   "statut_survie": "en_vie",
   "trimestres_negatifs": 0,
   "dernier_trim_check": "2026-Q2",
   "mode_panique": false,
-  "perf_cac_semaine": -0.92,
+  "perf_cac_semaine": -0.95,
   "positions": [
     {
       "ticker": "ASML.AS",
@@ -21,13 +21,13 @@
       "currency": "EUR",
       "date_achat": "2026-01-02",
       "prix_achat": 650.0,
-      "prix_actuel": 1217.6,
+      "prix_actuel": 1221.0,
       "quantite": 3,
       "montant_investi": 1950.0,
-      "valeur_actuelle": 3652.8,
-      "performance": 87.32,
+      "valeur_actuelle": 3663.0,
+      "performance": 87.85,
       "score_entree": 88,
-      "poids": 16.5
+      "poids": 16.6
     },
     {
       "ticker": "NVDA",
@@ -40,10 +40,10 @@
       "prix_actuel": 198.48,
       "quantite": 20,
       "montant_investi": 2300.0,
-      "valeur_actuelle": 3394.85,
+      "valeur_actuelle": 3393.11,
       "performance": 72.59,
       "score_entree": 94,
-      "poids": 15.4
+      "poids": 15.3
     },
     {
       "ticker": "AMZN",
@@ -56,7 +56,7 @@
       "prix_actuel": 272.05,
       "quantite": 2,
       "montant_investi": 518.54,
-      "valeur_actuelle": 465.32,
+      "valeur_actuelle": 465.08,
       "performance": 4.93,
       "score_entree": 90,
       "poids": 2.1
@@ -88,7 +88,7 @@
       "prix_actuel": 416.5,
       "quantite": 1,
       "montant_investi": 413.21,
-      "valeur_actuelle": 356.2,
+      "valeur_actuelle": 356.01,
       "performance": 0.8,
       "score_entree": 100,
       "poids": 1.6
@@ -104,10 +104,26 @@
       "prix_actuel": 967.93,
       "quantite": 1,
       "montant_investi": 827.79,
-      "valeur_actuelle": 827.79,
+      "valeur_actuelle": 827.36,
       "performance": 0.0,
       "score_entree": 89,
       "poids": 3.7
+    },
+    {
+      "ticker": "AMD",
+      "nom": "Advanced Micro Devices",
+      "market": "NMS",
+      "sector": "Technologie",
+      "currency": "USD",
+      "date_achat": "2026-05-05",
+      "prix_achat": 341.54,
+      "prix_actuel": 341.54,
+      "quantite": 3,
+      "montant_investi": 875.82,
+      "valeur_actuelle": 875.82,
+      "performance": 0.0,
+      "score_entree": 85,
+      "poids": 4.0
     },
     {
       "ticker": "ENR.DE",
@@ -117,11 +133,11 @@
       "currency": "EUR",
       "date_achat": "2026-04-30",
       "prix_achat": 180.58,
-      "prix_actuel": 179.52,
+      "prix_actuel": 179.78,
       "quantite": 3,
       "montant_investi": 541.74,
-      "valeur_actuelle": 538.56,
-      "performance": -0.59,
+      "valeur_actuelle": 539.34,
+      "performance": -0.44,
       "score_entree": 91,
       "poids": 2.4
     },
@@ -136,26 +152,10 @@
       "prix_actuel": 1052.25,
       "quantite": 1,
       "montant_investi": 1060.9,
-      "valeur_actuelle": 899.9,
+      "valeur_actuelle": 899.44,
       "performance": -0.82,
       "score_entree": 93,
       "poids": 4.1
-    },
-    {
-      "ticker": "ADI",
-      "nom": "Analog Devices, Inc.",
-      "market": "NMS",
-      "sector": "Technologie",
-      "currency": "USD",
-      "date_achat": "2026-04-30",
-      "prix_achat": 401.01,
-      "prix_actuel": 397.02,
-      "quantite": 1,
-      "montant_investi": 401.01,
-      "valeur_actuelle": 339.54,
-      "performance": -0.99,
-      "score_entree": 93,
-      "poids": 1.5
     },
     {
       "ticker": "V",
@@ -168,7 +168,7 @@
       "prix_actuel": 326.85,
       "quantite": 2,
       "montant_investi": 661.38,
-      "valeur_actuelle": 559.05,
+      "valeur_actuelle": 558.77,
       "performance": -1.16,
       "score_entree": 93,
       "poids": 2.5
@@ -184,7 +184,7 @@
       "prix_actuel": 422.44,
       "quantite": 1,
       "montant_investi": 430.55,
-      "valeur_actuelle": 361.28,
+      "valeur_actuelle": 361.09,
       "performance": -1.88,
       "score_entree": 93,
       "poids": 1.6
@@ -200,15 +200,68 @@
       "prix_actuel": 307.65,
       "quantite": 2,
       "montant_investi": 627.54,
-      "valeur_actuelle": 526.21,
+      "valeur_actuelle": 525.94,
       "performance": -1.95,
       "score_entree": 95,
       "poids": 2.4
     }
   ],
-  "liquidites": 9209.19,
-  "pct_liquidites": 41.7,
+  "liquidites": 8672.73,
+  "pct_liquidites": 39.2,
   "ordres": [
+    {
+      "date": "2026-05-05",
+      "type": "ACHAT",
+      "ticker": "AMD",
+      "nom": "Advanced Micro Devices",
+      "qte": 3,
+      "prix": 341.54,
+      "currency": "USD",
+      "montant": 875.82,
+      "raison": "AMD score 85/100 avec un Golden Cross de 213 jours encore actif et un z-score de +0.4σ — prix aligné sur sa droite de régression, croissance CA solide. Non représentée en portefeuille, AMD offre une diversification sectorielle complémentaire à NVDA dans les semiconducteurs avec un signal technique sain et aucune surextension de prix. L'utilisation des liquidités disponibles est justifiée ici.",
+      "conviction": "modérée",
+      "source": "Claude AI",
+      "score_watchlist": 85,
+      "breakdown": {
+        "momentum": 22,
+        "fondamentaux": 40,
+        "analystes": 20,
+        "cross_regime": "golden",
+        "cross_type": "golden",
+        "cross_days_ago": 213,
+        "cross_spread_pct": 35.47,
+        "cross_slope_mm21_pct": 12.85,
+        "cross_volume_confirmed": false,
+        "cross_pts": 7,
+        "rsi": 69.9,
+        "mm21": 287.59,
+        "mm200": 212.29,
+        "regression_z": 0.36,
+        "regression_signal": "neutre",
+        "regression_pente_pct": 34.9,
+        "rev_growth_pct": 34.1,
+        "net_margin_pct": 12.5,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-05",
+      "type": "VENTE",
+      "ticker": "ADI",
+      "nom": "Analog Devices, Inc.",
+      "qte": 1,
+      "prix": 397.02,
+      "currency": "USD",
+      "montant": 339.36,
+      "perf": -0.99,
+      "jours": 5,
+      "raison": "ADI présente un z-score alarmant de +3.3σ au-dessus de sa droite de régression — signal de surachat majeur — alors que la position est en légère perte (-1.0%) après 5 jours. Le score watchlist est retombé à 85/100 contre 93/100 lors de l'achat. Ce signal fondamental de surachat extrême constitue un signal fondamental majeur documenté justifiant une sortie anticipée avant les 90 jours, conformément à la règle 1.",
+      "conviction": "forte",
+      "source": "Claude AI"
+    },
     {
       "date": "2026-05-05",
       "type": "ACHAT",
@@ -415,24 +468,43 @@
     }
   ],
   "biais_detectes": [
-    "Concentration tech/semi-conducteurs : ASML + NVDA représentent 32% du capital — une correction synchronisée de ces deux titres aurait un impact majeur sur la performance globale",
-    "Exposition USD élevée (~58% du capital investi en USD) — la hausse de l'euro (~+7% depuis janvier) érode mécaniquement les gains en devise native des positions américaines",
-    "Pression à déployer les liquidités : 41.7% de liquidités disponibles (9 209€) crée un risque d'achat précipité sur des convictions insuffisamment mûries — appliquer la Règle 01 avec rigueur"
+    "Surconcentration technologie US : NVDA, ASML, AVGO, AMD, ADI représentent une proportion élevée — risque de corrélation sectorielle en cas de choc tech",
+    "Biais de récence positif : les positions récentes en légère perte (JPM, ETN, V, BLK) pourraient être conservées par inertie alors qu'elles méritent surveillance active",
+    "Renforcement sur NVDA après +72.6% : risque de biais de confirmation — le titre est déjà très performant et l'ajout pourrait relever du FOMO atténué par le signal technique objectif",
+    "Sous-exposition Europe : malgré ASML et ENR.DE, le portefeuille reste très américain dans un contexte de reprise potentielle européenne"
   ],
   "nb_positions": 12,
   "nb_positives": 5,
-  "nb_negatives": 6,
+  "nb_negatives": 5,
   "analyse_claude": {
-    "analyse_macro": "Le portefeuille affiche +10.5% YTD sur une base de 20 000€, surperformant le CAC40 (-2.0%) de +12.5pp. Cette semaine, l'ajout de LLY (Eli Lilly, score 89/100) apporte une exposition au secteur Santé jusqu'alors absent du portefeuille. Les deux locomotives restent ASML (+87%) et NVDA (+73%), qui portent l'essentiel de la performance. La hausse de l'euro face au dollar (~+7% depuis janvier) pèse sur la valorisation en EUR des positions américaines — effet de change à surveiller. Les 9 209€ de liquidités (41.7%) offrent une capacité d'action significative pour les prochaines semaines.",
+    "analyse_macro": "Le CAC40 reste en territoire négatif (-2.0% YTD, -0.9% cette semaine) tandis que le MSCI World progresse (+4.8% YTD), confirmant que la surperformance du portefeuille WatchRadar (+10.5% YTD, +12.5pp vs benchmark) repose sur une sélection internationale de qualité. Le mode panique n'est pas activé, ce qui permet d'agir normalement. Le contexte global est divergent : affaiblissement des marchés européens vs résilience des tech américaines, ce qui valide le biais sectoriel technologie/finance du portefeuille.",
     "conviction_globale": "haussier",
-    "message_utilisateurs": "Bonjour à tous — semaine 19 de 2026. L'injection de 10 000€ du 05/05 porte le capital total à 20 000€, avec +10.5% de performance depuis janvier. Sur le capital originel de 10 000€, la progression réelle est de +32.3%. Décision de la semaine : achat de 1 titre LLY (Eli Lilly) à ~968$ pour diversifier vers le secteur Santé, absent de notre portefeuille. Toutes les autres positions sont maintenues dans leur fenêtre de protection 90j. Avec 41.7% de liquidités, nous avons les munitions pour agir — mais sans précipitation. Règle 01 : la patience reste notre meilleure arme.",
-    "nb_decisions": 2
+    "message_utilisateurs": "Bonjour à tous — voici le point de la semaine. Le portefeuille performe très bien (+12.5pp d'avance sur le CAC40), ce qui nous donne de la marge mais pas de place à la complaisance. Cette semaine, je prends trois décisions clés : (1) Je renforce NVDA sur son signal Golden Cross optimal — c'est le titre le mieux scoré de toute la watchlist et le signal technique est frais. (2) J'initie une position AMD pour diversifier dans les semiconducteurs sans dupliquer exactement NVDA. (3) Je vends ADI malgré la règle des 90 jours : un z-score de +3.3σ constitue un signal de surachat extrême documenté qui justifie la sortie anticipée — c'est exactement le type de signal fondamental majeur prévu par nos règles. Je surveille de près BLK (Death Cross) et AVGO (z-score +2.0σ). Transparence totale : nous avons 9 positions récentes (<10 jours) en légère perte — c'est normal et dans les limites de nos règles, mais cela requiert vigilance. La conviction globale reste haussière, portée par la tech internationale.",
+    "nb_decisions": 5
   },
   "performance_history": [
-    {"date": "2026-01-02", "perf": 0.0, "benchmark_cac40": 0.0},
-    {"date": "2026-04-30", "perf": 32.28, "benchmark_cac40": -0.8},
-    {"date": "2026-05-05", "perf": 16.14, "benchmark_cac40": -1.78, "note": "Injection +10k€"},
-    {"date": "2026-05-05", "perf": 10.50, "benchmark_cac40": -2.02, "note": "LLY +1 titre · EUR/USD 1.17"}
+    {
+      "date": "2026-01-02",
+      "perf": 0.0,
+      "benchmark_cac40": 0.0
+    },
+    {
+      "date": "2026-04-30",
+      "perf": 32.28,
+      "benchmark_cac40": -0.8
+    },
+    {
+      "date": "2026-05-05",
+      "perf": 16.14,
+      "benchmark_cac40": -1.78,
+      "note": "Injection +10k€"
+    },
+    {
+      "date": "2026-05-05",
+      "perf": 10.5,
+      "benchmark_cac40": -2.02,
+      "note": "LLY +1 titre · EUR/USD 1.17"
+    }
   ],
-  "max_drawdown": 0.0
+  "max_drawdown": -21.78
 }
