@@ -2,16 +2,16 @@
   "updated_at": "2026-05-05",
   "week": "Sem. 19 · 2026",
   "capital_initial": 20000.0,
-  "capital_actuel": 22107.39,
-  "performance": 10.54,
-  "benchmark_cac40": -2.05,
+  "capital_actuel": 22109.08,
+  "performance": 10.55,
+  "benchmark_cac40": -2.04,
   "benchmark_msci": 4.85,
   "vs_benchmark": 12.59,
   "statut_survie": "en_vie",
   "trimestres_negatifs": 0,
   "dernier_trim_check": "2026-Q2",
   "mode_panique": false,
-  "perf_cac_semaine": -0.95,
+  "perf_cac_semaine": -0.94,
   "positions": [
     {
       "ticker": "ASML.AS",
@@ -21,11 +21,11 @@
       "currency": "EUR",
       "date_achat": "2026-01-02",
       "prix_achat": 650.0,
-      "prix_actuel": 1221.0,
+      "prix_actuel": 1220.4,
       "quantite": 3,
       "montant_investi": 1950.0,
-      "valeur_actuelle": 3663.0,
-      "performance": 87.85,
+      "valeur_actuelle": 3661.2,
+      "performance": 87.75,
       "score_entree": 88,
       "poids": 16.6
     },
@@ -40,10 +40,10 @@
       "prix_actuel": 198.48,
       "quantite": 20,
       "montant_investi": 2300.0,
-      "valeur_actuelle": 3393.11,
+      "valeur_actuelle": 3394.85,
       "performance": 72.59,
       "score_entree": 94,
-      "poids": 15.3
+      "poids": 15.4
     },
     {
       "ticker": "AMZN",
@@ -56,7 +56,7 @@
       "prix_actuel": 272.05,
       "quantite": 2,
       "montant_investi": 518.54,
-      "valeur_actuelle": 465.08,
+      "valeur_actuelle": 465.32,
       "performance": 4.93,
       "score_entree": 90,
       "poids": 2.1
@@ -69,11 +69,11 @@
       "currency": "EUR",
       "date_achat": "2026-04-30",
       "prix_achat": 958.5,
-      "prix_actuel": 969.7,
+      "prix_actuel": 968.7,
       "quantite": 1,
       "montant_investi": 958.5,
-      "valeur_actuelle": 969.7,
-      "performance": 1.17,
+      "valeur_actuelle": 968.7,
+      "performance": 1.06,
       "score_entree": 93,
       "poids": 4.4
     },
@@ -88,7 +88,7 @@
       "prix_actuel": 416.5,
       "quantite": 1,
       "montant_investi": 413.21,
-      "valeur_actuelle": 356.01,
+      "valeur_actuelle": 356.2,
       "performance": 0.8,
       "score_entree": 100,
       "poids": 1.6
@@ -104,7 +104,7 @@
       "prix_actuel": 967.93,
       "quantite": 1,
       "montant_investi": 827.79,
-      "valeur_actuelle": 827.36,
+      "valeur_actuelle": 827.79,
       "performance": 0.0,
       "score_entree": 89,
       "poids": 3.7
@@ -120,7 +120,7 @@
       "prix_actuel": 341.54,
       "quantite": 3,
       "montant_investi": 875.82,
-      "valeur_actuelle": 875.82,
+      "valeur_actuelle": 876.27,
       "performance": 0.0,
       "score_entree": 85,
       "poids": 4.0
@@ -133,11 +133,11 @@
       "currency": "EUR",
       "date_achat": "2026-04-30",
       "prix_achat": 180.58,
-      "prix_actuel": 179.78,
+      "prix_actuel": 179.86,
       "quantite": 3,
       "montant_investi": 541.74,
-      "valeur_actuelle": 539.34,
-      "performance": -0.44,
+      "valeur_actuelle": 539.58,
+      "performance": -0.4,
       "score_entree": 91,
       "poids": 2.4
     },
@@ -152,7 +152,7 @@
       "prix_actuel": 1052.25,
       "quantite": 1,
       "montant_investi": 1060.9,
-      "valeur_actuelle": 899.44,
+      "valeur_actuelle": 899.9,
       "performance": -0.82,
       "score_entree": 93,
       "poids": 4.1
@@ -168,7 +168,7 @@
       "prix_actuel": 326.85,
       "quantite": 2,
       "montant_investi": 661.38,
-      "valeur_actuelle": 558.77,
+      "valeur_actuelle": 559.05,
       "performance": -1.16,
       "score_entree": 93,
       "poids": 2.5
@@ -184,7 +184,7 @@
       "prix_actuel": 422.44,
       "quantite": 1,
       "montant_investi": 430.55,
-      "valeur_actuelle": 361.09,
+      "valeur_actuelle": 361.28,
       "performance": -1.88,
       "score_entree": 93,
       "poids": 1.6
@@ -200,7 +200,7 @@
       "prix_actuel": 307.65,
       "quantite": 2,
       "montant_investi": 627.54,
-      "valeur_actuelle": 525.94,
+      "valeur_actuelle": 526.21,
       "performance": -1.95,
       "score_entree": 95,
       "poids": 2.4
@@ -468,19 +468,18 @@
     }
   ],
   "biais_detectes": [
-    "Surconcentration technologie US : NVDA, ASML, AVGO, AMD, ADI représentent une proportion élevée — risque de corrélation sectorielle en cas de choc tech",
-    "Biais de récence positif : les positions récentes en légère perte (JPM, ETN, V, BLK) pourraient être conservées par inertie alors qu'elles méritent surveillance active",
-    "Renforcement sur NVDA après +72.6% : risque de biais de confirmation — le titre est déjà très performant et l'ajout pourrait relever du FOMO atténué par le signal technique objectif",
-    "Sous-exposition Europe : malgré ASML et ENR.DE, le portefeuille reste très américain dans un contexte de reprise potentielle européenne"
+    "Biais de récence : les positions à -1.9% (JPM, ETN) pourraient inciter à vendre prématurément après seulement 5 jours — la règle des 90 jours protège contre ce biais",
+    "Surpondération technologie : NVDA, ASML, AMZN, AVGO, AMD représentent une concentration sectorielle élevée — le renforcement NVDA accentue cette concentration",
+    "Biais de confirmation : les scores watchlist élevés sur nos positions existantes peuvent créer un excès de confiance — surveiller les signaux contraires comme le Death Cross de BLK"
   ],
   "nb_positions": 12,
   "nb_positives": 5,
   "nb_negatives": 5,
   "analyse_claude": {
-    "analyse_macro": "Le CAC40 reste en territoire négatif (-2.0% YTD, -0.9% cette semaine) tandis que le MSCI World progresse (+4.8% YTD), confirmant que la surperformance du portefeuille WatchRadar (+10.5% YTD, +12.5pp vs benchmark) repose sur une sélection internationale de qualité. Le mode panique n'est pas activé, ce qui permet d'agir normalement. Le contexte global est divergent : affaiblissement des marchés européens vs résilience des tech américaines, ce qui valide le biais sectoriel technologie/finance du portefeuille.",
+    "analyse_macro": "Le contexte macro est mitigé : le CAC40 recule légèrement (-0.9% semaine, -2.0% YTD) tandis que le MSCI World progresse (+0.6% semaine), confirmant que la surperformance est à chercher hors des indices européens. Le mode panique n'est pas activé, ce qui permet d'agir sereinement. La divergence entre CAC40 et MSCI World justifie notre biais vers les valeurs technologiques et financières mondiales plutôt qu'européennes, bien que Siemens Energy et ADYEN restent des exceptions européennes de qualité.",
     "conviction_globale": "haussier",
-    "message_utilisateurs": "Bonjour à tous — voici le point de la semaine. Le portefeuille performe très bien (+12.5pp d'avance sur le CAC40), ce qui nous donne de la marge mais pas de place à la complaisance. Cette semaine, je prends trois décisions clés : (1) Je renforce NVDA sur son signal Golden Cross optimal — c'est le titre le mieux scoré de toute la watchlist et le signal technique est frais. (2) J'initie une position AMD pour diversifier dans les semiconducteurs sans dupliquer exactement NVDA. (3) Je vends ADI malgré la règle des 90 jours : un z-score de +3.3σ constitue un signal de surachat extrême documenté qui justifie la sortie anticipée — c'est exactement le type de signal fondamental majeur prévu par nos règles. Je surveille de près BLK (Death Cross) et AVGO (z-score +2.0σ). Transparence totale : nous avons 9 positions récentes (<10 jours) en légère perte — c'est normal et dans les limites de nos règles, mais cela requiert vigilance. La conviction globale reste haussière, portée par la tech internationale.",
-    "nb_decisions": 5
+    "message_utilisateurs": "Bonjour à tous. Cette semaine, nous consolidons nos positions fortes plutôt que de diversifier vers de nouveaux titres. NVDA, avec son Golden Cross frais et un score record de 98/100, mérite un renforcement mesuré — c'est notre conviction la plus forte. JPM offre une opportunité de renforcement à un niveau légèrement inférieur à notre prix d'achat initial, profitant d'un signal technique frais. Nous ne touchons pas à AVGO malgré son excellent score car le z-score de +2.0σ signale un surachat. Sur BLK, le Death Cross est préoccupant mais la règle des 90 jours nous impose de conserver — nous documentons ce signal pour décision future. Notre surperformance de +12.6pp vs CAC40 YTD est solide, l'objectif est de la maintenir avec discipline et sans décisions émotionnelles.",
+    "nb_decisions": 4
   },
   "performance_history": [
     {
