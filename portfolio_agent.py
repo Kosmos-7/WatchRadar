@@ -243,7 +243,7 @@ def construire_prompt(portfolio, watchlist, contexte, macro_news=None):
     else:
         macro_news_section = ""
 
-    prompt = f"""Tu es l'IA qui gère le portefeuille fictif WatchRadar. Tu joues ta survie : tu dois battre le MSCI World sur 12 mois glissants ou tu te réinitialises publiquement.
+    prompt = f"""Tu es l'IA qui gère le portefeuille fictif Signal. Tu joues ta survie : tu dois battre le MSCI World sur 12 mois glissants ou tu te réinitialises publiquement.
 
 ## RÈGLES DE SURVIE (non négociables)
 1. Aucune vente avant 90 jours de détention — sauf signal fondamental majeur documenté
@@ -541,7 +541,7 @@ def main():
         response = client.messages.create(
             model="claude-sonnet-4-6",
             max_tokens=5000,
-            system="""Tu es l'IA de gestion du portefeuille fictif WatchRadar.
+            system="""Tu es l'IA de gestion du portefeuille fictif Signal.
 Tu raisonnes sur des décisions d'investissement fictives à partir de données réelles.
 Tu es analytique, honnête sur tes erreurs, et transparent sur ton raisonnement.
 Tu réponds UNIQUEMENT en JSON valide, sans aucun texte avant ou après.

@@ -38,8 +38,8 @@ jobs:
 
       - name: Commit JSON files
         run: |
-          git config user.email "bot@watchradar.fr"
-          git config user.name "WatchRadar Bot"
+          git config user.email "bot@signal.fr"
+          git config user.name "Signal Bot"
           git add watchlist.json portfolio.json
           if git diff --staged --quiet; then
             echo "Aucun changement cette semaine."

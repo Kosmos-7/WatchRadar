@@ -1,5 +1,5 @@
 """
-screener.py — Agent de sélection WatchRadar
+screener.py — Agent de sélection Signal
 Génère watchlist.json avec les 25 actions les mieux scorées.
 
 Sources de données :
@@ -8,11 +8,14 @@ Sources de données :
 
 Dépendances : pip install yfinance pandas ta numpy requests finnhub-python
 
-─── MODÈLE TECHNIQUE ────────────────────────────────────────────────────────
-Momentum (40 pts) = Croisement MM21/MM200 (20 pts)
-                  + RSI (10 pts)
-                  + Volume (5 pts)
-                  + Régression (5 pts)
+─── MODÈLE DE SCORING (100 pts) ─────────────────────────────────────────────
+Momentum     (40 pts) = Croisement MM21/MM200 (20 pts, fraîcheur + volume)
+                       + RSI (10 pts, gradué : zone 40-60 = 10, 35-65 = 5)
+                       + Volume (5 pts)
+                       + Régression log-linéaire (5 pts)
+Fondamentaux (50 pts) = Rev. growth (15) + Marges nettes (10)
+                       + PEG ratio (15) + EPS growth (5) + Dette (5)
+Analystes    (10 pts) = Reco consensus (signal lagging, réduit vs momentum)
 
 Croisement MM21/MM200 — études de référence :
   Win rate moyen après Golden Cross : 66.7 % (S&P 500, 20 ans)
@@ -469,11 +472,15 @@ def score_ticker(ticker):
         score   = 0
         details = {}
 
-        # Momentum (40 pts) = cross (20) + RSI (10) + volume (5) + régression (5)
-        rsi_ok        = 40 <= rsi <= 65   # zone optimale documentée, cohérente avec cross_score()
+        # Momentum (40 pts) = cross (20) + RSI (10 gradué) + volume (5) + régression (5)
         vol_ok        = vol_r > vol_o
 
-        rsi_pts = 10 if rsi_ok else 0
+        # RSI gradué : zone stricte 40-60 = 10, élargie 35-65 = 5, hors zone = 0
+        if   40 <= rsi <= 60: rsi_pts = 10
+        elif 35 <= rsi <= 65: rsi_pts = 5
+        else:                 rsi_pts = 0
+        rsi_ok = rsi_pts > 0
+
         vol_pts = 5  if vol_ok else 0
         reg_pts = 5  if reg_zone_saine else 0
         momentum_total = cross_pts + rsi_pts + vol_pts + reg_pts
@@ -488,14 +495,23 @@ def score_ticker(ticker):
         details["reg_z"]               = regression_z
         details["reg_signal"]          = reg_signal
 
-        # Fondamentaux (40 pts)
+        # Fondamentaux (50 pts)
+        earnings_growth = info.get("earningsGrowth") or 0
         fund_pts = 0
+        # Revenue growth (0-15 pts)
         if rev_growth > 0.10:   fund_pts += 15
         elif rev_growth > 0.05: fund_pts += 8
+        # Marges nettes (0-10 pts)
         if margins > 0.10:      fund_pts += 10
         elif margins > 0:       fund_pts += 5
-        if 0 < peg < 2:         fund_pts += 10
+        # PEG ratio (0-15 pts) — sous-valorisation relative à la croissance
+        if   0 < peg < 1:       fund_pts += 15
+        elif 0 < peg < 2:       fund_pts += 10
         elif 2 <= peg < 3:      fund_pts += 5
+        # EPS growth (0-5 pts) — plus forward-looking que le CA
+        if earnings_growth > 0.15:   fund_pts += 5
+        elif earnings_growth > 0.05: fund_pts += 2
+        # Dette/capitaux propres (0-5 pts)
         if 0 < debt_eq < 100:   fund_pts += 5
         score += fund_pts
 
@@ -504,11 +520,11 @@ def score_ticker(ticker):
         details["peg"]        = peg
         details["reco"]       = reco
 
-        # Consensus analystes (20 pts)
+        # Consensus analystes (10 pts — signal lagging, réduit au profit des fondamentaux)
         ana_pts = 0
-        if reco < 2.0:   ana_pts = 20
-        elif reco < 2.5: ana_pts = 12
-        elif reco < 3.0: ana_pts = 6
+        if reco < 2.0:   ana_pts = 10
+        elif reco < 2.5: ana_pts = 6
+        elif reco < 3.0: ana_pts = 3
         score += ana_pts
 
         # Bonus sectoriel (3 pts)
@@ -535,8 +551,8 @@ def score_ticker(ticker):
 
         breakdown = {
             "momentum":              min(40, momentum_total),
-            "fondamentaux":          min(40, fund_pts),
-            "analystes":             min(20, ana_pts),
+            "fondamentaux":          min(50, fund_pts),
+            "analystes":             min(10, ana_pts),
             # Croisement MM21/MM200
             "cross_regime":          cross_info["regime"],
             "cross_type":            cross_info["cross_type"],

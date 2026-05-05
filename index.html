@@ -350,12 +350,12 @@
         <p>Golden/Death Cross MM21/MM200 (jusqu'à 20 pts selon fraîcheur), RSI entre 40 et 65, volume, régression log-linéaire. Yahoo Finance.</p>
       </div>
       <div class="step">
-        <div class="step-num">Fondamentaux · 40 pts</div>
-        <p>Croissance CA, marges nettes, PEG ratio, dette. Sources croisées : Yahoo Finance + Finnhub pour validation.</p>
+        <div class="step-num">Fondamentaux · 50 pts</div>
+        <p>Croissance CA, marges nettes, PEG ratio (0–15 pts), croissance EPS, dette. Sources croisées : Yahoo Finance + Finnhub pour validation.</p>
       </div>
       <div class="step">
         <div class="step-num">Consensus · 20 pts</div>
-        <p>Recommandation moyenne des analystes. Une note &lt; 2.0 ("Strong Buy") rapporte 20 pts. Données Yahoo Finance.</p>
+        <p>Recommandation moyenne des analystes. Une note &lt; 2.0 ("Strong Buy") rapporte 10 pts. Signal lagging — réduit au profit des fondamentaux.</p>
       </div>
     </div>
   </section>
@@ -597,15 +597,15 @@ function renderCard(s) {
             <div class="sb-item">
               <div class="sb-label">Fondamentaux</div>
               <div class="sb-bar-row">
-                <div class="sb-track"><div class="sb-fill" style="width:${fo/40*100}%"></div></div>
-                <div class="sb-val">${fo}/40</div>
+                <div class="sb-track"><div class="sb-fill" style="width:${fo/50*100}%"></div></div>
+                <div class="sb-val">${fo}/50</div>
               </div>
             </div>
             <div class="sb-item">
               <div class="sb-label">Analystes</div>
               <div class="sb-bar-row">
-                <div class="sb-track"><div class="sb-fill" style="width:${an/20*100}%"></div></div>
-                <div class="sb-val">${an}/20</div>
+                <div class="sb-track"><div class="sb-fill" style="width:${an/10*100}%"></div></div>
+                <div class="sb-val">${an}/10</div>
               </div>
             </div>
           </div>
