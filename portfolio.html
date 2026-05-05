@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portefeuille IA — WatchRadar</title>
+<title>Portefeuille IA — Signal</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -197,7 +197,7 @@
 <body>
 
 <header>
-  <a class="brand" href="index.html">Watch<em>Radar</em></a>
+  <a class="brand" href="index.html">Sig<em>nal</em></a>
   <nav>
     <a href="index.html">Watchlist</a>
     <a href="portfolio.html" class="active">Portefeuille IA</a>
@@ -244,7 +244,7 @@
     <div class="chart-header">
       <h2>Performance depuis le lancement</h2>
       <div class="legend">
-        <div class="li"><div class="ld" style="background:var(--gold)"></div>WatchRadar</div>
+        <div class="li"><div class="ld" style="background:var(--gold)"></div>Signal</div>
         <div class="li"><div class="ld" style="background:var(--text3)"></div>MSCI World</div>
         <div class="li"><div class="ld" style="background:var(--red);opacity:0.5"></div>Ligne rouge</div>
       </div>
@@ -304,8 +304,8 @@
 </main>
 
 <footer>
-  <div class="footer-legal">WatchRadar est un service éditorial d'information financière. Contenu fourni à titre informatif uniquement.</div>
-  <div class="footer-right" id="footer-week">Bêta<br><a href="mailto:contact@watchradar.fr" style="color:var(--text3);text-decoration:none;">contact@watchradar.fr</a></div>
+  <div class="footer-legal">Signal est un service éditorial d'information financière. Contenu fourni à titre informatif uniquement.</div>
+  <div class="footer-right" id="footer-week">Bêta</div>
 </footer>
 
 <script>
@@ -417,7 +417,7 @@ async function loadPortfolio() {
     const d   = await res.json();
 
     document.getElementById('update-line').textContent = `Mis à jour · ${d.updated_at} · ${d.week}`;
-    document.getElementById('footer-week').innerHTML   = `${d.week}<br><a href="mailto:contact@watchradar.fr" style="color:var(--text3);text-decoration:none;">contact@watchradar.fr</a>`;
+    document.getElementById('footer-week').textContent = d.week;
 
     // Graphe dynamique
     const history = d.performance_history || [];
@@ -450,7 +450,7 @@ async function loadPortfolio() {
       </div>
       <div class="threshold-row">
         <div class="th">
-          <div class="th-label">Performance WatchRadar</div>
+          <div class="th-label">Performance Signal</div>
           <div class="th-value ${d.performance>=0?'up':'dn'}">${sign(d.performance)}${fmt(d.performance,1)} %</div>
           <div class="th-sub">sur 20 000 € · depuis jan. ${new Date().getFullYear()}</div>
         </div>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WatchRadar — Watchlist boursière commentée</title>
+<title>Signal — Watchlist boursière commentée</title>
 <meta name="description" content="25 actions à surveiller, sélectionnées automatiquement chaque semaine par un agent IA.">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -269,7 +269,7 @@
 <body>
 
 <header>
-  <a class="brand" href="index.html">Watch<em>Radar</em></a>
+  <a class="brand" href="index.html">Sig<em>nal</em></a>
   <nav>
     <a href="index.html" class="active">Watchlist</a>
     <a href="portfolio.html">Portefeuille IA</a>
@@ -362,8 +362,8 @@
 </main>
 
 <footer>
-  <div class="footer-legal">WatchRadar est un service éditorial d'information financière. Contenu fourni à titre informatif uniquement. Ne constitue pas un conseil en investissement au sens AMF.</div>
-  <div class="footer-right" id="footer-week">Bêta<br><a href="mailto:contact@watchradar.fr" style="color:var(--text3);text-decoration:none;">contact@watchradar.fr</a></div>
+  <div class="footer-legal">Signal est un service éditorial d'information financière. Contenu fourni à titre informatif uniquement. Ne constitue pas un conseil en investissement au sens AMF.</div>
+  <div class="footer-right" id="footer-week">Bêta</div>
 </footer>
 
 <script>
@@ -642,7 +642,7 @@ async function loadWatchlist() {
 
     document.getElementById('update-date').textContent  = `Mise à jour · ${updated_at} · ${week}`;
     document.getElementById('universe-info').textContent = `${universe_size} valeurs analysées`;
-    document.getElementById('footer-week').innerHTML     = `${week}<br><a href="mailto:contact@watchradar.fr" style="color:var(--text3);text-decoration:none;">contact@watchradar.fr</a>`;
+    document.getElementById('footer-week').textContent = week;
 
     document.getElementById('sources-bar').style.display = 'flex';
     if (finnhub_active) document.getElementById('fh-src').style.display = 'flex';
