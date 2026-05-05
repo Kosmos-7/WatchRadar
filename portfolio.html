@@ -361,7 +361,7 @@ function renderChart(history, currentPerf) {
     svg.appendChild(el('polyline', { points: cacPts, fill:'none', stroke:'#44445a', 'stroke-width':1.5, 'stroke-linejoin':'round', 'stroke-dasharray':'4,3' }));
   }
 
-  // WatchRadar area
+  // Signal area
   const linePts = pts.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
   const areaPts = linePts + ` ${last.x.toFixed(1)},190 ${pts[0].x.toFixed(1)},190`;
   svg.appendChild(el('polygon', { points: areaPts, fill:'url(#chartGrad)' }));
