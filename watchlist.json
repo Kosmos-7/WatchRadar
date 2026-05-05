@@ -61,17 +61,17 @@
         "cross_regime": "golden",
         "cross_type": "golden",
         "cross_days_ago": 159,
-        "cross_spread_pct": 27.35,
-        "cross_slope_mm21_pct": 1.1,
+        "cross_spread_pct": 27.33,
+        "cross_slope_mm21_pct": 1.08,
         "cross_volume_confirmed": true,
         "cross_pts": 13,
         "rsi_pts": 10,
         "vol_pts": 5,
         "reg_pts": 5,
-        "rsi": 51.8,
-        "mm21": 1219.45,
-        "mm200": 957.59,
-        "regression_z": 0.02,
+        "rsi": 51.3,
+        "mm21": 1219.25,
+        "mm200": 957.57,
+        "regression_z": 0.01,
         "regression_signal": "neutre",
         "regression_pente_pct": 25.4,
         "regression_window_years": 10,
@@ -204,7 +204,14 @@
         "sources": [
           "Yahoo Finance",
           "Finnhub"
-        ]
+        ],
+        "news_alert": {
+          "type": "guidance",
+          "headline": "How The Copart (CPRT) Narrative Is Shifting With Lower Price Targets And Earnings Concerns",
+          "date": "2026-05-05",
+          "url": "https://finnhub.io/api/news?id=477821542d964b4a051f440eada2c652143ffabead68eb2f040067e6463e659e",
+          "source": "Yahoo"
+        }
       },
       "justification": "Score 90/100 — Golden Cross frais (8j) — fenêtre signal optimale, légèrement au-dessus de sa régression (+1.5σ), RSI en zone favorable, croissance CA modérée (13%/an), marges excellentes (34%), consensus analystes positif.",
       "rank": 5
@@ -286,7 +293,14 @@
         "sources": [
           "Yahoo Finance",
           "Finnhub"
-        ]
+        ],
+        "news_alert": {
+          "type": "acquisition",
+          "headline": "Long Lake Management Holdings Inc. entered into a definitive agreement to acquire Global Business Travel Group, Inc. fro",
+          "date": "2026-05-04",
+          "url": "https://finnhub.io/api/news?id=ad00671580bd38155b7d32cdcf83d43a804709f1c5159970962083ca2677e3b7",
+          "source": "Finnhub"
+        }
       },
       "justification": "Score 85/100 — cours proche de sa droite de régression, RSI en zone favorable, croissance CA solide (27%/an), marges excellentes (24%), consensus analystes très favorable.",
       "rank": 7
@@ -355,10 +369,10 @@
         "rsi_pts": 10,
         "vol_pts": 5,
         "reg_pts": 5,
-        "rsi": 60.5,
+        "rsi": 60.6,
         "mm21": 260.38,
         "mm200": 233.09,
-        "regression_z": 0.72,
+        "regression_z": 0.73,
         "regression_signal": "neutre",
         "regression_pente_pct": 9.9,
         "regression_window_years": 20,
@@ -430,17 +444,17 @@
         "cross_regime": "golden",
         "cross_type": "golden",
         "cross_days_ago": 8,
-        "cross_spread_pct": 6.28,
+        "cross_spread_pct": 6.27,
         "cross_slope_mm21_pct": 2.82,
         "cross_volume_confirmed": false,
         "cross_pts": 20,
         "rsi_pts": 10,
         "vol_pts": 5,
         "reg_pts": 0,
-        "rsi": 62.5,
+        "rsi": 62.4,
         "mm21": 94.36,
         "mm200": 88.79,
-        "regression_z": -0.94,
+        "regression_z": -0.95,
         "regression_signal": "sous tendance",
         "regression_pente_pct": 16.1,
         "regression_window_years": 20,
@@ -491,7 +505,14 @@
         "sources": [
           "Yahoo Finance",
           "Finnhub"
-        ]
+        ],
+        "news_alert": {
+          "type": "acquisition",
+          "headline": "What Should Investors Know Before Eaton's Q1 Earnings Release?",
+          "date": "2026-05-04",
+          "url": "https://finnhub.io/api/news?id=2df6401dc2ded4489175fa83bc033a9e50446d4d03d96752e9b679d4eb81f9dd",
+          "source": "Yahoo"
+        }
       },
       "justification": "Score 83/100 — Golden Cross confirmé (57j), légèrement au-dessus de sa régression (+1.7σ), RSI en zone favorable, croissance CA modérée (13%/an), marges positives, consensus analystes très favorable.",
       "rank": 12
@@ -513,15 +534,15 @@
         "cross_type": "death",
         "cross_days_ago": 184,
         "cross_spread_pct": -26.26,
-        "cross_slope_mm21_pct": 2.62,
+        "cross_slope_mm21_pct": 2.61,
         "cross_volume_confirmed": false,
         "cross_pts": 4,
         "rsi_pts": 10,
         "vol_pts": 5,
         "reg_pts": 0,
-        "rsi": 56.8,
-        "mm21": 934.25,
-        "mm200": 1266.87,
+        "rsi": 56.5,
+        "mm21": 934.17,
+        "mm200": 1266.86,
         "regression_z": -1.46,
         "regression_signal": "sous tendance",
         "regression_pente_pct": 8.5,
@@ -642,7 +663,7 @@
         "rsi_pts": 0,
         "vol_pts": 5,
         "reg_pts": 5,
-        "rsi": 31.2,
+        "rsi": 31.1,
         "mm21": 145.47,
         "mm200": 132.55,
         "regression_z": 0.35,
@@ -737,7 +758,14 @@
         "sources": [
           "Yahoo Finance",
           "Finnhub"
-        ]
+        ],
+        "news_alert": {
+          "type": "alert",
+          "headline": "CRM Stock Jumps as Salesforce Makes Clear It’s an AI Agent Company Now",
+          "date": "2026-05-04",
+          "url": "https://finnhub.io/api/news?id=bcf0178a07600c8d0ce34816fcc22632223d65d8bcf20e0c232044eba7a8b6a1",
+          "source": "Yahoo"
+        }
       },
       "justification": "Score 80/100 — prix sous sa droite de régression (-2.4σ), RSI en zone favorable, croissance CA modérée (12%/an), marges excellentes (18%), consensus analystes très favorable.",
       "rank": 18
@@ -758,17 +786,17 @@
         "cross_regime": "golden",
         "cross_type": "golden",
         "cross_days_ago": 151,
-        "cross_spread_pct": 10.14,
-        "cross_slope_mm21_pct": 3.21,
+        "cross_spread_pct": 10.15,
+        "cross_slope_mm21_pct": 3.22,
         "cross_volume_confirmed": false,
         "cross_pts": 11,
         "rsi_pts": 10,
         "vol_pts": 5,
         "reg_pts": 5,
-        "rsi": 52.5,
-        "mm21": 264.98,
+        "rsi": 53.1,
+        "mm21": 265.01,
         "mm200": 240.59,
-        "regression_z": 1.16,
+        "regression_z": 1.18,
         "regression_signal": "au-dessus",
         "regression_pente_pct": 12.4,
         "regression_window_years": 20,
@@ -799,16 +827,16 @@
         "cross_regime": "golden",
         "cross_type": "golden",
         "cross_days_ago": 144,
-        "cross_spread_pct": 35.03,
+        "cross_spread_pct": 35.02,
         "cross_slope_mm21_pct": 5.4,
         "cross_volume_confirmed": false,
         "cross_pts": 11,
         "rsi_pts": 10,
         "vol_pts": 5,
         "reg_pts": 5,
-        "rsi": 64.3,
-        "mm21": 783.05,
-        "mm200": 579.93,
+        "rsi": 64.1,
+        "mm21": 782.99,
+        "mm200": 579.92,
         "regression_z": -0.39,
         "regression_signal": "neutre",
         "regression_pente_pct": 35.4,
@@ -901,7 +929,14 @@
         "sources": [
           "Yahoo Finance",
           "Finnhub"
-        ]
+        ],
+        "news_alert": {
+          "type": "alert",
+          "headline": "DEI Programs Are Dwindling But the Trump Administration Isn't Done",
+          "date": "2026-05-04",
+          "url": "https://finnhub.io/api/news?id=ae688b371544c4973a35cf6a3cf7a86ea24a5f19a229ba71925fde671b6399ca",
+          "source": "Yahoo"
+        }
       },
       "justification": "Score 76/100 — cours proche de sa droite de régression, RSI en zone favorable, croissance CA solide (22%/an), marges positives, consensus analystes très favorable.",
       "rank": 22
@@ -942,7 +977,14 @@
         "sources": [
           "Yahoo Finance",
           "Finnhub"
-        ]
+        ],
+        "news_alert": {
+          "type": "acquisition",
+          "headline": "Applied Materials Expands AI Arsenal, Acquires NEXX In Packaging Push",
+          "date": "2026-05-04",
+          "url": "https://finnhub.io/api/news?id=e2c15e46ed70f446ee4bf778fa25b401e0e7625b44acf2715b0478037009bd96",
+          "source": "Benzinga"
+        }
       },
       "justification": "Score 76/100 — légèrement au-dessus de sa régression (+1.6σ), RSI en zone favorable, marges excellentes (28%), consensus analystes très favorable.",
       "rank": 23
@@ -983,7 +1025,14 @@
         "sources": [
           "Yahoo Finance",
           "Finnhub"
-        ]
+        ],
+        "news_alert": {
+          "type": "alert",
+          "headline": "Anchor Investment Exits Nearly All of Its BSCQ Position -- a $21 Million Trim",
+          "date": "2026-05-04",
+          "url": "https://finnhub.io/api/news?id=3ba4525524aa7243a6244cc0f4557d8104b554b17a07431622b92718d5357d4d",
+          "source": "Yahoo"
+        }
       },
       "justification": "Score 75/100 — prix sous sa droite de régression (-1.9σ), RSI en zone favorable, croissance CA solide (17%/an), marges excellentes (52%), consensus analystes très favorable.",
       "rank": 24
@@ -1024,7 +1073,14 @@
         "sources": [
           "Yahoo Finance",
           "Finnhub"
-        ]
+        ],
+        "news_alert": {
+          "type": "alert",
+          "headline": "Corporate America Earnings Beat Back Wall Street’s Wall of Worry",
+          "date": "2026-05-02",
+          "url": "https://finnhub.io/api/news?id=9d8271fda6efa397de9e237f70b51478e34b502711496c5488933625c24f0d30",
+          "source": "Yahoo"
+        }
       },
       "justification": "Score 75/100 — légèrement au-dessus de sa régression (+1.2σ), croissance CA solide (19%/an), marges excellentes (29%), consensus analystes positif.",
       "rank": 25

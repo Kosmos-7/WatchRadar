@@ -2,16 +2,16 @@
   "updated_at": "2026-05-05",
   "week": "Sem. 19 · 2026",
   "capital_initial": 20000.0,
-  "capital_actuel": 22117.58,
-  "performance": 10.59,
-  "benchmark_cac40": -2.09,
+  "capital_actuel": 22106.44,
+  "performance": 10.53,
+  "benchmark_cac40": -2.15,
   "benchmark_msci": 4.85,
   "vs_benchmark": 12.68,
   "statut_survie": "en_vie",
   "trimestres_negatifs": 0,
   "dernier_trim_check": "2026-Q2",
   "mode_panique": false,
-  "perf_cac_semaine": -0.99,
+  "perf_cac_semaine": -1.05,
   "positions": [
     {
       "ticker": "ASML.AS",
@@ -21,13 +21,13 @@
       "currency": "EUR",
       "date_achat": "2026-01-02",
       "prix_achat": 650.0,
-      "prix_actuel": 1221.2,
+      "prix_actuel": 1217.6,
       "quantite": 3,
       "montant_investi": 1950.0,
-      "valeur_actuelle": 3663.6,
-      "performance": 87.88,
+      "valeur_actuelle": 3652.8,
+      "performance": 87.32,
       "score_entree": 88,
-      "poids": 16.6
+      "poids": 16.5
     },
     {
       "ticker": "NVDA",
@@ -40,7 +40,7 @@
       "prix_actuel": 198.48,
       "quantite": 20,
       "montant_investi": 2300.0,
-      "valeur_actuelle": 3396.01,
+      "valeur_actuelle": 3396.3,
       "performance": 72.59,
       "score_entree": 94,
       "poids": 15.4
@@ -56,7 +56,7 @@
       "prix_actuel": 272.05,
       "quantite": 2,
       "montant_investi": 518.54,
-      "valeur_actuelle": 465.48,
+      "valeur_actuelle": 465.52,
       "performance": 4.93,
       "score_entree": 90,
       "poids": 2.1
@@ -69,11 +69,11 @@
       "currency": "EUR",
       "date_achat": "2026-04-30",
       "prix_achat": 958.5,
-      "prix_actuel": 972.7,
+      "prix_actuel": 973.8,
       "quantite": 1,
       "montant_investi": 958.5,
-      "valeur_actuelle": 972.7,
-      "performance": 1.48,
+      "valeur_actuelle": 973.8,
+      "performance": 1.6,
       "score_entree": 93,
       "poids": 4.4
     },
@@ -88,7 +88,7 @@
       "prix_actuel": 416.5,
       "quantite": 1,
       "montant_investi": 413.21,
-      "valeur_actuelle": 356.32,
+      "valeur_actuelle": 356.35,
       "performance": 0.8,
       "score_entree": 100,
       "poids": 1.6
@@ -104,7 +104,7 @@
       "prix_actuel": 967.93,
       "quantite": 1,
       "montant_investi": 827.79,
-      "valeur_actuelle": 828.07,
+      "valeur_actuelle": 828.14,
       "performance": 0.0,
       "score_entree": 89,
       "poids": 3.7
@@ -120,7 +120,7 @@
       "prix_actuel": 341.54,
       "quantite": 3,
       "montant_investi": 875.82,
-      "valeur_actuelle": 876.57,
+      "valeur_actuelle": 876.64,
       "performance": 0.0,
       "score_entree": 85,
       "poids": 4.0
@@ -133,11 +133,11 @@
       "currency": "EUR",
       "date_achat": "2026-05-05",
       "prix_achat": 261.9,
-      "prix_actuel": 261.9,
+      "prix_actuel": 261.5,
       "quantite": 4,
       "montant_investi": 1047.6,
-      "valeur_actuelle": 1047.6,
-      "performance": 0.0,
+      "valeur_actuelle": 1046.0,
+      "performance": -0.15,
       "score_entree": 84,
       "poids": 4.7
     },
@@ -149,11 +149,11 @@
       "currency": "EUR",
       "date_achat": "2026-04-30",
       "prix_achat": 180.58,
-      "prix_actuel": 179.62,
+      "prix_actuel": 179.44,
       "quantite": 3,
       "montant_investi": 541.74,
-      "valeur_actuelle": 538.86,
-      "performance": -0.53,
+      "valeur_actuelle": 538.32,
+      "performance": -0.63,
       "score_entree": 91,
       "poids": 2.4
     },
@@ -168,7 +168,7 @@
       "prix_actuel": 1052.25,
       "quantite": 1,
       "montant_investi": 1060.9,
-      "valeur_actuelle": 900.21,
+      "valeur_actuelle": 900.28,
       "performance": -0.82,
       "score_entree": 93,
       "poids": 4.1
@@ -184,7 +184,7 @@
       "prix_actuel": 326.85,
       "quantite": 2,
       "montant_investi": 661.38,
-      "valeur_actuelle": 559.24,
+      "valeur_actuelle": 559.29,
       "performance": -1.16,
       "score_entree": 93,
       "poids": 2.5
@@ -200,7 +200,7 @@
       "prix_actuel": 422.44,
       "quantite": 1,
       "montant_investi": 430.55,
-      "valeur_actuelle": 361.4,
+      "valeur_actuelle": 361.43,
       "performance": -1.88,
       "score_entree": 93,
       "poids": 1.6
@@ -216,7 +216,7 @@
       "prix_actuel": 307.65,
       "quantite": 2,
       "montant_investi": 627.54,
-      "valeur_actuelle": 526.39,
+      "valeur_actuelle": 526.44,
       "performance": -1.95,
       "score_entree": 95,
       "poids": 2.4
@@ -527,19 +527,18 @@
     }
   ],
   "biais_detectes": [
-    "Surconcentration tech US : NVDA, ASML, AMZN, AVGO, AMD représentent une large part du capital — le renforcement NVDA amplifie ce biais, à surveiller",
-    "Biais de récence sur les positions à 5j : plusieurs titres achetés la semaine dernière montrent de légères pertes non significatives — risque de vouloir couper trop tôt avant les 90j réglementaires",
-    "Sous-exposition Europe hors ASML et ENR.DE — l'ajout DB1.DE est un début de correction",
-    "BLK en Death Cross détenu sans possibilité de vente : risque de règle 1 vs signal technique adverse — à documenter pour future mise à jour des règles"
+    "Biais de récence favorable : les +87% d'ASML et +72% de NVDA peuvent créer un excès de confiance sur les positions tech — surveiller les signaux de retournement",
+    "Biais de confort sur positions récentes en perte légère (JPM, ETN, V) : la tentation d'ignorer des positions nouvelles légèrement négatives car 'trop récentes pour juger' peut masquer des entrées mal timées — renforcement JPM justifié uniquement par le signal Golden Cross frais documenté",
+    "Concentration sectorielle tech : NVDA, ASML, AMZN, AVGO, AMD représentent une part croissante du portefeuille — diversification à surveiller"
   ],
   "nb_positions": 13,
   "nb_positives": 5,
-  "nb_negatives": 5,
+  "nb_negatives": 6,
   "analyse_claude": {
-    "analyse_macro": "Le contexte macro reste constructif pour notre portefeuille : le MSCI World progresse de +0.6% sur la semaine et notre surperformance YTD vs CAC40 atteint +12.6pp. Le CAC40 continue de sous-performer (-2.1% YTD), ce qui valide notre biais international (US + tech). Le mode panique est désactivé, permettant des ajustements offensifs ciblés. La légère consolidation du CAC40 cette semaine (-1%) ne justifie aucune posture défensive.",
+    "analyse_macro": "Le marché présente une divergence notable cette semaine : le CAC40 cède encore -1.1% (-2.1% YTD) tandis que le MSCI World progresse de +0.6% (+4.8% YTD), confirmant la surperformance des marchés américains et la faiblesse de la zone euro. WatchRadar bénéficie de cette configuration grâce à son exposition majoritaire aux technologiques américaines. L'absence de mode panique permet d'agir normalement, et la dynamique des Golden Cross frais sur NVDA, AMZN et JPM suggère un momentum technique favorable sur le segment US.",
     "conviction_globale": "haussier",
-    "message_utilisateurs": "Semaine solide pour WatchRadar : +10.6% YTD contre -2.0% pour le CAC40, soit une surperformance de +12.6pp. Cette semaine, nous renforçons NVDA sur son signal technique exceptionnel (98/100, Golden Cross frais) et nous initons une position sur Deutsche Boerse pour diversifier vers la finance européenne. Nous résistons à la tentation de renforcer AVGO malgré son score parfait car son z-score de +2.0σ indique un surachat à court terme. Point de vigilance : BLK est passé en Death Cross — nous ne pouvons pas vendre avant 90j sans signal fondamental majeur, mais nous le surveillons activement. La stratégie reste offensive avec discipline.",
-    "nb_decisions": 4
+    "message_utilisateurs": "Bonjour à tous — WatchRadar affiche +10.6% YTD contre -2.1% pour le CAC40, soit +12.7pp d'avance. Cette semaine, deux décisions actionnables : renforcement de NVDA (score 98/100, Golden Cross frais, z-score neutre — c'est notre meilleur signal actif) et renforcement modéré de JPM (Golden Cross 8 jours, entrée récente en légère perte exploitable). Nous ne renforçons pas AVGO malgré son score 100/100 car le z=+2.0σ indique un surachat technique — la discipline prime sur l'enthousiasme. BLK en Death Cross est surveillée de près : la règle des 90 jours s'applique mais nous documentons le risque. Les ~4900€ de liquidités restantes après ces achats constituent un filet de sécurité intentionnel. Aucune panique sur le CAC40 en repli — notre exposition US nous protège structurellement. Transparence totale : la légère perte sur ETN, V, JPM est normale après 5 jours ; le vrai test sera à 90 jours.",
+    "nb_decisions": 5
   },
   "performance_history": [
     {
