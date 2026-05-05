@@ -781,7 +781,7 @@ async function loadPortfolio() {
         </div>
         <div class="th">
           <div class="th-label">Drawdown max</div>
-          <div class="th-value ${(d.max_drawdown||0)<-5?'dn':'neu'}">${d.max_drawdown != null && d.max_drawdown !== 0 ? sign(d.max_drawdown)+fmt(d.max_drawdown,1)+' %' : '—'}</div>
+          <div class="th-value ${(d.max_drawdown||0)<-5?'dn':'neu'}">${d.max_drawdown != null ? (d.max_drawdown !== 0 ? sign(d.max_drawdown)+fmt(d.max_drawdown,1)+' %' : '0.0 %') : '—'}</div>
           <div class="th-sub">perte max depuis un pic</div>
         </div>
       </div>

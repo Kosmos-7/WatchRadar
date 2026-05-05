@@ -175,7 +175,11 @@ def calc_max_drawdown(history):
     peak = float('-inf')
     max_dd = 0.0
     for h in history:
-        v = h.get("capital") if h.get("capital") is not None else h.get("perf", 0)
+        if h.get("capital") is not None:
+            v = h["capital"]
+        else:
+            # Fallback : 'perf' est en %, on reconstitue la valeur sur CAPITAL_INITIAL
+            v = CAPITAL_INITIAL * (1 + h.get("perf", 0) / 100)
         if v > peak:
             peak = v
         if peak > 0:

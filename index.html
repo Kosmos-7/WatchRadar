@@ -861,7 +861,7 @@ function renderCard(s) {
   const volPts   = bd.vol_pts   != null ? bd.vol_pts   : null;
   const regPts   = bd.reg_pts   != null ? bd.reg_pts   : null;
   const moSub    = (crossPts !== null)
-    ? `<span class="mo-sub">Cross ${crossPts}/20 · RSI ${rsiPts}/10 · Vol ${volPts}/5 · Rég ${regPts}/5</span>`
+    ? `<span class="mo-sub">Cross ${crossPts ?? '—'}/20 · RSI ${rsiPts ?? '—'}/10 · Vol ${volPts ?? '—'}/5 · Rég ${regPts ?? '—'}/5</span>`
     : '';
   const srcs = (bd.sources || ['Yahoo Finance']).join(' + ');
 
@@ -870,8 +870,8 @@ function renderCard(s) {
   const newsAlertHTML = na ? (() => {
     const icons = { guidance: '⚠️', acquisition: '📋', alert: '🚨' };
     const labels = { guidance: 'Guidance / résultats', acquisition: 'M&A', alert: 'Alerte réglementaire' };
-    const icon  = icons[na.type]  || '📰';
-    const label = labels[na.type] || 'Actualité';
+    const icon  = icons[na?.type]  || '📰';
+    const label = labels[na?.type] || 'Actualité';
     const link  = na.url ? ` — <a href="${na.url}" target="_blank" rel="noopener">lire</a>` : '';
     return `<div class="news-alert type-${na.type}">
       <span class="news-alert-icon">${icon}</span>

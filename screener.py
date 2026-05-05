@@ -33,7 +33,7 @@ import json
 import os
 import time
 import requests
-from datetime import date
+from datetime import date, timedelta, datetime as _dt
 from ta.momentum import RSIIndicator
 
 # ── FINNHUB (validation croisée) ─────────────────────────────────────────────
@@ -42,7 +42,9 @@ FINNHUB_KEY = os.getenv("FINNHUB_API_KEY", "")
 def finnhub_fundamentals(ticker):
     if not FINNHUB_KEY:
         return {}
-    clean = ticker.replace(".PA","").replace(".DE","").replace(".AS","").replace(".L","").replace(".CO","")
+    for sfx in (".PA",".DE",".AS",".L",".CO",".BR",".MI",".MC",".AT",".IS",".HE",".ST",".OL",".OB"):
+        ticker = ticker.replace(sfx, "")
+    clean = ticker
     try:
         url = f"https://finnhub.io/api/v1/stock/metric?symbol={clean}&metric=all&token={FINNHUB_KEY}"
         r = requests.get(url, timeout=5)
@@ -77,10 +79,12 @@ def fetch_company_news_alert(ticker):
     Retourne un dict ou None. N'impacte pas le score."""
     if not FINNHUB_KEY:
         return None
-    clean = ticker.replace(".PA","").replace(".DE","").replace(".AS","").replace(".L","").replace(".CO","")
+    for sfx in (".PA",".DE",".AS",".L",".CO",".BR",".MI",".MC",".AT",".IS",".HE",".ST",".OL",".OB"):
+        ticker = ticker.replace(sfx, "")
+    clean = ticker
     try:
         today      = date.today()
-        from_date  = (today - __import__('datetime').timedelta(days=10)).strftime("%Y-%m-%d")
+        from_date  = (today - timedelta(days=10)).strftime("%Y-%m-%d")
         to_date    = today.strftime("%Y-%m-%d")
         url = (f"https://finnhub.io/api/v1/company-news?symbol={clean}"
                f"&from={from_date}&to={to_date}&token={FINNHUB_KEY}")
@@ -96,7 +100,7 @@ def fetch_company_news_alert(ticker):
                 for kw in keywords:
                     if kw in text:
                         dt = article.get("datetime", 0)
-                        art_date = __import__('datetime').datetime.utcfromtimestamp(dt).strftime("%Y-%m-%d") if dt else to_date
+                        art_date = _dt.utcfromtimestamp(dt).strftime("%Y-%m-%d") if dt else to_date
                         return {
                             "type":     alert_type,
                             "headline": (article.get("headline") or "")[:120],
@@ -466,7 +470,7 @@ def score_ticker(ticker):
         details = {}
 
         # Momentum (40 pts) = cross (20) + RSI (10) + volume (5) + régression (5)
-        rsi_ok        = 50 <= rsi <= 70
+        rsi_ok        = 40 <= rsi <= 65   # zone optimale documentée, cohérente avec cross_score()
         vol_ok        = vol_r > vol_o
 
         rsi_pts = 10 if rsi_ok else 0
@@ -617,8 +621,9 @@ def main():
         else:
             print("ignoré")
 
-        if FINNHUB_KEY and (i + 1) % 50 == 0:
-            time.sleep(3)
+        # 2 appels Finnhub par ticker (fundamentals + news) → 1s de délai = 60 req/min max
+        if FINNHUB_KEY:
+            time.sleep(1)
 
     resultats.sort(key=lambda x: -x["score"])
     top25 = resultats[:25]
