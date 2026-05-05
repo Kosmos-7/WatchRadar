@@ -248,6 +248,19 @@
   .fbtn.active.f-zone   { color: var(--gold);  border-color: rgba(232,168,32,0.35); background: rgba(232,168,32,0.07); }
   .filter-count { font-family: 'Courier New', monospace; font-size: 0.6rem; color: var(--text3); margin-left: auto; }
 
+  /* ── LEXIQUE ── */
+  .lexique { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+  .lexique h2 { font-family: Georgia, serif; font-size: 1.05rem; font-weight: normal; color: var(--text2); margin-bottom: 0.5rem; }
+  .lexique-intro { font-size: 0.8rem; color: var(--text3); margin-bottom: 1.75rem; line-height: 1.6; }
+  .lex-cat { font-family: 'Courier New', monospace; font-size: 0.6rem; color: var(--text3); text-transform: uppercase; letter-spacing: 1.2px; margin: 1.5rem 0 0.65rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+  .lex-cat:first-of-type { margin-top: 0; }
+  .lex-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 7px; }
+  .lex-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.75rem 0.9rem; }
+  .lex-term { font-family: 'Courier New', monospace; font-size: 0.68rem; font-weight: 700; color: var(--gold); letter-spacing: 0.3px; margin-bottom: 0.3rem; }
+  .lex-def { font-size: 0.76rem; color: var(--text2); line-height: 1.6; }
+  .lex-def em { font-style: normal; color: var(--text3); }
+  @media (max-width: 600px) { .lex-grid { grid-template-columns: 1fr; } }
+
   /* ── FOOTER ── */
   footer { border-top: 1px solid var(--border); padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; }
   .footer-legal { font-size: 0.7rem; color: var(--text3); max-width: 500px; line-height: 1.55; }
@@ -347,18 +360,112 @@
     <div class="steps">
       <div class="step">
         <div class="step-num">Momentum · 40 pts</div>
-        <p>Golden/Death Cross MM21/MM200 (jusqu'à 20 pts selon fraîcheur), RSI entre 40 et 65, volume, régression log-linéaire. Yahoo Finance.</p>
+        <p>Golden/Death Cross MM21/MM200 (jusqu'à 20 pts selon fraîcheur du signal), RSI gradué (10 pts en zone 40–60, 5 pts en 35–65), volume confirmé (5 pts), régression long terme (5 pts).</p>
       </div>
       <div class="step">
         <div class="step-num">Fondamentaux · 50 pts</div>
-        <p>Croissance CA, marges nettes, PEG ratio (0–15 pts), croissance EPS, dette. Sources croisées : Yahoo Finance + Finnhub pour validation.</p>
+        <p>Croissance du CA (15 pts), marges nettes (10 pts), PEG ratio — 15 pts si PEG &lt; 1 (10 si &lt; 2) —, croissance EPS (5 pts), endettement (5 pts). Sources : Yahoo Finance + Finnhub.</p>
       </div>
       <div class="step">
-        <div class="step-num">Consensus · 20 pts</div>
-        <p>Recommandation moyenne des analystes. Une note &lt; 2.0 ("Strong Buy") rapporte 10 pts. Signal lagging — réduit au profit des fondamentaux.</p>
+        <div class="step-num">Analystes · 10 pts</div>
+        <p>Recommandation moyenne des analystes (échelle 1–5). Réduit de 20 à 10 pts : signal lagging à fort biais haussier structurel, redistributé vers les fondamentaux.</p>
       </div>
     </div>
   </section>
+
+  <section class="lexique">
+    <h2>Lexique</h2>
+    <p class="lexique-intro">Définitions des indicateurs et métriques utilisés dans le scoring et les fiches détaillées.</p>
+
+    <div class="lex-cat">Signaux techniques — Momentum</div>
+    <div class="lex-grid">
+      <div class="lex-item">
+        <div class="lex-term">Golden Cross</div>
+        <div class="lex-def">La MM21 passe <em>au-dessus</em> de la MM200. Signal haussier : historiquement ~72% de probabilité de hausse à 6 mois dans les 10 premiers jours. La prime se dilue avec le temps.</div>
+      </div>
+      <div class="lex-item">
+        <div class="lex-term">Death Cross</div>
+        <div class="lex-def">La MM21 passe <em>sous</em> la MM200. Signal baissier, win rate de retournement ~62% dans les 60 premiers jours. Vigilance particulière si confirmé par le volume.</div>
+      </div>
+      <div class="lex-item">
+        <div class="lex-term">MM21 / MM200</div>
+        <div class="lex-def">Moyennes mobiles simples sur <em>21 jours</em> (tendance court terme) et <em>200 jours</em> (tendance longue, proxy du cycle de marché). L'écart entre les deux mesure la force du régime en cours.</div>
+      </div>
+      <div class="lex-item">
+        <div class="lex-term">RSI (Relative Strength Index)</div>
+        <div class="lex-def">Oscillateur 0–100 mesurant la vitesse et l'amplitude des variations récentes. <em>Zone saine : 40–60</em> (10 pts). Zone élargie 35–65 (5 pts). Au-delà : surachat (&gt;70) ou survente (&lt;30).</div>
+      </div>
+      <div class="lex-item">
+        <div class="lex-term">Volume confirmé</div>
+        <div class="lex-def">Le volume des échanges au moment du croisement dépasse la moyenne récente. Un Golden Cross avec volume élevé est considéré plus fiable qu'un croisement en faible liquidité.</div>
+      </div>
+      <div class="lex-item">
+        <div class="lex-term">Win rate</div>
+        <div class="lex-def">Fréquence historique à laquelle un signal s'est traduit par une hausse. Indicateur <em>probabiliste</em>, non prédictif : un win rate de 72% signifie qu'il échoue 28% du temps.</div>
+      </div>
+    </div>
+
+    <div class="lex-cat">Régression &amp; Position de cours</div>
+    <div class="lex-grid">
+      <div class="lex-item">
+        <div class="lex-term">Régression log-linéaire</div>
+        <div class="lex-def">Modélisation de la tendance de fond du cours sur plusieurs années en échelle logarithmique. Donne une "valeur de tendance" autour de laquelle le cours oscille. Plus robuste qu'une simple moyenne.</div>
+      </div>
+      <div class="lex-item">
+        <div class="lex-term">Z-score (σ)</div>
+        <div class="lex-def">Écart du cours à la droite de régression, exprimé en écarts-types. <em>+2σ</em> : cours très au-dessus de sa tendance (surachat probable). <em>−2σ</em> : cours très en-dessous (potentiel de rattrapage).</div>
+      </div>
+      <div class="lex-item">
+        <div class="lex-term">Zone saine</div>
+        <div class="lex-def">Z-score entre −0.5σ et +1.5σ. Le cours est proche de sa tendance long terme : ni surévalué, ni en détresse. C'est la fenêtre d'entrée la plus favorable selon la régression.</div>
+      </div>
+      <div class="lex-item">
+        <div class="lex-term">Surachat / Survente</div>
+        <div class="lex-def"><em>Surachat</em> : z-score &gt; +2σ — le cours a fortement dépassé sa tendance, risque de correction. <em>Survente</em> : z-score &lt; −2σ — potentiel de rebond, mais peut indiquer une détérioration des fondamentaux.</div>
+      </div>
+    </div>
+
+    <div class="lex-cat">Fondamentaux</div>
+    <div class="lex-grid">
+      <div class="lex-item">
+        <div class="lex-term">Croissance du CA</div>
+        <div class="lex-def">Variation annuelle du chiffre d'affaires. <em>&gt;10%/an</em> : 15 pts. <em>&gt;5%/an</em> : 8 pts. Mesure si l'entreprise conquiert de nouveaux marchés ou perd du terrain.</div>
+      </div>
+      <div class="lex-item">
+        <div class="lex-term">Marge nette</div>
+        <div class="lex-def">Bénéfice net / chiffre d'affaires. Mesure la rentabilité réelle après tous les coûts (opérationnels, financiers, fiscaux). <em>&gt;10%</em> : solide (10 pts). <em>&gt;0%</em> : acceptable (5 pts).</div>
+      </div>
+      <div class="lex-item">
+        <div class="lex-term">PEG Ratio</div>
+        <div class="lex-def">Price/Earnings divisé par la croissance des bénéfices. Ajuste la valorisation à la croissance. <em>PEG &lt; 1</em> : sous-évalué par rapport à sa croissance (15 pts). <em>PEG &gt; 3</em> : croissance très chère (0 pt).</div>
+      </div>
+      <div class="lex-item">
+        <div class="lex-term">EPS Growth</div>
+        <div class="lex-def">Croissance du bénéfice par action (Earnings Per Share). Signal de progression de la rentabilité par actionnaire. <em>&gt;15%</em> : 5 pts. <em>&gt;5%</em> : 2 pts. Distingue la croissance organique du simple effet de levier.</div>
+      </div>
+      <div class="lex-item">
+        <div class="lex-term">Dette / Fonds propres</div>
+        <div class="lex-def">Ratio d'endettement. Mesure la dépendance de l'entreprise au financement externe. <em>0–100%</em> : gérable (5 pts). Au-delà, le service de la dette pèse sur les marges et amplifie le risque en cas de retournement.</div>
+      </div>
+    </div>
+
+    <div class="lex-cat">Score &amp; Consensus</div>
+    <div class="lex-grid">
+      <div class="lex-item">
+        <div class="lex-term">Consensus analystes</div>
+        <div class="lex-def">Moyenne des recommandations sell-side sur une échelle <em>1 (Strong Buy) à 5 (Strong Sell)</em>. Signal utile mais structurellement biaisé vers l'achat et lagging : les révisions interviennent souvent après les événements. Poids réduit à 10 pts.</div>
+      </div>
+      <div class="lex-item">
+        <div class="lex-term">Bonus sectoriel</div>
+        <div class="lex-def">+3 pts accordés aux secteurs à forte dynamique structurelle long terme : <em>Technologie, Santé, Industrie</em>. Reflète la prime de croissance séculaire de ces secteurs, indépendamment du momentum court terme.</div>
+      </div>
+      <div class="lex-item">
+        <div class="lex-term">Score total (★)</div>
+        <div class="lex-def">Somme Momentum (40) + Fondamentaux (50) + Analystes (10) + bonus (3) = max 103. Affiché sur 100. <em>5 étoiles</em> ≥ 90 · <em>4 étoiles</em> ≥ 75 · <em>3 étoiles</em> &lt; 75. Seules les 25 meilleures valeurs apparaissent.</div>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <footer>
