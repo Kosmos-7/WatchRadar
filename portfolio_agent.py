@@ -17,11 +17,13 @@ Dépendances : pip install yfinance pandas ta requests anthropic
 import yfinance as yf
 import json
 import os
+import requests
 from datetime import date, datetime, timedelta
 from anthropic import Anthropic
 
 # ── CONFIG ───────────────────────────────────────────────────────────────────
 ANTHROPIC_API_KEY    = os.getenv("ANTHROPIC_API_KEY", "")
+FINNHUB_KEY          = os.getenv("FINNHUB_API_KEY", "")
 CAPITAL_INITIAL_DEF  = 10000.0   # valeur par défaut uniquement pour portefeuille vide
 CAPITAL_INITIAL      = CAPITAL_INITIAL_DEF  # sera écrasé au runtime par la valeur du JSON
 POIDS_MAX            = 0.30
@@ -114,6 +116,45 @@ def get_contexte_marche():
     ctx["semaine"]      = semaine()
     return ctx
 
+_MACRO_KEYWORDS = [
+    "federal reserve", "fed rate", "fed cuts", "fed hikes", "interest rate",
+    "inflation", "cpi", "pce", "pmi", "unemployment", "nonfarm payroll",
+    "gdp", "recession", "ecb", "european central bank", "bce",
+    "tariff", "trade war", "treasury yield", "yield curve", "10-year",
+    "bank of england", "boe rate", "opec",
+]
+
+def get_macro_news():
+    """Récupère les 4 titres macro les plus pertinents via Finnhub /news.
+    Retourne une liste de dicts {headline, date, source} ou liste vide."""
+    if not FINNHUB_KEY:
+        return []
+    try:
+        url = f"https://finnhub.io/api/v1/news?category=general&minId=0&token={FINNHUB_KEY}"
+        r = requests.get(url, timeout=5)
+        if r.status_code != 200:
+            return []
+        articles = r.json()
+        if not isinstance(articles, list):
+            return []
+        selected = []
+        for article in articles[:60]:
+            text = ((article.get("headline") or "") + " " + (article.get("summary") or "")).lower()
+            if any(kw in text for kw in _MACRO_KEYWORDS):
+                dt = article.get("datetime", 0)
+                art_date = datetime.utcfromtimestamp(dt).strftime("%Y-%m-%d") if dt else ""
+                selected.append({
+                    "headline": (article.get("headline") or "")[:110],
+                    "date":     art_date,
+                    "source":   article.get("source", ""),
+                })
+                if len(selected) >= 4:
+                    break
+        return selected
+    except Exception as e:
+        print(f"  ⚠️  Macro news — exception : {e}")
+        return []
+
 def portfolio_vide():
     return {
         "updated_at": str(date.today()), "week": semaine(),
@@ -144,7 +185,7 @@ def calc_max_drawdown(history):
     return round(max_dd, 2)
 
 # ── PROMPT CLAUDE ────────────────────────────────────────────────────────────
-def construire_prompt(portfolio, watchlist, contexte):
+def construire_prompt(portfolio, watchlist, contexte, macro_news=None):
     """Construit le prompt envoyé à Claude avec tout le contexte."""
 
     positions = portfolio.get("positions", [])
@@ -191,6 +232,13 @@ def construire_prompt(portfolio, watchlist, contexte):
     # Tickers watchlist complète
     tickers_watchlist = [s["ticker"] for s in watchlist.get("stocks", [])]
 
+    # Section macro news
+    if macro_news:
+        news_lines = "\n".join(f"  - [{n['date']}] {n['headline']} ({n['source']})" for n in macro_news)
+        macro_news_section = f"\n## ACTUALITÉS MACRO RÉCENTES (contexte, ne pas sur-pondérer)\n{news_lines}\n"
+    else:
+        macro_news_section = ""
+
     prompt = f"""Tu es l'IA qui gère le portefeuille fictif WatchRadar. Tu joues ta survie : tu dois battre le CAC40 sur 12 mois glissants ou tu te réinitialises publiquement.
 
 ## RÈGLES DE SURVIE (non négociables)
@@ -214,7 +262,7 @@ def construire_prompt(portfolio, watchlist, contexte):
 - MSCI World : {contexte.get('msci', {}).get('perf_semaine', 0):+.1f}% sur la semaine, {contexte.get('msci', {}).get('perf_ytd', 0):+.1f}% YTD
 - Mode panique : {"OUI — Règle 03 active, aucun ordre possible" if contexte.get('mode_panique') else "NON — ordres possibles"}
 
-## WATCHLIST CETTE SEMAINE (top 10 sur 25)
+{macro_news_section}## WATCHLIST CETTE SEMAINE (top 10 sur 25)
 {chr(10).join(top10_lines)}
 Tickers watchlist complète : {', '.join(tickers_watchlist)}
 
@@ -459,12 +507,14 @@ def main():
 
     print(f"🧠 Appel à Claude API pour les décisions de {semaine()}…")
 
-    # ── Contexte de marché + taux de change
-    contexte = get_contexte_marche()
-    eur_usd  = get_eur_usd_rate()
+    # ── Contexte de marché + taux de change + macro news
+    contexte    = get_contexte_marche()
+    eur_usd     = get_eur_usd_rate()
+    macro_news  = get_macro_news()
     print(f"   CAC40 semaine : {contexte.get('cac40', {}).get('perf_semaine', 0):+.1f}%")
     print(f"   Mode panique  : {contexte.get('mode_panique')}")
     print(f"   EUR/USD       : {eur_usd}")
+    print(f"   Macro news    : {len(macro_news)} article(s) macro sélectionné(s)")
 
     # ── Mise à jour des prix avant de soumettre à Claude (valeur_actuelle en EUR)
     for pos in portfolio.get("positions", []):
@@ -481,7 +531,7 @@ def main():
     portfolio["performance"]    = round((portfolio["capital_actuel"] - CAPITAL_INITIAL) / CAPITAL_INITIAL * 100, 2)
 
     # ── Appel Claude
-    prompt = construire_prompt(portfolio, watchlist, contexte)
+    prompt = construire_prompt(portfolio, watchlist, contexte, macro_news)
 
     try:
         response = client.messages.create(

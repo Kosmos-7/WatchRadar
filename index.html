@@ -394,6 +394,24 @@
     font-family: 'Courier New', monospace;
     opacity: 0.8;
   }
+  .news-alert {
+    margin: 0.6rem 0 0.2rem;
+    padding: 0.5rem 0.65rem;
+    border-radius: 6px;
+    font-size: 0.68rem;
+    line-height: 1.45;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .news-alert.type-guidance  { background: rgba(255,160,0,0.10); border: 1px solid rgba(255,160,0,0.28); }
+  .news-alert.type-acquisition { background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.25); }
+  .news-alert.type-alert     { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); }
+  .news-alert-icon { font-size: 0.8rem; flex-shrink: 0; margin-top: 1px; }
+  .news-alert-body { flex: 1; }
+  .news-alert-hl   { color: var(--text1); font-weight: 500; }
+  .news-alert-meta { color: var(--text3); margin-top: 2px; }
+  .news-alert a    { color: inherit; text-decoration: underline; opacity: 0.7; }
   /* Régression band */
   .reg-band {
     margin-bottom: 0.75rem;
@@ -847,6 +865,23 @@ function renderCard(s) {
     : '';
   const srcs = (bd.sources || ['Yahoo Finance']).join(' + ');
 
+  // ── News alert ──
+  const na = bd.news_alert || null;
+  const newsAlertHTML = na ? (() => {
+    const icons = { guidance: '⚠️', acquisition: '📋', alert: '🚨' };
+    const labels = { guidance: 'Guidance / résultats', acquisition: 'M&A', alert: 'Alerte réglementaire' };
+    const icon  = icons[na.type]  || '📰';
+    const label = labels[na.type] || 'Actualité';
+    const link  = na.url ? ` — <a href="${na.url}" target="_blank" rel="noopener">lire</a>` : '';
+    return `<div class="news-alert type-${na.type}">
+      <span class="news-alert-icon">${icon}</span>
+      <div class="news-alert-body">
+        <div class="news-alert-hl">${label} · ${na.date}</div>
+        <div class="news-alert-meta">${na.headline}${link}</div>
+      </div>
+    </div>`;
+  })() : '';
+
   // ── Golden / Death Cross ──
   const crossRegime = bd.cross_regime || 'neutral';
   const crossDays   = bd.cross_days_ago   != null ? bd.cross_days_ago   : null;
@@ -1012,6 +1047,7 @@ function renderCard(s) {
           </div>
           ${crossHTML}
           ${regBandHTML}
+          ${newsAlertHTML}
           <div class="detail-meta">
             ${metaItems.map(m => `<span>${m}</span>`).join('')}
           </div>
