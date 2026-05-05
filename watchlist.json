@@ -24,6 +24,9 @@
         "cross_slope_mm21_pct": 3.98,
         "cross_volume_confirmed": false,
         "cross_pts": 20,
+        "rsi_pts": 10,
+        "vol_pts": 0,
+        "reg_pts": 5,
         "rsi": 53.0,
         "mm21": 197.28,
         "mm200": 183.97,
@@ -39,7 +42,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 98/100 — Golden Cross frais (10j) — fenêtre signal optimale, cours proche de sa droite de régression, RSI en zone favorable, croissance CA solide (73%/an).",
+      "justification": "Score 98/100 — Golden Cross frais (10j) — fenêtre signal optimale, cours proche de sa droite de régression, RSI en zone favorable, croissance CA solide (73%/an), marges excellentes (56%), consensus analystes très favorable.",
       "rank": 1
     },
     {
@@ -58,13 +61,16 @@
         "cross_regime": "golden",
         "cross_type": "golden",
         "cross_days_ago": 159,
-        "cross_spread_pct": 27.34,
-        "cross_slope_mm21_pct": 1.09,
+        "cross_spread_pct": 27.35,
+        "cross_slope_mm21_pct": 1.1,
         "cross_volume_confirmed": true,
         "cross_pts": 13,
-        "rsi": 51.7,
-        "mm21": 1219.41,
-        "mm200": 957.58,
+        "rsi_pts": 10,
+        "vol_pts": 5,
+        "reg_pts": 5,
+        "rsi": 51.8,
+        "mm21": 1219.45,
+        "mm200": 957.59,
         "regression_z": 0.02,
         "regression_signal": "neutre",
         "regression_pente_pct": 25.4,
@@ -77,7 +83,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 91/100 — cours proche de sa droite de régression, RSI en zone favorable, croissance CA modérée (13%/an), marges excellentes (30%).",
+      "justification": "Score 91/100 — cours proche de sa droite de régression, RSI en zone favorable, croissance CA modérée (13%/an), marges excellentes (30%), consensus analystes très favorable.",
       "rank": 2
     },
     {
@@ -100,6 +106,9 @@
         "cross_slope_mm21_pct": 6.08,
         "cross_volume_confirmed": false,
         "cross_pts": 20,
+        "rsi_pts": 0,
+        "vol_pts": 5,
+        "reg_pts": 5,
         "rsi": 79.9,
         "mm21": 248.54,
         "mm200": 227.62,
@@ -111,10 +120,11 @@
         "net_margin_pct": 12.2,
         "confiance": 1.0,
         "sources": [
-          "Yahoo Finance"
+          "Yahoo Finance",
+          "Finnhub"
         ]
       },
-      "justification": "Score 90/100 — Golden Cross frais (8j) — fenêtre signal optimale, cours proche de sa droite de régression, croissance CA solide (17%/an), marges positives.",
+      "justification": "Score 90/100 — Golden Cross frais (8j) — fenêtre signal optimale, cours proche de sa droite de régression, croissance CA solide (17%/an), marges positives, consensus analystes très favorable.",
       "rank": 3
     },
     {
@@ -137,6 +147,9 @@
         "cross_slope_mm21_pct": 6.86,
         "cross_volume_confirmed": false,
         "cross_pts": 17,
+        "rsi_pts": 10,
+        "vol_pts": 0,
+        "reg_pts": 0,
         "rsi": 66.0,
         "mm21": 392.08,
         "mm200": 339.67,
@@ -148,10 +161,11 @@
         "net_margin_pct": 36.6,
         "confiance": 1.0,
         "sources": [
-          "Yahoo Finance"
+          "Yahoo Finance",
+          "Finnhub"
         ]
       },
-      "justification": "Score 90/100 — Golden Cross récent (13j), prix en surachat régression (+2.0σ) — prudence, RSI en zone favorable, croissance CA solide (30%/an).",
+      "justification": "Score 90/100 — Golden Cross récent (13j), prix en surachat régression (+2.0σ) — prudence, RSI en zone favorable, croissance CA solide (30%/an), marges excellentes (37%), consensus analystes très favorable.",
       "rank": 4
     },
     {
@@ -174,6 +188,9 @@
         "cross_slope_mm21_pct": 1.73,
         "cross_volume_confirmed": false,
         "cross_pts": 20,
+        "rsi_pts": 10,
+        "vol_pts": 5,
+        "reg_pts": 5,
         "rsi": 51.6,
         "mm21": 309.55,
         "mm200": 302.36,
@@ -185,10 +202,11 @@
         "net_margin_pct": 33.9,
         "confiance": 1.0,
         "sources": [
-          "Yahoo Finance"
+          "Yahoo Finance",
+          "Finnhub"
         ]
       },
-      "justification": "Score 90/100 — Golden Cross frais (8j) — fenêtre signal optimale, légèrement au-dessus de sa régression (+1.5σ), RSI en zone favorable, croissance CA modérée (13%/an).",
+      "justification": "Score 90/100 — Golden Cross frais (8j) — fenêtre signal optimale, légèrement au-dessus de sa régression (+1.5σ), RSI en zone favorable, croissance CA modérée (13%/an), marges excellentes (34%), consensus analystes positif.",
       "rank": 5
     },
     {
@@ -211,6 +229,9 @@
         "cross_slope_mm21_pct": 12.85,
         "cross_volume_confirmed": false,
         "cross_pts": 7,
+        "rsi_pts": 10,
+        "vol_pts": 0,
+        "reg_pts": 5,
         "rsi": 69.9,
         "mm21": 287.59,
         "mm200": 212.29,
@@ -222,10 +243,11 @@
         "net_margin_pct": 12.5,
         "confiance": 1.0,
         "sources": [
-          "Yahoo Finance"
+          "Yahoo Finance",
+          "Finnhub"
         ]
       },
-      "justification": "Score 85/100 — cours proche de sa droite de régression, RSI en zone favorable, croissance CA solide (34%/an), marges positives.",
+      "justification": "Score 85/100 — cours proche de sa droite de régression, RSI en zone favorable, croissance CA solide (34%/an), marges positives, consensus analystes très favorable.",
       "rank": 6
     },
     {
@@ -248,6 +270,9 @@
         "cross_slope_mm21_pct": 2.43,
         "cross_volume_confirmed": false,
         "cross_pts": 2,
+        "rsi_pts": 10,
+        "vol_pts": 5,
+        "reg_pts": 5,
         "rsi": 56.5,
         "mm21": 1033.43,
         "mm200": 1073.23,
@@ -263,7 +288,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 85/100 — cours proche de sa droite de régression, RSI en zone favorable, croissance CA solide (27%/an), marges excellentes (24%).",
+      "justification": "Score 85/100 — cours proche de sa droite de régression, RSI en zone favorable, croissance CA solide (27%/an), marges excellentes (24%), consensus analystes très favorable.",
       "rank": 7
     },
     {
@@ -286,6 +311,9 @@
         "cross_slope_mm21_pct": 5.45,
         "cross_volume_confirmed": false,
         "cross_pts": 7,
+        "rsi_pts": 10,
+        "vol_pts": 5,
+        "reg_pts": 0,
         "rsi": 67.2,
         "mm21": 370.36,
         "mm200": 280.67,
@@ -301,7 +329,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 85/100 — prix en surachat régression (+3.3σ) — prudence, RSI en zone favorable, croissance CA solide (30%/an), marges excellentes (23%).",
+      "justification": "Score 85/100 — prix en surachat régression (+3.3σ) — prudence, RSI en zone favorable, croissance CA solide (30%/an), marges excellentes (23%), consensus analystes très favorable.",
       "rank": 8
     },
     {
@@ -324,10 +352,13 @@
         "cross_slope_mm21_pct": 1.73,
         "cross_volume_confirmed": false,
         "cross_pts": 18,
-        "rsi": 61.0,
-        "mm21": 260.39,
+        "rsi_pts": 10,
+        "vol_pts": 5,
+        "reg_pts": 5,
+        "rsi": 60.5,
+        "mm21": 260.38,
         "mm200": 233.09,
-        "regression_z": 0.73,
+        "regression_z": 0.72,
         "regression_signal": "neutre",
         "regression_pente_pct": 9.9,
         "regression_window_years": 20,
@@ -339,7 +370,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 84/100 — Golden Cross récent (30j), cours proche de sa droite de régression, RSI en zone favorable, croissance CA modérée (8%/an).",
+      "justification": "Score 84/100 — Golden Cross récent (30j), cours proche de sa droite de régression, RSI en zone favorable, croissance CA modérée (8%/an), marges excellentes (27%), consensus analystes très favorable.",
       "rank": 9
     },
     {
@@ -362,6 +393,9 @@
         "cross_slope_mm21_pct": 0.08,
         "cross_volume_confirmed": false,
         "cross_pts": 11,
+        "rsi_pts": 10,
+        "vol_pts": 0,
+        "reg_pts": 5,
         "rsi": 58.6,
         "mm21": 919.03,
         "mm200": 910.65,
@@ -373,10 +407,11 @@
         "net_margin_pct": 35.0,
         "confiance": 1.0,
         "sources": [
-          "Yahoo Finance"
+          "Yahoo Finance",
+          "Finnhub"
         ]
       },
-      "justification": "Score 84/100 — légèrement au-dessus de sa régression (+1.3σ), RSI en zone favorable, croissance CA solide (56%/an), marges excellentes (35%).",
+      "justification": "Score 84/100 — légèrement au-dessus de sa régression (+1.3σ), RSI en zone favorable, croissance CA solide (56%/an), marges excellentes (35%), consensus analystes très favorable.",
       "rank": 10
     },
     {
@@ -395,14 +430,17 @@
         "cross_regime": "golden",
         "cross_type": "golden",
         "cross_days_ago": 8,
-        "cross_spread_pct": 6.27,
+        "cross_spread_pct": 6.28,
         "cross_slope_mm21_pct": 2.82,
         "cross_volume_confirmed": false,
         "cross_pts": 20,
-        "rsi": 62.2,
-        "mm21": 94.35,
+        "rsi_pts": 10,
+        "vol_pts": 5,
+        "reg_pts": 0,
+        "rsi": 62.5,
+        "mm21": 94.36,
         "mm200": 88.79,
-        "regression_z": -0.95,
+        "regression_z": -0.94,
         "regression_signal": "sous tendance",
         "regression_pente_pct": 16.1,
         "regression_window_years": 20,
@@ -414,7 +452,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 83/100 — Golden Cross frais (8j) — fenêtre signal optimale, prix sous sa droite de régression (-0.9σ), RSI en zone favorable, marges positives.",
+      "justification": "Score 83/100 — Golden Cross frais (8j) — fenêtre signal optimale, prix sous sa droite de régression (-0.9σ), RSI en zone favorable, marges positives, consensus analystes très favorable.",
       "rank": 11
     },
     {
@@ -437,6 +475,9 @@
         "cross_slope_mm21_pct": 3.9,
         "cross_volume_confirmed": false,
         "cross_pts": 15,
+        "rsi_pts": 10,
+        "vol_pts": 5,
+        "reg_pts": 0,
         "rsi": 62.7,
         "mm21": 405.82,
         "mm200": 361.54,
@@ -452,7 +493,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 83/100 — Golden Cross confirmé (57j), légèrement au-dessus de sa régression (+1.7σ), RSI en zone favorable, croissance CA modérée (13%/an).",
+      "justification": "Score 83/100 — Golden Cross confirmé (57j), légèrement au-dessus de sa régression (+1.7σ), RSI en zone favorable, croissance CA modérée (13%/an), marges positives, consensus analystes très favorable.",
       "rank": 12
     },
     {
@@ -471,14 +512,17 @@
         "cross_regime": "death",
         "cross_type": "death",
         "cross_days_ago": 184,
-        "cross_spread_pct": -26.27,
-        "cross_slope_mm21_pct": 2.6,
+        "cross_spread_pct": -26.26,
+        "cross_slope_mm21_pct": 2.62,
         "cross_volume_confirmed": false,
         "cross_pts": 4,
-        "rsi": 55.8,
-        "mm21": 934.04,
-        "mm200": 1266.85,
-        "regression_z": -1.47,
+        "rsi_pts": 10,
+        "vol_pts": 5,
+        "reg_pts": 0,
+        "rsi": 56.8,
+        "mm21": 934.25,
+        "mm200": 1266.87,
+        "regression_z": -1.46,
         "regression_signal": "sous tendance",
         "regression_pente_pct": 8.5,
         "regression_window_years": 10,
@@ -490,7 +534,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 82/100 — prix sous sa droite de régression (-1.5σ), RSI en zone favorable, croissance CA solide (17%/an), marges excellentes (45%).",
+      "justification": "Score 82/100 — prix sous sa droite de régression (-1.5σ), RSI en zone favorable, croissance CA solide (17%/an), marges excellentes (45%), consensus analystes très favorable.",
       "rank": 13
     },
     {
@@ -513,6 +557,9 @@
         "cross_slope_mm21_pct": 3.86,
         "cross_volume_confirmed": true,
         "cross_pts": 4,
+        "rsi_pts": 10,
+        "vol_pts": 5,
+        "reg_pts": 5,
         "rsi": 61.8,
         "mm21": 164.8,
         "mm200": 210.78,
@@ -524,10 +571,11 @@
         "net_margin_pct": 25.3,
         "confiance": 1.0,
         "sources": [
-          "Yahoo Finance"
+          "Yahoo Finance",
+          "Finnhub"
         ]
       },
-      "justification": "Score 82/100 — cours proche de sa droite de régression, RSI en zone favorable, croissance CA solide (22%/an), marges excellentes (25%).",
+      "justification": "Score 82/100 — cours proche de sa droite de régression, RSI en zone favorable, croissance CA solide (22%/an), marges excellentes (25%), consensus analystes très favorable.",
       "rank": 14
     },
     {
@@ -550,6 +598,9 @@
         "cross_slope_mm21_pct": -1.55,
         "cross_volume_confirmed": false,
         "cross_pts": 4,
+        "rsi_pts": 10,
+        "vol_pts": 5,
+        "reg_pts": 0,
         "rsi": 51.7,
         "mm21": 390.94,
         "mm200": 584.25,
@@ -565,7 +616,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 82/100 — prix sous sa droite de régression (-3.5σ), RSI en zone favorable, croissance CA solide (17%/an), marges excellentes (22%).",
+      "justification": "Score 82/100 — prix sous sa droite de régression (-3.5σ), RSI en zone favorable, croissance CA solide (17%/an), marges excellentes (22%), consensus analystes très favorable.",
       "rank": 15
     },
     {
@@ -584,14 +635,17 @@
         "cross_regime": "golden",
         "cross_type": "golden",
         "cross_days_ago": 184,
-        "cross_spread_pct": 9.77,
-        "cross_slope_mm21_pct": -1.33,
+        "cross_spread_pct": 9.75,
+        "cross_slope_mm21_pct": -1.35,
         "cross_volume_confirmed": false,
         "cross_pts": 7,
-        "rsi": 31.6,
-        "mm21": 145.49,
+        "rsi_pts": 0,
+        "vol_pts": 5,
+        "reg_pts": 5,
+        "rsi": 31.2,
+        "mm21": 145.47,
         "mm200": 132.55,
-        "regression_z": 0.37,
+        "regression_z": 0.35,
         "regression_signal": "neutre",
         "regression_pente_pct": 9.3,
         "regression_window_years": 20,
@@ -626,6 +680,9 @@
         "cross_slope_mm21_pct": 3.16,
         "cross_volume_confirmed": false,
         "cross_pts": 2,
+        "rsi_pts": 10,
+        "vol_pts": 5,
+        "reg_pts": 0,
         "rsi": 54.0,
         "mm21": 405.96,
         "mm200": 466.16,
@@ -641,7 +698,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 80/100 — prix sous sa droite de régression (-2.5σ), RSI en zone favorable, croissance CA solide (18%/an), marges excellentes (39%).",
+      "justification": "Score 80/100 — prix sous sa droite de régression (-2.5σ), RSI en zone favorable, croissance CA solide (18%/an), marges excellentes (39%), consensus analystes très favorable.",
       "rank": 17
     },
     {
@@ -664,6 +721,9 @@
         "cross_slope_mm21_pct": -0.36,
         "cross_volume_confirmed": true,
         "cross_pts": 2,
+        "rsi_pts": 10,
+        "vol_pts": 5,
+        "reg_pts": 0,
         "rsi": 52.8,
         "mm21": 179.39,
         "mm200": 227.37,
@@ -675,10 +735,11 @@
         "net_margin_pct": 18.0,
         "confiance": 1.0,
         "sources": [
-          "Yahoo Finance"
+          "Yahoo Finance",
+          "Finnhub"
         ]
       },
-      "justification": "Score 80/100 — prix sous sa droite de régression (-2.4σ), RSI en zone favorable, croissance CA modérée (12%/an), marges excellentes (18%).",
+      "justification": "Score 80/100 — prix sous sa droite de régression (-2.4σ), RSI en zone favorable, croissance CA modérée (12%/an), marges excellentes (18%), consensus analystes très favorable.",
       "rank": 18
     },
     {
@@ -697,14 +758,17 @@
         "cross_regime": "golden",
         "cross_type": "golden",
         "cross_days_ago": 151,
-        "cross_spread_pct": 10.17,
-        "cross_slope_mm21_pct": 3.24,
+        "cross_spread_pct": 10.14,
+        "cross_slope_mm21_pct": 3.21,
         "cross_volume_confirmed": false,
         "cross_pts": 11,
-        "rsi": 53.9,
-        "mm21": 265.06,
-        "mm200": 240.6,
-        "regression_z": 1.2,
+        "rsi_pts": 10,
+        "vol_pts": 5,
+        "reg_pts": 5,
+        "rsi": 52.5,
+        "mm21": 264.98,
+        "mm200": 240.59,
+        "regression_z": 1.16,
         "regression_signal": "au-dessus",
         "regression_pente_pct": 12.4,
         "regression_window_years": 20,
@@ -739,6 +803,9 @@
         "cross_slope_mm21_pct": 5.4,
         "cross_volume_confirmed": false,
         "cross_pts": 11,
+        "rsi_pts": 10,
+        "vol_pts": 5,
+        "reg_pts": 5,
         "rsi": 64.3,
         "mm21": 783.05,
         "mm200": 579.93,
@@ -777,6 +844,9 @@
         "cross_slope_mm21_pct": -1.66,
         "cross_volume_confirmed": false,
         "cross_pts": 10,
+        "rsi_pts": 0,
+        "vol_pts": 5,
+        "reg_pts": 0,
         "rsi": 39.7,
         "mm21": 743.3,
         "mm200": 683.43,
@@ -815,6 +885,9 @@
         "cross_slope_mm21_pct": 0.22,
         "cross_volume_confirmed": false,
         "cross_pts": 11,
+        "rsi_pts": 10,
+        "vol_pts": 5,
+        "reg_pts": 5,
         "rsi": 56.7,
         "mm21": 1002.62,
         "mm200": 948.07,
@@ -826,10 +899,11 @@
         "net_margin_pct": 3.0,
         "confiance": 1.0,
         "sources": [
-          "Yahoo Finance"
+          "Yahoo Finance",
+          "Finnhub"
         ]
       },
-      "justification": "Score 76/100 — cours proche de sa droite de régression, RSI en zone favorable, croissance CA solide (22%/an), marges positives.",
+      "justification": "Score 76/100 — cours proche de sa droite de régression, RSI en zone favorable, croissance CA solide (22%/an), marges positives, consensus analystes très favorable.",
       "rank": 22
     },
     {
@@ -852,6 +926,9 @@
         "cross_slope_mm21_pct": 2.94,
         "cross_volume_confirmed": true,
         "cross_pts": 13,
+        "rsi_pts": 10,
+        "vol_pts": 5,
+        "reg_pts": 0,
         "rsi": 53.8,
         "mm21": 391.25,
         "mm200": 269.89,
@@ -890,6 +967,9 @@
         "cross_slope_mm21_pct": 2.05,
         "cross_volume_confirmed": false,
         "cross_pts": 2,
+        "rsi_pts": 10,
+        "vol_pts": 0,
+        "reg_pts": 0,
         "rsi": 62.4,
         "mm21": 313.73,
         "mm200": 331.77,
@@ -901,10 +981,11 @@
         "net_margin_pct": 51.7,
         "confiance": 1.0,
         "sources": [
-          "Yahoo Finance"
+          "Yahoo Finance",
+          "Finnhub"
         ]
       },
-      "justification": "Score 75/100 — prix sous sa droite de régression (-1.9σ), RSI en zone favorable, croissance CA solide (17%/an), marges excellentes (52%).",
+      "justification": "Score 75/100 — prix sous sa droite de régression (-1.9σ), RSI en zone favorable, croissance CA solide (17%/an), marges excellentes (52%), consensus analystes très favorable.",
       "rank": 24
     },
     {
@@ -927,6 +1008,9 @@
         "cross_slope_mm21_pct": 8.95,
         "cross_volume_confirmed": false,
         "cross_pts": 10,
+        "rsi_pts": 0,
+        "vol_pts": 5,
+        "reg_pts": 5,
         "rsi": 77.1,
         "mm21": 240.56,
         "mm200": 191.86,
