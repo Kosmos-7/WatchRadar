@@ -334,6 +334,8 @@ UNIVERS = [
     "BLK","QCOM","TXN","AMAT","NOW","PANW","INTU","AXP","SPGI",
     "HON","ETN","SYK","VRTX","ADI","REGN","MMC","CI","PLD",
     "ADBE","MCD","NEE","PFE","WMT","AMGN",
+    # Champions APAC — NYSE ADR (données propres yfinance + Finnhub)
+    "TSM","SE","SONY",
 ]
 
 # ── JUSTIFICATION ─────────────────────────────────────────────────────────────
