@@ -550,7 +550,7 @@
   <div class="kpi-grid" id="kpi-grid">
     <div class="kpi"><div class="kpi-label">Capital</div><div class="skel" style="height:28px;margin-top:4px"></div></div>
     <div class="kpi"><div class="kpi-label">Performance</div><div class="skel" style="height:28px;margin-top:4px"></div></div>
-    <div class="kpi"><div class="kpi-label">vs CAC 40</div><div class="skel" style="height:28px;margin-top:4px"></div></div>
+    <div class="kpi"><div class="kpi-label">vs MSCI World</div><div class="skel" style="height:28px;margin-top:4px"></div></div>
     <div class="kpi"><div class="kpi-label">Liquidités</div><div class="skel" style="height:28px;margin-top:4px"></div></div>
     <div class="kpi"><div class="kpi-label">Positions</div><div class="skel" style="height:28px;margin-top:4px"></div></div>
   </div>
@@ -560,7 +560,7 @@
       <h2>Performance depuis le lancement</h2>
       <div class="legend">
         <div class="li"><div class="ld" style="background:var(--gold)"></div>WatchRadar</div>
-        <div class="li"><div class="ld" style="background:var(--text3)"></div>CAC 40</div>
+        <div class="li"><div class="ld" style="background:var(--text3)"></div>MSCI World</div>
         <div class="li"><div class="ld" style="background:var(--red);opacity:0.5"></div>Ligne rouge</div>
       </div>
     </div>
@@ -641,7 +641,7 @@ function renderChart(history, currentPerf) {
   const n   = history.length;
   const toX = i => n < 2 ? xMin : xMin + (i / (n - 1)) * (xMax - xMin);
 
-  const pts  = history.map((h, i) => ({ x: toX(i), y: toY(h.perf), perf: h.perf, bench: h.benchmark_cac40 || 0, note: h.note, date: h.date }));
+  const pts  = history.map((h, i) => ({ x: toX(i), y: toY(h.perf), perf: h.perf, bench: h.benchmark_msci ?? h.benchmark_cac40 ?? 0, note: h.note, date: h.date }));
   const last = pts[pts.length - 1];
 
   // Grille horizontale
@@ -740,7 +740,7 @@ async function loadPortfolio() {
       renderChart(history, d.performance);
     } else {
       // Fallback : juste le point actuel
-      renderChart([{date: d.updated_at, perf: 0, benchmark_cac40: 0}, {date: d.updated_at, perf: d.performance, benchmark_cac40: d.benchmark_cac40}], d.performance);
+      renderChart([{date: d.updated_at, perf: 0, benchmark_msci: 0}, {date: d.updated_at, perf: d.performance, benchmark_msci: d.benchmark_msci}], d.performance);
     }
 
     if (d.mode_panique) document.getElementById('panic-banner').style.display = 'block';
@@ -761,7 +761,7 @@ async function loadPortfolio() {
         </div>
       </div>
       <div class="survival-desc">
-        L'IA doit <strong>battre le CAC 40 sur 12 mois glissants</strong>. Deux trimestres consécutifs sous le CAC 40 = post-mortem public + remise à zéro. <strong>Transparence totale.</strong>
+        L'IA doit <strong>battre le MSCI World sur 12 mois glissants</strong>. Deux trimestres consécutifs sous le MSCI World = post-mortem public + remise à zéro. <strong>Transparence totale.</strong>
       </div>
       <div class="threshold-row">
         <div class="th">
@@ -770,14 +770,14 @@ async function loadPortfolio() {
           <div class="th-sub">sur 20 000 € · depuis jan. ${new Date().getFullYear()}</div>
         </div>
         <div class="th">
-          <div class="th-label">CAC 40 (même période)</div>
-          <div class="th-value neu">${sign(d.benchmark_cac40)}${fmt(d.benchmark_cac40,1)} %</div>
+          <div class="th-label">MSCI World (même période)</div>
+          <div class="th-value neu">${sign(d.benchmark_msci)}${fmt(d.benchmark_msci,1)} %</div>
           <div class="th-sub">benchmark principal</div>
         </div>
         <div class="th">
-          <div class="th-label">Avance sur CAC 40</div>
+          <div class="th-label">Avance sur MSCI World</div>
           <div class="th-value ${d.vs_benchmark>=0?'up':'dn'}">${sign(d.vs_benchmark)}${fmt(d.vs_benchmark,1)} pp</div>
-          <div class="th-sub">mort = 2 trim. sous CAC 40</div>
+          <div class="th-sub">mort = 2 trim. sous MSCI World</div>
         </div>
         <div class="th">
           <div class="th-label">Drawdown max</div>
@@ -808,9 +808,9 @@ async function loadPortfolio() {
       </div>
       <div class="kpi">
         <div class="kpi-accent" style="background:${d.vs_benchmark>=0?'var(--green)':'var(--red)'}"></div>
-        <div class="kpi-label">vs CAC 40</div>
+        <div class="kpi-label">vs MSCI World</div>
         <div class="kpi-value ${d.vs_benchmark>=0?'up':'dn'}">${sign(d.vs_benchmark)}${fmt(d.vs_benchmark,1)} pp</div>
-        <div class="kpi-sub">CAC : ${sign(d.benchmark_cac40)}${fmt(d.benchmark_cac40,1)} %</div>
+        <div class="kpi-sub">MSCI : ${sign(d.benchmark_msci)}${fmt(d.benchmark_msci,1)} % · CAC : ${sign(d.benchmark_cac40)}${fmt(d.benchmark_cac40,1)} %</div>
       </div>
       <div class="kpi">
         <div class="kpi-accent" style="background:var(--blue)"></div>

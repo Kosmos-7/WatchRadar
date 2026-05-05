@@ -315,27 +315,25 @@ def reg_signal_label(z):
 
 # ── UNIVERS ──────────────────────────────────────────────────────────────────
 UNIVERS = [
-    # CAC 40
-    "AIR.PA","AI.PA","ALO.PA","BN.PA","CAP.PA","CS.PA","DSY.PA",
-    "ENGI.PA","EL.PA","ERF.PA","GLE.PA","HO.PA","KER.PA","LR.PA",
-    "MC.PA","OR.PA","ORA.PA","PUB.PA","RMS.PA","SAF.PA",
-    "SGO.PA","SU.PA","TTE.PA","VIE.PA","WLN.PA",
-    # DAX 40
-    "ADS.DE","ALV.DE","BAS.DE","BAYN.DE","BMW.DE","DB1.DE",
-    "DBK.DE","DHL.DE","DTE.DE","EOAN.DE","FRE.DE","IFX.DE",
-    "LIN.DE","MBG.DE","MRK.DE","MUV2.DE","RWE.DE","SAP.DE","SIE.DE","VOW3.DE",
-    # AEX 25
+    # CAC 40 — 12 valeurs (liquidité + compatibilité modèle momentum)
+    "AIR.PA","AI.PA","CAP.PA","CS.PA","DSY.PA","HO.PA",
+    "MC.PA","OR.PA","RMS.PA","SAF.PA","SU.PA","TTE.PA",
+    # DAX 40 — 10 valeurs (tech/industrie/finance, vieille industrie exclue)
+    "ADS.DE","ALV.DE","DB1.DE","FRE.DE","IFX.DE",
+    "LIN.DE","MRK.DE","MUV2.DE","SAP.DE","SIE.DE",
+    # AEX 25 — 7 valeurs (inchangé)
     "ADYEN.AS","ASM.AS","ASML.AS","HEIA.AS","IMCD.AS","PHIA.AS","RAND.AS",
-    # OMX (Nordics)
+    # OMX Nordics — 2 valeurs
     "NOVO-B.CO","VWS.CO",
-    # LSE
+    # LSE — 4 valeurs
     "REL.L","LSEG.L","AZN.L","ULVR.L",
-    # S&P 100
-    "NVDA","MSFT","GOOGL","AMZN","META","AVGO","TSLA","LLY",
+    # S&P 100 — 52 valeurs (ajout AAPL, ADBE, MCD, NEE, PFE, WMT, AMGN)
+    "AAPL","NVDA","MSFT","GOOGL","AMZN","META","AVGO","TSLA","LLY",
     "V","MA","JPM","UNH","XOM","PG","HD","MRK","ABBV","COST",
     "CRM","NFLX","AMD","ORCL","ACN","TMO","ABT","ISRG","GS",
     "BLK","QCOM","TXN","AMAT","NOW","PANW","INTU","AXP","SPGI",
     "HON","ETN","SYK","VRTX","ADI","REGN","MMC","CI","PLD",
+    "ADBE","MCD","NEE","PFE","WMT","AMGN",
 ]
 
 # ── JUSTIFICATION ─────────────────────────────────────────────────────────────

@@ -243,7 +243,7 @@ def construire_prompt(portfolio, watchlist, contexte, macro_news=None):
     else:
         macro_news_section = ""
 
-    prompt = f"""Tu es l'IA qui gère le portefeuille fictif WatchRadar. Tu joues ta survie : tu dois battre le CAC40 sur 12 mois glissants ou tu te réinitialises publiquement.
+    prompt = f"""Tu es l'IA qui gère le portefeuille fictif WatchRadar. Tu joues ta survie : tu dois battre le MSCI World sur 12 mois glissants ou tu te réinitialises publiquement.
 
 ## RÈGLES DE SURVIE (non négociables)
 1. Aucune vente avant 90 jours de détention — sauf signal fondamental majeur documenté
@@ -251,11 +251,11 @@ def construire_prompt(portfolio, watchlist, contexte, macro_news=None):
 3. Zéro ajustement en mode panique (CAC40 < -5% sur la semaine) — sauf si mode_panique = false
 4. Chaque décision doit être expliquée avec les données qui la motivent
 5. Les retours utilisateurs et les erreurs passées doivent influencer les décisions
-6. Deux trimestres consécutifs sous le CAC40 = remise à zéro publique
+6. Deux trimestres consécutifs sous le MSCI World = remise à zéro publique
 
 ## ÉTAT ACTUEL DU PORTEFEUILLE
 - Date : {today}
-- Capital : {capital:.0f}€ (performance YTD : {perf:+.1f}% vs CAC40 {bench:+.1f}%, soit {vs:+.1f}pp)
+- Capital : {capital:.0f}€ (performance YTD : {perf:+.1f}% vs MSCI World {bench:+.1f}%, soit {vs:+.1f}pp)
 - Liquidités disponibles : {liquidites:.0f}€
 - Trimestres négatifs vs benchmark : {trim_neg}/2
 - Positions ouvertes ({len(positions)}) :
@@ -587,10 +587,10 @@ Ne jamais inclure de balises markdown ou de backticks.""",
     for pos in positions:
         pos["poids"] = round(pos["valeur_actuelle"] / capital_actuel * 100, 1) if capital_actuel > 0 else 0
 
-    # Benchmarks
+    # Benchmarks — MSCI World comme référence primaire (portefeuille ~70% US, global)
     bench_cac  = contexte.get("cac40", {}).get("perf_ytd", portfolio.get("benchmark_cac40", 0))
     bench_msci = contexte.get("msci",  {}).get("perf_ytd", portfolio.get("benchmark_msci", 0))
-    vs_bench   = round(performance - bench_cac, 2)
+    vs_bench   = round(performance - bench_msci, 2)
 
     # ── Trimestres négatifs — évaluation une seule fois par trimestre ──────────
     trim_neg = portfolio.get("trimestres_negatifs", 0)
