@@ -651,6 +651,7 @@
   ],
   "nb_positions": 15,
   "nb_positives": 5,
+  "nb_neutres": 4,
   "nb_negatives": 6,
   "analyse_claude": {
     "analyse_macro": "Le marché présente une divergence notable : le CAC40 recule de -1.1% cette semaine et reste négatif YTD à -2.1%, tandis que le MSCI World progresse de +0.6% (+4.8% YTD), confirmant que la surperformance de WatchRadar (+10.5% YTD) repose sur une exposition majoritaire aux valeurs tech mondiales plutôt qu'européennes. Le contexte n'est pas en mode panique (seuil -5% non atteint), ce qui autorise des ajustements mesurés. La faiblesse du CAC40 plaide pour maintenir le biais international/tech du portefeuille et limiter les expositions aux valeurs purement européennes en difficulté.",
@@ -663,19 +664,22 @@
       "date": "2026-01-02",
       "perf": 0.0,
       "capital": 10000.0,
-      "benchmark_cac40": 0.0
+      "benchmark_cac40": 0.0,
+      "benchmark_msci": 0.0
     },
     {
       "date": "2026-04-30",
       "perf": 32.28,
       "capital": 13228.0,
-      "benchmark_cac40": -0.8
+      "benchmark_cac40": -0.8,
+      "benchmark_msci": 4.0
     },
     {
       "date": "2026-05-05",
       "perf": 10.54,
       "capital": 22107.39,
       "benchmark_cac40": -2.05,
+      "benchmark_msci": 4.85,
       "note": "Injection +10k€ · LLY +AMD"
     }
   ],

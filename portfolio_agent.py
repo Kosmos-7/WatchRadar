@@ -613,7 +613,7 @@ Ne jamais inclure de balises markdown ou de backticks.""",
     # ── Historique de performance (une entrée par run, max 52 semaines) ──────
     history = portfolio.get("performance_history", [])
     if not any(h.get("date") == today for h in history):
-        history.append({"date": today, "perf": performance, "capital": capital_actuel, "benchmark_cac40": bench_cac})
+        history.append({"date": today, "perf": performance, "capital": capital_actuel, "benchmark_cac40": bench_cac, "benchmark_msci": bench_msci})
     history = history[-52:]
     max_dd = calc_max_drawdown(history)
 
@@ -639,6 +639,7 @@ Ne jamais inclure de balises markdown ou de backticks.""",
         "nb_positions":        len(positions),
         "nb_positives":        len([p for p in positions if p.get("performance", 0) > 0]),
         "nb_negatives":        len([p for p in positions if p.get("performance", 0) < 0]),
+        "nb_neutres":          len([p for p in positions if p.get("performance", 0) == 0.0]),
         # Analyse Claude — affiché dans le site
         "analyse_claude": {
             "analyse_macro":        decisions_claude.get("analyse_macro", ""),
