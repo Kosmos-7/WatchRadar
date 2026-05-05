@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portefeuille IA — WatchRadar</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0b0b0e;
+    --surface: #111116;
+    --surface2: #18181f;
+    --surface3: #202028;
+    --border: #22222e;
+    --border2: #30303e;
+    --text: #ededf5;
+    --text2: #8888a8;
+    --text3: #52526a;
+    --gold: #e8a820;
+    --gold2: #a07010;
+    --gold-dim: rgba(232,168,32,0.1);
+    --green: #1cc87a;
+    --green-dim: rgba(28,200,122,0.1);
+    --red: #f05454;
+    --red-dim: rgba(240,84,84,0.1);
+    --blue: #5080f8;
+    --blue-dim: rgba(80,128,248,0.1);
+    --orange: #e07840;
+    --orange-dim: rgba(224,120,64,0.1);
+    --radius: 10px;
+    --radius-lg: 16px;
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HEADER ── */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    background: rgba(11,11,14,0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    z-index: 100;
+  }
+  .brand { font-family: Georgia, serif; font-size: 1.2rem; color: var(--text); text-decoration: none; letter-spacing: -0.3px; }
+  .brand em { color: var(--gold); font-style: normal; }
+  nav { display: flex; gap: 0.25rem; }
+  nav a { font-size: 0.8rem; color: var(--text3); text-decoration: none; padding: 5px 12px; border-radius: 6px; transition: color 0.15s, background 0.15s; }
+  nav a:hover { color: var(--text2); background: var(--surface2); }
+  nav a.active { color: var(--text); background: var(--surface2); border: 1px solid var(--border2); }
+
+  main { max-width: 860px; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+
+  /* ── HERO ── */
+  .hero { margin-bottom: 2rem; position: relative; }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: -80px;
+    width: 500px; height: 360px;
+    background: radial-gradient(ellipse at 30% 40%, rgba(28,200,122,0.03) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .fictif-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--gold-dim);
+    border: 1px solid rgba(232,168,32,0.2);
+    border-radius: 100px;
+    padding: 4px 12px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.67rem;
+    color: var(--gold);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .hero h1 {
+    font-family: Georgia, serif;
+    font-size: 1.85rem;
+    font-weight: normal;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.6rem;
+    position: relative;
+  }
+  .hero p {
+    color: var(--text2);
+    font-size: 0.88rem;
+    max-width: 580px;
+    line-height: 1.75;
+    margin-bottom: 0.75rem;
+    position: relative;
+  }
+  .update-line {
+    font-family: 'Courier New', monospace;
+    font-size: 0.68rem;
+    color: var(--text3);
+  }
+
+  /* ── PANIC ── */
+  .panic-banner {
+    background: var(--orange-dim);
+    border: 1px solid rgba(224,120,64,0.25);
+    border-radius: var(--radius);
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.82rem;
+    color: var(--orange);
+  }
+
+  /* ── SURVIVAL ── */
+  .survival-block {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 1.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .survival-block::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+  .survival-block.alive::before { background: var(--green); }
+  .survival-block.dead::before  { background: var(--red); }
+  .survival-block.panic::before { background: var(--orange); }
+
+  .survival-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .survival-title { font-family: Georgia, serif; font-size: 1rem; font-weight: normal; }
+  .status-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 4px 12px;
+  }
+  .sdot { width: 7px; height: 7px; border-radius: 50%; }
+  .survival-desc {
+    font-size: 0.82rem;
+    color: var(--text2);
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+  }
+  .threshold-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 1.25rem;
+  }
+  @media (max-width: 700px) {
+    .threshold-row { grid-template-columns: repeat(2, 1fr); }
+  }
+  .th {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.9rem 1rem;
+  }
+  .th-label {
+    font-family: 'Courier New', monospace;
+    font-size: 0.6rem;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.35rem;
+  }
+  .th-value { font-family: Georgia, serif; font-size: 1.35rem; line-height: 1; }
+  .th-sub { font-family: 'Courier New', monospace; font-size: 0.63rem; margin-top: 3px; color: var(--text3); }
+  .perf-track { position: relative; height: 4px; background: var(--surface2); border-radius: 2px; overflow: visible; }
+  .perf-fill { height: 4px; border-radius: 2px; transition: width 0.6s ease; }
+  .perf-danger { position: absolute; top: -5px; bottom: -5px; width: 2px; background: var(--red); border-radius: 1px; opacity: 0.6; left: 20%; }
+  .perf-zero   { position: absolute; top: -5px; bottom: -5px; width: 1px; background: var(--border2); left: 50%; }
+
+  /* ── RULES ── */
+  .rules-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 1.75rem;
+  }
+  .section-title {
+    font-family: 'Courier New', monospace;
+    font-size: 0.62rem;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 1rem;
+  }
+  .rules-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .rule {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.9rem 1rem;
+    transition: border-color 0.15s;
+  }
+  .rule:hover { border-color: var(--border2); }
+  .rule-num { font-family: 'Courier New', monospace; font-size: 0.58rem; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem; }
+  .rule-title { font-size: 0.82rem; font-weight: 500; color: var(--text); margin-bottom: 0.2rem; }
+  .rule p { font-size: 0.76rem; color: var(--text2); line-height: 1.55; }
+
+  /* ── KPI GRID ── */
+  .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 1.75rem; }
+  .kpi {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.15s;
+  }
+  .kpi:hover { border-color: var(--border2); }
+  .kpi-accent {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .kpi-label {
+    font-family: 'Courier New', monospace;
+    font-size: 0.6rem;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+  }
+  .kpi-value {
+    font-family: Georgia, serif;
+    font-size: 1.45rem;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .kpi-sub { font-family: 'Courier New', monospace; font-size: 0.65rem; color: var(--text3); }
+  .up  { color: var(--green); }
+  .dn  { color: var(--red); }
+  .neu { color: var(--text2); }
+  .liq { color: var(--blue); }
+
+  /* ── CHART ── */
+  .chart-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 1.75rem;
+  }
+  .chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .chart-header h2 {
+    font-family: Georgia, serif;
+    font-size: 0.95rem;
+    font-weight: normal;
+    color: var(--text2);
+  }
+  .legend { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .li { display: flex; align-items: center; gap: 5px; font-family: 'Courier New', monospace; font-size: 0.63rem; color: var(--text3); }
+  .ld { width: 10px; height: 2px; border-radius: 1px; }
+
+  /* ── SECTION ── */
+  .sec-label {
+    font-family: 'Courier New', monospace;
+    font-size: 0.62rem;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── POSITIONS ── */
+  .pos-header {
+    display: grid;
+    grid-template-columns: 1fr 55px 80px 80px 80px 70px;
+    gap: 8px;
+    padding: 0 1rem 0.5rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.6rem;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .pos-row {
+    display: grid;
+    grid-template-columns: 1fr 55px 80px 80px 80px 70px;
+    gap: 8px;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    margin-bottom: 4px;
+    transition: border-color 0.15s;
+  }
+  .pos-row:hover { border-color: var(--border2); }
+  .pos-row.pos-positive { border-left: 2px solid rgba(28,200,122,0.3); }
+  .pos-row.pos-negative { border-left: 2px solid rgba(240,84,84,0.2); }
+  .pos-name { font-weight: 500; font-size: 0.88rem; line-height: 1.2; }
+  .pos-ticker { font-family: 'Courier New', monospace; font-size: 0.65rem; color: var(--text3); margin-top: 2px; }
+  .mn { font-family: 'Courier New', monospace; font-size: 0.77rem; color: var(--text2); text-align: right; }
+  .perf-badge {
+    display: inline-flex;
+    font-family: 'Courier New', monospace;
+    font-size: 0.7rem;
+    padding: 2px 7px;
+    border-radius: 5px;
+  }
+  .perf-up { background: var(--green-dim); color: var(--green); }
+  .perf-dn { background: var(--red-dim);   color: var(--red); }
+  .poids-wrap { display: flex; align-items: center; gap: 5px; }
+  .poids-bar  { flex: 1; height: 3px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+  .poids-fill { height: 3px; border-radius: 2px; }
+  .poids-lbl  { font-family: 'Courier New', monospace; font-size: 0.63rem; color: var(--text3); min-width: 32px; text-align: right; }
+
+  /* Liquidités row */
+  .liq-row {
+    padding: 0.7rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-top: 6px;
+  }
+  .liq-row .liq-label { font-family: 'Courier New', monospace; font-size: 0.7rem; color: var(--text3); }
+  .liq-row .liq-value { font-family: 'Courier New', monospace; font-size: 0.82rem; color: var(--blue); font-weight: 600; }
+  .liq-row .liq-pct   { font-family: 'Courier New', monospace; font-size: 0.68rem; color: var(--text3); margin-left: 8px; }
+
+  /* ── CLAUDE ANALYSIS ── */
+  .claude-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 1.75rem;
+  }
+  .claude-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .claude-title { font-family: Georgia, serif; font-size: 0.95rem; font-weight: normal; color: var(--text2); }
+  .conviction-badge {
+    font-family: 'Courier New', monospace;
+    font-size: 0.63rem;
+    padding: 3px 11px;
+    border-radius: 100px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .analyse-text { font-size: 0.84rem; color: var(--text2); line-height: 1.75; margin-bottom: 1rem; }
+  .message-text {
+    font-size: 0.81rem;
+    color: var(--text3);
+    line-height: 1.7;
+    border-top: 1px solid var(--border);
+    padding-top: 0.85rem;
+    font-style: italic;
+  }
+
+  /* ── ORDERS ── */
+  .order-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    margin-bottom: 5px;
+    overflow: hidden;
+    transition: border-color 0.15s;
+  }
+  .order-card:hover { border-color: var(--border2); }
+  .order-header {
+    display: grid;
+    grid-template-columns: 95px 62px 1fr auto;
+    gap: 10px;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    user-select: none;
+  }
+  .order-date { font-family: 'Courier New', monospace; font-size: 0.68rem; color: var(--text3); }
+  .order-type {
+    font-family: 'Courier New', monospace;
+    font-size: 0.63rem;
+    padding: 3px 8px;
+    border-radius: 5px;
+    text-align: center;
+    letter-spacing: 0.3px;
+  }
+  .type-achat  { background: var(--green-dim); color: var(--green); border: 1px solid rgba(28,200,122,0.2); }
+  .type-vente  { background: var(--red-dim);   color: var(--red);   border: 1px solid rgba(240,84,84,0.2); }
+  .type-apport { background: var(--blue-dim);  color: var(--blue);  border: 1px solid rgba(80,128,248,0.2); }
+  .order-name { font-size: 0.84rem; font-weight: 500; color: var(--text); }
+  .order-right { display: flex; align-items: center; gap: 8px; }
+  .order-amount { font-family: 'Courier New', monospace; font-size: 0.75rem; color: var(--text3); white-space: nowrap; }
+  .expand-hint { font-family: 'Courier New', monospace; font-size: 0.58rem; color: var(--text3); }
+  .order-detail {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease;
+  }
+  .order-detail.open { max-height: 200px; }
+  .order-detail-inner {
+    padding: 0 1rem 0.85rem;
+    border-top: 1px solid var(--border);
+  }
+  .order-raison { font-size: 0.79rem; color: var(--text2); line-height: 1.65; padding-top: 0.65rem; }
+
+  /* ── BIAIS ── */
+  .bias-block {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--orange);
+    border-radius: var(--radius);
+    padding: 1.1rem;
+    margin-bottom: 1.75rem;
+  }
+  .bias-title {
+    font-family: 'Courier New', monospace;
+    font-size: 0.6rem;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.6rem;
+  }
+  .bias-item {
+    font-size: 0.79rem;
+    color: var(--text2);
+    line-height: 1.65;
+    padding: 4px 0;
+    display: flex;
+    gap: 8px;
+  }
+  .bias-item::before { content: '→'; color: var(--orange); flex-shrink: 0; }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    font-size: 0.75rem;
+    color: var(--text3);
+    line-height: 1.65;
+  }
+
+  /* ── SKELETON ── */
+  .skel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; position: relative; }
+  .skel::after { content:''; position:absolute; inset:0; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.03),transparent); animation:shimmer 1.4s infinite; }
+  @keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+
+  /* ── FOOTER ── */
+  footer { border-top: 1px solid var(--border); padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; }
+  .footer-legal { font-size: 0.7rem; color: var(--text3); max-width: 500px; line-height: 1.55; }
+  .footer-right { font-family: 'Courier New', monospace; font-size: 0.65rem; color: var(--text3); text-align: right; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    main { padding: 2rem 1rem 5rem; }
+    header { padding: 0.85rem 1rem; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .kpi-grid .kpi:last-child { grid-column: span 2; }
+    .threshold-row, .rules-grid { grid-template-columns: 1fr; }
+    .pos-header, .pos-row { grid-template-columns: 1fr 55px 70px 68px; }
+    .pos-header span:nth-child(n+5), .pos-row > *:nth-child(n+5) { display: none; }
+    .order-header { grid-template-columns: 75px 52px 1fr; }
+    .order-header > *:last-child { display: none; }
+    .hero::before { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="brand" href="index.html">Watch<em>Radar</em></a>
+  <nav>
+    <a href="index.html">Watchlist</a>
+    <a href="portfolio.html" class="active">Portefeuille IA</a>
+  </nav>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="fictif-badge">⬡ Portefeuille 100 % fictif · Prix réels du marché</div>
+    <h1>L'IA joue sa survie.</h1>
+    <p>Capital fictif de 20 000 €. L'IA investit automatiquement selon sa watchlist, documente chaque décision d'achat et de vente, et analyse ses erreurs chaque semaine.</p>
+    <div class="update-line" id="update-line">Chargement…</div>
+  </div>
+
+  <div id="panic-banner" style="display:none" class="panic-banner">
+    ⚠️ Mode panique activé cette semaine — aucun ordre exécuté (Règle 03).
+  </div>
+
+  <div id="survival-block" class="survival-block alive">
+    <div class="skel" style="height:150px"></div>
+  </div>
+
+  <div class="rules-block">
+    <div class="section-title">Les règles que l'IA s'impose</div>
+    <div class="rules-grid">
+      <div class="rule"><div class="rule-num">Règle 01 · Patience</div><div class="rule-title">Aucune vente avant 90 jours</div><p>Sauf signal fondamental majeur. Évite la surréaction aux fluctuations normales.</p></div>
+      <div class="rule"><div class="rule-num">Règle 02 · Taille</div><div class="rule-title">Maximum 30 % sur un titre</div><p>Aucune conviction ne justifie une concentration excessive.</p></div>
+      <div class="rule"><div class="rule-num">Règle 03 · Calme</div><div class="rule-title">Zéro ajustement en panique</div><p>Si le CAC40 chute de plus de 5 % sur la semaine, l'IA n'agit pas.</p></div>
+      <div class="rule"><div class="rule-num">Règle 04 · Honnêteté</div><div class="rule-title">Chaque décision documentée</div><p>Chaque achat et vente est expliqué avec les données qui ont motivé la décision.</p></div>
+      <div class="rule"><div class="rule-num">Règle 05 · Sources</div><div class="rule-title">Données multi-sources</div><p>Yahoo Finance pour le momentum, Finnhub pour valider les fondamentaux.</p></div>
+      <div class="rule"><div class="rule-num">Règle 06 · Survie</div><div class="rule-title">Deux trimestres négatifs = zéro</div><p>Sous-performance durable = post-mortem public + remise à zéro de la méthodologie.</p></div>
+    </div>
+  </div>
+
+  <div class="kpi-grid" id="kpi-grid">
+    <div class="kpi"><div class="kpi-label">Capital</div><div class="skel" style="height:28px;margin-top:4px"></div></div>
+    <div class="kpi"><div class="kpi-label">Performance</div><div class="skel" style="height:28px;margin-top:4px"></div></div>
+    <div class="kpi"><div class="kpi-label">vs CAC 40</div><div class="skel" style="height:28px;margin-top:4px"></div></div>
+    <div class="kpi"><div class="kpi-label">Liquidités</div><div class="skel" style="height:28px;margin-top:4px"></div></div>
+    <div class="kpi"><div class="kpi-label">Positions</div><div class="skel" style="height:28px;margin-top:4px"></div></div>
+  </div>
+
+  <div class="chart-block">
+    <div class="chart-header">
+      <h2>Performance depuis le lancement</h2>
+      <div class="legend">
+        <div class="li"><div class="ld" style="background:var(--gold)"></div>WatchRadar</div>
+        <div class="li"><div class="ld" style="background:var(--text3)"></div>CAC 40</div>
+        <div class="li"><div class="ld" style="background:var(--red);opacity:0.5"></div>Ligne rouge</div>
+      </div>
+    </div>
+    <svg style="width:100%;overflow:visible" viewBox="0 0 600 200" id="perf-chart">
+      <defs>
+        <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stop-color="#e8a820" stop-opacity="0.18"/>
+          <stop offset="100%" stop-color="#e8a820" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+
+  <div style="margin-bottom:1.75rem">
+    <div class="sec-label">Positions ouvertes · Mis à jour chaque lundi</div>
+    <div class="pos-header">
+      <span>Action</span>
+      <span style="text-align:right">Qté</span>
+      <span style="text-align:right">Px achat</span>
+      <span style="text-align:right">Valeur</span>
+      <span style="text-align:right">Perf.</span>
+      <span>Poids</span>
+    </div>
+    <div id="positions-list">
+      <div class="skel" style="height:58px;margin-bottom:4px"></div>
+      <div class="skel" style="height:58px;margin-bottom:4px"></div>
+      <div class="skel" style="height:58px"></div>
+    </div>
+  </div>
+
+  <div id="claude-analysis" style="display:none">
+    <div class="sec-label">Analyse de l'IA cette semaine</div>
+    <div class="claude-block">
+      <div class="claude-header">
+        <div class="claude-title">Raisonnement de l'IA</div>
+        <div id="conviction-badge" class="conviction-badge"></div>
+      </div>
+      <div id="analyse-macro"  class="analyse-text"></div>
+      <div id="message-users"  class="message-text"></div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:1.75rem">
+    <div class="sec-label">Journal des ordres · Cliquez pour le détail</div>
+    <div id="orders-list"></div>
+  </div>
+
+  <div id="bias-block" style="display:none" class="bias-block">
+    <div class="bias-title">⚠ Biais détectés automatiquement</div>
+    <div id="bias-items"></div>
+  </div>
+
+  <div class="disclaimer">
+    <strong style="color:var(--text2)">Portefeuille 100 % fictif.</strong> Aucune somme réelle investie. Prix réels du marché au moment de chaque ordre simulé. Contenu purement informatif. Ne constitue pas un conseil en investissement au sens AMF.
+  </div>
+</main>
+
+<footer>
+  <div class="footer-legal">WatchRadar est un service éditorial d'information financière. Contenu fourni à titre informatif uniquement.</div>
+  <div class="footer-right" id="footer-week">Bêta<br><a href="mailto:contact@watchradar.fr" style="color:var(--text3);text-decoration:none;">contact@watchradar.fr</a></div>
+</footer>
+
+<script>
+function fmt(n, d=2)  { return Number(n).toFixed(d); }
+function fmtEur(n)    { return Number(n).toLocaleString('fr-FR', {maximumFractionDigits:0}) + ' €'; }
+function sign(n)      { return n >= 0 ? '+' : ''; }
+
+function renderChart(history, currentPerf) {
+  const svg   = document.getElementById('perf-chart');
+  const xMin  = 50, xMax = 550, yZero = 152, scale = 4.74;
+  const clampY = y => Math.max(10, Math.min(190, y));
+  const toY    = p => clampY(yZero - p * scale);
+
+  const ns  = 'http://www.w3.org/2000/svg';
+  const el  = (tag, attrs) => { const e = document.createElementNS(ns, tag); Object.entries(attrs).forEach(([k,v]) => e.setAttribute(k,v)); return e; };
+
+  // X par position dans l'array (timeline linéaire)
+  const n   = history.length;
+  const toX = i => n < 2 ? xMin : xMin + (i / (n - 1)) * (xMax - xMin);
+
+  const pts  = history.map((h, i) => ({ x: toX(i), y: toY(h.perf), perf: h.perf, bench: h.benchmark_cac40 || 0, note: h.note, date: h.date }));
+  const last = pts[pts.length - 1];
+
+  // Grille horizontale
+  [-5, 0, 10, 20, 30].forEach(pct => {
+    const y = toY(pct);
+    const isZero = pct === 0, isDeath = pct === -5;
+    svg.appendChild(el('line', { x1:40, y1:y, x2:560, y2:y,
+      stroke: isDeath ? '#f05454' : '#30303e',
+      'stroke-width': isZero ? 0.8 : 0.5,
+      'stroke-dasharray': '3,4',
+      'stroke-opacity': isDeath ? 0.4 : 1 }));
+    svg.appendChild(el('text', { x:28, y:y+3, 'font-family':'Courier New', 'font-size':7.5, fill: isDeath ? '#f05454' : '#52526a', 'fill-opacity': isDeath ? 0.6 : 1, 'text-anchor':'end' })).textContent = (pct >= 0 ? '+' : '') + pct + ' %';
+  });
+
+  // Labels dates (premier et dernier)
+  [[pts[0], 'start'], [last, 'end']].forEach(([p, anchor]) => {
+    const d = new Date(p.date);
+    const label = d.toLocaleDateString('fr-FR', { month:'short', year:'2-digit' });
+    const t = el('text', { x: p.x, y: 197, 'font-family':'Courier New', 'font-size':8.5, fill: anchor === 'end' ? '#e8a820' : '#52526a', 'text-anchor':'middle' });
+    t.textContent = label;
+    svg.appendChild(t);
+  });
+
+  // CAC40 line
+  if (pts.length >= 2) {
+    const cacPts = pts.map(p => `${p.x.toFixed(1)},${toY(p.bench).toFixed(1)}`).join(' ');
+    svg.appendChild(el('polyline', { points: cacPts, fill:'none', stroke:'#52526a', 'stroke-width':1.5, 'stroke-linejoin':'round' }));
+  }
+
+  // WatchRadar area
+  const linePts = pts.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+  const areaPts = linePts + ` ${last.x.toFixed(1)},190 ${pts[0].x.toFixed(1)},190`;
+  svg.appendChild(el('polygon', { points: areaPts, fill:'url(#chartGrad)' }));
+  svg.appendChild(el('polyline', { points: linePts, fill:'none', stroke:'#e8a820', 'stroke-width':2.2, 'stroke-linejoin':'round', 'stroke-linecap':'round' }));
+
+  // Marqueurs injection
+  pts.filter(p => p.note).forEach(p => {
+    svg.appendChild(el('line', { x1:p.x, y1:15, x2:p.x, y2:yZero, stroke:'#5080f8', 'stroke-width':0.8, 'stroke-dasharray':'3,3', 'stroke-opacity':0.5 }));
+    const t = el('text', { x:p.x, y:12, 'font-family':'Courier New', 'font-size':7.5, fill:'#5080f8', 'fill-opacity':0.7, 'text-anchor':'middle' });
+    t.textContent = p.note.replace('Injection ', '');
+    svg.appendChild(t);
+  });
+
+  // Dot + label final
+  svg.appendChild(el('circle', { cx: last.x.toFixed(1), cy: last.y.toFixed(1), r:4.5, fill:'#e8a820' }));
+  const lbg = el('rect', { x:(last.x-32).toFixed(1), y:(last.y-17).toFixed(1), width:64, height:17, rx:4, fill:'#18181f', stroke:'#30303e', 'stroke-width':0.5 });
+  svg.appendChild(lbg);
+  const ltxt = el('text', { x: last.x.toFixed(1), y:(last.y-4).toFixed(1), 'font-family':'Courier New', 'font-size':9.5, fill:'#e8a820', 'text-anchor':'middle', 'font-weight':'bold' });
+  ltxt.textContent = (currentPerf >= 0 ? '+' : '') + currentPerf.toFixed(1) + ' %';
+  svg.appendChild(ltxt);
+}
+
+function orderTypeClass(t) {
+  if (t === 'ACHAT')  return 'type-achat';
+  if (t === 'VENTE')  return 'type-vente';
+  if (t === 'APPORT') return 'type-apport';
+  return 'type-achat';
+}
+
+function renderOrder(o, idx) {
+  return `
+    <div class="order-card">
+      <div class="order-header" onclick="toggleOrder(${idx})">
+        <div class="order-date">${o.date}</div>
+        <div class="order-type ${orderTypeClass(o.type)}">${o.type}</div>
+        <div class="order-name">${o.nom}</div>
+        <div class="order-right">
+          <div class="order-amount">${o.montant > 0 ? fmtEur(o.montant) : '—'}</div>
+          <div class="expand-hint">↓</div>
+        </div>
+      </div>
+      <div class="order-detail" id="order-${idx}">
+        <div class="order-detail-inner">
+          <div class="order-raison">${o.raison}</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function toggleOrder(idx) {
+  const el = document.getElementById('order-' + idx);
+  if (el) el.classList.toggle('open');
+}
+
+async function loadPortfolio() {
+  try {
+    const res = await fetch('portfolio.json?v=' + Date.now());
+    const d   = await res.json();
+
+    document.getElementById('update-line').textContent = `Mis à jour · ${d.updated_at} · ${d.week}`;
+    document.getElementById('footer-week').innerHTML   = `${d.week}<br><a href="mailto:contact@watchradar.fr" style="color:var(--text3);text-decoration:none;">contact@watchradar.fr</a>`;
+
+    // Graphe dynamique
+    const history = d.performance_history || [];
+    if (history.length >= 2) {
+      renderChart(history, d.performance);
+    } else {
+      // Fallback : juste le point actuel
+      renderChart([{date: d.updated_at, perf: 0, benchmark_cac40: 0}, {date: d.updated_at, perf: d.performance, benchmark_cac40: d.benchmark_cac40}], d.performance);
+    }
+
+    if (d.mode_panique) document.getElementById('panic-banner').style.display = 'block';
+
+    // Survival block
+    const sb    = document.getElementById('survival-block');
+    const alive = d.statut_survie === 'en_vie';
+    const panic = d.mode_panique;
+    sb.className = `survival-block ${panic ? 'panic' : alive ? 'alive' : 'dead'}`;
+    const sc = panic ? 'var(--orange)' : alive ? 'var(--green)' : 'var(--red)';
+    const sl = panic ? 'Mode panique' : alive ? 'En vie · Seuil respecté' : 'Réinitialisation';
+    const pp = Math.max(5, Math.min(96, 50 + d.vs_benchmark * 2));
+    sb.innerHTML = `
+      <div class="survival-header">
+        <div class="survival-title">Statut de survie · ${d.week}</div>
+        <div class="status-pill" style="color:${sc}">
+          <div class="sdot" style="background:${sc}"></div>${sl}
+        </div>
+      </div>
+      <div class="survival-desc">
+        L'IA doit <strong>battre le CAC 40 sur 12 mois glissants</strong>. Deux trimestres consécutifs sous le CAC 40 = post-mortem public + remise à zéro. <strong>Transparence totale.</strong>
+      </div>
+      <div class="threshold-row">
+        <div class="th">
+          <div class="th-label">Performance WatchRadar</div>
+          <div class="th-value ${d.performance>=0?'up':'dn'}">${sign(d.performance)}${fmt(d.performance,1)} %</div>
+          <div class="th-sub">sur 20 000 € · depuis jan. ${new Date().getFullYear()}</div>
+        </div>
+        <div class="th">
+          <div class="th-label">CAC 40 (même période)</div>
+          <div class="th-value neu">${sign(d.benchmark_cac40)}${fmt(d.benchmark_cac40,1)} %</div>
+          <div class="th-sub">benchmark principal</div>
+        </div>
+        <div class="th">
+          <div class="th-label">Avance sur CAC 40</div>
+          <div class="th-value ${d.vs_benchmark>=0?'up':'dn'}">${sign(d.vs_benchmark)}${fmt(d.vs_benchmark,1)} pp</div>
+          <div class="th-sub">seuil mort = CAC − 5 %</div>
+        </div>
+        <div class="th">
+          <div class="th-label">Drawdown max</div>
+          <div class="th-value ${(d.max_drawdown||0)<-5?'dn':'neu'}">${d.max_drawdown != null && d.max_drawdown !== 0 ? sign(d.max_drawdown)+fmt(d.max_drawdown,1)+' %' : '—'}</div>
+          <div class="th-sub">perte max depuis un pic</div>
+        </div>
+      </div>
+      <div class="perf-track">
+        <div class="perf-danger"></div>
+        <div class="perf-zero"></div>
+        <div class="perf-fill" style="width:${pp}%;background:${sc}"></div>
+      </div>`;
+
+    // KPI
+    const gain = d.capital_actuel - d.capital_initial;
+    document.getElementById('kpi-grid').innerHTML = `
+      <div class="kpi">
+        <div class="kpi-accent" style="background:var(--text3)"></div>
+        <div class="kpi-label">Capital total</div>
+        <div class="kpi-value">${fmtEur(d.capital_actuel)}</div>
+        <div class="kpi-sub ${gain>=0?'up':'dn'}">${sign(gain)}${fmtEur(Math.abs(gain))} depuis jan.</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-accent" style="background:${d.performance>=0?'var(--green)':'var(--red)'}"></div>
+        <div class="kpi-label">Performance</div>
+        <div class="kpi-value ${d.performance>=0?'up':'dn'}">${sign(d.performance)}${fmt(d.performance,1)} %</div>
+        <div class="kpi-sub">sur 20 000 € investis</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-accent" style="background:${d.vs_benchmark>=0?'var(--green)':'var(--red)'}"></div>
+        <div class="kpi-label">vs CAC 40</div>
+        <div class="kpi-value ${d.vs_benchmark>=0?'up':'dn'}">${sign(d.vs_benchmark)}${fmt(d.vs_benchmark,1)} pp</div>
+        <div class="kpi-sub">CAC : ${sign(d.benchmark_cac40)}${fmt(d.benchmark_cac40,1)} %</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-accent" style="background:var(--blue)"></div>
+        <div class="kpi-label">Liquidités</div>
+        <div class="kpi-value liq">${fmtEur(d.liquidites)}</div>
+        <div class="kpi-sub">${fmt(d.pct_liquidites,1)} % du portefeuille</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-accent" style="background:var(--text3)"></div>
+        <div class="kpi-label">Positions</div>
+        <div class="kpi-value">${d.nb_positions}</div>
+        <div class="kpi-sub"><span class="up">${d.nb_positives} +</span> · <span class="dn">${d.nb_negatives} −</span></div>
+      </div>`;
+
+    // Positions
+    const pos = d.positions || [];
+    const posHTML = pos.length === 0
+      ? '<div style="padding:1rem;color:var(--text3);font-size:0.82rem">Aucune position ouverte.</div>'
+      : pos.map(p => {
+          const isPos = p.performance >= 0;
+          const fillBg = isPos ? 'var(--green)' : 'var(--red)';
+          return `<div class="pos-row ${isPos?'pos-positive':'pos-negative'}">
+            <div>
+              <div class="pos-name">${p.nom}</div>
+              <div class="pos-ticker">${p.ticker} · ${p.market} · ${p.sector}</div>
+            </div>
+            <div class="mn">${p.quantite}</div>
+            <div class="mn">${fmt(p.prix_achat)} ${p.currency === 'USD' ? '$' : p.currency === 'GBP' ? '£' : '€'}</div>
+            <div class="mn">${fmtEur(p.valeur_actuelle)}</div>
+            <div><span class="perf-badge ${isPos?'perf-up':'perf-dn'}">${sign(p.performance)}${fmt(p.performance,1)} %</span></div>
+            <div>
+              <div class="poids-wrap">
+                <div class="poids-bar"><div class="poids-fill" style="width:${Math.min(p.poids*3.3,100)}%;background:${fillBg};opacity:0.7"></div></div>
+                <div class="poids-lbl">${fmt(p.poids,1)} %</div>
+              </div>
+            </div>
+          </div>`;
+        }).join('');
+
+    document.getElementById('positions-list').innerHTML = posHTML +
+      `<div class="liq-row">
+        <span class="liq-label">Liquidités disponibles</span>
+        <span><span class="liq-value">${fmtEur(d.liquidites)}</span><span class="liq-pct">${fmt(d.pct_liquidites,1)} %</span></span>
+      </div>`;
+
+    // Ordres
+    const ordres = (d.ordres || []).slice(0, 15);
+    document.getElementById('orders-list').innerHTML = ordres.map((o, i) => renderOrder(o, i)).join('');
+
+    // Analyse Claude
+    const ac = d.analyse_claude;
+    if (ac && ac.analyse_macro) {
+      document.getElementById('claude-analysis').style.display = 'block';
+      const convColors = { haussier: 'var(--green)', neutre: 'var(--text3)', baissier: 'var(--red)' };
+      const convColor  = convColors[ac.conviction_globale] || 'var(--text3)';
+      const cb = document.getElementById('conviction-badge');
+      cb.textContent = ac.conviction_globale || 'neutre';
+      cb.style.background = convColor + '1a';
+      cb.style.color       = convColor;
+      cb.style.border      = `1px solid ${convColor}44`;
+      document.getElementById('analyse-macro').textContent = ac.analyse_macro;
+      if (ac.message_utilisateurs) {
+        document.getElementById('message-users').textContent = `"${ac.message_utilisateurs}"`;
+      }
+    }
+
+    // Biais
+    const biais = d.biais_detectes || [];
+    if (biais.length > 0) {
+      document.getElementById('bias-block').style.display = 'block';
+      document.getElementById('bias-items').innerHTML = biais.map(b => `<div class="bias-item">${b}</div>`).join('');
+    }
+
+  } catch(e) {
+    document.getElementById('positions-list').innerHTML =
+      '<div style="padding:1rem;color:var(--text3);font-size:0.82rem">Impossible de charger portfolio.json.</div>';
+  }
+}
+
+loadPortfolio();
+</script>
+</body>
+</html>

@@ -1,0 +1,689 @@
+{
+  "updated_at": "2026-05-04",
+  "week": "Sem. 19 · 2026",
+  "universe_size": 102,
+  "finnhub_active": true,
+  "stocks": [
+    {
+      "ticker": "AVGO",
+      "name": "Broadcom Inc.",
+      "market": "NMS",
+      "sector": "Technologie",
+      "score": 100,
+      "stars": 5,
+      "badge": null,
+      "change": "stable",
+      "breakdown": {
+        "momentum": 40,
+        "fondamentaux": 40,
+        "analystes": 20,
+        "rsi": 69.0,
+        "rev_growth_pct": 29.5,
+        "net_margin_pct": 36.6,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance"
+        ]
+      },
+      "justification": "Score 100/100 — momentum haussier confirmé (MM50 et MM200), RSI en zone favorable, croissance CA solide (30%/an).",
+      "rank": 1
+    },
+    {
+      "ticker": "ADYEN.AS",
+      "name": "ADYEN",
+      "market": "AMS",
+      "sector": "Technologie",
+      "score": 93,
+      "stars": 5,
+      "badge": "EU",
+      "change": "stable",
+      "breakdown": {
+        "momentum": 30,
+        "fondamentaux": 40,
+        "analystes": 20,
+        "rsi": 58.6,
+        "rev_growth_pct": 16.9,
+        "net_margin_pct": 44.7,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance",
+          "Finnhub"
+        ]
+      },
+      "justification": "Score 93/100 — RSI en zone favorable, croissance CA solide (17%/an), marges excellentes (45%).",
+      "rank": 2
+    },
+    {
+      "ticker": "NVDA",
+      "name": "NVIDIA Corporation",
+      "market": "NMS",
+      "sector": "Technologie",
+      "score": 93,
+      "stars": 5,
+      "badge": null,
+      "change": "stable",
+      "breakdown": {
+        "momentum": 30,
+        "fondamentaux": 40,
+        "analystes": 20,
+        "rsi": 53.0,
+        "rev_growth_pct": 73.2,
+        "net_margin_pct": 55.6,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance",
+          "Finnhub"
+        ]
+      },
+      "justification": "Score 93/100 — momentum haussier confirmé (MM50 et MM200), RSI en zone favorable, croissance CA solide (73%/an).",
+      "rank": 3
+    },
+    {
+      "ticker": "MSFT",
+      "name": "Microsoft Corporation",
+      "market": "NMS",
+      "sector": "Technologie",
+      "score": 93,
+      "stars": 5,
+      "badge": null,
+      "change": "up",
+      "breakdown": {
+        "momentum": 30,
+        "fondamentaux": 40,
+        "analystes": 20,
+        "rsi": 54.5,
+        "rev_growth_pct": 18.3,
+        "net_margin_pct": 39.3,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance",
+          "Finnhub"
+        ]
+      },
+      "justification": "Score 93/100 — RSI en zone favorable, croissance CA solide (18%/an), marges excellentes (39%).",
+      "rank": 4
+    },
+    {
+      "ticker": "V",
+      "name": "Visa Inc.",
+      "market": "NYQ",
+      "sector": "Finance",
+      "score": 93,
+      "stars": 5,
+      "badge": null,
+      "change": "stable",
+      "breakdown": {
+        "momentum": 30,
+        "fondamentaux": 40,
+        "analystes": 20,
+        "rsi": 63.9,
+        "rev_growth_pct": 17.1,
+        "net_margin_pct": 51.7,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance"
+        ]
+      },
+      "justification": "Score 93/100 — RSI en zone favorable, croissance CA solide (17%/an), marges excellentes (52%).",
+      "rank": 5
+    },
+    {
+      "ticker": "BLK",
+      "name": "BlackRock, Inc.",
+      "market": "NYQ",
+      "sector": "Finance",
+      "score": 93,
+      "stars": 5,
+      "badge": null,
+      "change": "stable",
+      "breakdown": {
+        "momentum": 30,
+        "fondamentaux": 40,
+        "analystes": 20,
+        "rsi": 59.6,
+        "rev_growth_pct": 27.0,
+        "net_margin_pct": 24.4,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance"
+        ]
+      },
+      "justification": "Score 93/100 — RSI en zone favorable, croissance CA solide (27%/an), marges excellentes (24%).",
+      "rank": 6
+    },
+    {
+      "ticker": "ETN",
+      "name": "Eaton Corporation, PLC",
+      "market": "NYQ",
+      "sector": "Industrie",
+      "score": 93,
+      "stars": 5,
+      "badge": null,
+      "change": "up",
+      "breakdown": {
+        "momentum": 40,
+        "fondamentaux": 30,
+        "analystes": 20,
+        "rsi": 64.9,
+        "rev_growth_pct": 13.1,
+        "net_margin_pct": 14.9,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance"
+        ]
+      },
+      "justification": "Score 93/100 — momentum haussier confirmé (MM50 et MM200), RSI en zone favorable, croissance CA modérée (13%/an).",
+      "rank": 7
+    },
+    {
+      "ticker": "ADI",
+      "name": "Analog Devices, Inc.",
+      "market": "NMS",
+      "sector": "Technologie",
+      "score": 93,
+      "stars": 5,
+      "badge": null,
+      "change": "down",
+      "breakdown": {
+        "momentum": 30,
+        "fondamentaux": 40,
+        "analystes": 20,
+        "rsi": 67.7,
+        "rev_growth_pct": 30.4,
+        "net_margin_pct": 23.0,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance"
+        ]
+      },
+      "justification": "Score 93/100 — momentum haussier confirmé (MM50 et MM200), RSI en zone favorable, croissance CA solide (30%/an).",
+      "rank": 8
+    },
+    {
+      "ticker": "AMZN",
+      "name": "Amazon.com, Inc.",
+      "market": "NMS",
+      "sector": "Conso. cycl.",
+      "score": 90,
+      "stars": 5,
+      "badge": null,
+      "change": "up",
+      "breakdown": {
+        "momentum": 30,
+        "fondamentaux": 40,
+        "analystes": 20,
+        "rsi": 78.1,
+        "rev_growth_pct": 16.6,
+        "net_margin_pct": 12.2,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance"
+        ]
+      },
+      "justification": "Score 90/100 — momentum haussier confirmé (MM50 et MM200), croissance CA solide (17%/an), marges positives.",
+      "rank": 9
+    },
+    {
+      "ticker": "JPM",
+      "name": "JP Morgan Chase & Co.",
+      "market": "NYQ",
+      "sector": "Finance",
+      "score": 90,
+      "stars": 5,
+      "badge": null,
+      "change": "stable",
+      "breakdown": {
+        "momentum": 40,
+        "fondamentaux": 35,
+        "analystes": 12,
+        "rsi": 58.4,
+        "rev_growth_pct": 12.7,
+        "net_margin_pct": 33.9,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance"
+        ]
+      },
+      "justification": "Score 90/100 — momentum haussier confirmé (MM50 et MM200), RSI en zone favorable, croissance CA modérée (13%/an).",
+      "rank": 10
+    },
+    {
+      "ticker": "SU.PA",
+      "name": "SCHNEIDER ELECTRIC SE",
+      "market": "PAR",
+      "sector": "Industrie",
+      "score": 88,
+      "stars": 5,
+      "badge": "EU",
+      "change": "stable",
+      "breakdown": {
+        "momentum": 40,
+        "fondamentaux": 25,
+        "analystes": 20,
+        "rsi": 54.4,
+        "rev_growth_pct": 4.2,
+        "net_margin_pct": 10.4,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance",
+          "Finnhub"
+        ]
+      },
+      "justification": "Score 88/100 — momentum haussier confirmé (MM50 et MM200), RSI en zone favorable, marges positives.",
+      "rank": 11
+    },
+    {
+      "ticker": "ASM.AS",
+      "name": "ASM International N.V.",
+      "market": "AMS",
+      "sector": "Technologie",
+      "score": 88,
+      "stars": 5,
+      "badge": "EU",
+      "change": "stable",
+      "breakdown": {
+        "momentum": 40,
+        "fondamentaux": 25,
+        "analystes": 20,
+        "rsi": 64.0,
+        "rev_growth_pct": 2.8,
+        "net_margin_pct": 31.0,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance",
+          "Finnhub"
+        ]
+      },
+      "justification": "Score 88/100 — momentum haussier confirmé (MM50 et MM200), RSI en zone favorable, marges excellentes (31%).",
+      "rank": 12
+    },
+    {
+      "ticker": "LSEG.L",
+      "name": "LONDON STOCK EXCHANGE ",
+      "market": "LSE",
+      "sector": "Finance",
+      "score": 88,
+      "stars": 5,
+      "badge": "EU",
+      "change": "stable",
+      "breakdown": {
+        "momentum": 40,
+        "fondamentaux": 25,
+        "analystes": 20,
+        "rsi": 60.6,
+        "rev_growth_pct": 4.6,
+        "net_margin_pct": 13.4,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance",
+          "Finnhub"
+        ]
+      },
+      "justification": "Score 88/100 — momentum haussier confirmé (MM50 et MM200), RSI en zone favorable, marges positives.",
+      "rank": 13
+    },
+    {
+      "ticker": "LLY",
+      "name": "Eli Lilly and Company",
+      "market": "NYQ",
+      "sector": "Santé",
+      "score": 88,
+      "stars": 5,
+      "badge": null,
+      "change": "new",
+      "breakdown": {
+        "momentum": 30,
+        "fondamentaux": 35,
+        "analystes": 20,
+        "rsi": 57.9,
+        "rev_growth_pct": 55.5,
+        "net_margin_pct": 35.0,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance"
+        ]
+      },
+      "justification": "Score 88/100 — momentum haussier confirmé (MM50 et MM200), RSI en zone favorable, croissance CA solide (56%/an).",
+      "rank": 14
+    },
+    {
+      "ticker": "ORCL",
+      "name": "Oracle Corporation",
+      "market": "NYQ",
+      "sector": "Technologie",
+      "score": 88,
+      "stars": 5,
+      "badge": null,
+      "change": "new",
+      "breakdown": {
+        "momentum": 30,
+        "fondamentaux": 35,
+        "analystes": 20,
+        "rsi": 56.7,
+        "rev_growth_pct": 21.7,
+        "net_margin_pct": 25.3,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance"
+        ]
+      },
+      "justification": "Score 88/100 — RSI en zone favorable, croissance CA solide (22%/an), marges excellentes (25%).",
+      "rank": 15
+    },
+    {
+      "ticker": "DB1.DE",
+      "name": "DEUTSCHE BOERSE AG    ",
+      "market": "GER",
+      "sector": "Finance",
+      "score": 86,
+      "stars": 5,
+      "badge": null,
+      "change": "stable",
+      "breakdown": {
+        "momentum": 40,
+        "fondamentaux": 23,
+        "analystes": 20,
+        "rsi": 60.3,
+        "rev_growth_pct": 8.5,
+        "net_margin_pct": 27.3,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance",
+          "Finnhub"
+        ]
+      },
+      "justification": "Score 86/100 — momentum haussier confirmé (MM50 et MM200), RSI en zone favorable, croissance CA modérée (8%/an).",
+      "rank": 16
+    },
+    {
+      "ticker": "TXN",
+      "name": "Texas Instruments Inco",
+      "market": "NMS",
+      "sector": "Technologie",
+      "score": 85,
+      "stars": 5,
+      "badge": null,
+      "change": "stable",
+      "breakdown": {
+        "momentum": 30,
+        "fondamentaux": 40,
+        "analystes": 12,
+        "rsi": 77.3,
+        "rev_growth_pct": 18.6,
+        "net_margin_pct": 29.1,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance"
+        ]
+      },
+      "justification": "Score 85/100 — momentum haussier confirmé (MM50 et MM200), croissance CA solide (19%/an), marges excellentes (29%).",
+      "rank": 17
+    },
+    {
+      "ticker": "GS",
+      "name": "Goldman Sachs Group, I",
+      "market": "NYQ",
+      "sector": "Finance",
+      "score": 84,
+      "stars": 5,
+      "badge": null,
+      "change": "stable",
+      "breakdown": {
+        "momentum": 40,
+        "fondamentaux": 35,
+        "analystes": 6,
+        "rsi": 57.4,
+        "rev_growth_pct": 14.5,
+        "net_margin_pct": 29.4,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance"
+        ]
+      },
+      "justification": "Score 84/100 — momentum haussier confirmé (MM50 et MM200), RSI en zone favorable, croissance CA modérée (14%/an).",
+      "rank": 18
+    },
+    {
+      "ticker": "AZN.L",
+      "name": "ASTRAZENECA PLC ORD SH",
+      "market": "LSE",
+      "sector": "Santé",
+      "score": 83,
+      "stars": 5,
+      "badge": "EU",
+      "change": "new",
+      "breakdown": {
+        "momentum": 20,
+        "fondamentaux": 40,
+        "analystes": 20,
+        "rsi": 33.3,
+        "rev_growth_pct": 12.5,
+        "net_margin_pct": 17.2,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance",
+          "Finnhub"
+        ]
+      },
+      "justification": "Score 83/100 — tendance long terme positive (MM200), croissance CA modérée (12%/an), marges excellentes (17%).",
+      "rank": 19
+    },
+    {
+      "ticker": "CRM",
+      "name": "Salesforce, Inc.",
+      "market": "NYQ",
+      "sector": "Technologie",
+      "score": 83,
+      "stars": 5,
+      "badge": null,
+      "change": "new",
+      "breakdown": {
+        "momentum": 20,
+        "fondamentaux": 40,
+        "analystes": 20,
+        "rsi": 51.3,
+        "rev_growth_pct": 12.1,
+        "net_margin_pct": 18.0,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance"
+        ]
+      },
+      "justification": "Score 83/100 — RSI en zone favorable, croissance CA modérée (12%/an), marges excellentes (18%).",
+      "rank": 20
+    },
+    {
+      "ticker": "AMD",
+      "name": "Advanced Micro Devices",
+      "market": "NMS",
+      "sector": "Technologie",
+      "score": 83,
+      "stars": 5,
+      "badge": null,
+      "change": "stable",
+      "breakdown": {
+        "momentum": 20,
+        "fondamentaux": 40,
+        "analystes": 20,
+        "rsi": 79.8,
+        "rev_growth_pct": 34.1,
+        "net_margin_pct": 12.5,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance"
+        ]
+      },
+      "justification": "Score 83/100 — momentum haussier confirmé (MM50 et MM200), croissance CA solide (34%/an), marges positives.",
+      "rank": 21
+    },
+    {
+      "ticker": "PANW",
+      "name": "Palo Alto Networks, In",
+      "market": "NMS",
+      "sector": "Technologie",
+      "score": 83,
+      "stars": 5,
+      "badge": null,
+      "change": "stable",
+      "breakdown": {
+        "momentum": 30,
+        "fondamentaux": 30,
+        "analystes": 20,
+        "rsi": 60.2,
+        "rev_growth_pct": 14.9,
+        "net_margin_pct": 13.0,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance"
+        ]
+      },
+      "justification": "Score 83/100 — RSI en zone favorable, croissance CA modérée (15%/an), marges positives.",
+      "rank": 22
+    },
+    {
+      "ticker": "IFX.DE",
+      "name": "INFINEON TECHNOLOGIES ",
+      "market": "GER",
+      "sector": "Technologie",
+      "score": 81,
+      "stars": 5,
+      "badge": null,
+      "change": "stable",
+      "breakdown": {
+        "momentum": 30,
+        "fondamentaux": 28,
+        "analystes": 20,
+        "rsi": 79.0,
+        "rev_growth_pct": 7.0,
+        "net_margin_pct": 6.9,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance",
+          "Finnhub"
+        ]
+      },
+      "justification": "Score 81/100 — momentum haussier confirmé (MM50 et MM200), croissance CA modérée (7%/an), marges positives.",
+      "rank": 23
+    },
+    {
+      "ticker": "GOOGL",
+      "name": "Alphabet Inc.",
+      "market": "NMS",
+      "sector": "Médias & IA",
+      "score": 80,
+      "stars": 5,
+      "badge": null,
+      "change": "new",
+      "breakdown": {
+        "momentum": 20,
+        "fondamentaux": 40,
+        "analystes": 20,
+        "rsi": 82.5,
+        "rev_growth_pct": 21.8,
+        "net_margin_pct": 37.9,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance"
+        ]
+      },
+      "justification": "Score 80/100 — momentum haussier confirmé (MM50 et MM200), croissance CA solide (22%/an), marges excellentes (38%).",
+      "rank": 24
+    },
+    {
+      "ticker": "AXP",
+      "name": "American Express Compa",
+      "market": "NYQ",
+      "sector": "Finance",
+      "score": 80,
+      "stars": 5,
+      "badge": null,
+      "change": "stable",
+      "breakdown": {
+        "momentum": 30,
+        "fondamentaux": 35,
+        "analystes": 12,
+        "rsi": 51.6,
+        "rev_growth_pct": 11.6,
+        "net_margin_pct": 16.3,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance"
+        ]
+      },
+      "justification": "Score 80/100 — RSI en zone favorable, croissance CA modérée (12%/an), marges excellentes (16%).",
+      "rank": 25
+    }
+  ],
+  "changelog": [
+    {
+      "action": "in",
+      "ticker": "LLY",
+      "name": "Eli Lilly and Company",
+      "score": 88,
+      "reason": "Score 88/100 — momentum haussier confirmé (MM50 et MM200), RSI en zone favorable, croissance CA solide (56%/an)."
+    },
+    {
+      "action": "in",
+      "ticker": "ORCL",
+      "name": "Oracle Corporation",
+      "score": 88,
+      "reason": "Score 88/100 — RSI en zone favorable, croissance CA solide (22%/an), marges excellentes (25%)."
+    },
+    {
+      "action": "in",
+      "ticker": "AZN.L",
+      "name": "ASTRAZENECA PLC ORD SH",
+      "score": 83,
+      "reason": "Score 83/100 — tendance long terme positive (MM200), croissance CA modérée (12%/an), marges excellentes (17%)."
+    },
+    {
+      "action": "in",
+      "ticker": "CRM",
+      "name": "Salesforce, Inc.",
+      "score": 83,
+      "reason": "Score 83/100 — RSI en zone favorable, croissance CA modérée (12%/an), marges excellentes (18%)."
+    },
+    {
+      "action": "in",
+      "ticker": "GOOGL",
+      "name": "Alphabet Inc.",
+      "score": 80,
+      "reason": "Score 80/100 — momentum haussier confirmé (MM50 et MM200), croissance CA solide (22%/an), marges excellentes (38%)."
+    },
+    {
+      "action": "out",
+      "ticker": "ASML.AS",
+      "name": "ASML HOLDING",
+      "score": 98,
+      "reason": "Score insuffisant pour rester dans le top 25 cette semaine."
+    },
+    {
+      "action": "out",
+      "ticker": "COST",
+      "name": "Costco Wholesale Corpo",
+      "score": 85,
+      "reason": "Score insuffisant pour rester dans le top 25 cette semaine."
+    },
+    {
+      "action": "out",
+      "ticker": "CS.PA",
+      "name": "AXA",
+      "score": 83,
+      "reason": "Score insuffisant pour rester dans le top 25 cette semaine."
+    },
+    {
+      "action": "out",
+      "ticker": "SPGI",
+      "name": "S&P Global Inc.",
+      "score": 83,
+      "reason": "Score insuffisant pour rester dans le top 25 cette semaine."
+    },
+    {
+      "action": "out",
+      "ticker": "TTE.PA",
+      "name": "TOTALENERGIES",
+      "score": 80,
+      "reason": "Score insuffisant pour rester dans le top 25 cette semaine."
+    }
+  ]
+}

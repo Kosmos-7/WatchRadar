@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -v \".json$\")",
+      "Bash(python3 -c ' *)",
+      "Bash(python -c ' *)",
+      "Read(//c/Users/piona/Downloads/WatchRadar-main/WatchRadar-main/**)",
+      "Bash(powershell -command \"Get-Item 'C:/Users/piona/Downloads/WatchRadar-main/WatchRadar-main/portfolio.json','C:/Users/piona/Downloads/WatchRadar-main/WatchRadar-main/portfolio.html' | Select-Object Name,LastWriteTime\")",
+      "Bash(grep -n \"prix_actuel\\\\|currency\\\\|montant_investi\\\\|valeur_actuelle\\\\|symbol\\\\|\\\\$\\\\|€\\\\|£\" \"C:/Users/piona/Downloads/WatchRadar-main/WatchRadar-main/portfolio.html\")",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "mcp__Claude_in_Chrome__browser_batch",
+      "mcp__Claude_in_Chrome__navigate",
+      "mcp__Claude_in_Chrome__computer",
+      "Bash(curl -s \"https://raw.githubusercontent.com/kosmos-7/WatchRadar/main/portfolio.json\")",
+      "Read(//tmp/**)",
+      "Bash(gh --version)",
+      "Bash(gh auth *)",
+      "Bash(git --version)"
+    ]
+  }
+}
