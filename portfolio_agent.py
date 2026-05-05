@@ -49,9 +49,9 @@ def get_prix(ticker):
         t = yf.Ticker(ticker)
         hist = t.history(period="5d")
         if hist.empty:
+            print(f"  ⚠️  get_prix({ticker}) — historique vide (marché fermé ou ticker invalide)")
             return None
         prix = float(hist["Close"].iloc[-1])
-        # yfinance retourne les prix UK en pence (GBp) — convertir en GBP
         try:
             info_curr = getattr(t.fast_info, 'currency', '') or ''
         except Exception:
@@ -59,7 +59,8 @@ def get_prix(ticker):
         if info_curr == 'GBp':
             prix = prix / 100
         return round(prix, 4)
-    except:
+    except Exception as e:
+        print(f"  ⚠️  get_prix({ticker}) — erreur fetch : {e}")
         return None
 
 def get_eur_usd_rate():
@@ -125,14 +126,21 @@ def portfolio_vide():
     }
 
 def calc_max_drawdown(history):
-    peak, max_dd = 0.0, 0.0
+    """Drawdown sur valeur absolue du capital (en %).
+    Utilise le champ 'capital' si disponible, sinon 'perf' en fallback.
+    Évite de compter les injections de capital comme des gains."""
+    if not history:
+        return 0.0
+    peak = float('-inf')
+    max_dd = 0.0
     for h in history:
-        p = h.get("perf", 0)
-        if p > peak:
-            peak = p
-        dd = p - peak
-        if dd < max_dd:
-            max_dd = dd
+        v = h.get("capital") if h.get("capital") is not None else h.get("perf", 0)
+        if v > peak:
+            peak = v
+        if peak > 0:
+            dd = (v - peak) / peak * 100
+            if dd < max_dd:
+                max_dd = dd
     return round(max_dd, 2)
 
 # ── PROMPT CLAUDE ────────────────────────────────────────────────────────────
@@ -360,12 +368,11 @@ def executer_decisions(decisions_claude, portfolio, watchlist, contexte, eur_usd
                 print(f"  ⚠️  ACHAT {ticker} — déjà en portefeuille, ignoré")
                 continue
 
-            # Allocation dynamique : tient compte des slots restants et des liquidités
-            conviction = dec.get("conviction", "modérée")
-            nb_open    = len(positions)
-            nb_pending = sum(1 for d2 in decisions[:decisions.index(dec)]
-                             if d2.get("action","").upper() == "ACHAT")
-            slots_restants = max(1, MAX_POSITIONS - nb_open - nb_pending)
+            # Allocation dynamique : slots calculés sur l'ensemble des achats décidés (order-independent)
+            conviction    = dec.get("conviction", "modérée")
+            nb_open       = len(positions)
+            nb_achats_total = sum(1 for d2 in decisions if d2.get("action","").upper() == "ACHAT")
+            slots_restants  = max(1, MAX_POSITIONS - nb_open - nb_achats_total)
             equal_weight   = liquidites / slots_restants
 
             if conviction == "forte":
@@ -552,7 +559,7 @@ Ne jamais inclure de balises markdown ou de backticks.""",
     # ── Historique de performance (une entrée par run, max 52 semaines) ──────
     history = portfolio.get("performance_history", [])
     if not any(h.get("date") == today for h in history):
-        history.append({"date": today, "perf": performance, "benchmark_cac40": bench_cac})
+        history.append({"date": today, "perf": performance, "capital": capital_actuel, "benchmark_cac40": bench_cac})
     history = history[-52:]
     max_dd = calc_max_drawdown(history)
 

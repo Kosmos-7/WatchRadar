@@ -386,6 +386,14 @@
     min-width: 30px;
     text-align: right;
   }
+  .mo-sub {
+    display: block;
+    font-size: 0.58rem;
+    color: var(--text3);
+    margin-top: 3px;
+    font-family: 'Courier New', monospace;
+    opacity: 0.8;
+  }
   /* Régression band */
   .reg-band {
     margin-bottom: 0.75rem;
@@ -827,9 +835,16 @@ function badgeHTML(b) {
 function renderCard(s) {
   const id   = s.ticker.replace(/[^a-zA-Z0-9]/g, '_');
   const bd   = s.breakdown || {};
-  const mo   = bd.momentum || 0;
-  const fo   = bd.fondamentaux || 0;
-  const an   = bd.analystes || 0;
+  const mo      = bd.momentum || 0;
+  const fo      = bd.fondamentaux || 0;
+  const an      = bd.analystes || 0;
+  const crossPts = bd.cross_pts != null ? bd.cross_pts : null;
+  const rsiPts   = bd.rsi_pts   != null ? bd.rsi_pts   : null;
+  const volPts   = bd.vol_pts   != null ? bd.vol_pts   : null;
+  const regPts   = bd.reg_pts   != null ? bd.reg_pts   : null;
+  const moSub    = (crossPts !== null)
+    ? `<span class="mo-sub">Cross ${crossPts}/20 · RSI ${rsiPts}/10 · Vol ${volPts}/5 · Rég ${regPts}/5</span>`
+    : '';
   const srcs = (bd.sources || ['Yahoo Finance']).join(' + ');
 
   // ── Golden / Death Cross ──
@@ -978,6 +993,7 @@ function renderCard(s) {
                 <div class="sb-track"><div class="sb-fill" style="width:${mo/40*100}%"></div></div>
                 <div class="sb-val">${mo}/40</div>
               </div>
+              ${moSub}
             </div>
             <div class="sb-item">
               <div class="sb-label">Fondamentaux</div>

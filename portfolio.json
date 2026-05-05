@@ -485,25 +485,22 @@
     {
       "date": "2026-01-02",
       "perf": 0.0,
+      "capital": 10000.0,
       "benchmark_cac40": 0.0
     },
     {
       "date": "2026-04-30",
       "perf": 32.28,
+      "capital": 13228.0,
       "benchmark_cac40": -0.8
     },
     {
       "date": "2026-05-05",
-      "perf": 16.14,
-      "benchmark_cac40": -1.78,
-      "note": "Injection +10k€"
-    },
-    {
-      "date": "2026-05-05",
-      "perf": 10.5,
-      "benchmark_cac40": -2.02,
-      "note": "LLY +1 titre · EUR/USD 1.17"
+      "perf": 10.54,
+      "capital": 22107.39,
+      "benchmark_cac40": -2.05,
+      "note": "Injection +10k€ · LLY +AMD"
     }
   ],
-  "max_drawdown": -21.78
+  "max_drawdown": 0.0
 }

@@ -55,8 +55,10 @@ def finnhub_fundamentals(ticker):
                 "roe":           d.get("roeTTM"),
                 "debt_equity":   d.get("totalDebt/totalEquityAnnual"),
             }
-    except:
-        pass
+        else:
+            print(f"  ⚠️  Finnhub {ticker} — HTTP {r.status_code} ({'rate limit' if r.status_code==429 else 'token expiré?' if r.status_code==401 else 'erreur'})")
+    except Exception as e:
+        print(f"  ⚠️  Finnhub {ticker} — exception : {e}")
     return {}
 
 def valider_fondamentaux(yf_data, fh_data):
@@ -343,7 +345,7 @@ def generer_justification(nom, score, details, alertes):
     if not points:
         return f"Score de {score}/100 — données partielles disponibles."
 
-    justif = f"Score {score}/100 — " + ", ".join(points[:4]) + "."
+    justif = f"Score {score}/100 — " + ", ".join(points[:6]) + "."
     if alertes:
         justif += f" ⚠ {alertes[0]}"
     return justif
@@ -489,6 +491,9 @@ def score_ticker(ticker):
             "cross_slope_mm21_pct":  cross_info["slope_mm21_pct"],
             "cross_volume_confirmed":cross_info["volume_confirmed"],
             "cross_pts":             cross_pts,
+            "rsi_pts":               rsi_pts,
+            "vol_pts":               vol_pts,
+            "reg_pts":               reg_pts,
             # Indicateurs techniques
             "rsi":                   round(rsi, 1),
             "mm21":                  round(mm21, 2),
