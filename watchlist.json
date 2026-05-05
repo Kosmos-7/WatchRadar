@@ -61,17 +61,17 @@
         "cross_regime": "golden",
         "cross_type": "golden",
         "cross_days_ago": 159,
-        "cross_spread_pct": 27.33,
+        "cross_spread_pct": 27.32,
         "cross_slope_mm21_pct": 1.08,
         "cross_volume_confirmed": true,
         "cross_pts": 13,
         "rsi_pts": 10,
         "vol_pts": 5,
         "reg_pts": 5,
-        "rsi": 51.3,
-        "mm21": 1219.25,
-        "mm200": 957.57,
-        "regression_z": 0.01,
+        "rsi": 51.2,
+        "mm21": 1219.21,
+        "mm200": 957.56,
+        "regression_z": 0.0,
         "regression_signal": "neutre",
         "regression_pente_pct": 25.4,
         "regression_window_years": 10,
@@ -128,47 +128,6 @@
       "rank": 3
     },
     {
-      "ticker": "AVGO",
-      "name": "Broadcom Inc.",
-      "market": "NMS",
-      "sector": "Technologie",
-      "score": 90,
-      "stars": 5,
-      "badge": null,
-      "change": "stable",
-      "breakdown": {
-        "momentum": 27,
-        "fondamentaux": 40,
-        "analystes": 20,
-        "cross_regime": "golden",
-        "cross_type": "golden",
-        "cross_days_ago": 13,
-        "cross_spread_pct": 15.43,
-        "cross_slope_mm21_pct": 6.86,
-        "cross_volume_confirmed": false,
-        "cross_pts": 17,
-        "rsi_pts": 10,
-        "vol_pts": 0,
-        "reg_pts": 0,
-        "rsi": 66.0,
-        "mm21": 392.08,
-        "mm200": 339.67,
-        "regression_z": 2.05,
-        "regression_signal": "surachat",
-        "regression_pente_pct": 32.7,
-        "regression_window_years": 10,
-        "rev_growth_pct": 29.5,
-        "net_margin_pct": 36.6,
-        "confiance": 1.0,
-        "sources": [
-          "Yahoo Finance",
-          "Finnhub"
-        ]
-      },
-      "justification": "Score 90/100 — Golden Cross récent (13j), prix en surachat régression (+2.0σ) — prudence, RSI en zone favorable, croissance CA solide (30%/an), marges excellentes (37%), consensus analystes très favorable.",
-      "rank": 4
-    },
-    {
       "ticker": "JPM",
       "name": "JP Morgan Chase & Co.",
       "market": "NYQ",
@@ -214,48 +173,7 @@
         }
       },
       "justification": "Score 90/100 — Golden Cross frais (8j) — fenêtre signal optimale, légèrement au-dessus de sa régression (+1.5σ), RSI en zone favorable, croissance CA modérée (13%/an), marges excellentes (34%), consensus analystes positif.",
-      "rank": 5
-    },
-    {
-      "ticker": "AMD",
-      "name": "Advanced Micro Devices",
-      "market": "NMS",
-      "sector": "Technologie",
-      "score": 85,
-      "stars": 5,
-      "badge": null,
-      "change": "stable",
-      "breakdown": {
-        "momentum": 22,
-        "fondamentaux": 40,
-        "analystes": 20,
-        "cross_regime": "golden",
-        "cross_type": "golden",
-        "cross_days_ago": 213,
-        "cross_spread_pct": 35.47,
-        "cross_slope_mm21_pct": 12.85,
-        "cross_volume_confirmed": false,
-        "cross_pts": 7,
-        "rsi_pts": 10,
-        "vol_pts": 0,
-        "reg_pts": 5,
-        "rsi": 69.9,
-        "mm21": 287.59,
-        "mm200": 212.29,
-        "regression_z": 0.36,
-        "regression_signal": "neutre",
-        "regression_pente_pct": 34.9,
-        "regression_window_years": 10,
-        "rev_growth_pct": 34.1,
-        "net_margin_pct": 12.5,
-        "confiance": 1.0,
-        "sources": [
-          "Yahoo Finance",
-          "Finnhub"
-        ]
-      },
-      "justification": "Score 85/100 — cours proche de sa droite de régression, RSI en zone favorable, croissance CA solide (34%/an), marges positives, consensus analystes très favorable.",
-      "rank": 6
+      "rank": 4
     },
     {
       "ticker": "BLK",
@@ -303,48 +221,7 @@
         }
       },
       "justification": "Score 85/100 — cours proche de sa droite de régression, RSI en zone favorable, croissance CA solide (27%/an), marges excellentes (24%), consensus analystes très favorable.",
-      "rank": 7
-    },
-    {
-      "ticker": "ADI",
-      "name": "Analog Devices, Inc.",
-      "market": "NMS",
-      "sector": "Technologie",
-      "score": 85,
-      "stars": 5,
-      "badge": null,
-      "change": "stable",
-      "breakdown": {
-        "momentum": 22,
-        "fondamentaux": 40,
-        "analystes": 20,
-        "cross_regime": "golden",
-        "cross_type": "golden",
-        "cross_days_ago": 231,
-        "cross_spread_pct": 31.96,
-        "cross_slope_mm21_pct": 5.45,
-        "cross_volume_confirmed": false,
-        "cross_pts": 7,
-        "rsi_pts": 10,
-        "vol_pts": 5,
-        "reg_pts": 0,
-        "rsi": 67.2,
-        "mm21": 370.36,
-        "mm200": 280.67,
-        "regression_z": 3.28,
-        "regression_signal": "surachat",
-        "regression_pente_pct": 16.3,
-        "regression_window_years": 10,
-        "rev_growth_pct": 30.4,
-        "net_margin_pct": 23.0,
-        "confiance": 1.0,
-        "sources": [
-          "Yahoo Finance",
-          "Finnhub"
-        ]
-      },
-      "justification": "Score 85/100 — prix en surachat régression (+3.3σ) — prudence, RSI en zone favorable, croissance CA solide (30%/an), marges excellentes (23%), consensus analystes très favorable.",
-      "rank": 8
+      "rank": 5
     },
     {
       "ticker": "DB1.DE",
@@ -362,17 +239,17 @@
         "cross_regime": "golden",
         "cross_type": "golden",
         "cross_days_ago": 30,
-        "cross_spread_pct": 11.71,
+        "cross_spread_pct": 11.7,
         "cross_slope_mm21_pct": 1.73,
         "cross_volume_confirmed": false,
         "cross_pts": 18,
         "rsi_pts": 10,
         "vol_pts": 5,
         "reg_pts": 5,
-        "rsi": 60.6,
-        "mm21": 260.38,
+        "rsi": 60.3,
+        "mm21": 260.37,
         "mm200": 233.09,
-        "regression_z": 0.73,
+        "regression_z": 0.72,
         "regression_signal": "neutre",
         "regression_pente_pct": 9.9,
         "regression_window_years": 20,
@@ -385,7 +262,48 @@
         ]
       },
       "justification": "Score 84/100 — Golden Cross récent (30j), cours proche de sa droite de régression, RSI en zone favorable, croissance CA modérée (8%/an), marges excellentes (27%), consensus analystes très favorable.",
-      "rank": 9
+      "rank": 6
+    },
+    {
+      "ticker": "META",
+      "name": "Meta Platforms, Inc.",
+      "market": "NMS",
+      "sector": "Médias & IA",
+      "score": 84,
+      "stars": 5,
+      "badge": null,
+      "change": "new",
+      "breakdown": {
+        "momentum": 24,
+        "fondamentaux": 40,
+        "analystes": 20,
+        "cross_regime": "death",
+        "cross_type": "death",
+        "cross_days_ago": 115,
+        "cross_spread_pct": -4.67,
+        "cross_slope_mm21_pct": 2.91,
+        "cross_volume_confirmed": false,
+        "cross_pts": 4,
+        "rsi_pts": 10,
+        "vol_pts": 5,
+        "reg_pts": 5,
+        "rsi": 41.3,
+        "mm21": 645.31,
+        "mm200": 676.92,
+        "regression_z": 0.27,
+        "regression_signal": "neutre",
+        "regression_pente_pct": 16.1,
+        "regression_window_years": 10,
+        "rev_growth_pct": 33.1,
+        "net_margin_pct": 32.8,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance",
+          "Finnhub"
+        ]
+      },
+      "justification": "Score 84/100 — cours proche de sa droite de régression, RSI en zone favorable, croissance CA solide (33%/an), marges excellentes (33%), consensus analystes très favorable.",
+      "rank": 7
     },
     {
       "ticker": "LLY",
@@ -426,7 +344,48 @@
         ]
       },
       "justification": "Score 84/100 — légèrement au-dessus de sa régression (+1.3σ), RSI en zone favorable, croissance CA solide (56%/an), marges excellentes (35%), consensus analystes très favorable.",
-      "rank": 10
+      "rank": 8
+    },
+    {
+      "ticker": "SAF.PA",
+      "name": "SAFRAN",
+      "market": "PAR",
+      "sector": "Industrie",
+      "score": 83,
+      "stars": 5,
+      "badge": "EU",
+      "change": "new",
+      "breakdown": {
+        "momentum": 20,
+        "fondamentaux": 40,
+        "analystes": 20,
+        "cross_regime": "death",
+        "cross_type": "death",
+        "cross_days_ago": 20,
+        "cross_spread_pct": -3.18,
+        "cross_slope_mm21_pct": -0.93,
+        "cross_volume_confirmed": false,
+        "cross_pts": 0,
+        "rsi_pts": 10,
+        "vol_pts": 5,
+        "reg_pts": 5,
+        "rsi": 40.2,
+        "mm21": 290.02,
+        "mm200": 299.55,
+        "regression_z": -0.34,
+        "regression_signal": "neutre",
+        "regression_pente_pct": 17.7,
+        "regression_window_years": 20,
+        "rev_growth_pct": 12.5,
+        "net_margin_pct": 23.0,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance",
+          "Finnhub"
+        ]
+      },
+      "justification": "Score 83/100 — ⚠ Death Cross récent (20j) — signal baissier actif, cours proche de sa droite de régression, RSI en zone favorable, croissance CA modérée (12%/an), marges excellentes (23%), consensus analystes très favorable.",
+      "rank": 9
     },
     {
       "ticker": "LSEG.L",
@@ -451,7 +410,7 @@
         "rsi_pts": 10,
         "vol_pts": 5,
         "reg_pts": 0,
-        "rsi": 62.4,
+        "rsi": 62.3,
         "mm21": 94.36,
         "mm200": 88.79,
         "regression_z": -0.95,
@@ -467,7 +426,7 @@
         ]
       },
       "justification": "Score 83/100 — Golden Cross frais (8j) — fenêtre signal optimale, prix sous sa droite de régression (-0.9σ), RSI en zone favorable, marges positives, consensus analystes très favorable.",
-      "rank": 11
+      "rank": 10
     },
     {
       "ticker": "ETN",
@@ -515,7 +474,7 @@
         }
       },
       "justification": "Score 83/100 — Golden Cross confirmé (57j), légèrement au-dessus de sa régression (+1.7σ), RSI en zone favorable, croissance CA modérée (13%/an), marges positives, consensus analystes très favorable.",
-      "rank": 12
+      "rank": 11
     },
     {
       "ticker": "ADYEN.AS",
@@ -534,15 +493,15 @@
         "cross_type": "death",
         "cross_days_ago": 184,
         "cross_spread_pct": -26.26,
-        "cross_slope_mm21_pct": 2.61,
+        "cross_slope_mm21_pct": 2.62,
         "cross_volume_confirmed": false,
         "cross_pts": 4,
         "rsi_pts": 10,
         "vol_pts": 5,
         "reg_pts": 0,
-        "rsi": 56.5,
-        "mm21": 934.17,
-        "mm200": 1266.86,
+        "rsi": 56.8,
+        "mm21": 934.25,
+        "mm200": 1266.87,
         "regression_z": -1.46,
         "regression_signal": "sous tendance",
         "regression_pente_pct": 8.5,
@@ -556,7 +515,7 @@
         ]
       },
       "justification": "Score 82/100 — prix sous sa droite de régression (-1.5σ), RSI en zone favorable, croissance CA solide (17%/an), marges excellentes (45%), consensus analystes très favorable.",
-      "rank": 13
+      "rank": 12
     },
     {
       "ticker": "ORCL",
@@ -597,6 +556,54 @@
         ]
       },
       "justification": "Score 82/100 — cours proche de sa droite de régression, RSI en zone favorable, croissance CA solide (22%/an), marges excellentes (25%), consensus analystes très favorable.",
+      "rank": 13
+    },
+    {
+      "ticker": "NOW",
+      "name": "ServiceNow, Inc.",
+      "market": "NYQ",
+      "sector": "Technologie",
+      "score": 82,
+      "stars": 5,
+      "badge": null,
+      "change": "new",
+      "breakdown": {
+        "momentum": 19,
+        "fondamentaux": 40,
+        "analystes": 20,
+        "cross_regime": "death",
+        "cross_type": "death",
+        "cross_days_ago": 189,
+        "cross_spread_pct": -37.67,
+        "cross_slope_mm21_pct": -3.17,
+        "cross_volume_confirmed": false,
+        "cross_pts": 4,
+        "rsi_pts": 10,
+        "vol_pts": 5,
+        "reg_pts": 0,
+        "rsi": 44.8,
+        "mm21": 93.17,
+        "mm200": 149.47,
+        "regression_z": -3.37,
+        "regression_signal": "survente",
+        "regression_pente_pct": 25.1,
+        "regression_window_years": 10,
+        "rev_growth_pct": 22.1,
+        "net_margin_pct": 12.6,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance",
+          "Finnhub"
+        ],
+        "news_alert": {
+          "type": "acquisition",
+          "headline": "ServiceNow CEO sends blunt message on acquisitions",
+          "date": "2026-05-04",
+          "url": "https://finnhub.io/api/news?id=7843b0a89865eeac4cb61dae52559dfa155f62963531e929b534b148b373b0cd",
+          "source": "Yahoo"
+        }
+      },
+      "justification": "Score 82/100 — prix sous sa droite de régression (-3.4σ), RSI en zone favorable, croissance CA solide (22%/an), marges positives, consensus analystes très favorable.",
       "rank": 14
     },
     {
@@ -641,6 +648,47 @@
       "rank": 15
     },
     {
+      "ticker": "CS.PA",
+      "name": "AXA",
+      "market": "PAR",
+      "sector": "Finance",
+      "score": 81,
+      "stars": 5,
+      "badge": "EU",
+      "change": "new",
+      "breakdown": {
+        "momentum": 38,
+        "fondamentaux": 20,
+        "analystes": 20,
+        "cross_regime": "golden",
+        "cross_type": "golden",
+        "cross_days_ago": 11,
+        "cross_spread_pct": 3.7,
+        "cross_slope_mm21_pct": 1.01,
+        "cross_volume_confirmed": false,
+        "cross_pts": 18,
+        "rsi_pts": 10,
+        "vol_pts": 5,
+        "reg_pts": 5,
+        "rsi": 49.1,
+        "mm21": 41.28,
+        "mm200": 39.81,
+        "regression_z": 1.06,
+        "regression_signal": "au-dessus",
+        "regression_pente_pct": 9.0,
+        "regression_window_years": 20,
+        "rev_growth_pct": 3.2,
+        "net_margin_pct": 10.3,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance",
+          "Finnhub"
+        ]
+      },
+      "justification": "Score 81/100 — Golden Cross récent (11j), légèrement au-dessus de sa régression (+1.1σ), RSI en zone favorable, marges positives, consensus analystes très favorable.",
+      "rank": 16
+    },
+    {
       "ticker": "AZN.L",
       "name": "ASTRAZENECA PLC ORD SH",
       "market": "LSE",
@@ -656,15 +704,15 @@
         "cross_regime": "golden",
         "cross_type": "golden",
         "cross_days_ago": 184,
-        "cross_spread_pct": 9.75,
-        "cross_slope_mm21_pct": -1.35,
+        "cross_spread_pct": 9.76,
+        "cross_slope_mm21_pct": -1.34,
         "cross_volume_confirmed": false,
         "cross_pts": 7,
         "rsi_pts": 0,
         "vol_pts": 5,
         "reg_pts": 5,
-        "rsi": 31.1,
-        "mm21": 145.47,
+        "rsi": 31.2,
+        "mm21": 145.48,
         "mm200": 132.55,
         "regression_z": 0.35,
         "regression_signal": "neutre",
@@ -679,7 +727,7 @@
         ]
       },
       "justification": "Score 80/100 — cours proche de sa droite de régression, croissance CA modérée (12%/an), marges excellentes (17%), consensus analystes très favorable.",
-      "rank": 16
+      "rank": 17
     },
     {
       "ticker": "MSFT",
@@ -720,7 +768,48 @@
         ]
       },
       "justification": "Score 80/100 — prix sous sa droite de régression (-2.5σ), RSI en zone favorable, croissance CA solide (18%/an), marges excellentes (39%), consensus analystes très favorable.",
-      "rank": 17
+      "rank": 18
+    },
+    {
+      "ticker": "AVGO",
+      "name": "Broadcom Inc.",
+      "market": "NMS",
+      "sector": "Technologie",
+      "score": 80,
+      "stars": 5,
+      "badge": null,
+      "change": "down",
+      "breakdown": {
+        "momentum": 17,
+        "fondamentaux": 40,
+        "analystes": 20,
+        "cross_regime": "golden",
+        "cross_type": "golden",
+        "cross_days_ago": 13,
+        "cross_spread_pct": 15.43,
+        "cross_slope_mm21_pct": 6.86,
+        "cross_volume_confirmed": false,
+        "cross_pts": 17,
+        "rsi_pts": 0,
+        "vol_pts": 0,
+        "reg_pts": 0,
+        "rsi": 66.0,
+        "mm21": 392.08,
+        "mm200": 339.67,
+        "regression_z": 2.05,
+        "regression_signal": "surachat",
+        "regression_pente_pct": 32.7,
+        "regression_window_years": 10,
+        "rev_growth_pct": 29.5,
+        "net_margin_pct": 36.6,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance",
+          "Finnhub"
+        ]
+      },
+      "justification": "Score 80/100 — Golden Cross récent (13j), prix en surachat régression (+2.0σ) — prudence, croissance CA solide (30%/an), marges excellentes (37%), consensus analystes très favorable.",
+      "rank": 19
     },
     {
       "ticker": "CRM",
@@ -768,7 +857,48 @@
         }
       },
       "justification": "Score 80/100 — prix sous sa droite de régression (-2.4σ), RSI en zone favorable, croissance CA modérée (12%/an), marges excellentes (18%), consensus analystes très favorable.",
-      "rank": 18
+      "rank": 20
+    },
+    {
+      "ticker": "SPGI",
+      "name": "S&P Global Inc.",
+      "market": "NYQ",
+      "sector": "Finance",
+      "score": 80,
+      "stars": 5,
+      "badge": null,
+      "change": "new",
+      "breakdown": {
+        "momentum": 17,
+        "fondamentaux": 40,
+        "analystes": 20,
+        "cross_regime": "death",
+        "cross_type": "death",
+        "cross_days_ago": 57,
+        "cross_spread_pct": -11.15,
+        "cross_slope_mm21_pct": 0.48,
+        "cross_volume_confirmed": true,
+        "cross_pts": 2,
+        "rsi_pts": 10,
+        "vol_pts": 5,
+        "reg_pts": 0,
+        "rsi": 43.3,
+        "mm21": 433.54,
+        "mm200": 487.96,
+        "regression_z": -1.31,
+        "regression_signal": "sous tendance",
+        "regression_pente_pct": 17.9,
+        "regression_window_years": 20,
+        "rev_growth_pct": 10.4,
+        "net_margin_pct": 30.4,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance",
+          "Finnhub"
+        ]
+      },
+      "justification": "Score 80/100 — prix sous sa droite de régression (-1.3σ), RSI en zone favorable, croissance CA modérée (10%/an), marges excellentes (30%), consensus analystes très favorable.",
+      "rank": 21
     },
     {
       "ticker": "SU.PA",
@@ -786,17 +916,17 @@
         "cross_regime": "golden",
         "cross_type": "golden",
         "cross_days_ago": 151,
-        "cross_spread_pct": 10.15,
-        "cross_slope_mm21_pct": 3.22,
+        "cross_spread_pct": 10.14,
+        "cross_slope_mm21_pct": 3.21,
         "cross_volume_confirmed": false,
         "cross_pts": 11,
         "rsi_pts": 10,
         "vol_pts": 5,
         "reg_pts": 5,
-        "rsi": 53.1,
-        "mm21": 265.01,
+        "rsi": 52.6,
+        "mm21": 264.99,
         "mm200": 240.59,
-        "regression_z": 1.18,
+        "regression_z": 1.17,
         "regression_signal": "au-dessus",
         "regression_pente_pct": 12.4,
         "regression_window_years": 20,
@@ -809,7 +939,7 @@
         ]
       },
       "justification": "Score 79/100 — légèrement au-dessus de sa régression (+1.2σ), RSI en zone favorable, marges positives, consensus analystes très favorable.",
-      "rank": 19
+      "rank": 22
     },
     {
       "ticker": "ASM.AS",
@@ -834,8 +964,8 @@
         "rsi_pts": 10,
         "vol_pts": 5,
         "reg_pts": 5,
-        "rsi": 64.1,
-        "mm21": 782.99,
+        "rsi": 64.2,
+        "mm21": 783.01,
         "mm200": 579.92,
         "regression_z": -0.39,
         "regression_signal": "neutre",
@@ -850,7 +980,7 @@
         ]
       },
       "justification": "Score 79/100 — cours proche de sa droite de régression, RSI en zone favorable, marges excellentes (31%), consensus analystes très favorable.",
-      "rank": 20
+      "rank": 23
     },
     {
       "ticker": "REGN",
@@ -891,7 +1021,7 @@
         ]
       },
       "justification": "Score 78/100 — prix sous sa droite de régression (-1.5σ), croissance CA solide (19%/an), marges excellentes (30%), consensus analystes très favorable.",
-      "rank": 21
+      "rank": 24
     },
     {
       "ticker": "COST",
@@ -939,164 +1069,92 @@
         }
       },
       "justification": "Score 76/100 — cours proche de sa droite de régression, RSI en zone favorable, croissance CA solide (22%/an), marges positives, consensus analystes très favorable.",
-      "rank": 22
-    },
-    {
-      "ticker": "AMAT",
-      "name": "Applied Materials, Inc",
-      "market": "NMS",
-      "sector": "Technologie",
-      "score": 76,
-      "stars": 4,
-      "badge": null,
-      "change": "stable",
-      "breakdown": {
-        "momentum": 28,
-        "fondamentaux": 25,
-        "analystes": 20,
-        "cross_regime": "golden",
-        "cross_type": "golden",
-        "cross_days_ago": 154,
-        "cross_spread_pct": 44.97,
-        "cross_slope_mm21_pct": 2.94,
-        "cross_volume_confirmed": true,
-        "cross_pts": 13,
-        "rsi_pts": 10,
-        "vol_pts": 5,
-        "reg_pts": 0,
-        "rsi": 53.8,
-        "mm21": 391.25,
-        "mm200": 269.89,
-        "regression_z": 1.58,
-        "regression_signal": "au-dessus",
-        "regression_pente_pct": 23.8,
-        "regression_window_years": 10,
-        "rev_growth_pct": -2.1,
-        "net_margin_pct": 27.8,
-        "confiance": 1.0,
-        "sources": [
-          "Yahoo Finance",
-          "Finnhub"
-        ],
-        "news_alert": {
-          "type": "acquisition",
-          "headline": "Applied Materials Expands AI Arsenal, Acquires NEXX In Packaging Push",
-          "date": "2026-05-04",
-          "url": "https://finnhub.io/api/news?id=e2c15e46ed70f446ee4bf778fa25b401e0e7625b44acf2715b0478037009bd96",
-          "source": "Benzinga"
-        }
-      },
-      "justification": "Score 76/100 — légèrement au-dessus de sa régression (+1.6σ), RSI en zone favorable, marges excellentes (28%), consensus analystes très favorable.",
-      "rank": 23
-    },
-    {
-      "ticker": "V",
-      "name": "Visa Inc.",
-      "market": "NYQ",
-      "sector": "Finance",
-      "score": 75,
-      "stars": 4,
-      "badge": null,
-      "change": "stable",
-      "breakdown": {
-        "momentum": 12,
-        "fondamentaux": 40,
-        "analystes": 20,
-        "cross_regime": "death",
-        "cross_type": "death",
-        "cross_days_ago": 69,
-        "cross_spread_pct": -5.44,
-        "cross_slope_mm21_pct": 2.05,
-        "cross_volume_confirmed": false,
-        "cross_pts": 2,
-        "rsi_pts": 10,
-        "vol_pts": 0,
-        "reg_pts": 0,
-        "rsi": 62.4,
-        "mm21": 313.73,
-        "mm200": 331.77,
-        "regression_z": -1.95,
-        "regression_signal": "survente",
-        "regression_pente_pct": 19.9,
-        "regression_window_years": 18,
-        "rev_growth_pct": 17.1,
-        "net_margin_pct": 51.7,
-        "confiance": 1.0,
-        "sources": [
-          "Yahoo Finance",
-          "Finnhub"
-        ],
-        "news_alert": {
-          "type": "alert",
-          "headline": "Anchor Investment Exits Nearly All of Its BSCQ Position -- a $21 Million Trim",
-          "date": "2026-05-04",
-          "url": "https://finnhub.io/api/news?id=3ba4525524aa7243a6244cc0f4557d8104b554b17a07431622b92718d5357d4d",
-          "source": "Yahoo"
-        }
-      },
-      "justification": "Score 75/100 — prix sous sa droite de régression (-1.9σ), RSI en zone favorable, croissance CA solide (17%/an), marges excellentes (52%), consensus analystes très favorable.",
-      "rank": 24
-    },
-    {
-      "ticker": "TXN",
-      "name": "Texas Instruments Inco",
-      "market": "NMS",
-      "sector": "Technologie",
-      "score": 75,
-      "stars": 4,
-      "badge": null,
-      "change": "stable",
-      "breakdown": {
-        "momentum": 20,
-        "fondamentaux": 40,
-        "analystes": 12,
-        "cross_regime": "golden",
-        "cross_type": "golden",
-        "cross_days_ago": 77,
-        "cross_spread_pct": 25.38,
-        "cross_slope_mm21_pct": 8.95,
-        "cross_volume_confirmed": false,
-        "cross_pts": 10,
-        "rsi_pts": 0,
-        "vol_pts": 5,
-        "reg_pts": 5,
-        "rsi": 77.1,
-        "mm21": 240.56,
-        "mm200": 191.86,
-        "regression_z": 1.23,
-        "regression_signal": "au-dessus",
-        "regression_pente_pct": 13.5,
-        "regression_window_years": 10,
-        "rev_growth_pct": 18.6,
-        "net_margin_pct": 29.1,
-        "confiance": 1.0,
-        "sources": [
-          "Yahoo Finance",
-          "Finnhub"
-        ],
-        "news_alert": {
-          "type": "alert",
-          "headline": "Corporate America Earnings Beat Back Wall Street’s Wall of Worry",
-          "date": "2026-05-02",
-          "url": "https://finnhub.io/api/news?id=9d8271fda6efa397de9e237f70b51478e34b502711496c5488933625c24f0d30",
-          "source": "Yahoo"
-        }
-      },
-      "justification": "Score 75/100 — légèrement au-dessus de sa régression (+1.2σ), croissance CA solide (19%/an), marges excellentes (29%), consensus analystes positif.",
       "rank": 25
     }
   ],
-  "changelog": [],
+  "changelog": [
+    {
+      "action": "in",
+      "ticker": "META",
+      "name": "Meta Platforms, Inc.",
+      "score": 84,
+      "reason": "Score 84/100 — cours proche de sa droite de régression, RSI en zone favorable, croissance CA solide (33%/an), marges excellentes (33%), consensus analystes très favorable."
+    },
+    {
+      "action": "in",
+      "ticker": "SAF.PA",
+      "name": "SAFRAN",
+      "score": 83,
+      "reason": "Score 83/100 — ⚠ Death Cross récent (20j) — signal baissier actif, cours proche de sa droite de régression, RSI en zone favorable, croissance CA modérée (12%/an), marges excellentes (23%), consensus analystes très favorable."
+    },
+    {
+      "action": "in",
+      "ticker": "NOW",
+      "name": "ServiceNow, Inc.",
+      "score": 82,
+      "reason": "Score 82/100 — prix sous sa droite de régression (-3.4σ), RSI en zone favorable, croissance CA solide (22%/an), marges positives, consensus analystes très favorable."
+    },
+    {
+      "action": "in",
+      "ticker": "CS.PA",
+      "name": "AXA",
+      "score": 81,
+      "reason": "Score 81/100 — Golden Cross récent (11j), légèrement au-dessus de sa régression (+1.1σ), RSI en zone favorable, marges positives, consensus analystes très favorable."
+    },
+    {
+      "action": "in",
+      "ticker": "SPGI",
+      "name": "S&P Global Inc.",
+      "score": 80,
+      "reason": "Score 80/100 — prix sous sa droite de régression (-1.3σ), RSI en zone favorable, croissance CA modérée (10%/an), marges excellentes (30%), consensus analystes très favorable."
+    },
+    {
+      "action": "out",
+      "ticker": "AMD",
+      "name": "Advanced Micro Devices",
+      "score": 85,
+      "reason": "Score insuffisant pour rester dans le top 25 cette semaine."
+    },
+    {
+      "action": "out",
+      "ticker": "ADI",
+      "name": "Analog Devices, Inc.",
+      "score": 85,
+      "reason": "Score insuffisant pour rester dans le top 25 cette semaine."
+    },
+    {
+      "action": "out",
+      "ticker": "AMAT",
+      "name": "Applied Materials, Inc",
+      "score": 76,
+      "reason": "Score insuffisant pour rester dans le top 25 cette semaine."
+    },
+    {
+      "action": "out",
+      "ticker": "V",
+      "name": "Visa Inc.",
+      "score": 75,
+      "reason": "Score insuffisant pour rester dans le top 25 cette semaine."
+    },
+    {
+      "action": "out",
+      "ticker": "TXN",
+      "name": "Texas Instruments Inco",
+      "score": 75,
+      "reason": "Score insuffisant pour rester dans le top 25 cette semaine."
+    }
+  ],
   "concentration_alerts": [
-    "Technologie (13 titres sur 25 — risque de corrélation sectorielle)",
-    "Finance (5 titres sur 25 — risque de corrélation sectorielle)"
+    "Technologie (10 titres sur 25 — risque de corrélation sectorielle)",
+    "Finance (6 titres sur 25 — risque de corrélation sectorielle)"
   ],
   "sector_distribution": {
-    "Technologie": 13,
-    "Finance": 5,
+    "Technologie": 10,
+    "Finance": 6,
     "Santé": 3,
-    "Industrie": 2,
+    "Industrie": 3,
     "Conso. cycl.": 1,
+    "Médias & IA": 1,
     "Conso. staples": 1
   }
 }
