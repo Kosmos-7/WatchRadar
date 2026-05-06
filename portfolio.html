@@ -131,13 +131,14 @@
 
   /* ── KPI GRID ── */
   .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 1.75rem; }
-  .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; position: relative; overflow: hidden; transition: border-color 0.15s, box-shadow 0.15s; box-shadow: inset 0 1px 0 rgba(255,255,255,0.03); }
+  .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; position: relative; transition: border-color 0.15s, box-shadow 0.15s; box-shadow: inset 0 1px 0 rgba(255,255,255,0.03); }
   .kpi:hover { border-color: rgba(232,168,32,0.25); box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 0 0 1px rgba(232,168,32,0.09), 0 0 24px rgba(232,168,32,0.06), 0 8px 28px rgba(0,0,0,0.5); }
   .kpi-accent { position: absolute; top: 0; left: 0; right: 0; height: 3px; }
-  .kpi-label { font-family: 'Courier New', monospace; font-size: 0.75rem; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
+  .kpi-label { font-size: 0.78rem; font-weight: 500; color: var(--text2); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 5px; }
+  .kpi-info  { font-size: 0.72rem; color: var(--text3); cursor: help; opacity: 0.6; transition: opacity 0.15s; flex-shrink: 0; }
+  .kpi-info:hover { opacity: 1; }
   .kpi-value { font-family: Georgia, serif; font-size: 1.45rem; line-height: 1; margin-bottom: 4px; }
   .kpi-sub  { font-family: 'Courier New', monospace; font-size: 0.80rem; color: var(--text3); }
-  .kpi-hint { font-size: 0.74rem; color: var(--text3); opacity: 0.72; margin-top: 4px; line-height: 1.45; font-style: italic; }
   .up  { color: var(--green); }
   .dn  { color: var(--red); }
   .neu { color: var(--text2); }
@@ -955,44 +956,44 @@ async function loadPortfolio() {
         </div>
       </div>`;
 
-    // KPI
-    const gain = d.capital_actuel - d.capital_initial;
+    // KPI — 5 cartes "état du portefeuille" (perf/alpha déjà dans le survival block, pas de doublon)
+    const gain      = d.capital_actuel - d.capital_initial;
+    const investi   = d.capital_actuel - d.liquidites;
+    const pctInvesti = (100 - d.pct_liquidites).toFixed(1);
     const nbNeutres = d.nb_neutres ?? (d.nb_positions - d.nb_positives - d.nb_negatives);
+    const nSub = nbNeutres > 0
+      ? `<span class="up">${d.nb_positives} en gain</span> · <span style="color:var(--text3)">${nbNeutres} neutre${nbNeutres>1?'s':''}</span> · <span class="dn">${d.nb_negatives} en perte</span>`
+      : `<span class="up">${d.nb_positives} en gain</span> · <span class="dn">${d.nb_negatives} en perte</span>`;
     document.getElementById('kpi-grid').innerHTML = `
       <div class="kpi">
         <div class="kpi-accent" style="background:${gain>=0?'var(--green)':'var(--red)'}"></div>
-        <div class="kpi-label">Valeur du portefeuille</div>
+        <div class="kpi-label">Valeur totale <span class="kpi-info" title="Ce que vaut le portefeuille en ce moment : actions + liquidités, converti en euros">ⓘ</span></div>
         <div class="kpi-value">${fmtEur(d.capital_actuel)}</div>
-        <div class="kpi-sub ${gain>=0?'up':'dn'}">${sign(gain)}${fmtEur(Math.abs(gain))} de profit net</div>
-        <div class="kpi-hint">Somme de toutes les positions + liquidités non investies — en euros, en temps réel</div>
+        <div class="kpi-sub">départ · ${fmtEur(d.capital_initial)}</div>
       </div>
       <div class="kpi">
-        <div class="kpi-accent" style="background:${d.performance>=0?'var(--green)':'var(--red)'}"></div>
-        <div class="kpi-label">Rendement total</div>
-        <div class="kpi-value ${d.performance>=0?'up':'dn'}">${sign(d.performance)}${fmt(d.performance,1)} %</div>
-        <div class="kpi-sub">depuis le départ · base 20 000 €</div>
-        <div class="kpi-hint">Si on avait mis 100 € au départ, on aurait aujourd'hui ${(100 + d.performance).toFixed(1)} €</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-accent" style="background:${d.vs_benchmark>=0?'var(--green)':'var(--red)'}"></div>
-        <div class="kpi-label">Avance sur le marché</div>
-        <div class="kpi-value ${d.vs_benchmark>=0?'up':'dn'}">${sign(d.vs_benchmark)}${fmt(d.vs_benchmark,1)} pts de %</div>
-        <div class="kpi-sub">vs MSCI World ${sign(d.benchmark_msci)}${fmt(d.benchmark_msci,1)} % · même période</div>
-        <div class="kpi-hint">L'IA ${d.vs_benchmark>=0?'surperforme':'sous-performe'} un ETF mondial passif de ${Math.abs(d.vs_benchmark).toFixed(1)} points — c'est l'indicateur clé de la valeur ajoutée</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-accent" style="background:var(--blue)"></div>
-        <div class="kpi-label">Liquidités disponibles</div>
-        <div class="kpi-value liq">${fmtEur(d.liquidites)}</div>
-        <div class="kpi-sub">${fmt(d.pct_liquidites,1)} % du portefeuille non investi</div>
-        <div class="kpi-hint">Argent en attente, disponible immédiatement pour de nouveaux achats</div>
+        <div class="kpi-accent" style="background:${gain>=0?'var(--green)':'var(--red)'}"></div>
+        <div class="kpi-label">Gain net <span class="kpi-info" title="L'argent réellement gagné ou perdu en euros — plus concret qu'un pourcentage">ⓘ</span></div>
+        <div class="kpi-value ${gain>=0?'up':'dn'}">${sign(gain)}${fmtEur(Math.abs(gain))}</div>
+        <div class="kpi-sub ${gain>=0?'up':'dn'}">${sign(d.performance)}${fmt(d.performance,1)} % depuis le départ</div>
       </div>
       <div class="kpi">
         <div class="kpi-accent" style="background:var(--text3)"></div>
-        <div class="kpi-label">Titres en portefeuille</div>
+        <div class="kpi-label">Investi en bourse <span class="kpi-info" title="Part du portefeuille placée dans des actions — ce montant fluctue avec les marchés">ⓘ</span></div>
+        <div class="kpi-value">${fmtEur(investi)}</div>
+        <div class="kpi-sub">${pctInvesti} % du portefeuille</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-accent" style="background:var(--blue)"></div>
+        <div class="kpi-label">Liquidités <span class="kpi-info" title="Argent non investi, disponible immédiatement pour de nouveaux achats">ⓘ</span></div>
+        <div class="kpi-value liq">${fmtEur(d.liquidites)}</div>
+        <div class="kpi-sub">${fmt(d.pct_liquidites,1)} % du portefeuille</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-accent" style="background:var(--text3)"></div>
+        <div class="kpi-label">Positions <span class="kpi-info" title="Nombre d'entreprises différentes détenues — diversifier réduit le risque lié à un seul titre">ⓘ</span></div>
         <div class="kpi-value">${d.nb_positions}</div>
-        <div class="kpi-sub"><span class="up">${d.nb_positives} en gain</span> · <span style="color:var(--text3)">${nbNeutres} neutre${nbNeutres>1?'s':''}</span> · <span class="dn">${d.nb_negatives} en perte</span></div>
-        <div class="kpi-hint">Nombre d'entreprises détenues — la diversification réduit le risque lié à une seule action</div>
+        <div class="kpi-sub">${nSub}</div>
       </div>`;
 
     // Positions — perf calculée en € + tri desc
