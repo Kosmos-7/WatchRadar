@@ -50,14 +50,6 @@
   .hc-space  { background: radial-gradient(ellipse 160% 65% at 50% -5%, #071e30 0%, #040d1a 42%, #08080d 72%); }
   .hc-aurora { display: none; }
   .hc-clouds { display: none; }
-  @keyframes twinkle {
-    0%, 100% { opacity: 0.72; }
-    50%       { opacity: 0.12; }
-  }
-  @keyframes shimmer {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: 0.06; }
-  }
   .hc-stars {
     background-image:
       radial-gradient(circle, rgba(255,255,255,0.60) 1px, transparent 1px),
@@ -68,38 +60,6 @@
     background-size: 480px 260px, 350px 190px, 290px 215px, 520px 290px, 410px 230px;
     background-position: 35px 22px, 190px 65px, 95px 130px, 260px 12px, 440px 82px;
     opacity: 0.72;
-    animation: twinkle 5.5s ease-in-out infinite;
-  }
-  .hc-stars-b {
-    background-image:
-      radial-gradient(circle, rgba(255,255,255,0.52) 1px, transparent 1px),
-      radial-gradient(circle, rgba(220,235,255,0.38) 1px, transparent 1px),
-      radial-gradient(circle, rgba(255,255,255,0.30) 1px, transparent 1px),
-      radial-gradient(circle, rgba(255,245,210,0.35) 1px, transparent 1px),
-      radial-gradient(circle, rgba(255,255,255,0.44) 1px, transparent 1px);
-    background-size: 460px 240px, 360px 200px, 270px 225px, 510px 280px, 390px 215px;
-    background-position: 80px 40px, 230px 85px, 140px 155px, 300px 18px, 470px 100px;
-    animation: twinkle 7.2s ease-in-out infinite -2.3s;
-  }
-  .hc-stars-c {
-    background-image:
-      radial-gradient(circle, rgba(255,255,255,0.48) 1px, transparent 1px),
-      radial-gradient(circle, rgba(210,200,255,0.36) 1px, transparent 1px),
-      radial-gradient(circle, rgba(255,255,255,0.38) 1px, transparent 1px),
-      radial-gradient(circle, rgba(255,255,255,0.28) 1px, transparent 1px),
-      radial-gradient(circle, rgba(210,240,210,0.32) 1px, transparent 1px);
-    background-size: 500px 270px, 370px 195px, 295px 210px, 535px 295px, 415px 235px;
-    background-position: 55px 10px, 175px 70px, 275px 140px, 185px 55px, 390px 90px;
-    animation: twinkle 6.0s ease-in-out infinite -4.1s;
-  }
-  .hc-shimmer {
-    background-image:
-      radial-gradient(circle, rgba(255,255,255,0.95) 1px, transparent 1px),
-      radial-gradient(circle, rgba(200,230,255,0.90) 1px, transparent 1px),
-      radial-gradient(circle, rgba(255,240,180,0.88) 1px, transparent 1px);
-    background-size: 740px 420px, 580px 360px, 700px 440px;
-    background-position: 130px 60px, 390px 145px, 710px 90px;
-    animation: shimmer 3.8s ease-in-out infinite;
   }
 
   /* ── HEADER ── */
@@ -334,11 +294,9 @@
   @keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
 
   /* ── FOOTER ── */
-  footer { position: relative; background: #06100a; border-top: none; padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; }
+  footer { border-top: 1px solid var(--border); padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; }
   .footer-legal { font-size: 0.7rem; color: var(--text3); max-width: 500px; line-height: 1.55; }
   .footer-right { font-family: 'Courier New', monospace; font-size: 0.65rem; color: var(--text3); text-align: right; }
-  .footer-grass { height: 72px; pointer-events: none; overflow: hidden; }
-  .footer-grass svg { width: 100%; height: 100%; display: block; }
 
   /* ── RESPONSIVE ── */
   @media (max-width: 700px) {
@@ -362,9 +320,6 @@
   <div class="hc-layer hc-aurora"></div>
   <div class="hc-layer hc-clouds"></div>
   <div class="hc-layer hc-stars"></div>
-  <div class="hc-layer hc-stars-b"></div>
-  <div class="hc-layer hc-stars-c"></div>
-  <div class="hc-layer hc-shimmer"></div>
 </div>
 <div class="dots-bg" aria-hidden="true"></div>
 
@@ -675,12 +630,6 @@
   </div>
 </main>
 
-<div class="footer-grass" aria-hidden="true">
-  <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path fill="#040c06" d="M0,72 L0,54 C120,46 240,58 360,50 C480,42 600,56 720,48 C840,40 960,54 1080,46 C1200,38 1320,52 1440,46 L1440,72 Z"/>
-    <path fill="#06100a" d="M0,72 L0,50 C18,42 28,26 44,34 C56,40 62,52 76,48 C88,44 98,28 114,36 C126,42 132,54 148,50 C160,46 170,30 186,38 C198,44 204,56 220,52 C232,48 242,32 258,40 C270,46 276,58 292,54 C304,50 314,34 330,42 C342,48 348,60 364,56 C376,52 386,36 402,44 C414,50 420,62 436,58 C448,54 458,38 474,46 C486,52 492,64 508,60 C520,56 530,40 546,48 C558,54 564,66 580,62 C592,58 602,42 618,50 C630,56 636,68 652,64 C664,60 674,44 690,52 C702,58 708,70 724,66 C736,62 746,46 762,54 C774,60 780,50 796,56 C808,61 818,46 834,54 C846,59 852,70 868,66 C880,62 890,46 906,54 C918,59 924,70 940,66 C952,62 962,46 978,54 C990,59 996,70 1012,66 C1024,62 1034,46 1050,54 C1062,59 1068,68 1084,64 C1096,60 1106,44 1122,52 C1134,58 1140,68 1156,64 C1168,60 1178,44 1194,52 C1206,58 1212,68 1228,64 C1240,60 1250,44 1266,52 C1278,58 1284,68 1300,64 C1312,60 1322,44 1338,52 C1350,58 1356,68 1374,64 C1390,60 1410,52 1440,54 L1440,72 Z"/>
-  </svg>
-</div>
 <footer>
   <div class="footer-legal">Signal est un service éditorial d'information financière. Contenu fourni à titre informatif uniquement.</div>
   <div class="footer-right" id="footer-week">Bêta</div>
