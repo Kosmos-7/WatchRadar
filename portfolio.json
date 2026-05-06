@@ -968,8 +968,8 @@
   ],
   "regles_actives": [],
   "nb_positions": 18,
-  "nb_positives": 10,
-  "nb_negatives": 7,
+  "nb_positives": 9,
+  "nb_negatives": 8,
   "nb_neutres": 1,
   "analyse_claude": {
     "analyse_macro": "Semaine positive avec CAC40 +2.8% et MSCI World +2.1% — pas de mode panique, marché en mode risk-on. Le portefeuille Signal affiche +12.8% YTD vs MSCI World +7.6% soit +5.2pp d'avance réelle (le prompt indique +5.4pp vs +1.4% mais la mise à jour hebdomadaire du MSCI World à +7.6% YTD suggère un rattrapage récent du benchmark). Cette semaine de hausse réduit notre avance relative — il faut maintenir les positions de conviction sans sur-trader.",
@@ -1002,10 +1002,10 @@
     },
     {
       "date": "2026-05-06",
-      "perf": 11.36,
-      "capital": 22271.23,
-      "benchmark_cac40": 1.71,
-      "benchmark_msci": 5.64
+      "perf": 12.8,
+      "capital": 22560.34,
+      "benchmark_cac40": 1.27,
+      "benchmark_msci": 7.57
     }
   ],
   "max_drawdown": 0.0

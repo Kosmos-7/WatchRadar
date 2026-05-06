@@ -833,10 +833,20 @@ Ne jamais inclure de balises markdown ou de backticks.""",
 
     tous_ordres = nouveaux_ordres + portfolio.get("ordres", [])
 
-    # ── Historique de performance (une entrée par run, max 52 semaines) ──────
+    # ── Historique de performance (upsert : toujours la valeur finale du jour) ──
     history = portfolio.get("performance_history", [])
-    if not any(h.get("date") == today for h in history):
-        history.append({"date": today, "perf": performance, "capital": capital_actuel, "benchmark_cac40": bench_cac, "benchmark_msci": bench_msci})
+    today_entry = {
+        "date": today, "perf": performance, "capital": capital_actuel,
+        "benchmark_cac40": bench_cac, "benchmark_msci": bench_msci
+    }
+    idx_today = next((i for i, h in enumerate(history) if h.get("date") == today), None)
+    if idx_today is not None:
+        # Préserve la note (injection, etc.) si elle existait
+        if "note" in history[idx_today]:
+            today_entry["note"] = history[idx_today]["note"]
+        history[idx_today] = today_entry
+    else:
+        history.append(today_entry)
     history = history[-52:]
     max_dd = calc_max_drawdown(history)
 

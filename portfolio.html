@@ -882,6 +882,17 @@ async function loadPortfolio() {
 
     // Graphe dynamique
     const history = d.performance_history || [];
+    // Sync défensif : si le dernier point du jour est périmé, on le met à jour
+    // (peut arriver si l'agent a tourné 2× le même jour)
+    if (history.length > 0) {
+      const last = history[history.length - 1];
+      if (last.date === d.updated_at) {
+        last.capital        = d.capital_actuel;
+        last.perf           = d.performance;
+        last.benchmark_msci  = d.benchmark_msci  ?? last.benchmark_msci;
+        last.benchmark_cac40 = d.benchmark_cac40 ?? last.benchmark_cac40;
+      }
+    }
     if (history.length >= 2) {
       renderChart(history, d.performance, d.capital_initial);
     } else {
