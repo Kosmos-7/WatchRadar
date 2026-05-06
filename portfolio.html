@@ -170,6 +170,25 @@
   .btn-show { background:transparent; border:1px solid var(--border2); border-radius:100px; padding:0.5rem 1.5rem; font-size:0.8rem; color:var(--text2); cursor:pointer; transition:all 0.18s; font-family:inherit; }
   .btn-show:hover { border-color:var(--gold); color:var(--gold); box-shadow:0 0 20px rgba(232,168,32,0.12); }
 
+  /* ── LEARNINGS ── */
+  .learnings-block { margin-bottom: 1.75rem; }
+  .learnings-intro { font-size: 0.79rem; color: var(--text3); margin-bottom: 1rem; line-height: 1.6; }
+  .learning-item { display: grid; grid-template-columns: 3px 1fr; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 5px; overflow: hidden; transition: border-color 0.15s; box-shadow: inset 0 1px 0 rgba(255,255,255,0.03); }
+  .learning-item:hover { border-color: var(--border2); }
+  .learning-accent { border-radius: 3px 0 0 3px; }
+  .learning-body { padding: 0.75rem 0.9rem 0.75rem 0; }
+  .learning-header { display: flex; align-items: center; gap: 8px; margin-bottom: 0.35rem; flex-wrap: wrap; }
+  .learning-cat { font-family: 'Courier New', monospace; font-size: 0.57rem; text-transform: uppercase; letter-spacing: 0.8px; padding: 1px 7px; border-radius: 4px; font-weight: 700; }
+  .lcat-arch  { background: var(--blue-dim);  color: var(--blue);  border: 1px solid rgba(80,128,248,0.2); }
+  .lcat-score { background: var(--gold-dim);  color: var(--gold);  border: 1px solid rgba(232,168,32,0.2); }
+  .lcat-ux    { background: var(--surface3);  color: var(--text3); border: 1px solid var(--border); }
+  .learning-version { font-family: 'Courier New', monospace; font-size: 0.57rem; color: var(--text3); }
+  .learning-title { font-size: 0.83rem; font-weight: 600; color: var(--text); margin-bottom: 0.3rem; }
+  .learning-prob { font-size: 0.74rem; color: var(--text3); line-height: 1.6; }
+  .learning-prob::before { content: '✕ '; color: var(--red); opacity: 0.7; }
+  .learning-fix  { font-size: 0.74rem; color: var(--text2); line-height: 1.6; margin-top: 3px; }
+  .learning-fix::before  { content: '✓ '; color: var(--green); }
+
   /* ── DISCLAIMER ── */
   .disclaimer { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; font-size: 0.75rem; color: var(--text3); line-height: 1.65; }
 
@@ -301,6 +320,103 @@
   <div id="bias-block" style="display:none" class="bias-block">
     <div class="bias-title">⚠ Biais détectés automatiquement</div>
     <div id="bias-items"></div>
+  </div>
+
+  <div class="learnings-block">
+    <div class="sec-label">Ce qu'on a appris · Erreurs détectées &amp; corrections appliquées</div>
+    <p style="font-size:0.78rem;color:var(--text3);margin:0 0 1rem">Chaque amélioration du modèle est documentée ici — problème identifié, cause, correction appliquée.</p>
+
+    <div class="learning-item">
+      <div class="learning-accent" style="background:#6366f1"></div>
+      <div class="learning-body">
+        <div class="learning-header">
+          <span class="learning-cat lcat-arch">Architecture</span>
+          <span class="learning-version">v1.5</span>
+        </div>
+        <div class="learning-title">Rationalisation LLM</div>
+        <div class="learning-prob">L'agent achetait et revendait le même titre en 24h en réinterprétant les mêmes signaux selon l'angle du moment — sans qu'aucune donnée n'ait changé.</div>
+        <div class="learning-fix">Architecture deux passes séparées : analyste neutre (Haiku, passe 1) puis décideur (Sonnet, passe 2). Obligation de documenter le delta vs la thèse d'achat pour toute vente &lt; 90 jours.</div>
+      </div>
+    </div>
+
+    <div class="learning-item">
+      <div class="learning-accent" style="background:#6366f1"></div>
+      <div class="learning-body">
+        <div class="learning-header">
+          <span class="learning-cat lcat-arch">Architecture</span>
+          <span class="learning-version">v1.5</span>
+        </div>
+        <div class="learning-title">Thèse d'achat non tracée</div>
+        <div class="learning-prob">Lorsqu'une vente était envisagée, l'agent n'avait aucun moyen de retrouver pourquoi il avait acheté — il raisonnait dans le vide.</div>
+        <div class="learning-fix">Chaque achat stocke désormais une <code>raison_achat</code> dans le portfolio. Elle est réinjectée dans la passe 1 pour forcer un delta explicite avant toute vente.</div>
+      </div>
+    </div>
+
+    <div class="learning-item">
+      <div class="learning-accent" style="background:#e8a820"></div>
+      <div class="learning-body">
+        <div class="learning-header">
+          <span class="learning-cat lcat-score">Scoring</span>
+          <span class="learning-version">v1.3</span>
+        </div>
+        <div class="learning-title">Biais haussier des analystes</div>
+        <div class="learning-prob">Le consensus sell-side était surpondéré à 20 pts. Or la littérature académique documente un biais haussier structurel : les analystes surnotent systématiquement les titres qu'ils couvrent.</div>
+        <div class="learning-fix">Analystes ramenés à 10 pts, redistribution vers les fondamentaux (40 → 50 pts). Sources : Barber 2001, Jegadeesh 2004.</div>
+      </div>
+    </div>
+
+    <div class="learning-item">
+      <div class="learning-accent" style="background:#e8a820"></div>
+      <div class="learning-body">
+        <div class="learning-header">
+          <span class="learning-cat lcat-score">Scoring</span>
+          <span class="learning-version">v1.3</span>
+        </div>
+        <div class="learning-title">RSI binaire</div>
+        <div class="learning-prob">Le RSI donnait 10 pts en zone 40–60 et 0 sinon — une marche abrupte qui pénalisait durement des titres à RSI 38 ou 63 sans raison.</div>
+        <div class="learning-fix">RSI gradué : 10 pts (40–60), 5 pts (35–65), 0 sinon. Courbe plus lisse, moins de faux négatifs.</div>
+      </div>
+    </div>
+
+    <div class="learning-item">
+      <div class="learning-accent" style="background:#e8a820"></div>
+      <div class="learning-body">
+        <div class="learning-header">
+          <span class="learning-cat lcat-score">Scoring</span>
+          <span class="learning-version">v1.4</span>
+        </div>
+        <div class="learning-title">Death Cross non pénalisant</div>
+        <div class="learning-prob">Un titre pouvait scorer 70+ et apparaître en top watchlist alors qu'il venait de former un Death Cross — signal de tendance baissière historiquement fiable.</div>
+        <div class="learning-fix">Pénalité non compensable : −5 pts si Death Cross ≤ 30j, −3 pts si ≤ 60j. Appliquée après le multiplicateur de confiance pour éviter toute neutralisation.</div>
+      </div>
+    </div>
+
+    <div class="learning-item">
+      <div class="learning-accent" style="background:#e8a820"></div>
+      <div class="learning-body">
+        <div class="learning-header">
+          <span class="learning-cat lcat-score">Scoring</span>
+          <span class="learning-version">v1.4</span>
+        </div>
+        <div class="learning-title">FCF absent des fondamentaux</div>
+        <div class="learning-prob">Le scoring fondamental ne regardait que la marge nette et le PEG — la marge nette peut être dopée par des éléments exceptionnels non récurrents.</div>
+        <div class="learning-fix">Free Cash Flow margin ajouté : +5 pts si FCF/CA &gt; 15 %, +3 pts si &gt; 5 %. Signal moins manipulable que le résultat net comptable.</div>
+      </div>
+    </div>
+
+    <div class="learning-item">
+      <div class="learning-accent" style="background:#22c55e"></div>
+      <div class="learning-body">
+        <div class="learning-header">
+          <span class="learning-cat lcat-ux">UX</span>
+          <span class="learning-version">v1.4</span>
+        </div>
+        <div class="learning-title">Changelog sorties générique</div>
+        <div class="learning-prob">Chaque titre sorti de la watchlist affichait le même message "Score insuffisant cette semaine" — aucune information exploitable sur la vraie raison de sortie.</div>
+        <div class="learning-fix">Fonction <code>raison_sortie()</code> analyse le breakdown : Death Cross, momentum faible, fondamentaux insuffisants, surachat en régression — message spécifique par titre.</div>
+      </div>
+    </div>
+
   </div>
 
   <div class="disclaimer">
