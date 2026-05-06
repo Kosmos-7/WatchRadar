@@ -189,7 +189,81 @@ def calc_max_drawdown(history):
     return round(max_dd, 2)
 
 # ── PROMPT CLAUDE ────────────────────────────────────────────────────────────
-def construire_prompt(portfolio, watchlist, contexte, macro_news=None):
+def construire_prompt_analyse(portfolio, watchlist, contexte, macro_news=None):
+    """
+    Passe 1 — Analyse neutre, SANS décision d'achat/vente.
+    Sépare l'analyse du raisonnement décisionnel pour éviter la rationalisation LLM :
+    un modèle qui analyse et décide en même temps peut rationnaliser n'importe quelle position
+    avec les mêmes données selon l'angle de lecture du moment.
+    """
+    positions = portfolio.get("positions", [])
+    today     = str(date.today())
+
+    pos_lines = []
+    for p in positions:
+        date_achat   = p.get("date_achat", today)
+        jours        = (datetime.today() - datetime.strptime(date_achat, "%Y-%m-%d")).days if date_achat else 0
+        raison_achat = p.get("raison_achat", "Non documentée")
+        pos_lines.append(
+            f"  {p['ticker']} ({p['nom']}) — perf {p.get('performance',0):+.1f}% — {jours}j détenus\n"
+            f"    Thèse d'achat originale : {raison_achat[:250]}"
+        )
+
+    top10_lines = []
+    for s in watchlist.get("stocks", [])[:10]:
+        bd     = s.get("breakdown", {})
+        z      = bd.get("regression_z")
+        regime = bd.get("cross_regime", "")
+        days   = bd.get("cross_days_ago")
+        icon   = "🟢" if regime == "golden" else "🔴" if regime == "death" else "⚪"
+        cross_str = f" {icon} {regime.upper()} {days}j" if days is not None and regime in ("golden","death") else ""
+        z_str = f" z={z:+.1f}σ" if z is not None else ""
+        top10_lines.append(
+            f"  #{s['rank']} {s['ticker']} score={s['score']}/100{cross_str}{z_str} — {s.get('justification','')[:100]}"
+        )
+
+    macro_section = ""
+    if macro_news:
+        news_lines = "\n".join(f"  - [{n['date']}] {n['headline']}" for n in macro_news[:4])
+        macro_section = f"\n## MACRO\n{news_lines}\n"
+
+    return f"""Analyse le portefeuille Signal de façon neutre et factuelle.
+Tu es ANALYSTE — PAS décideur. N'émets aucune recommandation d'achat ou de vente.
+
+## POSITIONS EN COURS
+{chr(10).join(pos_lines) if pos_lines else "  Aucune position"}
+
+## WATCHLIST TOP 10
+{chr(10).join(top10_lines)}
+
+## MARCHÉ
+- CAC40 semaine : {contexte.get('cac40',{}).get('perf_semaine',0):+.1f}% | MSCI : {contexte.get('msci',{}).get('perf_semaine',0):+.1f}%
+{macro_section}
+Pour chaque position : identifie forces, risques actuels, et surtout ce qui a changé vs la thèse d'achat.
+Pour les 5 meilleures opportunités watchlist : évalue qualité du signal et timing.
+
+JSON uniquement :
+{{
+  "positions_analyse": {{
+    "TICKER": {{
+      "forces": ["..."],
+      "risques": ["..."],
+      "delta_these": "Ce qui a concrètement changé depuis l'achat vs la thèse initiale (ou 'Rien de fondamental')",
+      "etat": "solide" | "surveiller" | "deteriore"
+    }}
+  }},
+  "opportunites_analyse": {{
+    "TICKER": {{
+      "signal_qualite": "forte" | "moderee" | "faible",
+      "timing": "optimal" | "acceptable" | "premature",
+      "resume": "..."
+    }}
+  }},
+  "synthese_marche": "Contexte macro en 1-2 phrases"
+}}"""
+
+
+def construire_prompt(portfolio, watchlist, contexte, analyse=None, macro_news=None):
     """Construit le prompt envoyé à Claude avec tout le contexte."""
 
     positions = portfolio.get("positions", [])
@@ -202,19 +276,32 @@ def construire_prompt(portfolio, watchlist, contexte, macro_news=None):
 
     today = str(date.today())
 
-    # Format positions
+    # Format positions — inclut la thèse d'achat originale pour éviter les contradictions
     pos_lines = []
     for p in positions:
-        date_achat = p.get("date_achat", "")
-        jours = (datetime.today() - datetime.strptime(date_achat, "%Y-%m-%d")).days if date_achat else 0
+        date_achat   = p.get("date_achat", "")
+        jours        = (datetime.today() - datetime.strptime(date_achat, "%Y-%m-%d")).days if date_achat else 0
+        raison_achat = p.get("raison_achat", "Non documentée")
+        # Enrichi avec l'analyse passe 1 si disponible
+        analyse_pos  = (analyse or {}).get("positions_analyse", {}).get(p["ticker"], {})
+        delta_these  = analyse_pos.get("delta_these", "")
+        etat         = analyse_pos.get("etat", "")
+        etat_str     = f" | état : {etat}" if etat else ""
+        delta_str    = f"\n    → Delta thèse : {delta_these}" if delta_these else ""
         pos_lines.append(
             f"  - {p['ticker']} ({p['nom']}) : {p['quantite']} titres, "
             f"acheté à {p['prix_achat']}€, actuel {p.get('prix_actuel', p['prix_achat'])}€, "
             f"perf {p.get('performance', 0):+.1f}%, {jours}j détenus, "
-            f"score watchlist actuel: {p.get('score_entree', '?')}/100"
+            f"score watchlist actuel: {p.get('score_entree', '?')}/100{etat_str}\n"
+            f"    → Thèse d'achat : {raison_achat[:200]}{delta_str}"
         )
 
-    # Format watchlist top 10 avec signaux cross + régression
+    # Synthèse marché issue de la passe 1
+    synthese_marche = (analyse or {}).get("synthese_marche", "")
+    synthese_str    = f"\n## ANALYSE MARCHÉ (passe 1)\n{synthese_marche}\n" if synthese_marche else ""
+
+    # Format watchlist top 10 avec signaux cross + régression + analyse passe 1
+    opportunites_analyse = (analyse or {}).get("opportunites_analyse", {})
     top10_lines = []
     for s in watchlist.get("stocks", [])[:10]:
         bd = s.get("breakdown", {})
@@ -228,9 +315,11 @@ def construire_prompt(portfolio, watchlist, contexte, macro_news=None):
         vol_str   = " vol✓" if vol_conf else ""
         z_str     = f" | z={z:+.1f}σ" if z is not None else ""
 
+        opp_a    = opportunites_analyse.get(s["ticker"], {})
+        opp_str  = f" | signal {opp_a['signal_qualite']}, timing {opp_a['timing']}" if opp_a else ""
         top10_lines.append(
             f"  #{s['rank']} {s['ticker']} ({s['name']}) — score {s['score']}/100 — {s['sector']}"
-            f"{cross_str}{vol_str}{z_str} — {s.get('justification', '')[:100]}"
+            f"{cross_str}{vol_str}{z_str}{opp_str} — {s.get('justification', '')[:100]}"
         )
 
     # Tickers watchlist complète
@@ -266,17 +355,23 @@ def construire_prompt(portfolio, watchlist, contexte, macro_news=None):
 - MSCI World : {contexte.get('msci', {}).get('perf_semaine', 0):+.1f}% sur la semaine, {contexte.get('msci', {}).get('perf_ytd', 0):+.1f}% YTD
 - Mode panique : {"OUI — Règle 03 active, aucun ordre possible" if contexte.get('mode_panique') else "NON — ordres possibles"}
 
-{macro_news_section}## WATCHLIST CETTE SEMAINE (top 10 sur 25)
+{macro_news_section}{synthese_str}## WATCHLIST CETTE SEMAINE (top 10 sur 25)
 {chr(10).join(top10_lines)}
 Tickers watchlist complète : {', '.join(tickers_watchlist)}
 
 ## TA MISSION
-Analyse la situation et décide des actions à prendre cette semaine.
+Décide des actions à prendre cette semaine en t'appuyant sur l'analyse ci-dessus.
 Pour chaque décision, explique ton raisonnement en tenant compte :
-- Du score et de la justification de l'action dans la watchlist
+- Des thèses d'achat originales et du delta identifié en passe 1
 - Du contexte macro de la semaine
 - Des règles de survie
 - Des erreurs passées (positions perdantes, biais identifiés)
+
+⚠️ RÈGLE ANTI-CONTRADICTION : Pour toute VENTE sur une position détenue < 90 jours,
+tu DOIS dans le champ "raison" :
+  1. Citer la thèse d'achat originale
+  2. Expliquer précisément ce qui a CONCRÈTEMENT changé (pas les mêmes signaux relus différemment)
+  3. Si le delta_these de la passe 1 indique "Rien de fondamental", la vente est interdite
 
 Réponds UNIQUEMENT en JSON valide, sans texte avant ou après, selon ce format exact :
 
@@ -467,6 +562,7 @@ def executer_decisions(decisions_claude, portfolio, watchlist, contexte, eur_usd
                 "valeur_actuelle": montant_eur,  # en EUR
                 "performance":     0.0,
                 "score_entree":    stock.get("score", dec.get("score_watchlist", 0)),
+                "raison_achat":    raison,      # thèse d'achat originale — réinjectée si vente envisagée
             }
             positions.append(nouvelle_pos)
 
@@ -509,7 +605,7 @@ def main():
         print("❌ watchlist.json vide ou manquant")
         return
 
-    print(f"🧠 Appel à Claude API pour les décisions de {semaine()}…")
+    print(f"🧠 Appel à Claude API — architecture deux passes — {semaine()}")
 
     # ── Contexte de marché + taux de change + macro news
     contexte    = get_contexte_marche()
@@ -534,8 +630,27 @@ def main():
     portfolio["capital_actuel"] = round(val_pos + portfolio.get("liquidites", CAPITAL_INITIAL), 2)
     portfolio["performance"]    = round((portfolio["capital_actuel"] - CAPITAL_INITIAL) / CAPITAL_INITIAL * 100, 2)
 
-    # ── Appel Claude
-    prompt = construire_prompt(portfolio, watchlist, contexte, macro_news)
+    # ── Passe 1 : analyse neutre (Haiku — rapide et économique)
+    analyse = {}
+    print(f"   Passe 1 — analyse neutre (Haiku)…")
+    try:
+        prompt_analyse = construire_prompt_analyse(portfolio, watchlist, contexte, macro_news)
+        resp_analyse = client.messages.create(
+            model="claude-haiku-4-5",
+            max_tokens=2000,
+            system="Tu es un analyste financier neutre. Réponds UNIQUEMENT en JSON valide, sans texte avant ou après, sans backticks.",
+            messages=[{"role": "user", "content": prompt_analyse}]
+        )
+        raw_analyse = resp_analyse.content[0].text.strip().replace("```json", "").replace("```", "").strip()
+        analyse = json.loads(raw_analyse)
+        nb_pos_analysees = len(analyse.get("positions_analyse", {}))
+        print(f"   ✅ Passe 1 — {nb_pos_analysees} position(s) analysée(s)")
+    except Exception as e:
+        print(f"   ⚠️  Passe 1 échouée ({e}) — passe 2 sans analyse préalable")
+
+    # ── Passe 2 : décisions (Sonnet — raisonnement complet avec contexte enrichi)
+    print(f"   Passe 2 — décisions (Sonnet)…")
+    prompt = construire_prompt(portfolio, watchlist, contexte, analyse, macro_news)
 
     try:
         response = client.messages.create(
@@ -544,25 +659,25 @@ def main():
             system="""Tu es l'IA de gestion du portefeuille fictif Signal.
 Tu raisonnes sur des décisions d'investissement fictives à partir de données réelles.
 Tu es analytique, honnête sur tes erreurs, et transparent sur ton raisonnement.
+Tu as reçu une analyse neutre en passe 1 — tu dois t'en servir pour décider, sans rationaliser a posteriori.
 Tu réponds UNIQUEMENT en JSON valide, sans aucun texte avant ou après.
 Ne jamais inclure de balises markdown ou de backticks.""",
             messages=[{"role": "user", "content": prompt}]
         )
 
         raw = response.content[0].text.strip()
-        # Nettoyer les éventuels backticks markdown
         raw = raw.replace("```json", "").replace("```", "").strip()
 
         decisions_claude = json.loads(raw)
-        print(f"   ✅ Claude a pris {len(decisions_claude.get('decisions', []))} décision(s)")
+        print(f"   ✅ Passe 2 — {len(decisions_claude.get('decisions', []))} décision(s)")
         print(f"   Conviction globale : {decisions_claude.get('conviction_globale', '?')}")
 
     except json.JSONDecodeError as e:
-        print(f"❌ Erreur parsing JSON Claude : {e}")
+        print(f"❌ Erreur parsing JSON Claude passe 2 : {e}")
         print(f"   Réponse brute : {raw[:200]}")
         decisions_claude = {"decisions": [], "analyse_macro": "Erreur parsing", "biais_detectes": [], "conviction_globale": "neutre"}
     except Exception as e:
-        print(f"❌ Erreur appel Claude : {e}")
+        print(f"❌ Erreur appel Claude passe 2 : {e}")
         decisions_claude = {"decisions": [], "analyse_macro": f"Erreur : {e}", "biais_detectes": [], "conviction_globale": "neutre"}
 
     # ── Exécution des décisions
