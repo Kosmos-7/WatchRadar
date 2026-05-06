@@ -328,18 +328,6 @@
     <div class="skel" style="height:150px"></div>
   </div>
 
-  <div class="rules-block">
-    <div class="section-title">Les règles que l'IA s'impose</div>
-    <div class="rules-grid">
-      <div class="rule"><div class="rule-num">Règle 01 · Patience</div><div class="rule-title">Aucune vente avant 90 jours</div><p>Sauf signal fondamental majeur. Évite la surréaction aux fluctuations normales.</p></div>
-      <div class="rule"><div class="rule-num">Règle 02 · Taille</div><div class="rule-title">Maximum 30 % sur un titre</div><p>Aucune conviction ne justifie une concentration excessive.</p></div>
-      <div class="rule"><div class="rule-num">Règle 03 · Calme</div><div class="rule-title">Zéro ajustement en panique</div><p>Si le CAC40 chute de plus de 5 % sur la semaine, l'IA n'agit pas.</p></div>
-      <div class="rule"><div class="rule-num">Règle 04 · Honnêteté</div><div class="rule-title">Chaque décision documentée</div><p>Chaque achat et vente est expliqué avec les données qui ont motivé la décision.</p></div>
-      <div class="rule"><div class="rule-num">Règle 05 · Sources</div><div class="rule-title">Données multi-sources</div><p>Yahoo Finance pour le momentum, Finnhub pour valider les fondamentaux.</p></div>
-      <div class="rule"><div class="rule-num">Règle 06 · Survie</div><div class="rule-title">Deux trimestres négatifs = zéro</div><p>Sous-performance durable = post-mortem public + remise à zéro de la méthodologie.</p></div>
-    </div>
-  </div>
-
   <div class="kpi-grid" id="kpi-grid">
     <div class="kpi"><div class="kpi-label">Capital</div><div class="skel" style="height:28px;margin-top:4px"></div></div>
     <div class="kpi"><div class="kpi-label">Performance</div><div class="skel" style="height:28px;margin-top:4px"></div></div>
@@ -416,12 +404,26 @@
       <div class="pacc-trigger-left">
         <span class="pacc-label">Transparence du modèle</span>
         <div class="pacc-chips" id="pacc-chips">
+          <span class="pacc-chip">6 règles</span>
           <span class="pacc-chip">10 learnings</span>
         </div>
       </div>
       <span class="pacc-arrow" id="pacc-arrow">▼</span>
     </div>
     <div class="pacc-body" id="pacc-body">
+
+      <!-- Règles fixes -->
+      <div class="pacc-section">
+        <div class="pacc-section-title">Les règles que l'IA s'impose</div>
+        <div class="rules-grid">
+          <div class="rule"><div class="rule-num">Règle 01 · Patience</div><div class="rule-title">Aucune vente avant 90 jours</div><p>Sauf signal fondamental majeur. Évite la surréaction aux fluctuations normales.</p></div>
+          <div class="rule"><div class="rule-num">Règle 02 · Taille</div><div class="rule-title">Maximum 20 % sur un titre</div><p>Aucune conviction ne justifie une concentration excessive du capital.</p></div>
+          <div class="rule"><div class="rule-num">Règle 03 · Calme</div><div class="rule-title">Zéro ajustement en panique</div><p>Si le CAC40 chute de plus de 5 % sur la semaine, l'IA n'agit pas.</p></div>
+          <div class="rule"><div class="rule-num">Règle 04 · Honnêteté</div><div class="rule-title">Chaque décision documentée</div><p>Chaque achat et vente est expliqué avec les données qui ont motivé la décision.</p></div>
+          <div class="rule"><div class="rule-num">Règle 05 · Sources</div><div class="rule-title">Données multi-sources</div><p>Yahoo Finance pour le momentum, Finnhub pour valider les fondamentaux.</p></div>
+          <div class="rule"><div class="rule-num">Règle 06 · Survie</div><div class="rule-title">Deux trimestres négatifs = zéro</div><p>Sous-performance durable = post-mortem public + remise à zéro de la méthodologie.</p></div>
+        </div>
+      </div>
 
       <!-- Biais -->
       <div id="bias-section" class="pacc-section" style="display:none">
@@ -915,8 +917,8 @@ async function loadPortfolio() {
           <div style="font-family:'Courier New',monospace;font-size:0.58rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.75rem">${ventes.length} trade${ventes.length>1?'s':''} clôturé${ventes.length>1?'s':''} · ${wins} gain${wins>1?'s':''}, ${losses} perte${losses>1?'s':''}</div>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
             <div>
-              <div style="font-family:Georgia,serif;font-size:1.4rem;color:${pnlColor};line-height:1">${sign(pnlEur)}${fmtEur(Math.abs(pnlEur))}</div>
-              <div style="font-family:'Courier New',monospace;font-size:0.56rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-top:3px">Gain net en €</div>
+              <div style="font-family:Georgia,serif;font-size:1.4rem;color:${pnlColor};line-height:1">${pnlEur >= 0 ? '+' : '−'}${fmtEur(Math.abs(pnlEur))}</div>
+              <div style="font-family:'Courier New',monospace;font-size:0.56rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-top:3px">${pnlEur >= 0 ? 'Gain' : 'Perte'} net en €</div>
             </div>
             <div>
               <div style="font-family:Georgia,serif;font-size:1.4rem;color:${wrColor};line-height:1">${winRate} %</div>

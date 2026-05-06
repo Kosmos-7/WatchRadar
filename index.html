@@ -151,6 +151,7 @@
 
   .bdg { font-family: 'Courier New', monospace; font-size: 0.55rem; padding: 2px 6px; border-radius: 5px; text-transform: uppercase; letter-spacing: 0.3px; font-weight: 600; }
   .bdg-eu  { background: var(--blue-dim);  color: #7aaaff; border: 1px solid rgba(80,128,248,0.2); }
+  .bdg-us  { background: var(--surface3);  color: var(--text3); border: 1px solid var(--border2); }
   .bdg-new { background: var(--gold-dim);  color: var(--gold); border: 1px solid rgba(232,168,32,0.2); }
   .bdg-up  { background: var(--green-dim); color: var(--green); border: 1px solid rgba(28,200,122,0.2); }
   .bdg-dn  { background: var(--red-dim);   color: var(--red);   border: 1px solid rgba(240,84,84,0.2); }
@@ -432,32 +433,13 @@
 
       <div class="accordion-section">
         <h2>Philosophie du projet</h2>
-        <p style="font-size:0.8rem;color:var(--text2);line-height:1.75;margin-bottom:1.25rem">Signal est une expérience éditoriale : peut-on déléguer des décisions d'investissement à un LLM sur la durée, de façon transparente et honnête sur ses limites ?</p>
-        <div class="steps" style="grid-template-columns:repeat(2,1fr)">
-          <div class="step">
-            <div class="step-num">Fictif mais réel</div>
-            <p>Capital fictif (10 000 €), prix réels de marché au moment de chaque ordre. Aucune somme investie. L'objectif est d'observer le raisonnement, pas de performer.</p>
-          </div>
-          <div class="step">
-            <div class="step-num">Transparence totale</div>
-            <p>Chaque ordre est documenté avec son raisonnement complet. Les erreurs sont publiées, pas effacées. Le journal des ordres est permanent et non modifiable rétrospectivement.</p>
-          </div>
-          <div class="step">
-            <div class="step-num">Mécanique de survie</div>
-            <p>L'IA joue sa survie : deux trimestres consécutifs sous le MSCI World = remise à zéro publique. Force une discipline long terme et interdit les décisions purement court terme.</p>
-          </div>
-          <div class="step">
-            <div class="step-num">Anti-rationalisation</div>
-            <p>Architecture deux passes : un analyste neutre (Haiku) analyse sans décider, un décideur (Sonnet) tranche sur la base de cette analyse. La thèse d'achat est mémorisée et comparée avant toute vente.</p>
-          </div>
-          <div class="step">
-            <div class="step-num">Honnêteté sur les limites</div>
-            <p>Les seuils du scoring sont des heuristiques, pas de la finance institutionnelle validée. Le modèle peut se tromper, se contredire, rationaliser. C'est documenté dans la section Learnings du portfolio.</p>
-          </div>
-          <div class="step">
-            <div class="step-num">Amélioration continue</div>
-            <p>Chaque bug, chaque contradiction détectée devient une règle ou une correction documentée. Le code évolue avec les erreurs observées — pas avec des intuitions a priori.</p>
-          </div>
+        <p style="font-size:0.82rem;color:var(--text2);line-height:1.8;margin-bottom:1.1rem">Signal est une expérience éditoriale : peut-on déléguer des décisions d'investissement à un LLM sur la durée, de façon transparente et honnête sur ses limites ? Capital fictif de 20 000 €, prix réels du marché. Aucune somme investie. L'objectif est d'observer le raisonnement, pas de performer.</p>
+        <div style="display:flex;flex-direction:column;gap:0.55rem">
+          <div style="font-size:0.82rem;color:var(--text2);line-height:1.7"><span style="font-family:'Courier New',monospace;font-size:0.62rem;color:var(--gold);text-transform:uppercase;letter-spacing:0.6px;margin-right:8px">Transparence totale</span>Chaque ordre est documenté avec son raisonnement complet. Les erreurs sont publiées, pas effacées. Journal permanent, non modifiable rétrospectivement.</div>
+          <div style="font-size:0.82rem;color:var(--text2);line-height:1.7"><span style="font-family:'Courier New',monospace;font-size:0.62rem;color:var(--gold);text-transform:uppercase;letter-spacing:0.6px;margin-right:8px">Mécanique de survie</span>Deux trimestres consécutifs sous le MSCI World = remise à zéro publique. Force une discipline long terme et interdit les décisions purement court terme.</div>
+          <div style="font-size:0.82rem;color:var(--text2);line-height:1.7"><span style="font-family:'Courier New',monospace;font-size:0.62rem;color:var(--gold);text-transform:uppercase;letter-spacing:0.6px;margin-right:8px">Anti-rationalisation</span>Architecture deux passes : un analyste neutre (Haiku) analyse sans décider, un décideur (Sonnet) tranche. La thèse d'achat est mémorisée et comparée avant toute vente.</div>
+          <div style="font-size:0.82rem;color:var(--text2);line-height:1.7"><span style="font-family:'Courier New',monospace;font-size:0.62rem;color:var(--gold);text-transform:uppercase;letter-spacing:0.6px;margin-right:8px">Honnêteté sur les limites</span>Les seuils du scoring sont des heuristiques, pas de la finance institutionnelle validée. Le modèle peut se tromper, se contredire, rationaliser — c'est documenté dans les Learnings.</div>
+          <div style="font-size:0.82rem;color:var(--text2);line-height:1.7"><span style="font-family:'Courier New',monospace;font-size:0.62rem;color:var(--gold);text-transform:uppercase;letter-spacing:0.6px;margin-right:8px">Amélioration continue</span>Chaque bug, chaque contradiction détectée devient une règle ou une correction documentée. Le code évolue avec les erreurs observées — pas avec des intuitions a priori.</div>
         </div>
       </div>
 
@@ -652,9 +634,12 @@ function changeHTML(c) {
   if (c === 'down') return '<span class="bdg bdg-dn">▼</span>';
   return '';
 }
-function badgeHTML(b) {
-  if (!b) return '';
-  return `<span class="bdg ${b === 'EU' ? 'bdg-eu' : ''}">${b}</span>`;
+const US_MARKETS = new Set(['NMS','NYQ','NGM','NCM','PCX','OBB','ASE','BTS']);
+function badgeHTML(b, market) {
+  const label = b || (US_MARKETS.has(market) ? 'US' : null);
+  if (!label) return '';
+  const cls = label === 'EU' ? 'bdg-eu' : label === 'US' ? 'bdg-us' : '';
+  return `<span class="bdg ${cls}">${label}</span>`;
 }
 
 function renderCard(s) {
@@ -804,7 +789,7 @@ function renderCard(s) {
         <div class="sc-info">
           <div class="sc-name">
             ${s.name}
-            ${badgeHTML(s.badge)}
+            ${badgeHTML(s.badge, s.market)}
             ${changeHTML(s.change)}
           </div>
           <div class="sc-meta">
