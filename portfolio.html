@@ -134,12 +134,32 @@
   .liq-row .liq-pct   { font-family: 'Courier New', monospace; font-size: 0.68rem; color: var(--text3); margin-left: 8px; }
 
   /* ── CLAUDE ANALYSIS ── */
-  .claude-block { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.75rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.03); }
-  .claude-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; }
-  .claude-title { font-family: Georgia, serif; font-size: 0.95rem; font-weight: normal; color: var(--text2); }
-  .conviction-badge { font-family: 'Courier New', monospace; font-size: 0.63rem; padding: 3px 11px; border-radius: 100px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
-  .analyse-text { font-size: 0.84rem; color: var(--text2); line-height: 1.75; margin-bottom: 1rem; }
-  .message-text { font-size: 0.81rem; color: var(--text3); line-height: 1.7; border-top: 1px solid var(--border); padding-top: 0.85rem; font-style: italic; }
+  .claude-section-label { display: flex; align-items: center; gap: 10px; margin-bottom: 0.85rem; }
+  .claude-section-title { font-family: Georgia, serif; font-size: 1.1rem; color: var(--text); }
+  .claude-section-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 10px rgba(232,168,32,0.5); flex-shrink: 0; }
+  .claude-block { background: linear-gradient(135deg, var(--surface) 0%, rgba(232,168,32,0.025) 100%); border: 1px solid var(--border); border-left: 4px solid var(--gold); border-radius: var(--radius-lg); padding: 1.75rem; margin-bottom: 1.75rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.03), 0 0 40px rgba(232,168,32,0.04); }
+  .claude-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.1rem; flex-wrap: wrap; gap: 0.5rem; }
+  .claude-title { font-family: Georgia, serif; font-size: 1rem; font-weight: normal; color: var(--text); }
+  .conviction-badge { font-family: 'Courier New', monospace; font-size: 0.65rem; padding: 4px 13px; border-radius: 100px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+  .analyse-text { font-size: 0.87rem; color: var(--text2); line-height: 1.8; margin-bottom: 1.1rem; }
+  .message-text { font-size: 0.82rem; color: var(--text3); line-height: 1.75; border-top: 1px solid var(--border); padding-top: 0.9rem; font-style: italic; }
+
+  /* ── ACCORDION PORTFOLIO (transparence) ── */
+  .pacc { border: 1px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 1.75rem; overflow: hidden; }
+  .pacc-trigger { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; cursor: pointer; background: var(--surface); transition: background 0.15s; gap: 1rem; }
+  .pacc-trigger:hover { background: var(--surface2); }
+  .pacc-trigger-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .pacc-label { font-family: 'Courier New', monospace; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); }
+  .pacc-chips { display: flex; gap: 5px; flex-wrap: wrap; }
+  .pacc-chip { font-family: 'Courier New', monospace; font-size: 0.55rem; color: var(--text3); background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 1px 7px; }
+  .pacc-chip-warn { color: var(--orange); border-color: rgba(245,158,11,0.25); background: rgba(245,158,11,0.07); }
+  .pacc-chip-block { color: var(--red); border-color: rgba(239,68,68,0.25); background: rgba(239,68,68,0.07); }
+  .pacc-arrow { font-size: 0.7rem; color: var(--text3); transition: transform 0.22s; flex-shrink: 0; }
+  .pacc-arrow.open { transform: rotate(180deg); }
+  .pacc-body { display: none; }
+  .pacc-body.open { display: block; }
+  .pacc-section { padding: 1.25rem; border-top: 1px solid var(--border); }
+  .pacc-section-title { font-family: 'Courier New', monospace; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1.1px; color: var(--text3); margin-bottom: 0.75rem; }
 
   /* ── ORDERS ── */
   .order-card { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); margin-bottom: 5px; overflow: hidden; transition: border-color 0.15s, box-shadow 0.15s; box-shadow: inset 0 1px 0 rgba(255,255,255,0.03); }
@@ -334,10 +354,13 @@
   </div>
 
   <div id="claude-analysis" style="display:none">
-    <div class="sec-label">Analyse de l'IA cette semaine</div>
+    <div class="claude-section-label">
+      <div class="claude-section-dot"></div>
+      <div class="claude-section-title">Analyse de l'IA cette semaine</div>
+    </div>
     <div class="claude-block">
       <div class="claude-header">
-        <div class="claude-title">Raisonnement de l'IA</div>
+        <div class="claude-title">Raisonnement</div>
         <div id="conviction-badge" class="conviction-badge"></div>
       </div>
       <div id="analyse-macro"  class="analyse-text"></div>
@@ -356,17 +379,36 @@
     <div id="orders-list"></div>
   </div>
 
-  <div id="bias-block" style="display:none" class="bias-block">
-    <div class="bias-title">⚠ Biais détectés automatiquement</div>
-    <div id="bias-items"></div>
-  </div>
+  <!-- Accordion transparence : biais + règles + learnings -->
+  <div class="pacc" id="pacc">
+    <div class="pacc-trigger" onclick="togglePacc()">
+      <div class="pacc-trigger-left">
+        <span class="pacc-label">Transparence du modèle</span>
+        <div class="pacc-chips" id="pacc-chips">
+          <span class="pacc-chip">10 learnings</span>
+        </div>
+      </div>
+      <span class="pacc-arrow" id="pacc-arrow">▼</span>
+    </div>
+    <div class="pacc-body" id="pacc-body">
 
-  <div id="regles-block" style="display:none" class="regles-block">
-    <div class="regles-title">🚫 Règles mécaniques actives cette semaine</div>
-    <div id="regles-items"></div>
-  </div>
+      <!-- Biais -->
+      <div id="bias-section" class="pacc-section" style="display:none">
+        <div class="pacc-section-title">⚠ Biais détectés automatiquement</div>
+        <div id="bias-items"></div>
+      </div>
 
-  <div class="learnings-block">
+      <!-- Règles actives -->
+      <div id="regles-section" class="pacc-section" style="display:none">
+        <div class="pacc-section-title">🚫 Règles mécaniques actives cette semaine</div>
+        <div id="regles-items"></div>
+      </div>
+
+      <!-- Learnings -->
+      <div class="pacc-section">
+        <div class="pacc-section-title">Ce qu'on a appris · Erreurs détectées &amp; corrections appliquées</div>
+        <p style="font-size:0.76rem;color:var(--text3);margin:0 0 0.9rem;line-height:1.6">Chaque amélioration est documentée ici — problème identifié, cause, correction appliquée.</p>
+  <div class="learnings-block" style="margin-bottom:0">
     <div class="sec-label">Ce qu'on a appris · Erreurs détectées &amp; corrections appliquées</div>
     <p style="font-size:0.78rem;color:var(--text3);margin:0 0 1rem">Chaque amélioration du modèle est documentée ici — problème identifié, cause, correction appliquée.</p>
 
@@ -520,7 +562,11 @@
       <button class="btn-show" id="learnings-toggle" onclick="toggleLearnings()">Voir les 7 suivants ↓</button>
     </div>
 
-  </div>
+      </div><!-- /learnings-block -->
+      </div><!-- /pacc-section learnings -->
+
+    </div><!-- /pacc-body -->
+  </div><!-- /pacc -->
 
   <div class="disclaimer">
     <strong style="color:var(--text2)">Portefeuille 100 % fictif.</strong> Aucune somme réelle investie. Prix réels du marché au moment de chaque ordre simulé. Contenu purement informatif. Ne constitue pas un conseil en investissement au sens AMF.
@@ -668,6 +714,13 @@ function renderOrdres(limit) {
   document.getElementById('orders-list').innerHTML =
     shown.map((o, i) => renderOrder(o, i)).join('') +
     (hasMore ? `<div style="text-align:center;padding:1rem 0"><button class="btn-show" onclick="renderOrdres(${limit + 10})">Voir les ${filtered.length - limit} suivants ↓</button></div>` : '');
+}
+
+function togglePacc() {
+  const body  = document.getElementById('pacc-body');
+  const arrow = document.getElementById('pacc-arrow');
+  const open  = body.classList.toggle('open');
+  arrow.classList.toggle('open', open);
 }
 
 function toggleLearnings() {
@@ -868,23 +921,21 @@ async function loadPortfolio() {
       }
     }
 
-    // Biais
+    // Biais + règles → dans l'accordion, mise à jour des chips
     const biais = d.biais_detectes || [];
+    const chips = document.getElementById('pacc-chips');
     if (biais.length > 0) {
-      document.getElementById('bias-block').style.display = 'block';
+      document.getElementById('bias-section').style.display = 'block';
       document.getElementById('bias-items').innerHTML = biais.map(b => `<div class="bias-item">${b}</div>`).join('');
+      if (chips) chips.innerHTML = `<span class="pacc-chip pacc-chip-warn">${biais.length} biais</span>` + chips.innerHTML;
     }
-
-    // Règles mécaniques actives (Niveau 2)
     const regles = d.regles_actives || [];
     if (regles.length > 0) {
-      document.getElementById('regles-block').style.display = 'block';
+      document.getElementById('regles-section').style.display = 'block';
       document.getElementById('regles-items').innerHTML = regles.map(r =>
-        `<div class="regle-item">
-          <span class="regle-icon">🚫</span>
-          <span class="regle-msg">${r.message}</span>
-        </div>`
+        `<div class="regle-item"><span class="regle-icon">🚫</span><span class="regle-msg">${r.message}</span></div>`
       ).join('');
+      if (chips) chips.innerHTML = `<span class="pacc-chip pacc-chip-block">${regles.length} règle${regles.length>1?'s':''} active${regles.length>1?'s':''}</span>` + chips.innerHTML;
     }
 
   } catch(e) {
