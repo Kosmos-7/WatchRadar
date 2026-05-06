@@ -490,7 +490,7 @@
         <span class="accordion-label">En savoir plus</span>
         <div class="accordion-chips">
           <span class="accordion-chip">Scoring</span>
-          <span class="accordion-chip">Lexique · 17 termes</span>
+          <span class="accordion-chip" id="chip-lexique">Lexique · 17 termes</span>
         </div>
       </div>
       <span class="accordion-arrow" id="accordion-arrow">▼</span>
@@ -1027,6 +1027,13 @@ async function loadWatchlist() {
       '<div style="padding:1rem;color:var(--text3);font-size:0.88rem">Impossible de charger watchlist.json.</div>';
   }
 }
+
+// ── Compteur lexique dynamique
+(function initLexiqueCount() {
+  const nb   = document.querySelectorAll('.lex-item').length;
+  const chip = document.getElementById('chip-lexique');
+  if (chip) chip.textContent = `Lexique · ${nb} terme${nb > 1 ? 's' : ''}`;
+})();
 
 loadWatchlist();
 
