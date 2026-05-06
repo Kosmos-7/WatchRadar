@@ -31,8 +31,6 @@
   }
   body {
     background: var(--bg);
-    background-image: radial-gradient(circle, rgba(28,200,122,0.055) 1px, transparent 1px);
-    background-size: 28px 28px;
     color: var(--text);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
     font-size: 15px;
@@ -55,13 +53,7 @@
   .hc-space {
     background: radial-gradient(ellipse 160% 65% at 50% -5%, #071e30 0%, #040d1a 42%, #08080d 72%);
   }
-  .hc-aurora {
-    background:
-      radial-gradient(ellipse 115% 58% at 50% 92%, rgba(28,200,122,0.26) 0%, transparent 62%),
-      radial-gradient(ellipse 58% 44% at 16% 82%, rgba(28,200,122,0.16) 0%, transparent 54%),
-      radial-gradient(ellipse 48% 38% at 84% 78%, rgba(10,165,98,0.13) 0%, transparent 50%),
-      radial-gradient(ellipse 42% 32% at 54% 72%, rgba(28,200,122,0.2) 0%, transparent 44%);
-  }
+  .hc-aurora { display: none; }
   .hc-clouds {
     background:
       radial-gradient(ellipse 68% 28% at 24% 72%, rgba(3,10,22,0.74) 0%, transparent 60%),
@@ -109,7 +101,7 @@
   nav a.active { color: var(--text); background: var(--surface2); border: 1px solid var(--border2); }
 
   /* ── LAYOUT ── */
-  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.5rem 6rem; position: relative; z-index: 1; }
 
   /* ── PILLS ── */
   .pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
