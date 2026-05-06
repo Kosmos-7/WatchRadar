@@ -258,19 +258,13 @@
   .hidden { display: none; }
 
   /* ── PREVIEW BLUR (4th card teaser) ── */
-  #stocks-preview { position: relative; }
-  #stocks-preview.sc-preview-active .sc-card {
-    filter: blur(5px);
-    opacity: 0.6;
+  #stocks-preview.sc-preview-active {
     pointer-events: none;
     user-select: none;
   }
-  #stocks-preview.sc-preview-active::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, transparent 0%, var(--bg) 75%);
-    pointer-events: none;
+  #stocks-preview.sc-preview-active .sc-card {
+    filter: blur(8px);
+    opacity: 0.55;
   }
 
   /* ── SKELETON ── */
