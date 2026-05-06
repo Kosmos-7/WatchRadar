@@ -342,7 +342,7 @@
   <div class="hero">
     <div class="fictif-badge">⬡ Portefeuille 100 % fictif · Prix réels du marché</div>
     <h1>L'IA joue sa survie.</h1>
-    <p>Capital fictif de 20 000 €. L'IA investit automatiquement selon sa watchlist, documente chaque décision d'achat et de vente, et analyse ses erreurs chaque semaine.</p>
+    <p>Capital fictif de <span id="hero-capital">20 000 €</span>. L'IA investit automatiquement selon sa watchlist, documente chaque décision d'achat et de vente, et analyse ses erreurs chaque semaine.</p>
     <div class="update-line" id="update-line">Chargement…</div>
   </div>
   <div class="hero-sep"></div>
@@ -363,6 +363,21 @@
     <div class="kpi"><div class="kpi-label">Positions</div><div class="skel" style="height:28px;margin-top:4px"></div></div>
   </div>
 
+  <div id="claude-analysis" style="display:none">
+    <div class="claude-section-label">
+      <div class="claude-section-dot"></div>
+      <div class="claude-section-title">Analyse de l'IA cette semaine</div>
+    </div>
+    <div class="claude-block">
+      <div class="claude-header">
+        <div class="claude-title">Raisonnement</div>
+        <div id="conviction-badge" class="conviction-badge"></div>
+      </div>
+      <div id="analyse-macro"  class="analyse-text"></div>
+      <div id="message-users"  class="message-text"></div>
+    </div>
+  </div>
+
   <div class="chart-block">
     <div class="chart-header">
       <h2>Performance depuis le lancement</h2>
@@ -379,6 +394,7 @@
         </linearGradient>
       </defs>
     </svg>
+    <div style="text-align:center;padding:0.5rem 0 0;font-family:'Courier New',monospace;font-size:0.62rem;color:var(--text3)" id="chart-note">Chargement…</div>
   </div>
 
   <div style="margin-bottom:1.75rem">
@@ -387,29 +403,14 @@
       <span>Action</span>
       <span style="text-align:right">Qté</span>
       <span style="text-align:right">Px achat</span>
-      <span style="text-align:right">Valeur</span>
-      <span style="text-align:right">Perf.</span>
+      <span style="text-align:right">Valeur (€)</span>
+      <span style="text-align:right">Perf. (€)</span>
       <span>Poids</span>
     </div>
     <div id="positions-list">
       <div class="skel" style="height:58px;margin-bottom:4px"></div>
       <div class="skel" style="height:58px;margin-bottom:4px"></div>
       <div class="skel" style="height:58px"></div>
-    </div>
-  </div>
-
-  <div id="claude-analysis" style="display:none">
-    <div class="claude-section-label">
-      <div class="claude-section-dot"></div>
-      <div class="claude-section-title">Analyse de l'IA cette semaine</div>
-    </div>
-    <div class="claude-block">
-      <div class="claude-header">
-        <div class="claude-title">Raisonnement</div>
-        <div id="conviction-badge" class="conviction-badge"></div>
-      </div>
-      <div id="analyse-macro"  class="analyse-text"></div>
-      <div id="message-users"  class="message-text"></div>
     </div>
   </div>
 
@@ -434,9 +435,9 @@
           <span class="pacc-chip">10 learnings</span>
         </div>
       </div>
-      <span class="pacc-arrow" id="pacc-arrow">▼</span>
+      <span class="pacc-arrow open" id="pacc-arrow">▼</span>
     </div>
-    <div class="pacc-body" id="pacc-body">
+    <div class="pacc-body open" id="pacc-body">
 
       <!-- Règles fixes -->
       <div class="pacc-section">
@@ -603,7 +604,7 @@
         <div class="learning-accent" style="background:#22c55e"></div>
         <div class="learning-body">
           <div class="learning-header">
-            <span class="learning-cat lcat-ux">UX</span>
+            <span class="learning-cat lcat-ux">Interface</span>
             <span class="learning-version">v1.4</span>
             <span class="learning-date">06 mai 2026</span>
           </div>
@@ -767,7 +768,7 @@ function renderOrder(o, idx) {
       <div class="order-header" onclick="toggleOrder(${idx})">
         <div class="order-date">${o.date}</div>
         <div class="order-type ${orderTypeClass(o.type)}">${o.type}</div>
-        <div class="order-name">${o.nom}</div>
+        <div class="order-name">${o.nom}${o._allerRetour ? ' <span style="font-family:\'Courier New\',monospace;font-size:0.57rem;color:var(--orange);background:var(--orange-dim);border:1px solid rgba(248,122,32,0.25);border-radius:4px;padding:1px 6px;vertical-align:middle">↺ corrigé</span>' : ''}</div>
         <div class="order-right">
           ${joursInfo}
           ${perfBadge}${scoreBadge}
@@ -831,6 +832,8 @@ async function loadPortfolio() {
 
     document.getElementById('update-line').textContent = `Mis à jour · ${d.updated_at} · ${d.week}`;
     document.getElementById('footer-week').textContent = d.week;
+    const heroCapEl = document.getElementById('hero-capital');
+    if (heroCapEl) heroCapEl.textContent = fmtEur(d.capital_initial);
 
     // Graphe dynamique
     const history = d.performance_history || [];
@@ -841,6 +844,11 @@ async function loadPortfolio() {
         { date: d.updated_at, perf: 0,           capital: d.capital_initial, benchmark_msci: 0 },
         { date: d.updated_at, perf: d.performance, capital: d.capital_actuel, benchmark_msci: d.benchmark_msci }
       ], d.performance, d.capital_initial);
+    }
+    const chartNote = document.getElementById('chart-note');
+    if (chartNote) {
+      const n = history.length || 2;
+      chartNote.textContent = `${n} point${n > 1 ? 's' : ''} de données — un nouveau point s'ajoute chaque lundi`;
     }
 
     if (d.mode_panique) document.getElementById('panic-banner').style.display = 'block';
@@ -877,7 +885,7 @@ async function loadPortfolio() {
         <div class="th">
           <div class="th-label">Avance sur MSCI World</div>
           <div class="th-value ${d.vs_benchmark>=0?'up':'dn'}">${sign(d.vs_benchmark)}${fmt(d.vs_benchmark,1)} pp</div>
-          <div class="th-sub">mort = 2 trim. sous MSCI World</div>
+          <div class="th-sub">${d.trimestres_negatifs ?? 0}/2 trim. négatifs · mort à 2</div>
         </div>
         <div class="th">
           <div class="th-label">Drawdown max</div>
@@ -908,9 +916,9 @@ async function loadPortfolio() {
       </div>
       <div class="kpi">
         <div class="kpi-accent" style="background:${d.vs_benchmark>=0?'var(--green)':'var(--red)'}"></div>
-        <div class="kpi-label">vs MSCI World</div>
+        <div class="kpi-label">Alpha MSCI</div>
         <div class="kpi-value ${d.vs_benchmark>=0?'up':'dn'}">${sign(d.vs_benchmark)}${fmt(d.vs_benchmark,1)} pp</div>
-        <div class="kpi-sub">MSCI : ${sign(d.benchmark_msci)}${fmt(d.benchmark_msci,1)} % · CAC : ${sign(d.benchmark_cac40)}${fmt(d.benchmark_cac40,1)} %</div>
+        <div class="kpi-sub">pts de % au-dessus du MSCI · réf. ${sign(d.benchmark_msci)}${fmt(d.benchmark_msci,1)} %</div>
       </div>
       <div class="kpi">
         <div class="kpi-accent" style="background:var(--blue)"></div>
@@ -925,13 +933,22 @@ async function loadPortfolio() {
         <div class="kpi-sub"><span class="up">${d.nb_positives} +</span> · <span style="color:var(--text3)">${d.nb_neutres ?? (d.nb_positions - d.nb_positives - d.nb_negatives)} =</span> · <span class="dn">${d.nb_negatives} −</span></div>
       </div>`;
 
-    // Positions
+    // Positions — perf calculée en € + tri desc
     const pos = d.positions || [];
-    const posHTML = pos.length === 0
+    const posWithEurPerf = pos.map(p => ({
+      ...p,
+      eurPerf: p.montant_investi > 0 ? (p.valeur_actuelle - p.montant_investi) / p.montant_investi * 100 : 0
+    }));
+    posWithEurPerf.sort((a, b) => b.eurPerf - a.eurPerf);
+
+    const posHTML = posWithEurPerf.length === 0
       ? '<div style="padding:1rem;color:var(--text3);font-size:0.82rem">Aucune position ouverte.</div>'
-      : pos.map(p => {
-          const isPos = p.performance >= 0;
+      : posWithEurPerf.map(p => {
+          const isPos = p.eurPerf >= 0;
           const fillBg = isPos ? 'var(--green)' : 'var(--red)';
+          const ccyBadge = p.currency !== 'EUR'
+            ? `<span style="font-family:'Courier New',monospace;font-size:0.56rem;color:var(--text3);margin-left:4px;opacity:0.7">${p.currency}</span>`
+            : '';
           return `<div class="pos-row ${isPos?'pos-positive':'pos-negative'}">
             <div>
               <div class="pos-name">${p.nom}</div>
@@ -939,8 +956,8 @@ async function loadPortfolio() {
             </div>
             <div class="mn">${p.quantite}</div>
             <div class="mn">${fmt(p.prix_achat)} ${p.currency === 'USD' ? '$' : p.currency === 'GBP' ? '£' : '€'}</div>
-            <div class="mn">${fmtEur(p.valeur_actuelle)}</div>
-            <div><span class="perf-badge ${isPos?'perf-up':'perf-dn'}">${sign(p.performance)}${fmt(p.performance,1)} %</span></div>
+            <div class="mn">${fmtEur(p.valeur_actuelle)}${ccyBadge}</div>
+            <div><span class="perf-badge ${isPos?'perf-up':'perf-dn'}">${sign(p.eurPerf)}${fmt(p.eurPerf,1)} %</span></div>
             <div>
               <div class="poids-wrap">
                 <div class="poids-bar"><div class="poids-fill" style="width:${Math.min(p.poids*3.3,100)}%;background:${fillBg};opacity:0.7"></div></div>
@@ -950,11 +967,9 @@ async function loadPortfolio() {
           </div>`;
         }).join('');
 
+    const hasNonEur = posWithEurPerf.some(p => p.currency !== 'EUR');
     document.getElementById('positions-list').innerHTML = posHTML +
-      `<div class="liq-row">
-        <span class="liq-label">Liquidités disponibles</span>
-        <span><span class="liq-value">${fmtEur(d.liquidites)}</span><span class="liq-pct">${fmt(d.pct_liquidites,1)} %</span></span>
-      </div>`;
+      (hasNonEur ? `<div style="font-family:'Courier New',monospace;font-size:0.6rem;color:var(--text3);padding:0.5rem 0.25rem 0;line-height:1.55">* Perf. calculée en € — intègre la variation du taux de change USD/GBP. Certains titres affichent une hausse en devise locale mais une moins-value en €.</div>` : '');
 
     // Ordres — stats P&L réalisé
     const allOrdres = d.ordres || [];
@@ -993,6 +1008,20 @@ async function loadPortfolio() {
           </div>
         </div>`;
     }
+    // Détecter aller-retours (achat + vente même ticker même date)
+    const _arMap = {};
+    allOrdres.forEach(o => {
+      if (o.type === 'ACHAT' || o.type === 'VENTE') {
+        const key = `${o.ticker}_${o.date}`;
+        if (!_arMap[key]) _arMap[key] = { achat: false, vente: false };
+        if (o.type === 'ACHAT') _arMap[key].achat = true;
+        if (o.type === 'VENTE') _arMap[key].vente = true;
+      }
+    });
+    allOrdres.forEach(o => {
+      const key = `${o.ticker}_${o.date}`;
+      o._allerRetour = !!(_arMap[key] && _arMap[key].achat && _arMap[key].vente);
+    });
     window._allOrdres = allOrdres;
     renderOrdres(5);
 
