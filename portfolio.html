@@ -543,7 +543,7 @@
         <p style="font-size:0.83rem;color:var(--text3);margin:0 0 1rem;line-height:1.6">Chaque amélioration du modèle est documentée ici — problème identifié, cause, correction appliquée.</p>
   <div class="learnings-block" style="margin-bottom:0">
 
-    <!-- Les 3 premières toujours visibles -->
+    <!-- Les 5 premières toujours visibles -->
     <div class="learning-item">
       <div class="learning-accent" style="background:#6366f1"></div>
       <div class="learning-body">
@@ -553,7 +553,7 @@
           <span class="learning-date">07 mai 2026</span>
         </div>
         <div class="learning-title">Les montants investis étaient stockés en devise locale, pas en euros</div>
-        <div class="learning-prob">Pour les positions en USD (NVDA, AMZN, V, BLK…), le champ <code>montant_investi</code> était enregistré en dollars au moment de l'achat. Résultat : les performances individuelles étaient faussées (NVDA affichait −18% alors qu'il était à +80%), et le capital total était sous-estimé de plusieurs centaines d'euros.</div>
+        <div class="learning-prob">Pour les positions en USD (NVDA, AMZN, V, BLK…), le champ <code>montant_investi</code> était enregistré en dollars au moment de l'achat. Résultat : les performances individuelles étaient faussées — Visa (V) affichait −18% alors qu'elle était à l'équilibre (montant_investi stocké à 661 $ au lieu de ~563 €), NVDA affichait +54% au lieu de +81% — et le capital total était sous-estimé de plusieurs centaines d'euros.</div>
         <div class="learning-fix">Détection automatique des positions legacy : si l'écart entre le montant stocké et le prix × quantité en devise locale est inférieur à 5%, le montant est reconverti en euros. Un garde-fou de date (<code>LEGACY_CUTOFF</code>) évite les faux positifs sur les positions en GBP, dont le taux approche l'euro dans l'approximation utilisée. Toutes les positions sont désormais systématiquement stockées en euros.</div>
       </div>
     </div>
