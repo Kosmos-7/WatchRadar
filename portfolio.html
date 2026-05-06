@@ -549,6 +549,34 @@
       <div class="learning-body">
         <div class="learning-header">
           <span class="learning-cat lcat-arch">Architecture</span>
+          <span class="learning-version">v1.7</span>
+          <span class="learning-date">07 mai 2026</span>
+        </div>
+        <div class="learning-title">Les montants investis étaient stockés en devise locale, pas en euros</div>
+        <div class="learning-prob">Pour les positions en USD (NVDA, AMZN, V, BLK…), le champ <code>montant_investi</code> était enregistré en dollars au moment de l'achat. Résultat : les performances individuelles étaient faussées (NVDA affichait −18% alors qu'il était à +80%), et le capital total était sous-estimé de plusieurs centaines d'euros.</div>
+        <div class="learning-fix">Détection automatique des positions legacy : si l'écart entre le montant stocké et le prix × quantité en devise locale est inférieur à 5%, le montant est reconverti en euros. Un garde-fou de date (<code>LEGACY_CUTOFF</code>) évite les faux positifs sur les positions en GBP, dont le taux approche l'euro dans l'approximation utilisée. Toutes les positions sont désormais systématiquement stockées en euros.</div>
+      </div>
+    </div>
+
+    <div class="learning-item">
+      <div class="learning-accent" style="background:#6366f1"></div>
+      <div class="learning-body">
+        <div class="learning-header">
+          <span class="learning-cat lcat-arch">Architecture</span>
+          <span class="learning-version">v1.7</span>
+          <span class="learning-date">07 mai 2026</span>
+        </div>
+        <div class="learning-title">Le graphe de performance restait figé si l'agent tournait deux fois dans la journée</div>
+        <div class="learning-prob">La logique d'historique était en append-only : elle n'ajoutait un point que s'il n'en existait pas pour la date du jour. Si l'agent tournait le matin puis à nouveau l'après-midi avec de nouveaux prix, le graphe conservait les valeurs du matin — capital et performance incorrects jusqu'au lundi suivant.</div>
+        <div class="learning-fix">Logique upsert : si une entrée existe déjà pour la date du jour, elle est mise à jour avec les valeurs les plus récentes. Les notes manuelles (annotations d'injection de capital) sont préservées lors de la mise à jour. Un sync défensif côté frontend corrige également le dernier point si le JSON est plus récent que l'historique.</div>
+      </div>
+    </div>
+
+    <div class="learning-item">
+      <div class="learning-accent" style="background:#6366f1"></div>
+      <div class="learning-body">
+        <div class="learning-header">
+          <span class="learning-cat lcat-arch">Architecture</span>
           <span class="learning-version">v1.5</span>
           <span class="learning-date">06 mai 2026</span>
         </div>
