@@ -255,8 +255,24 @@
   .fbtn.active.f-zone   { color: var(--gold);  border-color: rgba(232,168,32,0.35); background: rgba(232,168,32,0.07); }
   .filter-count { font-family: 'Courier New', monospace; font-size: 0.6rem; color: var(--text3); margin-left: auto; }
 
+  /* ── ACCORDION ── */
+  .accordion { border: 1px solid var(--border); border-radius: var(--radius-lg); margin-top: 3rem; overflow: hidden; }
+  .accordion-trigger { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; cursor: pointer; background: var(--surface); transition: background 0.15s; gap: 1rem; }
+  .accordion-trigger:hover { background: var(--surface2); }
+  .accordion-trigger-left { display: flex; align-items: center; gap: 10px; }
+  .accordion-label { font-family: Georgia, serif; font-size: 0.95rem; font-weight: normal; color: var(--text2); }
+  .accordion-chips { display: flex; gap: 5px; flex-wrap: wrap; }
+  .accordion-chip { font-family: 'Courier New', monospace; font-size: 0.55rem; color: var(--text3); background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; text-transform: uppercase; letter-spacing: 0.6px; }
+  .accordion-arrow { font-size: 0.7rem; color: var(--text3); transition: transform 0.22s; flex-shrink: 0; }
+  .accordion-arrow.open { transform: rotate(180deg); }
+  .accordion-body { display: none; border-top: 1px solid var(--border); }
+  .accordion-body.open { display: block; }
+  .accordion-section { padding: 1.75rem 1.25rem; }
+  .accordion-section + .accordion-section { border-top: 1px solid var(--border); }
+  .accordion-section h2 { font-family: Georgia, serif; font-size: 1.05rem; font-weight: normal; color: var(--text2); margin-bottom: 1.25rem; }
+
   /* ── LEXIQUE ── */
-  .lexique { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+  .lexique { }
   .lexique h2 { font-family: Georgia, serif; font-size: 1.05rem; font-weight: normal; color: var(--text2); margin-bottom: 0.5rem; }
   .lexique-intro { font-size: 0.8rem; color: var(--text3); margin-bottom: 1.75rem; line-height: 1.6; }
   .lex-cat { font-family: 'Courier New', monospace; font-size: 0.6rem; color: var(--text3); text-transform: uppercase; letter-spacing: 1.2px; margin: 1.5rem 0 0.65rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
@@ -364,32 +380,46 @@
   </div>
 
   <div class="show-more-wrap" id="show-more-wrap" style="display:none">
-    <button class="btn-show" onclick="showMore()">Voir les 15 suivantes ↓</button>
+    <button class="btn-show" id="show-more-btn" onclick="showMore()">Voir les suivantes ↓</button>
   </div>
 
   <div id="stocks-bottom" class="hidden"></div>
 
-  <section class="how">
-    <h2>Comment fonctionne le scoring</h2>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">Momentum · 40 pts</div>
-        <p>Golden/Death Cross MM21/MM200 (jusqu'à 20 pts selon fraîcheur du signal), RSI gradué (10 pts en zone 40–60, 5 pts en 35–65), volume confirmé (5 pts), régression long terme (5 pts).</p>
+  <div class="accordion" id="savoir-plus">
+    <div class="accordion-trigger" onclick="toggleAccordion()">
+      <div class="accordion-trigger-left">
+        <span class="accordion-label">En savoir plus</span>
+        <div class="accordion-chips">
+          <span class="accordion-chip">Scoring</span>
+          <span class="accordion-chip">Lexique · 17 termes</span>
+        </div>
       </div>
-      <div class="step">
-        <div class="step-num">Fondamentaux · 50 pts</div>
-        <p>Croissance du CA (15 pts), marges nettes (10 pts), PEG ratio — 15 pts si PEG &lt; 1 (10 si &lt; 2) —, croissance EPS (5 pts), endettement (5 pts). Sources : Yahoo Finance + Finnhub.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">Analystes · 10 pts</div>
-        <p>Recommandation moyenne des analystes (échelle 1–5). Réduit de 20 à 10 pts : signal lagging à fort biais haussier structurel, redistributé vers les fondamentaux.</p>
-      </div>
+      <span class="accordion-arrow" id="accordion-arrow">▼</span>
     </div>
-  </section>
+    <div class="accordion-body" id="accordion-body">
 
-  <section class="lexique">
-    <h2>Lexique</h2>
-    <p class="lexique-intro">Définitions des indicateurs et métriques utilisés dans le scoring et les fiches détaillées.</p>
+      <div class="accordion-section">
+        <h2>Comment fonctionne le scoring</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">Momentum · 40 pts</div>
+            <p>Golden/Death Cross MM21/MM200 (jusqu'à 20 pts selon fraîcheur du signal), RSI gradué (10 pts en zone 40–60, 5 pts en 35–65), volume confirmé (5 pts), régression long terme (5 pts).</p>
+          </div>
+          <div class="step">
+            <div class="step-num">Fondamentaux · 50 pts</div>
+            <p>Croissance du CA (15 pts), marges nettes (10 pts), PEG ratio — 15 pts si PEG &lt; 1 (10 si &lt; 2) —, croissance EPS (5 pts), endettement (5 pts). Sources : Yahoo Finance + Finnhub.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">Analystes · 10 pts</div>
+            <p>Recommandation moyenne des analystes (échelle 1–5). Réduit de 20 à 10 pts : signal lagging à fort biais haussier structurel, redistributé vers les fondamentaux.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-section">
+        <section class="lexique">
+        <h2>Lexique</h2>
+        <p class="lexique-intro">Définitions des indicateurs et métriques utilisés dans le scoring et les fiches détaillées.</p>
 
     <div class="lex-cat">Signaux techniques — Momentum</div>
     <div class="lex-grid">
@@ -477,8 +507,12 @@
         <div class="lex-term">Score total (★)</div>
         <div class="lex-def">Somme Momentum (40) + Fondamentaux (50) + Analystes (10) + bonus (3) = max 103. Affiché sur 100. <em>5 étoiles</em> ≥ 90 · <em>4 étoiles</em> ≥ 75 · <em>3 étoiles</em> &lt; 75. Seules les 25 meilleures valeurs apparaissent.</div>
       </div>
-    </div>
-  </section>
+        </div>
+        </section>
+      </div>
+
+    </div><!-- /accordion-body -->
+  </div><!-- /accordion -->
 
 </main>
 
@@ -525,11 +559,18 @@ function applyFilters() {
     if (currentSort === 'momentum')     return (b.breakdown?.momentum||0) - (a.breakdown?.momentum||0);
     return b.score - a.score;
   });
-  const top  = filtered.slice(0, 10);
-  const rest = filtered.slice(10);
+  const top  = filtered.slice(0, 3);
+  const rest = filtered.slice(3);
   const empty = '<div style="padding:1.5rem 0;color:var(--text3);font-size:0.82rem;font-family:\'Courier New\',monospace">Aucune action ne correspond aux filtres.</div>';
   document.getElementById('stocks-top').innerHTML    = top.length  ? top.map(renderCard).join('')  : empty;
   document.getElementById('stocks-bottom').innerHTML = rest.length ? rest.map(renderCard).join('') : '';
+  document.getElementById('stocks-bottom').classList.add('hidden');
+  const smw = document.getElementById('show-more-wrap');
+  const smb = document.getElementById('show-more-btn');
+  if (smw && smb) {
+    smw.style.display = rest.length ? 'block' : 'none';
+    if (rest.length) smb.textContent = `Voir les ${rest.length} suivantes ↓`;
+  }
   const fc = document.getElementById('filter-count');
   if (fc) fc.textContent = filtered.length < allStocks.length ? `${filtered.length} / ${allStocks.length}` : '';
 }
@@ -766,6 +807,13 @@ function toggleDetail(id) {
 function showMore() {
   document.getElementById('stocks-bottom').classList.remove('hidden');
   document.getElementById('show-more-wrap').style.display = 'none';
+}
+
+function toggleAccordion() {
+  const body  = document.getElementById('accordion-body');
+  const arrow = document.getElementById('accordion-arrow');
+  const open  = body.classList.toggle('open');
+  arrow.classList.toggle('open', open);
 }
 
 async function loadWatchlist() {
