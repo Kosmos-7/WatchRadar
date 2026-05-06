@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comprendre Signal — Apprendre</title>
+<meta name="description" content="Tout ce qu'il faut savoir pour lire la watchlist et le portefeuille Signal — expliqué simplement, sans jargon inutile.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:        #08080d;
+    --surface:   #0f0f16;
+    --surface2:  #16161f;
+    --surface3:  #1e1e2a;
+    --border:    #21212e;
+    --border2:   #33334e;
+    --text:      #eeeef8;
+    --text2:     #8888a8;
+    --text3:     #50506c;
+    --gold:      #e8a820;
+    --gold2:     #a07010;
+    --gold-dim:  rgba(232,168,32,0.1);
+    --green:     #1cc87a;
+    --green-dim: rgba(28,200,122,0.1);
+    --red:       #f05454;
+    --red-dim:   rgba(240,84,84,0.1);
+    --blue:      #5080f8;
+    --blue-dim:  rgba(80,128,248,0.1);
+    --orange:    #f87a20;
+    --orange-dim:rgba(248,122,32,0.1);
+    --radius:    10px;
+    --radius-lg: 16px;
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+  }
+
+  /* ── HERO CANVAS ── */
+  .hero-canvas { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+  .hc-layer { position: absolute; inset: 0; }
+  .hc-space {
+    background: radial-gradient(ellipse 160% 65% at 50% -5%, #071e30 0%, #040d1a 42%, #08080d 72%);
+  }
+  .hc-aurora { display: none; }
+  .hc-clouds { display: none; }
+  .hc-stars {
+    background-image:
+      radial-gradient(circle, rgba(255,255,255,0.60) 1px, transparent 1px),
+      radial-gradient(circle, rgba(255,255,255,0.42) 1px, transparent 1px),
+      radial-gradient(circle, rgba(255,255,255,0.35) 1px, transparent 1px),
+      radial-gradient(circle, rgba(200,240,255,0.38) 1px, transparent 1px),
+      radial-gradient(circle, rgba(255,255,255,0.50) 1px, transparent 1px);
+    background-size: 480px 260px, 350px 190px, 290px 215px, 520px 290px, 410px 230px;
+    background-position: 35px 22px, 190px 65px, 95px 130px, 260px 12px, 440px 82px;
+    opacity: 0.72;
+  }
+
+  /* ── HEADER ── */
+  header {
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    transition: background 0.3s, border-color 0.3s, backdrop-filter 0.3s;
+    z-index: 100;
+  }
+  header.scrolled {
+    background: transparent;
+    border-bottom-color: rgba(255,255,255,0.07);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+  .brand { display: flex; align-items: center; gap: 11px; text-decoration: none; }
+  .brand-icon { flex-shrink: 0; display: flex; }
+  .brand-name { font-family: Georgia, serif; font-size: 1.4rem; color: var(--text); letter-spacing: -0.5px; }
+  nav { display: flex; gap: 0.25rem; }
+  nav a { font-size: 0.88rem; color: var(--text3); text-decoration: none; padding: 5px 12px; border-radius: 6px; transition: color 0.15s, background 0.15s; }
+  nav a:hover { color: var(--text2); background: var(--surface2); }
+  nav a.active { color: var(--text); background: var(--surface2); border: 1px solid var(--border2); font-weight: 500; }
+
+  /* ── LAYOUT ── */
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.5rem 6rem; position: relative; z-index: 1; }
+
+  /* ── PILLS ── */
+  .pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; border-radius: 100px; padding: 4px 12px; font-family: 'Courier New', monospace; font-size: 0.80rem; letter-spacing: 0.8px; text-transform: uppercase; }
+  .pill-beta { background: var(--gold-dim); border: 1px solid rgba(232,168,32,0.2); color: var(--gold); }
+  .pd { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+
+  /* ── HERO ── */
+  .hero { margin-bottom: 2.5rem; position: relative; }
+  .hero h1 {
+    font-family: Georgia, serif;
+    font-size: 2.1rem;
+    font-weight: normal;
+    line-height: 1.2;
+    letter-spacing: -0.6px;
+    margin-bottom: 0.85rem;
+    background: linear-gradient(120deg, #eeeef8 35%, #1cc87a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p { color: var(--text2); font-size: 0.96rem; max-width: 560px; line-height: 1.75; }
+  .hero-sep {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(28,200,122,0.22), transparent);
+    margin: 1.5rem 0 2rem;
+  }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-family: 'Courier New', monospace;
+    font-size: 0.72rem;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    margin-bottom: 1rem;
+  }
+
+  /* ── SECTION BLOCK ── */
+  .section-block { margin-bottom: 3rem; }
+  .section-title {
+    font-family: Georgia, serif;
+    font-size: 1.3rem;
+    font-weight: normal;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.3px;
+  }
+  .section-sub {
+    color: var(--text2);
+    font-size: 0.93rem;
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+    max-width: 640px;
+  }
+
+  /* ── BRIQUE CARDS ── */
+  .brique-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .brique-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+    transition: border-color 0.18s, box-shadow 0.18s;
+  }
+  .brique-card:hover {
+    border-color: rgba(28,200,122,0.2);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 0 24px rgba(28,200,122,0.05);
+  }
+  .brique-number {
+    font-family: 'Courier New', monospace;
+    font-size: 0.72rem;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+  .brique-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .brique-body {
+    font-size: 0.84rem;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  /* ── SCORING BARS ── */
+  .scoring-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+  }
+  .scoring-row { margin-bottom: 1.4rem; }
+  .scoring-row:last-child { margin-bottom: 0; }
+  .scoring-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.4rem;
+  }
+  .scoring-name {
+    font-size: 0.93rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .scoring-pts {
+    font-family: 'Courier New', monospace;
+    font-size: 0.80rem;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .bar-track {
+    height: 5px;
+    background: var(--surface3);
+    border-radius: 100px;
+    overflow: hidden;
+    margin-bottom: 0.65rem;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 100px;
+    background: linear-gradient(90deg, var(--gold2), var(--gold));
+    transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+  }
+  .scoring-desc {
+    font-size: 0.83rem;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+  .scoring-note {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.9rem 1.1rem;
+    font-size: 0.84rem;
+    color: var(--text2);
+    line-height: 1.7;
+    margin-top: 1rem;
+  }
+  .scoring-note code {
+    font-family: 'Courier New', monospace;
+    font-size: 0.80rem;
+    color: var(--green);
+    background: var(--green-dim);
+    border-radius: 4px;
+    padding: 1px 5px;
+  }
+
+  /* ── CONCEPT CARDS ── */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .concept-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+    transition: border-color 0.18s, box-shadow 0.18s;
+  }
+  .concept-card:hover {
+    border-color: var(--border2);
+    box-shadow: 0 0 24px rgba(80,128,248,0.05);
+  }
+  .concept-label {
+    font-family: 'Courier New', monospace;
+    font-size: 0.72rem;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  .concept-example {
+    font-family: 'Courier New', monospace;
+    font-size: 0.83rem;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    display: block;
+    line-height: 1.4;
+  }
+  .concept-body {
+    font-size: 0.84rem;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  /* ── PORTFOLIO EXPLAINER ── */
+  .portfo-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 1rem;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+  }
+  .portfo-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .portfo-accent {
+    width: 3px;
+    height: 28px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .portfo-htitle {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .portfo-body {
+    padding: 1rem 1.25rem;
+    font-size: 0.84rem;
+    color: var(--text2);
+    line-height: 1.75;
+  }
+  .portfo-body ul {
+    padding-left: 1.1rem;
+    margin-top: 0.5rem;
+  }
+  .portfo-body li {
+    margin-bottom: 0.3rem;
+    line-height: 1.65;
+  }
+  .portfo-body strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+  .portfo-body code {
+    font-family: 'Courier New', monospace;
+    font-size: 0.80rem;
+    color: var(--blue);
+    background: var(--blue-dim);
+    border-radius: 4px;
+    padding: 1px 5px;
+  }
+
+  /* ── KPI MINI GRID ── */
+  .kpi-mini-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin: 0.75rem 0;
+  }
+  .kpi-mini {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.7rem 0.75rem;
+    text-align: center;
+  }
+  .kpi-mini-label {
+    font-family: 'Courier New', monospace;
+    font-size: 0.68rem;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+  .kpi-mini-value {
+    font-family: Georgia, serif;
+    font-size: 0.95rem;
+    color: var(--text);
+    display: block;
+  }
+
+  /* ── ADVICE CARDS ── */
+  .advice-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 1rem;
+  }
+  .advice-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.18s;
+  }
+  .advice-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+  .advice-card.ac-orange::before { background: var(--orange); }
+  .advice-card.ac-blue::before   { background: var(--blue); }
+  .advice-card.ac-green::before  { background: var(--green); }
+  .advice-card.ac-red::before    { background: var(--red); }
+  .advice-card:hover { border-color: var(--border2); }
+  .advice-title {
+    font-size: 0.93rem;
+    font-weight: 600;
+    margin-bottom: 0.55rem;
+    line-height: 1.3;
+  }
+  .advice-body {
+    font-size: 0.84rem;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  /* ── RESOURCES ── */
+  .resources-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.80rem;
+    color: var(--text3);
+    line-height: 1.8;
+  }
+  .resources-block strong {
+    color: var(--text2);
+    font-weight: 600;
+  }
+  .resources-block em {
+    font-style: italic;
+    color: var(--text3);
+  }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    font-size: 0.80rem;
+    color: var(--text3);
+    line-height: 1.75;
+    margin-top: 2.5rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 1;
+  }
+  .footer-legal { font-size: 0.75rem; color: var(--text3); line-height: 1.5; max-width: 560px; }
+  .footer-right  { font-family: 'Courier New', monospace; font-size: 0.75rem; color: var(--text3); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    header { padding: 0.9rem 1.1rem; }
+    nav a { padding: 4px 8px; font-size: 0.82rem; }
+    main { padding: 2rem 1rem 5rem; }
+    .hero h1 { font-size: 1.65rem; }
+    .brique-grid { grid-template-columns: 1fr; }
+    .concept-grid { grid-template-columns: 1fr; }
+    .advice-grid  { grid-template-columns: 1fr; }
+    .kpi-mini-grid { grid-template-columns: repeat(3, 1fr); }
+    footer { flex-direction: column; align-items: flex-start; padding: 1.25rem 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero-canvas" aria-hidden="true">
+  <div class="hc-layer hc-space"></div>
+  <div class="hc-layer hc-aurora"></div>
+  <div class="hc-layer hc-clouds"></div>
+  <div class="hc-layer hc-stars"></div>
+</div>
+
+<header id="site-header">
+  <a class="brand" href="index.html">
+    <span class="brand-icon">
+      <svg width="30" height="30" viewBox="0 0 28 28" fill="none">
+        <path d="M3.5 14 L7 14 L9.5 8.5 L13.5 20.5 L16.5 5 L20 14 L24.5 14" stroke="#1cc87a" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+    <span class="brand-name">Signal</span>
+  </a>
+  <nav>
+    <a href="index.html">Watchlist</a>
+    <a href="portfolio.html">Portefeuille IA</a>
+    <a href="apprendre.html" class="active">Apprendre</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="pill-row">
+      <span class="pill pill-beta"><span class="pd"></span>⬡ Gratuit · Mis à jour chaque semaine</span>
+    </div>
+    <h1>Comprendre Signal.</h1>
+    <p>Tout ce qu'il faut savoir pour lire la watchlist et le portefeuille — expliqué simplement, sans jargon inutile.</p>
+    <div class="hero-sep"></div>
+  </section>
+
+  <!-- SECTION 1 — Les 3 briques de base -->
+  <section class="section-block">
+    <div class="section-label">01 · Fondamentaux</div>
+    <h2 class="section-title">Les 3 briques de base</h2>
+    <p class="section-sub">Avant de lire une fiche Signal, il suffit de comprendre trois concepts. Tout le reste en découle.</p>
+
+    <div class="brique-grid">
+      <div class="brique-card">
+        <span class="brique-number">01 · L'action</span>
+        <div class="brique-title">Une part de propriété</div>
+        <div class="brique-body">
+          Acheter une action, c'est devenir copropriétaire d'une entreprise. Si Apple vaut 3 000 milliards de dollars et qu'il existe 15 milliards d'actions en circulation, chaque action représente environ 200 $. Si Apple vaut davantage demain — parce qu'elle vend plus d'iPhone, ouvre de nouveaux marchés, ou que ses bénéfices surprennent positivement — ton action vaut davantage aussi. L'inverse est vrai : si Apple perd des clients ou rate ses objectifs, la valeur de l'action recule. C'est aussi simple que ça.
+        </div>
+      </div>
+
+      <div class="brique-card">
+        <span class="brique-number">02 · L'indice</span>
+        <div class="brique-title">Un panier de référence</div>
+        <div class="brique-body">
+          Le CAC 40 regroupe les 40 plus grandes entreprises françaises. Le MSCI World regroupe environ 1 500 grandes entreprises réparties dans 23 pays développés. Ces indices servent de baromètre : si Signal affiche +12 % et que le MSCI World gagne +10 % sur la même période, Signal a "battu le marché" de 2 points. Sans cette référence, une performance de +8 % est impossible à juger — elle peut être excellente (si le marché fait −5 %) ou décevante (si le marché fait +20 %).
+        </div>
+      </div>
+
+      <div class="brique-card">
+        <span class="brique-number">03 · La performance</span>
+        <div class="brique-title">Battre le marché ou pas ?</div>
+        <div class="brique-body">
+          Un investisseur passif qui achète un ETF MSCI World obtient automatiquement la performance du marché mondial — sans effort, pour environ 0,2 % de frais annuels. Signal essaie de faire mieux en sélectionnant des actions individuelles grâce à des signaux algorithmiques. Si l'IA fait moins bien que l'ETF sur le long terme, il vaut mieux avoir l'ETF. C'est ce qui rend la comparaison honnête — et le défi réel.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2 — Comment Signal choisit ses 25 actions -->
+  <section class="section-block">
+    <div class="section-label">02 · L'algorithme</div>
+    <h2 class="section-title">Comment Signal choisit ses 25 actions</h2>
+    <p class="section-sub">Chaque lundi, un algorithme analyse plus de 200 entreprises cotées et sélectionne les 25 avec le meilleur score. Voici comment ce score est calculé.</p>
+
+    <div class="scoring-block">
+      <div class="scoring-row">
+        <div class="scoring-header">
+          <span class="scoring-name">Momentum</span>
+          <span class="scoring-pts">40 pts</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width: 40%"></div>
+        </div>
+        <div class="scoring-desc">
+          L'algorithme évalue si le titre est en tendance haussière claire. Il vérifie notamment le Golden Cross (la moyenne mobile à 21 jours au-dessus de celle à 200 jours), si le RSI se situe dans une zone saine, si les volumes confirment le mouvement de prix, et si le cours reste proche de sa trajectoire long terme. Un titre qui monte régulièrement avec des volumes croissants score bien ici. Un titre qui oscille sans direction nette, mal.
+        </div>
+      </div>
+
+      <div class="scoring-row">
+        <div class="scoring-header">
+          <span class="scoring-name">Fondamentaux</span>
+          <span class="scoring-pts">50 pts</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width: 50%"></div>
+        </div>
+        <div class="scoring-desc">
+          C'est le coeur du score. L'entreprise est-elle rentable ? Sa croissance des revenus est-elle réelle et durable ? Sa valorisation est-elle raisonnable par rapport à ses bénéfices (ratio P/E) et à sa trésorerie réelle générée (Free Cash Flow) ? Ces 50 points mesurent la santé financière concrète de l'entreprise — pas ce que le marché espère qu'elle deviendra, mais ce qu'elle produit vraiment.
+        </div>
+      </div>
+
+      <div class="scoring-row">
+        <div class="scoring-header">
+          <span class="scoring-name">Consensus analystes</span>
+          <span class="scoring-pts">10 pts</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width: 10%"></div>
+        </div>
+        <div class="scoring-desc">
+          La recommandation moyenne des analystes sell-side (Acheter / Conserver / Vendre). Volontairement peu pondéré : les analystes de banques ont un biais structurel vers les recommandations d'achat, lié aux conflits d'intérêt (couverture sélective, relations clients). Signal leur préfère ses propres signaux, mais ce consensus reste un signal secondaire utile quand il diverge fortement.
+        </div>
+      </div>
+    </div>
+
+    <div class="scoring-note">
+      Les 25 valeurs avec le score le plus élevé apparaissent sur la watchlist chaque lundi. Un titre peut <code>↑ Entrer</code> ou <code>↓ Sortir</code> selon l'évolution hebdomadaire de son score — momentum qui s'améliore, publication de résultats, ou simple recalibrage des signaux.
+    </div>
+  </section>
+
+  <!-- SECTION 3 — Comment lire une fiche action -->
+  <section class="section-block">
+    <div class="section-label">03 · La fiche action</div>
+    <h2 class="section-title">Comment lire une fiche action</h2>
+    <p class="section-sub">Cliquer sur une action de la watchlist affiche son analyse détaillée. Voici comment décoder chaque élément.</p>
+
+    <div class="concept-grid">
+      <div class="concept-card">
+        <span class="concept-label">Score global</span>
+        <span class="concept-example">★★★★☆ &nbsp;84</span>
+        <div class="concept-body">
+          Le chiffre est le score sur 100, calculé à partir des trois composantes (momentum, fondamentaux, consensus). Les étoiles sont un résumé visuel : 5 étoiles pour un score supérieur à 90, 4 étoiles à partir de 75, 3 étoiles à partir de 60. Un score élevé ne garantit pas une hausse imminente — il indique que plusieurs signaux convergent favorablement au même moment. Il peut très bien rester haut pendant que le titre corrige à court terme.
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <span class="concept-label">Croisement des moyennes mobiles</span>
+        <span class="concept-example">↑ Golden Cross · 12j depuis le croisement</span>
+        <div class="concept-body">
+          La MM21 (moyenne des cours sur 21 jours) a dépassé la MM200 (moyenne sur 200 jours) il y a 12 jours. Ce signal indique que la tendance court terme est désormais au-dessus de la tendance long terme — historiquement haussier dans ~66-72 % des cas dans les 60 premiers jours. Un Death Cross (MM21 repasse sous MM200) est le signal inverse et marque souvent le début d'une phase baissière prolongée.
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <span class="concept-label">Z-score (écart à la tendance)</span>
+        <span class="concept-example">Zone saine · +0.4σ</span>
+        <div class="concept-body">
+          Mesure l'écart du cours actuel par rapport à sa trajectoire long terme. Un Z-score de +0,4σ signifie que le titre est légèrement au-dessus de sa moyenne historique — encore dans une zone saine. Dépasser +2σ suggère un probable surachat. Tomber sous −2σ peut signaler un potentiel de rebond, mais aussi une détérioration fondamentale réelle. C'est un outil pour repérer les extrêmes, pas une garantie.
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <span class="concept-label">RSI (force relative)</span>
+        <span class="concept-example">RSI 52</span>
+        <div class="concept-body">
+          Le RSI (Relative Strength Index) est un oscillateur entre 0 et 100 qui mesure la vitesse et l'ampleur des variations de cours. Entre 40 et 60, le titre est équilibré — ni suracheté ni survendu (Score Signal : 10 pts). Au-dessus de 70 : le titre monte trop vite et risque une correction à court terme. En dessous de 30 : le titre est survendu, potentiel de rebond, mais ce n'est pas automatique. Un RSI à 52 comme ici, c'est idéal — le titre a de la marge dans les deux sens.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 — Comment lire le portefeuille IA -->
+  <section class="section-block">
+    <div class="section-label">04 · Le portefeuille IA</div>
+    <h2 class="section-title">Comment lire le portefeuille IA</h2>
+    <p class="section-sub">L'IA gère un capital fictif de 20 000 € avec des prix réels. Chaque semaine, elle documente ses décisions et les explique publiquement.</p>
+
+    <div class="portfo-block" style="margin-bottom:12px">
+      <div class="portfo-header">
+        <div class="portfo-accent" style="background:var(--green)"></div>
+        <div class="portfo-htitle">Le bloc de survie — jouer sa propre existence</div>
+      </div>
+      <div class="portfo-body">
+        L'IA doit battre le MSCI World sur 12 mois glissants, ou elle se réinitialise publiquement — capital remis à 20 000 €, historique effacé, recommencer de zéro. Ce mécanisme n'est pas décoratif : c'est ce qui la force à prendre des décisions documentées et honnêtes plutôt que de rationaliser après coup. Sans conséquence réelle, un modèle peut inventer des explications convaincantes pour n'importe quelle décision. Ici, les erreurs ont un coût visible.
+        <br><br>
+        Le bloc affiche en temps réel la performance du portefeuille, celle du MSCI World sur la même période, et l'écart entre les deux.
+      </div>
+    </div>
+
+    <div class="portfo-block" style="margin-bottom:12px">
+      <div class="portfo-header">
+        <div class="portfo-accent" style="background:var(--gold)"></div>
+        <div class="portfo-htitle">Les 5 KPIs</div>
+      </div>
+      <div class="portfo-body">
+        Cinq chiffres résument l'état du portefeuille à l'instant T :
+        <div class="kpi-mini-grid" style="margin-top:0.9rem">
+          <div class="kpi-mini">
+            <span class="kpi-mini-label">Valeur totale</span>
+            <span class="kpi-mini-value">k€</span>
+          </div>
+          <div class="kpi-mini">
+            <span class="kpi-mini-label">Gain net</span>
+            <span class="kpi-mini-value">±%</span>
+          </div>
+          <div class="kpi-mini">
+            <span class="kpi-mini-label">Investi</span>
+            <span class="kpi-mini-value">k€</span>
+          </div>
+          <div class="kpi-mini">
+            <span class="kpi-mini-label">Liquidités</span>
+            <span class="kpi-mini-value">k€</span>
+          </div>
+          <div class="kpi-mini">
+            <span class="kpi-mini-label">Positions</span>
+            <span class="kpi-mini-value">N</span>
+          </div>
+        </div>
+        <p style="margin-top:0.75rem">
+          <strong>Valeur totale</strong> = positions en cours + liquidités disponibles. <strong>Gain net</strong> = performance depuis les 20 000 € initiaux. <strong>Investi</strong> = montant actuellement placé en bourse. <strong>Liquidités</strong> = cash disponible pour de nouveaux achats. <strong>Positions</strong> = nombre de titres détenus.
+        </p>
+      </div>
+    </div>
+
+    <div class="portfo-block" style="margin-bottom:12px">
+      <div class="portfo-header">
+        <div class="portfo-accent" style="background:var(--blue)"></div>
+        <div class="portfo-htitle">Les règles non négociables</div>
+      </div>
+      <div class="portfo-body">
+        L'IA opère sous contraintes fixes pour éviter les comportements irrationnels sous pression :
+        <ul style="margin-top:0.6rem">
+          <li><strong>90 jours minimum</strong> avant de pouvoir vendre une position — sauf si la thèse d'achat est explicitement invalidée par des faits nouveaux.</li>
+          <li><strong>Maximum 20 %</strong> du capital total sur un seul titre — le renforcement d'une position est bloqué au-delà de ce seuil.</li>
+          <li><strong>Zéro ordre en mode panique</strong> — si le CAC 40 chute de plus de 5 % sur une semaine, aucun achat ni vente n'est autorisé. L'urgence perçue est un mauvais conseiller.</li>
+          <li><strong>Liquidités minimales de 5 %</strong> — le portefeuille doit toujours conserver un matelas de cash pour les opportunités imprévues.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="portfo-block">
+      <div class="portfo-header">
+        <div class="portfo-accent" style="background:var(--orange)"></div>
+        <div class="portfo-htitle">Le journal des ordres</div>
+      </div>
+      <div class="portfo-body">
+        Chaque achat et chaque vente est documenté avec la raison complète. L'IA doit expliquer pourquoi elle achète — quelle thèse, quels signaux, quelle logique. Si elle veut vendre avant le délai de 90 jours, elle doit obligatoirement citer sa thèse d'achat originale et documenter ce qui a <em>concrètement</em> changé depuis. Si rien n'a changé — si les mêmes données donnent juste une impression différente — la vente est refusée par l'architecture. C'est conçu pour éliminer le biais de rationalisation post-hoc.
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5 — Si tu veux investir toi-même -->
+  <section class="section-block">
+    <div class="section-label">05 · Principes</div>
+    <h2 class="section-title">Si tu veux investir toi-même</h2>
+    <p class="section-sub">Signal n'est pas un conseiller financier. Mais si ces pages t'ont donné envie d'aller plus loin, voici quelques principes solides — ceux sur lesquels presque tous les investisseurs sérieux s'accordent.</p>
+
+    <div class="advice-grid">
+      <div class="advice-card ac-orange">
+        <div class="advice-title">N'investis que ce que tu peux perdre</div>
+        <div class="advice-body">
+          Les marchés baissent. Parfois beaucoup, parfois longtemps — les crises de 2000, 2008, 2020 ont vu des replis de 30 à 50 %. Une somme dont tu auras besoin dans moins de trois ans ne devrait pas être en bourse. Si une baisse de 30 % de ton portefeuille changerait quelque chose à ta vie quotidienne, c'est que tu investis plus que tu ne peux te le permettre.
+        </div>
+      </div>
+
+      <div class="advice-card ac-blue">
+        <div class="advice-title">L'ETF mondial bat la majorité des gérants actifs</div>
+        <div class="advice-body">
+          Sur 10 ans, environ 85 % des fonds actifs font moins bien que leur indice de référence (données SPIVA, S&P Global). Un ETF MSCI World à 0,2 % de frais annuels est statistiquement un meilleur point de départ que le stock picking — même professionnel. Signal essaie de faire mieux. C'est le défi. La barre est haute.
+        </div>
+      </div>
+
+      <div class="advice-card ac-green">
+        <div class="advice-title">Le temps est ton meilleur allié</div>
+        <div class="advice-body">
+          Le MSCI World affiche environ +8 % par an en moyenne historique (dividendes réinvestis). Avec l'effet des intérêts composés, 10 000 € investis pendant 20 ans deviennent ~46 000 € sans rien faire de plus. La patience — rester investi pendant les corrections, ne pas paniquer, ne pas trader — surperforme la grande majorité des stratégies actives.
+        </div>
+      </div>
+
+      <div class="advice-card ac-red">
+        <div class="advice-title">Signal n'est pas un conseil en investissement</div>
+        <div class="advice-body">
+          C'est un projet éditorial et pédagogique. Les décisions du portefeuille IA sont fictives et documentées pour qu'on apprenne de ses erreurs — pas pour être copiées. Si une action figure dans la watchlist, ce n'est pas une recommandation d'achat. C'est un signal parmi d'autres, dans un contexte qui t'est propre.
+        </div>
+      </div>
+    </div>
+
+    <div class="resources-block">
+      <strong>Aller plus loin →</strong> JL Collins <em>The Simple Path to Wealth</em> &nbsp;·&nbsp; William Bernstein <em>The Four Pillars of Investing</em> &nbsp;·&nbsp; MRV (YouTube, FR) &nbsp;·&nbsp; Finary (FR) &nbsp;·&nbsp; Investopedia (EN)
+    </div>
+  </section>
+
+  <!-- Disclaimer final -->
+  <div class="disclaimer">
+    Signal est un service éditorial d'information financière. Le contenu de cette page est fourni à titre informatif et pédagogique uniquement. Il ne constitue pas un conseil en investissement au sens de l'AMF (Autorité des marchés financiers), ni une recommandation personnalisée d'achat ou de vente de valeurs mobilières. Toute décision d'investissement relève de la seule responsabilité du lecteur.
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-legal">Signal est un service éditorial d'information financière. Contenu fourni à titre informatif uniquement. Ne constitue pas un conseil en investissement au sens AMF.</div>
+  <div class="footer-right">Bêta</div>
+</footer>
+
+<script>
+  // ── Scroll header ──
+  const hdr = document.getElementById('site-header');
+  const onScroll = () => {
+    if (window.scrollY > 10) hdr.classList.add('scrolled');
+    else hdr.classList.remove('scrolled');
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // ── Parallax stars ──
+  const stars = document.querySelector('.hc-stars');
+  window.addEventListener('scroll', () => {
+    if (stars) stars.style.transform = `translateY(${window.scrollY * 0.12}px)`;
+  }, { passive: true });
+</script>
+</body>
+</html>
