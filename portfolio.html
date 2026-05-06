@@ -775,36 +775,6 @@ async function loadPortfolio() {
       ).join('');
     }
 
-    // Learnings auto-générés (Niveau 3) — injectés dynamiquement dans la section learnings
-    const learningsAuto = d.learnings_auto || [];
-    if (learningsAuto.length > 0) {
-      const container = document.querySelector('.learnings-block');
-      if (container) {
-        const autoSection = document.createElement('div');
-        autoSection.style.cssText = 'margin-top:1.25rem;border-top:1px solid var(--border);padding-top:1rem';
-        autoSection.innerHTML = `<div style="font-size:0.62rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.75rem">Auto-détectés par le système</div>`
-          + learningsAuto.map(l => {
-              const dateStr = l.detecte_le
-                ? new Date(l.detecte_le).toLocaleDateString('fr-FR', {day:'2-digit',month:'short',year:'numeric'})
-                : '';
-              return `<div class="learning-item">
-                <div class="learning-accent" style="background:var(--red);opacity:0.6"></div>
-                <div class="learning-body">
-                  <div class="learning-header">
-                    <span class="lcat-auto">Auto</span>
-                    <span class="learning-weeks">${l.semaines} sem. consécutives</span>
-                    <span class="learning-date">${dateStr}</span>
-                  </div>
-                  <div class="learning-title">${l.titre}</div>
-                  <div class="learning-prob">${l.probleme}</div>
-                  <div class="learning-fix">${l.correction}</div>
-                </div>
-              </div>`;
-            }).join('');
-        container.appendChild(autoSection);
-      }
-    }
-
   } catch(e) {
     document.getElementById('positions-list').innerHTML =
       '<div style="padding:1rem;color:var(--text3);font-size:0.82rem">Impossible de charger portfolio.json.</div>';
