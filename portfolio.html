@@ -190,6 +190,12 @@
   .learning-fix  { font-size: 0.74rem; color: var(--text2); line-height: 1.6; margin-top: 3px; }
   .learning-fix::before  { content: '✓ '; color: var(--green); }
 
+  /* ── FILTRE ORDRES ── */
+  .orders-filter { display:flex; gap:6px; margin-bottom:0.75rem; flex-wrap:wrap; }
+  .flt-btn { background:transparent; border:1px solid var(--border2); border-radius:100px; padding:0.3rem 1rem; font-size:0.72rem; color:var(--text3); cursor:pointer; transition:all 0.15s; font-family:inherit; }
+  .flt-btn:hover { border-color:var(--text2); color:var(--text2); }
+  .flt-btn.active { border-color:var(--gold); color:var(--gold); background:rgba(232,168,32,0.07); }
+
   /* ── RÈGLES ACTIVES ── */
   .regles-block { background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.18); border-radius: var(--radius); padding: 1rem 1.1rem; margin-bottom: 1.75rem; }
   .regles-title { font-size: 0.63rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--red); margin-bottom: 0.65rem; }
@@ -326,6 +332,11 @@
   <div style="margin-bottom:1.75rem">
     <div class="sec-label">Journal des ordres · Cliquez pour le détail</div>
     <div id="orders-stats"></div>
+    <div class="orders-filter">
+      <button class="flt-btn active" onclick="setOrderFilter('all', this)">Tous</button>
+      <button class="flt-btn" onclick="setOrderFilter('ACHAT', this)">Achats</button>
+      <button class="flt-btn" onclick="setOrderFilter('VENTE', this)">Ventes</button>
+    </div>
     <div id="orders-list"></div>
   </div>
 
@@ -343,6 +354,7 @@
     <div class="sec-label">Ce qu'on a appris · Erreurs détectées &amp; corrections appliquées</div>
     <p style="font-size:0.78rem;color:var(--text3);margin:0 0 1rem">Chaque amélioration du modèle est documentée ici — problème identifié, cause, correction appliquée.</p>
 
+    <!-- Les 3 premières toujours visibles -->
     <div class="learning-item">
       <div class="learning-accent" style="background:#6366f1"></div>
       <div class="learning-body">
@@ -372,73 +384,124 @@
     </div>
 
     <div class="learning-item">
-      <div class="learning-accent" style="background:#e8a820"></div>
+      <div class="learning-accent" style="background:#6366f1"></div>
       <div class="learning-body">
         <div class="learning-header">
-          <span class="learning-cat lcat-score">Scoring</span>
-          <span class="learning-version">v1.3</span>
-          <span class="learning-date">05 mai 2026</span>
-        </div>
-        <div class="learning-title">Biais haussier des analystes</div>
-        <div class="learning-prob">Le consensus sell-side était surpondéré à 20 pts. Or la littérature académique documente un biais haussier structurel : les analystes surnotent systématiquement les titres qu'ils couvrent.</div>
-        <div class="learning-fix">Analystes ramenés à 10 pts, redistribution vers les fondamentaux (40 → 50 pts). Sources : Barber 2001, Jegadeesh 2004.</div>
-      </div>
-    </div>
-
-    <div class="learning-item">
-      <div class="learning-accent" style="background:#e8a820"></div>
-      <div class="learning-body">
-        <div class="learning-header">
-          <span class="learning-cat lcat-score">Scoring</span>
-          <span class="learning-version">v1.3</span>
-          <span class="learning-date">05 mai 2026</span>
-        </div>
-        <div class="learning-title">RSI binaire</div>
-        <div class="learning-prob">Le RSI donnait 10 pts en zone 40–60 et 0 sinon — une marche abrupte qui pénalisait durement des titres à RSI 38 ou 63 sans raison.</div>
-        <div class="learning-fix">RSI gradué : 10 pts (40–60), 5 pts (35–65), 0 sinon. Courbe plus lisse, moins de faux négatifs.</div>
-      </div>
-    </div>
-
-    <div class="learning-item">
-      <div class="learning-accent" style="background:#e8a820"></div>
-      <div class="learning-body">
-        <div class="learning-header">
-          <span class="learning-cat lcat-score">Scoring</span>
-          <span class="learning-version">v1.4</span>
+          <span class="learning-cat lcat-arch">Architecture</span>
+          <span class="learning-version">v1.6</span>
           <span class="learning-date">06 mai 2026</span>
         </div>
-        <div class="learning-title">Death Cross non pénalisant</div>
-        <div class="learning-prob">Un titre pouvait scorer 70+ et apparaître en top watchlist alors qu'il venait de former un Death Cross — signal de tendance baissière historiquement fiable.</div>
-        <div class="learning-fix">Pénalité non compensable : −5 pts si Death Cross ≤ 30j, −3 pts si ≤ 60j. Appliquée après le multiplicateur de confiance pour éviter toute neutralisation.</div>
+        <div class="learning-title">Feedback loop sur-engineered</div>
+        <div class="learning-prob">On a construit 3 niveaux de feedback loop (injection biais dans prompt, règles auto, learnings auto-générés) en assumant qu'ils étaient justifiés — sans se demander sur quelle base.</div>
+        <div class="learning-fix">Niveaux 1 et 3 supprimés. Le prompt Claude reste propre. Seules les règles mécaniques basées sur la valeur du portfolio subsistent — et leurs seuils sont assumés comme arbitraires, pas présentés comme académiques.</div>
       </div>
     </div>
 
-    <div class="learning-item">
-      <div class="learning-accent" style="background:#e8a820"></div>
-      <div class="learning-body">
-        <div class="learning-header">
-          <span class="learning-cat lcat-score">Scoring</span>
-          <span class="learning-version">v1.4</span>
-          <span class="learning-date">06 mai 2026</span>
-        </div>
-        <div class="learning-title">FCF absent des fondamentaux</div>
-        <div class="learning-prob">Le scoring fondamental ne regardait que la marge nette et le PEG — la marge nette peut être dopée par des éléments exceptionnels non récurrents.</div>
-        <div class="learning-fix">Free Cash Flow margin ajouté : +5 pts si FCF/CA &gt; 15 %, +3 pts si &gt; 5 %. Signal moins manipulable que le résultat net comptable.</div>
-      </div>
-    </div>
+    <!-- Suivants masqués par défaut -->
+    <div id="learnings-more" style="display:none">
 
-    <div class="learning-item">
-      <div class="learning-accent" style="background:#22c55e"></div>
-      <div class="learning-body">
-        <div class="learning-header">
-          <span class="learning-cat lcat-ux">UX</span>
-          <span class="learning-version">v1.4</span>
-          <span class="learning-date">06 mai 2026</span>
+      <div class="learning-item">
+        <div class="learning-accent" style="background:#e8a820"></div>
+        <div class="learning-body">
+          <div class="learning-header">
+            <span class="learning-cat lcat-score">Scoring</span>
+            <span class="learning-version">v1.6</span>
+            <span class="learning-date">06 mai 2026</span>
+          </div>
+          <div class="learning-title">Règles mécaniques basées sur le comptage</div>
+          <div class="learning-prob">Les gardes de risque bloquaient les achats si un secteur avait ≥ 4 positions ou si le portfolio avait ≥ 13 lignes — sans tenir compte de la valeur réelle. ASML à 25% + 3 micro-caps ≠ surconcentration.</div>
+          <div class="learning-fix">Règles recâblées sur la valeur : secteur > 30% du portfolio en valeur → bloqué. Position > 20% du capital → renforcement bloqué. Liquidités < 5% → achats bloqués.</div>
         </div>
-        <div class="learning-title">Changelog sorties générique</div>
-        <div class="learning-prob">Chaque titre sorti de la watchlist affichait le même message "Score insuffisant cette semaine" — aucune information exploitable sur la vraie raison de sortie.</div>
-        <div class="learning-fix">Fonction <code>raison_sortie()</code> analyse le breakdown : Death Cross, momentum faible, fondamentaux insuffisants, surachat en régression — message spécifique par titre.</div>
       </div>
+
+      <div class="learning-item">
+        <div class="learning-accent" style="background:#e8a820"></div>
+        <div class="learning-body">
+          <div class="learning-header">
+            <span class="learning-cat lcat-score">Scoring</span>
+            <span class="learning-version">v1.6</span>
+            <span class="learning-date">06 mai 2026</span>
+          </div>
+          <div class="learning-title">POIDS_MAX à 30% trop élevé</div>
+          <div class="learning-prob">Une position pouvait représenter 30% du capital — un niveau de concentration agressif incohérent avec la règle mécanique qui bloque au-delà de 20%.</div>
+          <div class="learning-fix">POIDS_MAX ramené à 20% pour être cohérent avec les règles de risque. Les deux limites s'alignent désormais sur le même seuil.</div>
+        </div>
+      </div>
+
+      <div class="learning-item">
+        <div class="learning-accent" style="background:#e8a820"></div>
+        <div class="learning-body">
+          <div class="learning-header">
+            <span class="learning-cat lcat-score">Scoring</span>
+            <span class="learning-version">v1.3</span>
+            <span class="learning-date">05 mai 2026</span>
+          </div>
+          <div class="learning-title">Biais haussier des analystes</div>
+          <div class="learning-prob">Le consensus sell-side était surpondéré à 20 pts. Or la littérature académique documente un biais haussier structurel : les analystes surnotent systématiquement les titres qu'ils couvrent.</div>
+          <div class="learning-fix">Analystes ramenés à 10 pts, redistribution vers les fondamentaux (40 → 50 pts). Sources : Barber 2001, Jegadeesh 2004.</div>
+        </div>
+      </div>
+
+      <div class="learning-item">
+        <div class="learning-accent" style="background:#e8a820"></div>
+        <div class="learning-body">
+          <div class="learning-header">
+            <span class="learning-cat lcat-score">Scoring</span>
+            <span class="learning-version">v1.3</span>
+            <span class="learning-date">05 mai 2026</span>
+          </div>
+          <div class="learning-title">RSI binaire</div>
+          <div class="learning-prob">Le RSI donnait 10 pts en zone 40–60 et 0 sinon — une marche abrupte qui pénalisait durement des titres à RSI 38 ou 63 sans raison.</div>
+          <div class="learning-fix">RSI gradué : 10 pts (40–60), 5 pts (35–65), 0 sinon. Courbe plus lisse, moins de faux négatifs.</div>
+        </div>
+      </div>
+
+      <div class="learning-item">
+        <div class="learning-accent" style="background:#e8a820"></div>
+        <div class="learning-body">
+          <div class="learning-header">
+            <span class="learning-cat lcat-score">Scoring</span>
+            <span class="learning-version">v1.4</span>
+            <span class="learning-date">06 mai 2026</span>
+          </div>
+          <div class="learning-title">Death Cross non pénalisant</div>
+          <div class="learning-prob">Un titre pouvait scorer 70+ et apparaître en top watchlist alors qu'il venait de former un Death Cross — signal de tendance baissière historiquement fiable.</div>
+          <div class="learning-fix">Pénalité non compensable : −5 pts si Death Cross ≤ 30j, −3 pts si ≤ 60j. Appliquée après le multiplicateur de confiance pour éviter toute neutralisation.</div>
+        </div>
+      </div>
+
+      <div class="learning-item">
+        <div class="learning-accent" style="background:#e8a820"></div>
+        <div class="learning-body">
+          <div class="learning-header">
+            <span class="learning-cat lcat-score">Scoring</span>
+            <span class="learning-version">v1.4</span>
+            <span class="learning-date">06 mai 2026</span>
+          </div>
+          <div class="learning-title">FCF absent des fondamentaux</div>
+          <div class="learning-prob">Le scoring fondamental ne regardait que la marge nette et le PEG — la marge nette peut être dopée par des éléments exceptionnels non récurrents.</div>
+          <div class="learning-fix">Free Cash Flow margin ajouté : +5 pts si FCF/CA &gt; 15 %, +3 pts si &gt; 5 %. Signal moins manipulable que le résultat net comptable.</div>
+        </div>
+      </div>
+
+      <div class="learning-item">
+        <div class="learning-accent" style="background:#22c55e"></div>
+        <div class="learning-body">
+          <div class="learning-header">
+            <span class="learning-cat lcat-ux">UX</span>
+            <span class="learning-version">v1.4</span>
+            <span class="learning-date">06 mai 2026</span>
+          </div>
+          <div class="learning-title">Changelog sorties générique</div>
+          <div class="learning-prob">Chaque titre sorti de la watchlist affichait le même message "Score insuffisant cette semaine" — aucune information exploitable sur la vraie raison de sortie.</div>
+          <div class="learning-fix">Fonction <code>raison_sortie()</code> analyse le breakdown : Death Cross, momentum faible, fondamentaux insuffisants, surachat en régression — message spécifique par titre.</div>
+        </div>
+      </div>
+
+    </div><!-- /learnings-more -->
+
+    <div style="text-align:center;padding:0.75rem 0 0">
+      <button class="btn-show" id="learnings-toggle" onclick="toggleLearnings()">Voir les 7 suivants ↓</button>
     </div>
 
   </div>
@@ -568,9 +631,31 @@ function toggleOrder(idx) {
   if (el) el.classList.toggle('open');
 }
 
-function showAllOrdres() {
+let currentOrderFilter = 'all';
+
+function setOrderFilter(type, btn) {
+  currentOrderFilter = type;
+  document.querySelectorAll('.flt-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderOrdres(5);
+}
+
+function renderOrdres(limit) {
   const all = window._allOrdres || [];
-  document.getElementById('orders-list').innerHTML = all.map((o, i) => renderOrder(o, i)).join('');
+  const filtered = currentOrderFilter === 'all' ? all : all.filter(o => o.type === currentOrderFilter);
+  const shown = filtered.slice(0, limit);
+  const hasMore = filtered.length > limit;
+  document.getElementById('orders-list').innerHTML =
+    shown.map((o, i) => renderOrder(o, i)).join('') +
+    (hasMore ? `<div style="text-align:center;padding:1rem 0"><button class="btn-show" onclick="renderOrdres(${limit + 10})">Voir les ${filtered.length - limit} suivants ↓</button></div>` : '');
+}
+
+function toggleLearnings() {
+  const more = document.getElementById('learnings-more');
+  const btn  = document.getElementById('learnings-toggle');
+  const open = more.style.display !== 'none';
+  more.style.display = open ? 'none' : 'block';
+  btn.textContent = open ? 'Voir les 7 suivants ↓' : 'Réduire ↑';
 }
 
 async function loadPortfolio() {
@@ -732,12 +817,8 @@ async function loadPortfolio() {
           </div>
         </div>`;
     }
-    const shown = allOrdres.slice(0, 20);
-    const hasMore = allOrdres.length > 20;
-    document.getElementById('orders-list').innerHTML =
-      shown.map((o, i) => renderOrder(o, i)).join('') +
-      (hasMore ? `<div style="text-align:center;padding:1rem 0"><button class="btn-show" onclick="showAllOrdres()">Voir les ${allOrdres.length - 20} suivants ↓</button></div>` : '');
     window._allOrdres = allOrdres;
+    renderOrdres(5);
 
     // Analyse Claude
     const ac = d.analyse_claude;
