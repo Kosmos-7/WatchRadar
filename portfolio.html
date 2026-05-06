@@ -114,10 +114,9 @@
   .threshold-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 1.25rem; }
   .th { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.9rem 1rem; transition: border-color 0.15s; }
   .th:hover { border-color: rgba(232,168,32,0.22); box-shadow: 0 0 16px rgba(232,168,32,0.05); }
-  .th-label { font-family: 'Courier New', monospace; font-size: 0.75rem; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.35rem; }
+  .th-label { font-size: 0.78rem; font-weight: 500; color: var(--text2); margin-bottom: 0.35rem; display: flex; align-items: center; gap: 5px; }
   .th-value { font-family: Georgia, serif; font-size: 1.35rem; line-height: 1; }
   .th-sub  { font-family: 'Courier New', monospace; font-size: 0.78rem; margin-top: 3px; color: var(--text3); }
-  .th-hint { font-size: 0.74rem; color: var(--text3); opacity: 0.72; margin-top: 5px; line-height: 1.45; font-style: italic; }
 
   /* ── RULES ── */
   .rules-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.75rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.03); }
@@ -135,8 +134,49 @@
   .kpi:hover { border-color: rgba(232,168,32,0.25); box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 0 0 1px rgba(232,168,32,0.09), 0 0 24px rgba(232,168,32,0.06), 0 8px 28px rgba(0,0,0,0.5); }
   .kpi-accent { position: absolute; top: 0; left: 0; right: 0; height: 3px; }
   .kpi-label { font-size: 0.78rem; font-weight: 500; color: var(--text2); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 5px; }
-  .kpi-info  { font-size: 0.72rem; color: var(--text3); cursor: help; opacity: 0.6; transition: opacity 0.15s; flex-shrink: 0; }
-  .kpi-info:hover { opacity: 1; }
+  .kpi-info  { position: relative; display: inline-flex; align-items: center; justify-content: center; font-size: 0.70rem; color: var(--text3); cursor: help; opacity: 0.5; transition: opacity 0.15s, color 0.15s; flex-shrink: 0; }
+  .kpi-info:hover { opacity: 1; color: var(--text2); }
+  .kpi-info::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 210px;
+    background: var(--surface3);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 0.76rem;
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: var(--text2);
+    line-height: 1.55;
+    text-align: left;
+    white-space: normal;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.18s, visibility 0.18s;
+    z-index: 500;
+  }
+  .kpi-info::before {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 5px);
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--border2);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.18s, visibility 0.18s;
+    z-index: 501;
+  }
+  .kpi-info:hover::after, .kpi-info:hover::before { opacity: 1; visibility: visible; }
   .kpi-value { font-family: Georgia, serif; font-size: 1.45rem; line-height: 1; margin-bottom: 4px; }
   .kpi-sub  { font-family: 'Courier New', monospace; font-size: 0.80rem; color: var(--text3); }
   .up  { color: var(--green); }
@@ -931,28 +971,24 @@ async function loadPortfolio() {
       </div>
       <div class="threshold-row">
         <div class="th">
-          <div class="th-label">Performance Signal</div>
+          <div class="th-label">Notre performance <span class="kpi-info" data-tip="Rendement total du portefeuille depuis le démarrage de l'expérience, en euros">ⓘ</span></div>
           <div class="th-value ${d.performance>=0?'up':'dn'}">${sign(d.performance)}${fmt(d.performance,1)} %</div>
           <div class="th-sub">depuis jan. ${new Date().getFullYear()} · base 20 000 €</div>
-          <div class="th-hint">Rendement total du portefeuille depuis le démarrage de l'expérience</div>
         </div>
         <div class="th">
-          <div class="th-label">Marché mondial (même période)</div>
+          <div class="th-label">Marché mondial <span class="kpi-info" data-tip="Ce qu'aurait rapporté un simple ETF mondial (MSCI World) sans aucune gestion active — notre référence de comparaison">ⓘ</span></div>
           <div class="th-value neu">${sign(d.benchmark_msci)}${fmt(d.benchmark_msci,1)} %</div>
-          <div class="th-sub">MSCI World · notre référence</div>
-          <div class="th-hint">Ce qu'aurait rapporté un simple ETF mondial sans aucune gestion active</div>
+          <div class="th-sub">MSCI World · même période</div>
         </div>
         <div class="th">
-          <div class="th-label">Avance sur le marché</div>
+          <div class="th-label">Avance sur le marché <span class="kpi-info" data-tip="Écart entre notre performance et celle du MSCI World. Si négatif 2 trimestres de suite, l'expérience s'arrête">ⓘ</span></div>
           <div class="th-value ${d.vs_benchmark>=0?'up':'dn'}">${sign(d.vs_benchmark)}${fmt(d.vs_benchmark,1)} pts de %</div>
           <div class="th-sub">${d.trimestres_negatifs ?? 0} trimestre${(d.trimestres_negatifs??0)>1?'s':''} en retard · limite : 2 de suite</div>
-          <div class="th-hint">L'IA fait ${Math.abs(d.vs_benchmark).toFixed(1)} points de % ${d.vs_benchmark>=0?'de mieux que':'en dessous du'} le marché — si elle reste derrière 2 trimestres consécutifs, l'expérience s'arrête</div>
         </div>
         <div class="th">
-          <div class="th-label">Perte max temporaire</div>
+          <div class="th-label">Perte max <span class="kpi-info" data-tip="La plus grosse chute enregistrée depuis un pic du portefeuille. Mesure le pire scénario traversé, indépendamment de la performance finale">ⓘ</span></div>
           <div class="th-value ${(d.max_drawdown||0)<-5?'dn':'neu'}">${d.max_drawdown != null ? (d.max_drawdown !== 0 ? sign(d.max_drawdown)+fmt(d.max_drawdown,1)+' %' : '0.0 %') : '—'}</div>
           <div class="th-sub">depuis le dernier sommet atteint</div>
-          <div class="th-hint">La plus grosse chute enregistrée depuis un point haut — ici aucune perte depuis le départ</div>
         </div>
       </div>`;
 
@@ -967,31 +1003,31 @@ async function loadPortfolio() {
     document.getElementById('kpi-grid').innerHTML = `
       <div class="kpi">
         <div class="kpi-accent" style="background:${gain>=0?'var(--green)':'var(--red)'}"></div>
-        <div class="kpi-label">Valeur totale <span class="kpi-info" title="Ce que vaut le portefeuille en ce moment : actions + liquidités, converti en euros">ⓘ</span></div>
+        <div class="kpi-label">Valeur totale <span class="kpi-info" data-tip="Ce que vaut le portefeuille en ce moment : actions + liquidités, converti en euros">ⓘ</span></div>
         <div class="kpi-value">${fmtEur(d.capital_actuel)}</div>
         <div class="kpi-sub">départ · ${fmtEur(d.capital_initial)}</div>
       </div>
       <div class="kpi">
         <div class="kpi-accent" style="background:${gain>=0?'var(--green)':'var(--red)'}"></div>
-        <div class="kpi-label">Gain net <span class="kpi-info" title="L'argent réellement gagné ou perdu en euros — plus concret qu'un pourcentage">ⓘ</span></div>
+        <div class="kpi-label">Gain net <span class="kpi-info" data-tip="L'argent réellement gagné ou perdu en euros — plus concret qu'un pourcentage">ⓘ</span></div>
         <div class="kpi-value ${gain>=0?'up':'dn'}">${sign(gain)}${fmtEur(Math.abs(gain))}</div>
         <div class="kpi-sub ${gain>=0?'up':'dn'}">${sign(d.performance)}${fmt(d.performance,1)} % depuis le départ</div>
       </div>
       <div class="kpi">
         <div class="kpi-accent" style="background:var(--text3)"></div>
-        <div class="kpi-label">Investi en bourse <span class="kpi-info" title="Part du portefeuille placée dans des actions — ce montant fluctue avec les marchés">ⓘ</span></div>
+        <div class="kpi-label">Investi en bourse <span class="kpi-info" data-tip="Part du portefeuille placée dans des actions — ce montant fluctue avec les marchés">ⓘ</span></div>
         <div class="kpi-value">${fmtEur(investi)}</div>
         <div class="kpi-sub">${pctInvesti} % du portefeuille</div>
       </div>
       <div class="kpi">
         <div class="kpi-accent" style="background:var(--blue)"></div>
-        <div class="kpi-label">Liquidités <span class="kpi-info" title="Argent non investi, disponible immédiatement pour de nouveaux achats">ⓘ</span></div>
+        <div class="kpi-label">Liquidités <span class="kpi-info" data-tip="Argent non investi, disponible immédiatement pour de nouveaux achats">ⓘ</span></div>
         <div class="kpi-value liq">${fmtEur(d.liquidites)}</div>
         <div class="kpi-sub">${fmt(d.pct_liquidites,1)} % du portefeuille</div>
       </div>
       <div class="kpi">
         <div class="kpi-accent" style="background:var(--text3)"></div>
-        <div class="kpi-label">Positions <span class="kpi-info" title="Nombre d'entreprises différentes détenues — diversifier réduit le risque lié à un seul titre">ⓘ</span></div>
+        <div class="kpi-label">Positions <span class="kpi-info" data-tip="Nombre d'entreprises différentes détenues — diversifier réduit le risque lié à un seul titre">ⓘ</span></div>
         <div class="kpi-value">${d.nb_positions}</div>
         <div class="kpi-sub">${nSub}</div>
       </div>`;
