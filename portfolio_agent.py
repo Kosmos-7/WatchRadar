@@ -110,7 +110,9 @@ def maj_position(pos, eur_usd):
 
     # Correction legacy : montant_investi stocké en devise native (≈ prix_achat × quantité)
     # → convertir en EUR au taux du jour (meilleure approximation disponible)
-    if currency != "EUR":
+    # Seulement pour les positions achetées AVANT le 2026-05-05 (date du fix EUR)
+    LEGACY_CUTOFF = "2026-05-05"
+    if currency != "EUR" and pos.get("date_achat", "9999") < LEGACY_CUTOFF:
         native = round(pos["prix_achat"] * pos["quantite"], 2)
         stored = pos.get("montant_investi", 0)
         if stored > 0 and abs(stored - native) / (native + 1) < 0.05:
