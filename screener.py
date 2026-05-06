@@ -552,8 +552,34 @@ def score_ticker(ticker):
         stars = 5 if score >= 80 else 4 if score >= 65 else 3 if score >= 50 else 2
 
         exchange = info.get("exchange", "")
-        eu_exc   = ["PAR","EPA","AMS","FRA","XETRA","CPH","OMX","LSE","AEB","ETR"]
-        badge    = "EU" if any(ex in exchange.upper() for ex in eu_exc) else None
+        ex_up    = exchange.upper()
+        MARKET_BADGE = {
+            # Zone euro + UE
+            "PAR":"EU","EPA":"EU","AMS":"EU","FRA":"EU","XETRA":"EU",
+            "ETR":"EU","AEB":"EU","MIL":"EU","BIT":"EU","MCE":"EU",
+            "BME":"EU","HEL":"EU","CPH":"EU","OMX":"EU","WSE":"EU",
+            "VIE":"EU","ATH":"EU","LIS":"EU","OSL":"EU",
+            # UK (post-Brexit)
+            "LSE":"GB","IOB":"GB",
+            # Suisse
+            "EBS":"CH","SWX":"CH",
+            # Canada
+            "TSX":"CA","CVE":"CA","TOR":"CA",
+            # Japon
+            "TYO":"JP","TSE":"JP","OSA":"JP",
+            # Hong Kong
+            "HKG":"HK","HKSE":"HK",
+            # Australie
+            "ASX":"AU",
+            # Corée
+            "KSC":"KR","KOE":"KR",
+            # Inde
+            "BSE":"IN","NSI":"IN",
+            # Brésil
+            "SAO":"BR",
+            # US (détection par sous-chaîne dans market, géré frontend)
+        }
+        badge = next((v for k, v in MARKET_BADGE.items() if k in ex_up), None)
 
         sector_map = {
             "Technology": "Technologie", "Healthcare": "Santé",
