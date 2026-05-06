@@ -183,6 +183,7 @@
   .lcat-score { background: var(--gold-dim);  color: var(--gold);  border: 1px solid rgba(232,168,32,0.2); }
   .lcat-ux    { background: var(--surface3);  color: var(--text3); border: 1px solid var(--border); }
   .learning-version { font-family: 'Courier New', monospace; font-size: 0.57rem; color: var(--text3); }
+  .learning-date    { font-size: 0.63rem; color: var(--text3); margin-left: auto; opacity: 0.6; }
   .learning-title { font-size: 0.83rem; font-weight: 600; color: var(--text); margin-bottom: 0.3rem; }
   .learning-prob { font-size: 0.74rem; color: var(--text3); line-height: 1.6; }
   .learning-prob::before { content: '✕ '; color: var(--red); opacity: 0.7; }
@@ -332,6 +333,7 @@
         <div class="learning-header">
           <span class="learning-cat lcat-arch">Architecture</span>
           <span class="learning-version">v1.5</span>
+          <span class="learning-date">06 mai 2026</span>
         </div>
         <div class="learning-title">Rationalisation LLM</div>
         <div class="learning-prob">L'agent achetait et revendait le même titre en 24h en réinterprétant les mêmes signaux selon l'angle du moment — sans qu'aucune donnée n'ait changé.</div>
@@ -345,6 +347,7 @@
         <div class="learning-header">
           <span class="learning-cat lcat-arch">Architecture</span>
           <span class="learning-version">v1.5</span>
+          <span class="learning-date">06 mai 2026</span>
         </div>
         <div class="learning-title">Thèse d'achat non tracée</div>
         <div class="learning-prob">Lorsqu'une vente était envisagée, l'agent n'avait aucun moyen de retrouver pourquoi il avait acheté — il raisonnait dans le vide.</div>
@@ -358,6 +361,7 @@
         <div class="learning-header">
           <span class="learning-cat lcat-score">Scoring</span>
           <span class="learning-version">v1.3</span>
+          <span class="learning-date">05 mai 2026</span>
         </div>
         <div class="learning-title">Biais haussier des analystes</div>
         <div class="learning-prob">Le consensus sell-side était surpondéré à 20 pts. Or la littérature académique documente un biais haussier structurel : les analystes surnotent systématiquement les titres qu'ils couvrent.</div>
@@ -371,6 +375,7 @@
         <div class="learning-header">
           <span class="learning-cat lcat-score">Scoring</span>
           <span class="learning-version">v1.3</span>
+          <span class="learning-date">05 mai 2026</span>
         </div>
         <div class="learning-title">RSI binaire</div>
         <div class="learning-prob">Le RSI donnait 10 pts en zone 40–60 et 0 sinon — une marche abrupte qui pénalisait durement des titres à RSI 38 ou 63 sans raison.</div>
@@ -384,6 +389,7 @@
         <div class="learning-header">
           <span class="learning-cat lcat-score">Scoring</span>
           <span class="learning-version">v1.4</span>
+          <span class="learning-date">06 mai 2026</span>
         </div>
         <div class="learning-title">Death Cross non pénalisant</div>
         <div class="learning-prob">Un titre pouvait scorer 70+ et apparaître en top watchlist alors qu'il venait de former un Death Cross — signal de tendance baissière historiquement fiable.</div>
@@ -397,6 +403,7 @@
         <div class="learning-header">
           <span class="learning-cat lcat-score">Scoring</span>
           <span class="learning-version">v1.4</span>
+          <span class="learning-date">06 mai 2026</span>
         </div>
         <div class="learning-title">FCF absent des fondamentaux</div>
         <div class="learning-prob">Le scoring fondamental ne regardait que la marge nette et le PEG — la marge nette peut être dopée par des éléments exceptionnels non récurrents.</div>
@@ -410,6 +417,7 @@
         <div class="learning-header">
           <span class="learning-cat lcat-ux">UX</span>
           <span class="learning-version">v1.4</span>
+          <span class="learning-date">06 mai 2026</span>
         </div>
         <div class="learning-title">Changelog sorties générique</div>
         <div class="learning-prob">Chaque titre sorti de la watchlist affichait le même message "Score insuffisant cette semaine" — aucune information exploitable sur la vraie raison de sortie.</div>
