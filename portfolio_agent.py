@@ -546,6 +546,8 @@ def executer_decisions(decisions_claude, portfolio, watchlist, contexte, eur_usd
             liquidites  = round(liquidites + montant_eur, 2)
             positions   = [p for p in positions if p["ticker"] != ticker]
 
+            montant_achat_eur = pos.get("montant_investi", 0)
+            pnl_eur = round(montant_eur - montant_achat_eur, 2) if montant_achat_eur else round(montant_eur * perf / (100 + perf), 2)
             ordre = {
                 "date":     today,
                 "type":     "VENTE",
@@ -556,6 +558,7 @@ def executer_decisions(decisions_claude, portfolio, watchlist, contexte, eur_usd
                 "currency": currency,
                 "montant":  montant_eur,
                 "perf":     perf,
+                "pnl_eur":  pnl_eur,
                 "jours":    jours,
                 "raison":   raison,
                 "conviction": dec.get("conviction", "modérée"),

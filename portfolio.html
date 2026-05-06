@@ -379,9 +379,9 @@
           <span class="learning-version">v1.5</span>
           <span class="learning-date">06 mai 2026</span>
         </div>
-        <div class="learning-title">Rationalisation LLM</div>
-        <div class="learning-prob">L'agent achetait et revendait le même titre en 24h en réinterprétant les mêmes signaux selon l'angle du moment — sans qu'aucune donnée n'ait changé.</div>
-        <div class="learning-fix">Architecture deux passes séparées : analyste neutre (Haiku, passe 1) puis décideur (Sonnet, passe 2). Obligation de documenter le delta vs la thèse d'achat pour toute vente &lt; 90 jours.</div>
+        <div class="learning-title">L'IA achetait et vendait le même titre en 24h</div>
+        <div class="learning-prob">ServiceNow acheté le 05/05 (z=−3.4σ cité comme opportunité) puis vendu le 06/05 (z=−3.4σ cité comme risque). Mêmes données, conclusions opposées — le modèle rationalisait selon l'angle du moment.</div>
+        <div class="learning-fix">Architecture deux passes : Haiku analyse sans décider (passe 1), Sonnet décide sur la base de cette analyse (passe 2). Pour toute vente &lt; 90j, le modèle doit citer la thèse d'achat originale et documenter ce qui a concrètement changé. Si rien n'a changé, la vente est refusée.</div>
       </div>
     </div>
 
@@ -393,9 +393,9 @@
           <span class="learning-version">v1.5</span>
           <span class="learning-date">06 mai 2026</span>
         </div>
-        <div class="learning-title">Thèse d'achat non tracée</div>
-        <div class="learning-prob">Lorsqu'une vente était envisagée, l'agent n'avait aucun moyen de retrouver pourquoi il avait acheté — il raisonnait dans le vide.</div>
-        <div class="learning-fix">Chaque achat stocke désormais une <code>raison_achat</code> dans le portfolio. Elle est réinjectée dans la passe 1 pour forcer un delta explicite avant toute vente.</div>
+        <div class="learning-title">Aucune mémoire du pourquoi d'un achat</div>
+        <div class="learning-prob">Quand l'IA envisageait de vendre, elle ne savait plus pourquoi elle avait acheté. Elle réévaluait la position à partir de zéro — et pouvait donc arriver à la conclusion opposée avec les mêmes signaux.</div>
+        <div class="learning-fix">Chaque achat enregistre maintenant une <code>raison_achat</code> dans le portfolio.json. Cette thèse est relue systématiquement en passe 1 avant toute décision de vente, pour forcer une comparaison explicite avec la situation actuelle.</div>
       </div>
     </div>
 
@@ -407,9 +407,9 @@
           <span class="learning-version">v1.6</span>
           <span class="learning-date">06 mai 2026</span>
         </div>
-        <div class="learning-title">Feedback loop sur-engineered</div>
-        <div class="learning-prob">On a construit 3 niveaux de feedback loop (injection biais dans prompt, règles auto, learnings auto-générés) en assumant qu'ils étaient justifiés — sans se demander sur quelle base.</div>
-        <div class="learning-fix">Niveaux 1 et 3 supprimés. Le prompt Claude reste propre. Seules les règles mécaniques basées sur la valeur du portfolio subsistent — et leurs seuils sont assumés comme arbitraires, pas présentés comme académiques.</div>
+        <div class="learning-title">On a sur-engineeré le feedback loop</div>
+        <div class="learning-prob">On a construit 3 niveaux d'auto-correction : injection des biais dans le prompt, règles auto-durcissantes, learnings auto-générés. En pratique : injecter des biais dans le prompt pollue le raisonnement de Claude. L'auto-durcissement des seuils n'avait aucune base — juste du bruit qui s'amplifie.</div>
+        <div class="learning-fix">Suppression des niveaux 1 et 3. Règles mécaniques conservées mais recâblées sur la valeur du portfolio (pas le comptage de titres). Les seuils sont assumés comme arbitraires — pas présentés comme académiques.</div>
       </div>
     </div>
 
@@ -424,9 +424,9 @@
             <span class="learning-version">v1.6</span>
             <span class="learning-date">06 mai 2026</span>
           </div>
-          <div class="learning-title">Règles mécaniques basées sur le comptage</div>
-          <div class="learning-prob">Les gardes de risque bloquaient les achats si un secteur avait ≥ 4 positions ou si le portfolio avait ≥ 13 lignes — sans tenir compte de la valeur réelle. ASML à 25% + 3 micro-caps ≠ surconcentration.</div>
-          <div class="learning-fix">Règles recâblées sur la valeur : secteur > 30% du portfolio en valeur → bloqué. Position > 20% du capital → renforcement bloqué. Liquidités < 5% → achats bloqués.</div>
+          <div class="learning-title">Les gardes de risque comptaient les titres, pas la valeur</div>
+          <div class="learning-prob">Un secteur était "concentré" si ≥ 4 positions y étaient ouvertes — peu importe leur taille. ASML à 25% du portfolio + 3 positions à 1% chacune déclenchait un blocage. 1 position tech à 30% ne déclenchait rien.</div>
+          <div class="learning-fix">Règles recâblées sur la valeur : 1 secteur > 30% de la valeur totale → bloqué. 1 position > 20% du capital → renforcement bloqué. Liquidités < 5% → achats bloqués.</div>
         </div>
       </div>
 
@@ -438,9 +438,9 @@
             <span class="learning-version">v1.6</span>
             <span class="learning-date">06 mai 2026</span>
           </div>
-          <div class="learning-title">POIDS_MAX à 30% trop élevé</div>
-          <div class="learning-prob">Une position pouvait représenter 30% du capital — un niveau de concentration agressif incohérent avec la règle mécanique qui bloque au-delà de 20%.</div>
-          <div class="learning-fix">POIDS_MAX ramené à 20% pour être cohérent avec les règles de risque. Les deux limites s'alignent désormais sur le même seuil.</div>
+          <div class="learning-title">Taille max d'une position incohérente avec les règles de risque</div>
+          <div class="learning-prob"><code>POIDS_MAX = 30%</code> dans le code permettait d'ouvrir une position à 30% du capital — mais la règle mécanique bloquait tout renforcement au-delà de 20%. Les deux limites se contredisaient.</div>
+          <div class="learning-fix"><code>POIDS_MAX</code> ramené à 20%, aligné sur la règle de risque. Une seule limite cohérente, appliquée à la fois à l'ouverture et au renforcement.</div>
         </div>
       </div>
 
@@ -452,9 +452,9 @@
             <span class="learning-version">v1.3</span>
             <span class="learning-date">05 mai 2026</span>
           </div>
-          <div class="learning-title">Biais haussier des analystes</div>
-          <div class="learning-prob">Le consensus sell-side était surpondéré à 20 pts. Or la littérature académique documente un biais haussier structurel : les analystes surnotent systématiquement les titres qu'ils couvrent.</div>
-          <div class="learning-fix">Analystes ramenés à 10 pts, redistribution vers les fondamentaux (40 → 50 pts). Sources : Barber 2001, Jegadeesh 2004.</div>
+          <div class="learning-title">Le consensus analystes représentait 20% du score total</div>
+          <div class="learning-prob">20 pts sur 100 pour le consensus sell-side — alors que la littérature montre que les analystes surnotent structurellement les titres qu'ils couvrent (conflit d'intérêt, biais de confirmation). Un signal lagging à biais haussier surpondéré.</div>
+          <div class="learning-fix">Réduit à 10 pts, 10 pts redistribués vers les fondamentaux (40 → 50 pts). Sources : Barber &amp; Odean 2001, Jegadeesh &amp; Kim 2004.</div>
         </div>
       </div>
 
@@ -466,9 +466,9 @@
             <span class="learning-version">v1.3</span>
             <span class="learning-date">05 mai 2026</span>
           </div>
-          <div class="learning-title">RSI binaire</div>
-          <div class="learning-prob">Le RSI donnait 10 pts en zone 40–60 et 0 sinon — une marche abrupte qui pénalisait durement des titres à RSI 38 ou 63 sans raison.</div>
-          <div class="learning-fix">RSI gradué : 10 pts (40–60), 5 pts (35–65), 0 sinon. Courbe plus lisse, moins de faux négatifs.</div>
+          <div class="learning-title">Le RSI était binaire : 10 pts ou 0</div>
+          <div class="learning-prob">Un titre à RSI 39 obtenait 0 pt. Un titre à RSI 41 obtenait 10 pts. Une différence de 2 points de RSI créait un écart de 10% du score total — aucune gradation entre les deux.</div>
+          <div class="learning-fix">RSI gradué : 10 pts (zone 40–60), 5 pts (zone 35–65), 0 sinon. La transition est progressive, plus cohérente avec la nature continue de l'indicateur.</div>
         </div>
       </div>
 
@@ -480,9 +480,9 @@
             <span class="learning-version">v1.4</span>
             <span class="learning-date">06 mai 2026</span>
           </div>
-          <div class="learning-title">Death Cross non pénalisant</div>
-          <div class="learning-prob">Un titre pouvait scorer 70+ et apparaître en top watchlist alors qu'il venait de former un Death Cross — signal de tendance baissière historiquement fiable.</div>
-          <div class="learning-fix">Pénalité non compensable : −5 pts si Death Cross ≤ 30j, −3 pts si ≤ 60j. Appliquée après le multiplicateur de confiance pour éviter toute neutralisation.</div>
+          <div class="learning-title">Un Death Cross récent n'impactait pas le score</div>
+          <div class="learning-prob">Un titre venait de former un Death Cross (MM21 passe sous MM200) mais maintenait de bons fondamentaux → score 70+, apparaissait en top watchlist. Le signal de tendance baissière le plus connu était ignoré.</div>
+          <div class="learning-fix">Pénalité non compensable post-score : −5 pts si Death Cross ≤ 30j, −3 pts si ≤ 60j. "Non compensable" = les fondamentaux ne peuvent pas neutraliser cette pénalité.</div>
         </div>
       </div>
 
@@ -494,9 +494,9 @@
             <span class="learning-version">v1.4</span>
             <span class="learning-date">06 mai 2026</span>
           </div>
-          <div class="learning-title">FCF absent des fondamentaux</div>
-          <div class="learning-prob">Le scoring fondamental ne regardait que la marge nette et le PEG — la marge nette peut être dopée par des éléments exceptionnels non récurrents.</div>
-          <div class="learning-fix">Free Cash Flow margin ajouté : +5 pts si FCF/CA &gt; 15 %, +3 pts si &gt; 5 %. Signal moins manipulable que le résultat net comptable.</div>
+          <div class="learning-title">La marge nette comptable seule dans les fondamentaux</div>
+          <div class="learning-prob">La marge nette peut être gonflée par des éléments non récurrents (cession d'actifs, avantage fiscal ponctuel). Deux entreprises à 12% de marge nette peuvent avoir des profils de trésorerie très différents.</div>
+          <div class="learning-fix">Free Cash Flow margin ajouté : +5 pts si FCF/CA &gt; 15%, +3 pts si &gt; 5%. Le FCF mesure la trésorerie réellement générée — beaucoup plus difficile à maquiller comptablement.</div>
         </div>
       </div>
 
@@ -508,9 +508,9 @@
             <span class="learning-version">v1.4</span>
             <span class="learning-date">06 mai 2026</span>
           </div>
-          <div class="learning-title">Changelog sorties générique</div>
-          <div class="learning-prob">Chaque titre sorti de la watchlist affichait le même message "Score insuffisant cette semaine" — aucune information exploitable sur la vraie raison de sortie.</div>
-          <div class="learning-fix">Fonction <code>raison_sortie()</code> analyse le breakdown : Death Cross, momentum faible, fondamentaux insuffisants, surachat en régression — message spécifique par titre.</div>
+          <div class="learning-title">Tous les titres sortis affichaient le même message</div>
+          <div class="learning-prob">"Score insuffisant pour rester dans le top 25 cette semaine." — affiché pour 100% des sorties, quelle que soit la vraie raison. Death Cross récent, surachat en régression, fondamentaux dégradés : même message pour tout.</div>
+          <div class="learning-fix">Fonction <code>raison_sortie()</code> analyse le breakdown de chaque titre sorti et génère un message spécifique : raison principale + valeurs chiffrées. Ex. "Death Cross récent (12j), momentum 9/40."</div>
         </div>
       </div>
 
@@ -612,8 +612,12 @@ function orderTypeClass(t) {
 
 function renderOrder(o, idx) {
   const isVente = o.type === 'VENTE';
+  const pnlEurVal = isVente && o.pnl_eur != null
+    ? o.pnl_eur
+    : (isVente && o.perf != null && o.montant ? Math.round(o.montant * o.perf / (100 + o.perf)) : null);
   const perfBadge = isVente && o.perf != null
     ? `<span class="perf-badge ${o.perf >= 0 ? 'perf-up' : 'perf-dn'}" style="font-size:0.63rem">${sign(o.perf)}${fmt(o.perf,1)} %</span>`
+      + (pnlEurVal != null ? `<span style="font-family:'Courier New',monospace;font-size:0.62rem;color:${pnlEurVal>=0?'var(--green)':'var(--red)'}">${sign(pnlEurVal)}${fmtEur(Math.abs(pnlEurVal))}</span>` : '')
     : '';
   const scoreBadge = o.type === 'ACHAT' && o.score_watchlist
     ? `<span style="font-family:'Courier New',monospace;font-size:0.62rem;color:var(--text3);background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:1px 6px">score ${o.score_watchlist}</span>`
