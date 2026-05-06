@@ -865,38 +865,35 @@ async function loadPortfolio() {
     const allOrdres = d.ordres || [];
     const ventes = allOrdres.filter(o => o.type === 'VENTE' && o.perf != null);
     if (ventes.length > 0) {
-      const wins    = ventes.filter(o => o.perf > 0).length;
-      const winRate = Math.round(wins / ventes.length * 100);
-      const avgPerf = ventes.reduce((s, o) => s + o.perf, 0) / ventes.length;
-      const pnlEur  = ventes.reduce((s, o) => s + (o.montant * o.perf / 100), 0);
-      const statsEl = document.getElementById('orders-stats');
+      const wins   = ventes.filter(o => o.perf > 0).length;
       const losses = ventes.length - wins;
-      const winPct = Math.round(wins / ventes.length * 100);
-      const pnlColor = pnlEur >= 0 ? 'var(--green)' : 'var(--red)';
-      const perfColor = avgPerf >= 0 ? 'var(--green)' : 'var(--red)';
+      const winRate = Math.round(wins / ventes.length * 100);
+      // P&L en € : utilise pnl_eur stocké par l'agent si dispo, sinon approximation
+      const pnlEur = ventes.reduce((s, o) => {
+        if (o.pnl_eur != null) return s + o.pnl_eur;
+        return s + o.montant * o.perf / (100 + o.perf); // montant_investi * perf%
+      }, 0);
+      const avgPerf    = ventes.reduce((s, o) => s + o.perf, 0) / ventes.length;
+      const avgDuree   = Math.round(ventes.reduce((s, o) => s + (o.jours || 0), 0) / ventes.length);
+      const pnlColor   = pnlEur  >= 0 ? 'var(--green)' : 'var(--red)';
+      const perfColor  = avgPerf >= 0 ? 'var(--green)' : 'var(--red)';
+      const wrColor    = winRate >= 50 ? 'var(--green)' : 'var(--red)';
+      const statsEl = document.getElementById('orders-stats');
       if (statsEl) statsEl.innerHTML = `
-        <div class="pnl-strip">
-          <div class="pnl-main">
-            <div class="pnl-headline" style="color:${pnlColor}">${sign(pnlEur)}${fmtEur(Math.abs(pnlEur))}</div>
-            <div class="pnl-headline-label">P&amp;L réalisé · ${ventes.length} trade${ventes.length>1?'s':''}</div>
-          </div>
-          <div class="pnl-meta">
-            <div class="pnl-winbar-row">
-              <div class="pnl-winbar">
-                <div class="pnl-winbar-fill" style="width:${winPct}%;background:var(--green)"></div>
-              </div>
-              <span class="pnl-winbar-label" style="color:${winRate>=50?'var(--green)':'var(--red)'}">${winRate}% win</span>
-              <span class="pnl-winbar-label" style="color:var(--text3)">${wins}✓ ${losses}✗</span>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:0.9rem 1.1rem;margin-bottom:0.75rem">
+          <div style="font-family:'Courier New',monospace;font-size:0.58rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.75rem">${ventes.length} trade${ventes.length>1?'s':''} clôturé${ventes.length>1?'s':''} · ${wins} gain${wins>1?'s':''}, ${losses} perte${losses>1?'s':''}</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
+            <div>
+              <div style="font-family:Georgia,serif;font-size:1.4rem;color:${pnlColor};line-height:1">${sign(pnlEur)}${fmtEur(Math.abs(pnlEur))}</div>
+              <div style="font-family:'Courier New',monospace;font-size:0.56rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-top:3px">Gain net en €</div>
             </div>
-            <div class="pnl-stats-row">
-              <div class="pnl-stat">
-                <span class="pnl-stat-val" style="color:${perfColor}">${sign(avgPerf)}${fmt(avgPerf,1)} %</span>
-                <span class="pnl-stat-lbl">Perf. moy.</span>
-              </div>
-              <div class="pnl-stat">
-                <span class="pnl-stat-val" style="color:var(--text2)">${fmt(ventes.reduce((s,o)=>s+(o.jours||0),0)/ventes.length,0)}j</span>
-                <span class="pnl-stat-lbl">Durée moy.</span>
-              </div>
+            <div>
+              <div style="font-family:Georgia,serif;font-size:1.4rem;color:${wrColor};line-height:1">${winRate} %</div>
+              <div style="font-family:'Courier New',monospace;font-size:0.56rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-top:3px">Trades gagnants</div>
+            </div>
+            <div>
+              <div style="font-family:Georgia,serif;font-size:1.4rem;color:${perfColor};line-height:1">${sign(avgPerf)}${fmt(avgPerf,1)} %</div>
+              <div style="font-family:'Courier New',monospace;font-size:0.56rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-top:3px">Perf. moy. / trade · ${avgDuree}j détenus</div>
             </div>
           </div>
         </div>`;

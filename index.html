@@ -597,6 +597,16 @@ function applyFilters() {
   document.getElementById('stocks-top').innerHTML    = top.length  ? top.map(renderCard).join('')  : empty;
   document.getElementById('stocks-bottom').innerHTML = rest.length ? rest.map(renderCard).join('') : '';
   document.getElementById('stocks-bottom').classList.add('hidden');
+  // Auto-dérouler le premier titre affiché
+  if (top.length > 0) {
+    const firstId = top[0].ticker.replace(/[^a-zA-Z0-9]/g, '_');
+    const firstDetail = document.getElementById('detail-' + firstId);
+    if (firstDetail) {
+      firstDetail.classList.add('open');
+      const hint = firstDetail.closest('.sc')?.querySelector('.expand-hint');
+      if (hint) hint.textContent = '↑ fermer';
+    }
+  }
   const smw = document.getElementById('show-more-wrap');
   const smb = document.getElementById('show-more-btn');
   if (smw && smb) {
