@@ -184,6 +184,18 @@
   .neu { color: var(--text2); }
   .liq { color: var(--blue); }
 
+  /* ── ALLOC CHARTS ── */
+  .alloc-grid  { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.75rem; }
+  .alloc-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.1rem 0.6rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.03); }
+  .alloc-row   { margin-bottom: 9px; }
+  .alloc-head  { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3px; }
+  .alloc-label { font-size: 0.80rem; color: var(--text2); }
+  .alloc-pct   { font-family: 'Courier New', monospace; font-size: 0.74rem; color: var(--text3); }
+  .alloc-bar   { height: 4px; background: var(--surface3); border-radius: 2px; overflow: hidden; }
+  .alloc-fill  { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
+  .alloc-note  { font-family: 'Courier New', monospace; font-size: 0.72rem; color: var(--text3); margin-top: 6px; opacity: 0.7; }
+  @media (max-width: 700px) { .alloc-grid { grid-template-columns: 1fr; } }
+
   /* ── CHART ── */
   .chart-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.75rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.03); }
   .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem; }
@@ -462,6 +474,17 @@
       <div class="skel" style="height:58px;margin-bottom:4px"></div>
       <div class="skel" style="height:58px;margin-bottom:4px"></div>
       <div class="skel" style="height:58px"></div>
+    </div>
+  </div>
+
+  <div class="alloc-grid" id="alloc-charts" style="display:none">
+    <div class="alloc-block">
+      <div class="sec-label">Répartition sectorielle</div>
+      <div id="chart-sector"></div>
+    </div>
+    <div class="alloc-block">
+      <div class="sec-label">Répartition géographique</div>
+      <div id="chart-geo"></div>
     </div>
   </div>
 
@@ -829,6 +852,79 @@ function renderChart(history, currentPerf, capitalInitial = 20000) {
   svg.appendChild(lt);
 }
 
+function renderAllocCharts(positions) {
+  if (!positions || positions.length === 0) return;
+
+  // ── Couleurs fixes par secteur ─────────────────────────────────────────────
+  const SECTOR_COLOR = {
+    'Technologie':      '#5080f8',
+    'Semi-conducteurs': '#9966ff',
+    'Équip. semi.':     '#c084fc',
+    'Finance':          '#1cc87a',
+    'Santé':            '#f87a20',
+    'Industrie':        '#e8a820',
+    'Conso. cycl.':     '#f05454',
+    'Médias & IA':      '#22d3ee',
+    'Énergie':          '#a3e635',
+    'Immobilier':       '#fb923c',
+  };
+  const FALLBACK = ['#5080f8','#1cc87a','#e8a820','#f05454','#f87a20','#9966ff','#22d3ee','#a3e635'];
+
+  // ── Mapping marché → région ────────────────────────────────────────────────
+  const GEO_MAP = {
+    'NYQ': 'États-Unis', 'NMS': 'États-Unis', 'Nasdaq': 'États-Unis',
+    'Euronext': 'Europe', 'AMS': 'Europe', 'EPA': 'Europe', 'GER': 'Europe',
+    'LSE': 'Royaume-Uni',
+    'TSX': 'Canada', 'JPX': 'Japon', 'ASX': 'Australie',
+  };
+  const GEO_COLOR = {
+    'États-Unis':  '#5080f8',
+    'Europe':      '#1cc87a',
+    'Royaume-Uni': '#e8a820',
+    'Canada':      '#f87a20',
+    'Japon':       '#f05454',
+    'Autre':       '#50506c',
+  };
+
+  // ── Agrégation ────────────────────────────────────────────────────────────
+  const total = positions.reduce((s, p) => s + (p.valeur_actuelle || 0), 0);
+  if (total <= 0) return;
+
+  const aggregate = keyFn => {
+    const map = {};
+    positions.forEach(p => {
+      const k = keyFn(p) || 'Autre';
+      map[k] = (map[k] || 0) + (p.valeur_actuelle || 0);
+    });
+    return Object.entries(map)
+      .map(([label, val]) => ({ label, pct: val / total * 100 }))
+      .sort((a, b) => b.pct - a.pct);
+  };
+
+  // ── Rendu barres horizontales ─────────────────────────────────────────────
+  const renderBars = (entries, colorMap, containerId) => {
+    let fi = 0;
+    const html = entries.map(({ label, pct }) => {
+      const color = colorMap[label] || FALLBACK[fi++ % FALLBACK.length];
+      return `<div class="alloc-row">
+        <div class="alloc-head">
+          <span class="alloc-label">${label}</span>
+          <span class="alloc-pct">${pct.toFixed(1)} %</span>
+        </div>
+        <div class="alloc-bar">
+          <div class="alloc-fill" style="width:${pct.toFixed(1)}%;background:${color};opacity:0.82"></div>
+        </div>
+      </div>`;
+    }).join('');
+    document.getElementById(containerId).innerHTML =
+      html + '<div class="alloc-note">en % du capital investi en actions</div>';
+  };
+
+  document.getElementById('alloc-charts').style.display = 'grid';
+  renderBars(aggregate(p => p.sector),          SECTOR_COLOR, 'chart-sector');
+  renderBars(aggregate(p => GEO_MAP[p.market]), GEO_COLOR,    'chart-geo');
+}
+
 function orderTypeClass(t) {
   if (t === 'ACHAT')  return 'type-achat';
   if (t === 'VENTE')  return 'type-vente';
@@ -1066,6 +1162,7 @@ async function loadPortfolio() {
         }).join('');
 
     document.getElementById('positions-list').innerHTML = posHTML;
+    renderAllocCharts(pos);
 
     // Ordres — stats P&L réalisé
     const allOrdres = d.ordres || [];
