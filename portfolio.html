@@ -524,6 +524,8 @@
           <div class="rule"><div class="rule-num">Règle 04 · Honnêteté</div><div class="rule-title">Chaque décision documentée</div><p>Chaque achat et vente est expliqué avec les données qui ont motivé la décision.</p></div>
           <div class="rule"><div class="rule-num">Règle 05 · Sources</div><div class="rule-title">Données multi-sources</div><p>Yahoo Finance pour le momentum, Finnhub pour valider les fondamentaux.</p></div>
           <div class="rule"><div class="rule-num">Règle 06 · Survie</div><div class="rule-title">Deux trimestres négatifs = zéro</div><p>Sous-performance durable = post-mortem public + remise à zéro de la méthodologie.</p></div>
+          <div class="rule"><div class="rule-num">Règle 07 · Stop-loss</div><div class="rule-title">−15 % après 90 jours = sortie</div><p>Une position en perte ≥ 15 % détenue depuis plus de 90 jours est vendue automatiquement, hors mode panique.</p></div>
+          <div class="rule"><div class="rule-num">Règle 08 · Catastrophe</div><div class="rule-title">−25 % = sortie immédiate</div><p>Si une position perd 25 % ou plus, vente forcée sans condition de durée — même en mode panique. Bouche le trou des 89 premiers jours.</p></div>
         </div>
       </div>
 
@@ -545,7 +547,49 @@
         <p style="font-size:0.83rem;color:var(--text3);margin:0 0 1rem;line-height:1.6">Chaque amélioration du modèle est documentée ici — problème identifié, cause, correction appliquée.</p>
   <div class="learnings-block" style="margin-bottom:0">
 
-    <!-- Les 5 premières toujours visibles -->
+    <!-- Learnings principaux toujours visibles (v1.7+) -->
+    <div class="learning-item">
+      <div class="learning-accent" style="background:#a855f7"></div>
+      <div class="learning-body">
+        <div class="learning-header">
+          <span class="learning-cat lcat-score">Méthodologie</span>
+          <span class="learning-version">v1.8</span>
+          <span class="learning-date">07 mai 2026</span>
+        </div>
+        <div class="learning-title">Le benchmark MSCI était comparé en mauvaise devise</div>
+        <div class="learning-prob">L'ETF utilisé pour mesurer "Signal vs marché mondial" était <code>URTH</code>, coté en dollars. Le portfolio Signal est calculé en euros. On soustrayait directement deux performances en devises différentes pour produire l'alpha — un mouvement EUR/USD de 5% sur l'année faussait l'alpha affiché de 5 points de pourcentage, sans aucun rapport avec la qualité des décisions de l'IA. La règle de survie "deux trimestres sous le MSCI" pouvait se déclencher purement à cause du dollar.</div>
+        <div class="learning-fix">Bascule sur <code>EUNL.DE</code> (iShares Core MSCI World UCITS, Xetra, coté en euros). Le même indice sous-jacent, mais quoté dans la devise du portfolio. L'alpha mesure désormais ce qu'il prétend mesurer.</div>
+      </div>
+    </div>
+
+    <div class="learning-item">
+      <div class="learning-accent" style="background:#a855f7"></div>
+      <div class="learning-body">
+        <div class="learning-header">
+          <span class="learning-cat lcat-score">Méthodologie</span>
+          <span class="learning-version">v1.8</span>
+          <span class="learning-date">07 mai 2026</span>
+        </div>
+        <div class="learning-title">Trou de 89 jours sans aucun stop-loss possible</div>
+        <div class="learning-prob">La Règle 07 (stop-loss à −15%) ne se déclenchait qu'à partir de 90 jours de détention. La Règle 01 interdit la vente avant 90 jours sauf signal fondamental majeur. Résultat : une position pouvait perdre 50% dans les 89 premiers jours sans qu'aucun mécanisme ne la sorte. La protection s'activait précisément quand elle n'était plus utile.</div>
+        <div class="learning-fix">Ajout de la Règle 08 — stop-loss catastrophe à −25% sans condition de durée, qui ignore aussi le mode panique. La R07 reste la sortie "ordinaire" sur position mature ; la R08 est le coupe-circuit en cas d'effondrement rapide. Les deux règles ne se chevauchent pas : R08 s'applique d'abord, R07 ensuite si non déclenchée.</div>
+      </div>
+    </div>
+
+    <div class="learning-item">
+      <div class="learning-accent" style="background:#a855f7"></div>
+      <div class="learning-body">
+        <div class="learning-header">
+          <span class="learning-cat lcat-score">Méthodologie</span>
+          <span class="learning-version">v1.8</span>
+          <span class="learning-date">07 mai 2026</span>
+        </div>
+        <div class="learning-title">Le z-score de régression était biaisé in-sample</div>
+        <div class="learning-prob">La régression log-linéaire qui mesure l'écart d'un cours à sa tendance long terme était fittée sur l'ensemble des données — y compris le dernier point qu'elle servait à mesurer. Mathématiquement, la droite était tirée vers le point récent, ce qui sous-estimait systématiquement |z|. Tous les "surachat" et "survente" affichés étaient en réalité plus extrêmes que les chiffres.</div>
+        <div class="learning-fix">Holdout de 20 jours de bourse : la régression est fittée sur l'historique <em>moins</em> les 20 derniers jours, puis le z-score du dernier point est mesuré contre cette droite extrapolée. La droite n'est plus contaminée par le point qu'elle évalue.</div>
+      </div>
+    </div>
+
     <div class="learning-item">
       <div class="learning-accent" style="background:#6366f1"></div>
       <div class="learning-body">

@@ -28,10 +28,14 @@ FINNHUB_KEY          = os.getenv("FINNHUB_API_KEY", "")
 CAPITAL_INITIAL_DEF  = 10000.0   # valeur par défaut uniquement pour portefeuille vide
 CAPITAL_INITIAL      = CAPITAL_INITIAL_DEF  # sera écrasé au runtime par la valeur du JSON
 POIDS_MAX            = 0.20
-STOP_LOSS_PCT        = -15.0     # seuil de stop-loss en % (Règle 07)
+STOP_LOSS_PCT        = -15.0     # seuil de stop-loss standard (Règle 07, ≥ 90j détenus)
+STOP_LOSS_CATASTROPHE_PCT = -25.0  # stop-loss catastrophe (Règle 08, sans condition de durée)
 MAX_POSITIONS        = 15        # nb max de lignes simultanées
 TICKER_CAC40         = "^FCHI"
-TICKER_MSCI          = "URTH"
+# MSCI World — ETF EUR-denominated (iShares Core MSCI World UCITS, Xetra)
+# Évite le mismatch de devise vs portfolio EUR : avant on utilisait URTH (USD)
+# ce qui faussait l'alpha de plusieurs points selon le mouvement EUR/USD.
+TICKER_MSCI          = "EUNL.DE"
 
 client = Anthropic(api_key=ANTHROPIC_API_KEY) if ANTHROPIC_API_KEY else None
 
@@ -530,30 +534,44 @@ def executer_decisions(decisions_claude, portfolio, watchlist, contexte, eur_usd
     for pos in positions:
         maj_position(pos, eur_usd, eur_gbp)
 
-    # ── Règle 07 : Stop-loss automatique ─────────────────────────────────────
-    # Déclenché si perf ≤ -15% ET position détenue ≥ 90 jours ET hors mode panique
-    stop_loss_tickers = set()
-    if not mode_panique:
-        for pos in positions:
-            date_achat = pos.get("date_achat", today)
-            jours = (datetime.today() - datetime.strptime(date_achat, "%Y-%m-%d")).days
-            perf_pos = pos.get("performance", 0)
-            if perf_pos <= STOP_LOSS_PCT and jours >= 90:
-                stop_loss_tickers.add(pos["ticker"])
-                print(f"  🛑 STOP-LOSS {pos['ticker']} — {perf_pos:.1f}% depuis {jours}j → ordre de vente forcé (Règle 07)")
+    # ── Règle 07 / 08 : Stop-loss automatiques ──────────────────────────────
+    # R07 standard      : perf ≤ -15% ET ≥ 90 jours ET hors mode panique
+    # R08 catastrophe   : perf ≤ -25% sans condition de durée (s'applique même
+    #                     en mode panique — protège contre l'effondrement rapide
+    #                     dans les 89 premiers jours qui était le trou de R07)
+    stop_loss_tickers = {}  # ticker -> ('std' | 'catastrophe', perf, jours)
+    for pos in positions:
+        date_achat = pos.get("date_achat", today)
+        jours = (datetime.today() - datetime.strptime(date_achat, "%Y-%m-%d")).days
+        perf_pos = pos.get("performance", 0)
+        # R08 — catastrophe : prioritaire, ignore mode panique et durée
+        if perf_pos <= STOP_LOSS_CATASTROPHE_PCT:
+            stop_loss_tickers[pos["ticker"]] = ("catastrophe", perf_pos, jours)
+            print(f"  🆘 STOP-LOSS CATASTROPHE {pos['ticker']} — {perf_pos:.1f}% depuis {jours}j → vente forcée (Règle 08, ignore durée et panique)")
+        # R07 — standard
+        elif not mode_panique and perf_pos <= STOP_LOSS_PCT and jours >= 90:
+            stop_loss_tickers[pos["ticker"]] = ("std", perf_pos, jours)
+            print(f"  🛑 STOP-LOSS {pos['ticker']} — {perf_pos:.1f}% depuis {jours}j → ordre de vente forcé (Règle 07)")
 
     decisions = decisions_claude.get("decisions", [])
 
-    # Injecter les ventes stop-loss en tête (conviction forte pour bypasser Règle 01 si besoin)
-    for ticker_sl in stop_loss_tickers:
+    # Injecter les ventes stop-loss en tête (conviction forte pour bypasser Règle 01)
+    # Les stop-loss catastrophe (R08) ignorent en plus le mode panique (cf. boucle ci-dessous).
+    for ticker_sl, (sl_type, perf_sl, jours_sl) in stop_loss_tickers.items():
         pos_sl = next((p for p in positions if p["ticker"] == ticker_sl), None)
         if pos_sl and not any(d.get("ticker") == ticker_sl and d.get("action","").upper() == "VENTE" for d in decisions):
+            if sl_type == "catastrophe":
+                raison_sl = (f"Stop-loss CATASTROPHE Règle 08 — {perf_sl:.1f}% depuis l'achat ({jours_sl}j). "
+                             f"Seuil −25% atteint, vente forcée sans condition de durée ni mode panique.")
+            else:
+                raison_sl = f"Stop-loss automatique Règle 07 — {perf_sl:.1f}% depuis {jours_sl}j. Seuil −15% atteint après 90+ jours."
             decisions.insert(0, {
                 "action": "VENTE",
                 "ticker": ticker_sl,
                 "nom": pos_sl.get("nom", ticker_sl),
-                "raison": f"Stop-loss automatique Règle 07 — {pos_sl.get('performance',0):.1f}% depuis l'achat. Seuil −15% atteint après 90+ jours.",
+                "raison": raison_sl,
                 "conviction": "forte",
+                "_stop_loss_type": sl_type,  # marqueur pour bypass mode panique côté VENTE
             })
 
     for dec in decisions:
@@ -564,7 +582,9 @@ def executer_decisions(decisions_claude, portfolio, watchlist, contexte, eur_usd
 
         # ── VENTE
         if action == "VENTE":
-            if mode_panique:
+            # Stop-loss catastrophe (R08) bypasse le mode panique
+            is_catastrophe = dec.get("_stop_loss_type") == "catastrophe"
+            if mode_panique and not is_catastrophe:
                 print(f"  ⚠️  VENTE {ticker} bloquée — mode panique (Règle 03)")
                 continue
 

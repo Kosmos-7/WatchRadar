@@ -283,10 +283,16 @@ def cross_label(regime, days, cross_type):
     return "Données insuffisantes"
 
 # ── RÉGRESSION LOG-LINÉAIRE ───────────────────────────────────────────────────
-def calcul_regression(close_series):
+def calcul_regression(close_series, holdout_days=20):
     """
     Régression linéaire sur log(prix) — mesure l'écart du cours
     à sa tendance long terme en nombre d'écarts-types (z-score).
+
+    Anti-bias in-sample : la régression est fittée sur l'historique SANS
+    les `holdout_days` derniers jours (~1 mois de bourse). Le z-score
+    du dernier point est ensuite mesuré contre cette droite "neutre".
+    Sans ce holdout, inclure le point récent dans le fit tire mécaniquement
+    la droite vers lui et sous-estime systématiquement |z|.
 
     z > +2  : surachat marqué (risque de retour vers la moyenne)
     +1..+2  : au-dessus de la tendance — normal pour actions en forte hausse
@@ -298,15 +304,29 @@ def calcul_regression(close_series):
         if len(prices) < 30:
             return 0.0, 0.0
         log_p = np.log(prices)
-        x = np.arange(len(log_p), dtype=float)
-        slope, intercept = np.polyfit(x, log_p, 1)
-        fitted    = intercept + slope * x
-        residuals = log_p - fitted
-        std_r = float(np.std(residuals, ddof=1))
+
+        # Holdout : on retire les N derniers jours du fit (mais pas si historique trop court)
+        n_total = len(log_p)
+        if n_total > holdout_days + 30:
+            log_fit = log_p[:-holdout_days]
+            x_fit   = np.arange(len(log_fit), dtype=float)
+        else:
+            log_fit = log_p
+            x_fit   = np.arange(len(log_fit), dtype=float)
+
+        slope, intercept = np.polyfit(x_fit, log_fit, 1)
+        fitted_in_sample = intercept + slope * x_fit
+        residuals_in     = log_fit - fitted_in_sample
+        std_r            = float(np.std(residuals_in, ddof=1))
         if std_r < 1e-8:
             return 0.0, round(slope * 252 * 100, 1)
-        z_score        = float(residuals[-1]) / std_r
-        pente_annuelle = slope * 252 * 100
+
+        # Mesure du dernier point contre la droite extrapolée
+        x_last           = float(n_total - 1)
+        fitted_last      = intercept + slope * x_last
+        residual_last    = float(log_p[-1] - fitted_last)
+        z_score          = residual_last / std_r
+        pente_annuelle   = slope * 252 * 100
         return round(z_score, 2), round(pente_annuelle, 1)
     except Exception:
         return 0.0, 0.0
