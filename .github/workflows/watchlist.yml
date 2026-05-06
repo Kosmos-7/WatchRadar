@@ -32,6 +32,7 @@ jobs:
         run: python screener.py
 
       - name: Run portfolio agent (portfolio.json)
+        continue-on-error: true
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python portfolio_agent.py

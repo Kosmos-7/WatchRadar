@@ -439,8 +439,8 @@ def score_ticker(ticker):
         mm21   = float(close_2y.rolling(21).mean().iloc[-1])
         mm200  = float(close_2y.rolling(200).mean().iloc[-1])
         rsi    = float(RSIIndicator(close=close_2y, window=14).rsi().iloc[-1])
-        vol_r  = float(volume_2y.tail(90).mean())
-        vol_o  = float(volume_2y.head(90).mean())
+        vol_recent = float(volume_2y.tail(20).mean())   # volume des 20 derniers jours
+        vol_annual  = float(volume_2y.mean())            # moyenne sur 2 ans
 
         # ── Croisement MM21/MM200 (2 ans suffisent)
         cross_info = detect_cross(close_2y, volume_2y)
@@ -475,7 +475,7 @@ def score_ticker(ticker):
         details = {}
 
         # Momentum (40 pts) = cross (20) + RSI (10 gradué) + volume (5) + régression (5)
-        vol_ok        = vol_r > vol_o
+        vol_ok        = vol_recent > vol_annual
 
         # RSI gradué : zone stricte 40-60 = 10, élargie 35-65 = 5, hors zone = 0
         if   40 <= rsi <= 60: rsi_pts = 10
@@ -521,6 +521,7 @@ def score_ticker(ticker):
         elif earnings_growth > 0.05: fund_pts += 2
         # Dette/capitaux propres (0-5 pts)
         if 0 < debt_eq < 100:   fund_pts += 5
+        fund_pts = min(50, fund_pts)   # cap strict — max 50 pts fondamentaux
         score += fund_pts
 
         details["rev_growth"] = rev_growth
@@ -549,7 +550,7 @@ def score_ticker(ticker):
             if   dc_days <= 30: death_pen = -5
             elif dc_days <= 60: death_pen = -3
         score = max(0, score + death_pen)
-        stars = 5 if score >= 80 else 4 if score >= 65 else 3 if score >= 50 else 2
+        stars = 5 if score >= 90 else 4 if score >= 75 else 3 if score >= 60 else 2 if score >= 45 else 1
 
         exchange = info.get("exchange", "")
         ex_up    = exchange.upper()

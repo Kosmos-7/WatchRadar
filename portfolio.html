@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Portefeuille IA — Signal</title>
+<meta name="description" content="Portefeuille 100 % fictif géré par une IA. Capital de 20 000 €, prix réels du marché, chaque décision documentée et publiée chaque semaine.">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -478,10 +479,8 @@
       <!-- Learnings -->
       <div class="pacc-section">
         <div class="pacc-section-title">Ce qu'on a appris · Erreurs détectées &amp; corrections appliquées</div>
-        <p style="font-size:0.76rem;color:var(--text3);margin:0 0 0.9rem;line-height:1.6">Chaque amélioration est documentée ici — problème identifié, cause, correction appliquée.</p>
+        <p style="font-size:0.76rem;color:var(--text3);margin:0 0 1rem;line-height:1.6">Chaque amélioration du modèle est documentée ici — problème identifié, cause, correction appliquée.</p>
   <div class="learnings-block" style="margin-bottom:0">
-    <div class="sec-label">Ce qu'on a appris · Erreurs détectées &amp; corrections appliquées</div>
-    <p style="font-size:0.78rem;color:var(--text3);margin:0 0 1rem">Chaque amélioration du modèle est documentée ici — problème identifié, cause, correction appliquée.</p>
 
     <!-- Les 3 premières toujours visibles -->
     <div class="learning-item">
@@ -655,63 +654,81 @@ function fmtEur(n)    { return Number(n).toLocaleString('fr-FR', {maximumFractio
 function sign(n)      { return n >= 0 ? '+' : ''; }
 
 function renderChart(history, currentPerf) {
-  const svg   = document.getElementById('perf-chart');
-  const xMin  = 50, xMax = 550, yZero = 152, scale = 4.74;
-  const clampY = y => Math.max(10, Math.min(190, y));
-  const toY    = p => clampY(yZero - p * scale);
+  const svg  = document.getElementById('perf-chart');
+  const ns   = 'http://www.w3.org/2000/svg';
+  const el   = (tag, attrs) => { const e = document.createElementNS(ns, tag); Object.entries(attrs).forEach(([k,v]) => e.setAttribute(k,v)); return e; };
+  const xMin = 50, xMax = 550;
+  const yTop = 16, yBot = 185;
 
-  const ns  = 'http://www.w3.org/2000/svg';
-  const el  = (tag, attrs) => { const e = document.createElementNS(ns, tag); Object.entries(attrs).forEach(([k,v]) => e.setAttribute(k,v)); return e; };
+  // ── Calcul de la plage Y dynamique ────────────────────────────────────────
+  const allPerfs   = history.map(h => h.perf);
+  const allBenches = history.map(h => h.benchmark_msci ?? h.benchmark_cac40 ?? 0);
+  const allVals    = [...allPerfs, ...allBenches];
+  const rawMin = Math.min(...allVals);
+  const rawMax = Math.max(...allVals);
+  // Pas de graduation adaptatif
+  const step     = rawMax - rawMin > 60 ? 20 : rawMax - rawMin > 30 ? 10 : 5;
+  const rangeMin = Math.floor((Math.min(rawMin, -5)) / step) * step - step;
+  const rangeMax = Math.ceil((Math.max(rawMax, 0))  / step) * step + step;
+  const range    = rangeMax - rangeMin;
 
-  // X par position dans l'array (timeline linéaire)
+  const toY = p => yTop + (1 - (p - rangeMin) / range) * (yBot - yTop);
+
+  // X linéaire selon position dans l'array
   const n   = history.length;
   const toX = i => n < 2 ? xMin : xMin + (i / (n - 1)) * (xMax - xMin);
 
   const pts  = history.map((h, i) => ({ x: toX(i), y: toY(h.perf), perf: h.perf, bench: h.benchmark_msci ?? h.benchmark_cac40 ?? 0, note: h.note, date: h.date }));
   const last = pts[pts.length - 1];
 
-  // Grille horizontale
-  [-5, 0, 10, 20, 30].forEach(pct => {
-    const y = toY(pct);
-    const isZero = pct === 0, isDeath = pct === -5;
+  // ── Grille horizontale (ticks adaptatifs) ─────────────────────────────────
+  for (let pct = Math.ceil(rangeMin / step) * step; pct <= rangeMax; pct += step) {
+    const y       = toY(pct);
+    const isDeath = pct === -5;
+    const isZero  = pct === 0;
     svg.appendChild(el('line', { x1:40, y1:y, x2:560, y2:y,
       stroke: isDeath ? '#f05454' : '#2a2a38',
       'stroke-width': isZero ? 1 : 0.6,
       'stroke-dasharray': '3,4',
       'stroke-opacity': isDeath ? 0.5 : 1 }));
-    svg.appendChild(el('text', { x:28, y:y+3, 'font-family':'Courier New', 'font-size':7.5, fill: isDeath ? '#f05454' : '#50506c', 'fill-opacity': isDeath ? 0.7 : 1, 'text-anchor':'end' })).textContent = (pct >= 0 ? '+' : '') + pct + ' %';
-  });
+    svg.appendChild(el('text', { x:28, y:y+3, 'font-family':'Courier New', 'font-size':7.5,
+      fill: isDeath ? '#f05454' : '#50506c',
+      'fill-opacity': isDeath ? 0.7 : 1, 'text-anchor':'end' }))
+      .textContent = (pct >= 0 ? '+' : '') + pct + ' %';
+  }
 
-  // Labels dates (premier et dernier)
+  // ── Labels dates ──────────────────────────────────────────────────────────
   [[pts[0], 'start'], [last, 'end']].forEach(([p, anchor]) => {
     const d = new Date(p.date);
     const label = d.toLocaleDateString('fr-FR', { month:'short', year:'2-digit' });
-    const t = el('text', { x: p.x, y: 197, 'font-family':'Courier New', 'font-size':8.5, fill: anchor === 'end' ? '#e8a820' : '#50506c', 'text-anchor':'middle' });
+    const t = el('text', { x: p.x, y: 197, 'font-family':'Courier New', 'font-size':8.5,
+      fill: anchor === 'end' ? '#e8a820' : '#50506c', 'text-anchor':'middle' });
     t.textContent = label;
     svg.appendChild(t);
   });
 
-  // MSCI line
+  // ── Ligne MSCI ────────────────────────────────────────────────────────────
   if (pts.length >= 2) {
     const cacPts = pts.map(p => `${p.x.toFixed(1)},${toY(p.bench).toFixed(1)}`).join(' ');
     svg.appendChild(el('polyline', { points: cacPts, fill:'none', stroke:'#44445a', 'stroke-width':1.5, 'stroke-linejoin':'round', 'stroke-dasharray':'4,3' }));
   }
 
-  // Signal area
+  // ── Aire Signal ───────────────────────────────────────────────────────────
   const linePts = pts.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
-  const areaPts = linePts + ` ${last.x.toFixed(1)},190 ${pts[0].x.toFixed(1)},190`;
+  const areaPts = linePts + ` ${last.x.toFixed(1)},${yBot} ${pts[0].x.toFixed(1)},${yBot}`;
   svg.appendChild(el('polygon', { points: areaPts, fill:'url(#chartGrad)' }));
   svg.appendChild(el('polyline', { points: linePts, fill:'none', stroke:'#e8a820', 'stroke-width':2.2, 'stroke-linejoin':'round', 'stroke-linecap':'round' }));
 
-  // Marqueurs injection
+  // ── Marqueurs injection ───────────────────────────────────────────────────
+  const yZeroLine = toY(0);
   pts.filter(p => p.note).forEach(p => {
-    svg.appendChild(el('line', { x1:p.x, y1:15, x2:p.x, y2:yZero, stroke:'#5080f8', 'stroke-width':0.8, 'stroke-dasharray':'3,3', 'stroke-opacity':0.4 }));
+    svg.appendChild(el('line', { x1:p.x, y1:yTop, x2:p.x, y2:yZeroLine, stroke:'#5080f8', 'stroke-width':0.8, 'stroke-dasharray':'3,3', 'stroke-opacity':0.4 }));
     const t = el('text', { x:p.x, y:12, 'font-family':'Courier New', 'font-size':7.5, fill:'#5080f8', 'fill-opacity':0.6, 'text-anchor':'middle' });
     t.textContent = p.note.replace('Injection ', '');
     svg.appendChild(t);
   });
 
-  // Dot + label final
+  // ── Dot + label final ─────────────────────────────────────────────────────
   svg.appendChild(el('circle', { cx: last.x.toFixed(1), cy: last.y.toFixed(1), r:4.5, fill:'#e8a820' }));
   const lbg = el('rect', { x:(last.x-32).toFixed(1), y:(last.y-17).toFixed(1), width:64, height:17, rx:4, fill:'#1a1200', stroke:'#e8a820', 'stroke-width':0.8, 'stroke-opacity':0.6 });
   svg.appendChild(lbg);
@@ -783,8 +800,10 @@ function renderOrdres(limit) {
   const shown = filtered.slice(0, limit);
   const hasMore = filtered.length > limit;
   document.getElementById('orders-list').innerHTML =
-    shown.map((o, i) => renderOrder(o, i)).join('') +
-    (hasMore ? `<div style="text-align:center;padding:1rem 0"><button class="btn-show" onclick="renderOrdres(${limit + 10})">Voir les ${filtered.length - limit} suivants ↓</button></div>` : '');
+    shown.length === 0
+      ? '<div style="padding:1rem 0;color:var(--text3);font-size:0.82rem;font-family:\'Courier New\',monospace">Aucun ordre passé pour le moment.</div>'
+      : shown.map((o, i) => renderOrder(o, i)).join('') +
+        (hasMore ? `<div style="text-align:center;padding:1rem 0"><button class="btn-show" onclick="renderOrdres(${limit + 10})">Voir les ${filtered.length - limit} suivants ↓</button></div>` : '');
 }
 
 function togglePacc() {

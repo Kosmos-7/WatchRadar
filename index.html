@@ -26,6 +26,8 @@
     --red-dim:   rgba(240,84,84,0.1);
     --blue:      #5080f8;
     --blue-dim:  rgba(80,128,248,0.1);
+    --orange:     #f87a20;
+    --orange-dim: rgba(248,122,32,0.1);
     --radius:    10px;
     --radius-lg: 16px;
   }
@@ -569,7 +571,7 @@
       </div>
       <div class="lex-item">
         <div class="lex-term">Score total (★)</div>
-        <div class="lex-def">Somme Momentum (40) + Fondamentaux (50) + Analystes (10) + bonus (3) = max 103. Affiché sur 100. <em>5 étoiles</em> ≥ 90 · <em>4 étoiles</em> ≥ 75 · <em>3 étoiles</em> &lt; 75. Seules les 25 meilleures valeurs apparaissent.</div>
+        <div class="lex-def">Somme Momentum (40) + Fondamentaux (50) + Analystes (10) + bonus (3) = max 103. Affiché sur 100. <em>5 étoiles</em> ≥ 90 · <em>4 étoiles</em> ≥ 75 · <em>3 étoiles</em> ≥ 60 · <em>2 étoiles</em> ≥ 45 · <em>1 étoile</em> &lt; 45. Seules les 25 meilleures valeurs apparaissent.</div>
       </div>
         </div>
         </section>
@@ -837,7 +839,7 @@ function renderCard(s) {
             <span class="sc-ticker">${s.ticker} · ${s.market}</span>
           </div>
         </div>
-        <div class="sector-pill">${(s.sector||'').replace(' ','<br>')}</div>
+        <div class="sector-pill">${(s.sector||'').replace(/ /g,'<br>')}</div>
         <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px">
           <div style="display:flex;align-items:center;gap:7px">
             ${starsHTML(s.stars)}
@@ -932,7 +934,6 @@ async function loadWatchlist() {
     document.getElementById('filter-bar').style.display = 'flex';
     document.getElementById('sort-bar').style.display = 'flex';
     applyFilters();
-    document.getElementById('show-more-wrap').style.display = 'block';
 
   } catch(e) {
     document.getElementById('stocks-top').innerHTML =
