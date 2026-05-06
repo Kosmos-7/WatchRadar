@@ -410,7 +410,7 @@
     <div class="pos-header">
       <span>Action</span>
       <span style="text-align:right">Qté</span>
-      <span style="text-align:right">Px achat</span>
+      <span style="text-align:right">Px achat (€)</span>
       <span style="text-align:right">Valeur (€)</span>
       <span style="text-align:right">Perf. (€)</span>
       <span>Poids</span>
@@ -985,17 +985,16 @@ async function loadPortfolio() {
       : posWithEurPerf.map(p => {
           const isPos = p.eurPerf >= 0;
           const fillBg = isPos ? 'var(--green)' : 'var(--red)';
-          const ccyBadge = p.currency !== 'EUR'
-            ? `<span style="font-family:'Courier New',monospace;font-size:0.70rem;color:var(--text3);margin-left:4px;opacity:0.7">${p.currency}</span>`
-            : '';
+          // Prix d'achat en € : montant_investi (toujours en €) / quantité
+          const prixAchatEur = p.montant_investi > 0 ? p.montant_investi / p.quantite : p.prix_achat;
           return `<div class="pos-row ${isPos?'pos-positive':'pos-negative'}">
             <div>
               <div class="pos-name">${p.nom}</div>
               <div class="pos-ticker">${p.ticker} · ${p.market} · ${p.sector}</div>
             </div>
             <div class="mn">${p.quantite}</div>
-            <div class="mn">${fmt(p.prix_achat)} ${p.currency === 'USD' ? '$' : p.currency === 'GBP' ? '£' : '€'}</div>
-            <div class="mn">${fmtEur(p.valeur_actuelle)}${ccyBadge}</div>
+            <div class="mn">${fmtEur(prixAchatEur)}</div>
+            <div class="mn">${fmtEur(p.valeur_actuelle)}</div>
             <div><span class="perf-badge ${isPos?'perf-up':'perf-dn'}">${sign(p.eurPerf)}${fmt(p.eurPerf,1)} %</span></div>
             <div>
               <div class="poids-wrap">
@@ -1006,9 +1005,7 @@ async function loadPortfolio() {
           </div>`;
         }).join('');
 
-    const hasNonEur = posWithEurPerf.some(p => p.currency !== 'EUR');
-    document.getElementById('positions-list').innerHTML = posHTML +
-      (hasNonEur ? `<div style="font-family:'Courier New',monospace;font-size:0.75rem;color:var(--text3);padding:0.5rem 0.25rem 0;line-height:1.55">* Perf. calculée en € — intègre la variation du taux de change USD/GBP. Certains titres affichent une hausse en devise locale mais une moins-value en €.</div>` : '');
+    document.getElementById('positions-list').innerHTML = posHTML;
 
     // Ordres — stats P&L réalisé
     const allOrdres = d.ordres || [];

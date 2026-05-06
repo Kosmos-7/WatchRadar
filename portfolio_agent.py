@@ -94,6 +94,35 @@ def to_eur(montant, currency, eur_usd):
         return round(montant / (eur_usd * 0.86), 2)  # approximation GBP/EUR
     return round(montant, 2)
 
+def maj_position(pos, eur_usd):
+    """
+    Met à jour une position : valeur_actuelle en EUR, corrige montant_investi
+    legacy (stocké en devise native), recalcule performance en EUR.
+    Retourne True si le prix a pu être récupéré.
+    """
+    prix = get_prix(pos["ticker"])
+    if not prix:
+        return False
+    currency = pos.get("currency") or detect_currency(pos["ticker"], pos.get("market", ""))
+    pos["currency"]        = currency
+    pos["prix_actuel"]     = prix
+    pos["valeur_actuelle"] = to_eur(prix * pos["quantite"], currency, eur_usd)
+
+    # Correction legacy : montant_investi stocké en devise native (≈ prix_achat × quantité)
+    # → convertir en EUR au taux du jour (meilleure approximation disponible)
+    if currency != "EUR":
+        native = round(pos["prix_achat"] * pos["quantite"], 2)
+        stored = pos.get("montant_investi", 0)
+        if stored > 0 and abs(stored - native) / (native + 1) < 0.05:
+            pos["montant_investi"] = to_eur(native, currency, eur_usd)
+
+    # Performance en € — cohérent avec valeur_actuelle et montant_investi (tous les deux en EUR)
+    if pos.get("montant_investi", 0) > 0:
+        pos["performance"] = round(
+            (pos["valeur_actuelle"] - pos["montant_investi"]) / pos["montant_investi"] * 100, 2
+        )
+    return True
+
 def get_contexte_marche():
     """Récupère le contexte macro de la semaine."""
     ctx = {}
@@ -347,10 +376,14 @@ def construire_prompt(portfolio, watchlist, contexte, analyse=None, macro_news=N
         etat         = analyse_pos.get("etat", "")
         etat_str     = f" | état : {etat}" if etat else ""
         delta_str    = f"\n    → Delta thèse : {delta_these}" if delta_these else ""
+        qte = max(p["quantite"], 1)
+        px_achat_eur = round(p.get("montant_investi", p["prix_achat"]) / qte, 2)
+        px_actuel_eur = round(p.get("valeur_actuelle", 0) / qte, 2)
         pos_lines.append(
             f"  - {p['ticker']} ({p['nom']}) : {p['quantite']} titres, "
-            f"acheté à {p['prix_achat']}€, actuel {p.get('prix_actuel', p['prix_achat'])}€, "
-            f"perf {p.get('performance', 0):+.1f}%, {jours}j détenus, "
+            f"acheté à {px_achat_eur}€/titre ({p.get('montant_investi',0):.0f}€ investis), "
+            f"actuel {px_actuel_eur}€/titre ({p.get('valeur_actuelle',0):.0f}€), "
+            f"perf {p.get('performance', 0):+.1f}% (€), {jours}j détenus, "
             f"score watchlist actuel: {p.get('score_entree', '?')}/100{etat_str}\n"
             f"    → Thèse d'achat : {raison_achat[:200]}{delta_str}"
         )
@@ -474,15 +507,9 @@ def executer_decisions(decisions_claude, portfolio, watchlist, contexte, eur_usd
     stock_map = {s["ticker"]: s for s in watchlist.get("stocks", [])}
     mode_panique = contexte.get("mode_panique", False)
 
-    # Mise à jour des prix actuels — valeur_actuelle toujours en EUR
+    # Mise à jour des prix actuels — valeur_actuelle et performance en EUR
     for pos in positions:
-        prix = get_prix(pos["ticker"])
-        if prix:
-            currency = pos.get("currency") or detect_currency(pos["ticker"], pos.get("market", ""))
-            pos["currency"]       = currency
-            pos["prix_actuel"]    = prix
-            pos["performance"]    = round((prix - pos["prix_achat"]) / pos["prix_achat"] * 100, 2)
-            pos["valeur_actuelle"] = to_eur(prix * pos["quantite"], currency, eur_usd)
+        maj_position(pos, eur_usd)
 
     # ── Règle 07 : Stop-loss automatique ─────────────────────────────────────
     # Déclenché si perf ≤ -15% ET position détenue ≥ 90 jours ET hors mode panique
@@ -700,15 +727,9 @@ def main():
     print(f"   EUR/USD       : {eur_usd}")
     print(f"   Macro news    : {len(macro_news)} article(s) macro sélectionné(s)")
 
-    # ── Mise à jour des prix avant de soumettre à Claude (valeur_actuelle en EUR)
+    # ── Mise à jour des prix avant de soumettre à Claude (valeur_actuelle et performance en EUR)
     for pos in portfolio.get("positions", []):
-        prix = get_prix(pos["ticker"])
-        if prix:
-            currency = pos.get("currency") or detect_currency(pos["ticker"], pos.get("market", ""))
-            pos["currency"]        = currency
-            pos["prix_actuel"]     = prix
-            pos["performance"]     = round((prix - pos["prix_achat"]) / pos["prix_achat"] * 100, 2)
-            pos["valeur_actuelle"] = to_eur(prix * pos["quantite"], currency, eur_usd)
+        maj_position(pos, eur_usd)
 
     val_pos = sum(p.get("valeur_actuelle", 0) for p in portfolio.get("positions", []))
     portfolio["capital_actuel"] = round(val_pos + portfolio.get("liquidites", CAPITAL_INITIAL), 2)
@@ -776,15 +797,9 @@ Ne jamais inclure de balises markdown ou de backticks.""",
         decisions_claude, portfolio, watchlist, contexte, eur_usd, regles_auto=regles_auto
     )
 
-    # ── Recalcul final — valeur_actuelle toujours en EUR
+    # ── Recalcul final — valeur_actuelle et performance en EUR
     for pos in positions:
-        prix = get_prix(pos["ticker"])
-        if prix:
-            currency = pos.get("currency") or detect_currency(pos["ticker"], pos.get("market", ""))
-            pos["currency"]        = currency
-            pos["prix_actuel"]     = prix
-            pos["performance"]     = round((prix - pos["prix_achat"]) / pos["prix_achat"] * 100, 2)
-            pos["valeur_actuelle"] = to_eur(prix * pos["quantite"], currency, eur_usd)
+        maj_position(pos, eur_usd)
 
     val_positions  = sum(p.get("valeur_actuelle", 0) for p in positions)
     capital_actuel = round(val_positions + liquidites, 2)
