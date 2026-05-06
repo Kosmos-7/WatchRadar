@@ -508,7 +508,7 @@
       </div>
 
       <div class="accordion-section">
-        <section class="lexique">
+        <section class="lexique" id="lexique">
         <h2>Lexique</h2>
         <p class="lexique-intro">Définitions des indicateurs et métriques utilisés dans le scoring et les fiches détaillées.</p>
 
@@ -619,35 +619,6 @@
         <div class="lex-def">Somme Momentum (40) + Fondamentaux (50) + Analystes (10) + bonus sectoriel (3) = max 103, affiché sur 100. Pénalité non compensable : <em>−5 pts</em> si Death Cross ≤ 30j, <em>−3 pts</em> si ≤ 60j (les fondamentaux ne peuvent pas neutraliser ce malus). <em>5 étoiles</em> ≥ 90 · <em>4 étoiles</em> ≥ 75 · <em>3 étoiles</em> ≥ 60. Seules les 25 meilleures valeurs apparaissent.</div>
       </div>
         </div>
-
-    <div class="lex-cat">Portefeuille &amp; Risque</div>
-    <div class="lex-grid">
-      <div class="lex-item">
-        <div class="lex-term">MSCI World</div>
-        <div class="lex-def">Indice mondial couvrant ~1 500 grandes et moyennes capitalisations dans 23 pays développés. Utilisé comme <em>benchmark de référence</em> : si l'IA sous-performe le MSCI World sur deux trimestres consécutifs, la méthodologie est remise à zéro.</div>
-      </div>
-      <div class="lex-item">
-        <div class="lex-term">Alpha MSCI</div>
-        <div class="lex-def">Écart de performance entre le portefeuille Signal et le MSCI World, exprimé en <em>points de pourcentage</em>. Un alpha de +5.4 pp signifie que Signal a fait 5.4 points de mieux que l'indice sur la même période. L'objectif est de maintenir un alpha positif sur 12 mois glissants.</div>
-      </div>
-      <div class="lex-item">
-        <div class="lex-term">Drawdown max</div>
-        <div class="lex-def">Perte maximale enregistrée depuis un pic de valeur du portefeuille, en %. Mesure le <em>pire scénario traversé</em> : un drawdown de −15% signifie que le portefeuille a perdu au plus 15% depuis son point le plus haut. Indicateur de risque clé, indépendant de la performance finale.</div>
-      </div>
-      <div class="lex-item">
-        <div class="lex-term">P&amp;L réalisé</div>
-        <div class="lex-def">Profit and Loss — gain ou perte <em>effectivement encaissé</em> sur les positions fermées (vendues). Distinct du P&amp;L latent (positions encore ouvertes). Le P&amp;L réalisé est définitif ; le P&amp;L latent peut s'inverser tant que la position est ouverte.</div>
-      </div>
-      <div class="lex-item">
-        <div class="lex-term">Performance en € vs devise locale</div>
-        <div class="lex-def">Pour les titres cotés en USD ou GBP, la performance affichée est <em>calculée en euros</em> : elle intègre à la fois la variation du cours et la variation du taux de change. Un titre qui monte de +5% en dollars mais sur une période où le dollar baisse de 10% affiche une performance de −5% en €.</div>
-      </div>
-      <div class="lex-item">
-        <div class="lex-term">Poids (% du portefeuille)</div>
-        <div class="lex-def">Part d'une position dans la valeur totale du portefeuille. <em>Règle 02</em> : aucun titre ne peut dépasser 20% du capital. Un poids élevé amplifie l'impact de chaque variation — à la hausse comme à la baisse.</div>
-      </div>
-    </div>
-
         </section>
       </div>
 

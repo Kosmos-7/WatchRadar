@@ -285,6 +285,14 @@
   .lcat-auto { background: rgba(100,100,120,0.15); color: var(--text3); border: 1px solid var(--border); font-family: 'Courier New', monospace; font-size: 0.57rem; text-transform: uppercase; letter-spacing: 0.8px; padding: 1px 7px; border-radius: 4px; font-weight: 700; }
   .learning-weeks { font-size: 0.62rem; color: var(--red); opacity: 0.8; margin-left: 4px; }
 
+  /* ── LEXIQUE ── */
+  .lex-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .lex-item { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.85rem 1rem; }
+  .lex-term { font-family: 'Courier New', monospace; font-size: 0.68rem; font-weight: 700; color: var(--gold); letter-spacing: 0.3px; margin-bottom: 0.3rem; }
+  .lex-def  { font-size: 0.76rem; color: var(--text2); line-height: 1.6; }
+  .lex-def em { font-style: normal; color: var(--text3); }
+  @media (max-width: 600px) { .lex-grid { grid-template-columns: 1fr; } }
+
   /* ── DISCLAIMER ── */
   .disclaimer { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; font-size: 0.75rem; color: var(--text3); line-height: 1.65; }
 
@@ -625,6 +633,43 @@
 
     </div><!-- /pacc-body -->
   </div><!-- /pacc -->
+
+  <!-- Lexique portefeuille -->
+  <div class="pacc" style="margin-bottom:1.75rem">
+    <div class="pacc-trigger" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.pacc-arrow').classList.toggle('open')">
+      <div class="pacc-trigger-left">
+        <span class="pacc-label">Lexique</span>
+        <div class="pacc-chips">
+          <span class="pacc-chip">Portefeuille</span>
+          <span class="pacc-chip">Risque</span>
+          <span class="pacc-chip">Signaux</span>
+        </div>
+      </div>
+      <span class="pacc-arrow">▼</span>
+    </div>
+    <div class="pacc-body">
+      <div class="pacc-section">
+        <div class="pacc-section-title">Portefeuille &amp; Performance</div>
+        <div class="lex-grid">
+          <div class="lex-item"><div class="lex-term">MSCI World</div><div class="lex-def">Indice mondial couvrant ~1 500 grandes et moyennes capitalisations dans 23 pays développés. <em>Benchmark de référence</em> de Signal : deux trimestres consécutifs sous le MSCI World = post-mortem public + remise à zéro de la méthodologie.</div></div>
+          <div class="lex-item"><div class="lex-term">Alpha MSCI</div><div class="lex-def">Écart de performance entre Signal et le MSCI World, exprimé en <em>points de pourcentage (pp)</em>. Un alpha de +5.4 pp signifie que Signal a surperformé l'indice de 5.4 points sur la même période. Objectif : maintenir un alpha positif sur 12 mois glissants.</div></div>
+          <div class="lex-item"><div class="lex-term">Drawdown max</div><div class="lex-def">Perte maximale enregistrée depuis un pic du portefeuille, en %. Mesure le <em>pire scénario traversé</em> : un drawdown de −15% signifie que la valeur a chuté de 15% depuis son plus haut avant de se redresser. Indicateur de risque clé, indépendant de la performance finale.</div></div>
+          <div class="lex-item"><div class="lex-term">P&amp;L réalisé</div><div class="lex-def">Profit and Loss — gain ou perte <em>effectivement encaissé</em> sur les positions fermées. Distinct du P&amp;L latent (positions ouvertes), qui peut encore s'inverser. Seul le P&amp;L réalisé est définitif.</div></div>
+          <div class="lex-item"><div class="lex-term">Performance en € vs devise locale</div><div class="lex-def">Pour les titres en USD ou GBP, la performance affichée est <em>calculée en euros</em> et intègre la variation du taux de change. Un titre qui monte de +5% en dollars sur une période où le dollar baisse de 10% affiche −5% en €. C'est la performance réelle pour un investisseur en zone euro.</div></div>
+          <div class="lex-item"><div class="lex-term">Poids (% du portefeuille)</div><div class="lex-def">Part d'une position dans la valeur totale. <em>Règle 02</em> : aucun titre ne dépasse 20% du capital. Un poids élevé amplifie l'impact de chaque variation — à la hausse comme à la baisse.</div></div>
+        </div>
+      </div>
+      <div class="pacc-section">
+        <div class="pacc-section-title">Signaux techniques utilisés dans les décisions</div>
+        <div class="lex-grid">
+          <div class="lex-item"><div class="lex-term">RSI (Relative Strength Index)</div><div class="lex-def">Oscillateur 0–100 mesurant la vitesse des variations récentes. <em>Zone saine : 40–60.</em> Au-delà de 70 : surachat potentiel. Sous 30 : survente. Un RSI favorable ne suffit pas seul — il est combiné aux signaux de tendance et de régression.</div></div>
+          <div class="lex-item"><div class="lex-term">Z-score (σ)</div><div class="lex-def">Écart du cours à sa droite de régression long terme, en écarts-types. <em>−3.4σ</em> signifie que le cours est 3.4 déviations sous sa tendance : décote anormale, potentiel de rebond vers la moyenne mais aussi signe possible de détérioration fondamentale.</div></div>
+          <div class="lex-item"><div class="lex-term">Golden Cross / Death Cross</div><div class="lex-def"><em>Golden Cross</em> : la MM21 passe au-dessus de la MM200 — signal haussier. <em>Death Cross</em> : la MM21 passe sous la MM200 — signal baissier. La durée depuis le croisement détermine la prime accordée : un signal récent (&lt;30j) est plus fort qu'un signal ancien (&gt;180j).</div></div>
+        </div>
+        <div style="margin-top:0.75rem;font-family:'Courier New',monospace;font-size:0.6rem;color:var(--text3)">Définitions complètes des signaux → <a href="index.html#lexique" style="color:var(--gold);text-decoration:none">Lexique de la Watchlist ↗</a></div>
+      </div>
+    </div>
+  </div>
 
   <div class="disclaimer">
     <strong style="color:var(--text2)">Portefeuille 100 % fictif.</strong> Aucune somme réelle investie. Prix réels du marché au moment de chaque ordre simulé. Contenu purement informatif. Ne constitue pas un conseil en investissement au sens AMF.
