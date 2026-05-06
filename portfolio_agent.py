@@ -74,27 +74,44 @@ def get_eur_usd_rate():
     except:
         return 1.10
 
+def get_eur_gbp_rate():
+    """Taux EUR/GBP du jour via Yahoo Finance (EURGBP=X). Fallback 0.86."""
+    try:
+        hist = yf.Ticker("EURGBP=X").history(period="2d")
+        return round(float(hist["Close"].iloc[-1]), 4) if not hist.empty else 0.86
+    except:
+        return 0.86
+
 def detect_currency(ticker, market=""):
     """Détermine la devise native d'un ticker (EUR / USD / GBP)."""
     t = ticker.upper()
     m = (market or "").upper()
-    if any(t.endswith(s) for s in [".AS", ".PA", ".DE", ".BR", ".MI", ".MC"]):
+    # Suffixes Yahoo Finance → EUR
+    if any(t.endswith(s) for s in [".AS", ".PA", ".DE", ".BR", ".MI", ".MC", ".AT",
+                                    ".IS", ".HE", ".CO", ".OL", ".ST", ".VI", ".LI"]):
         return "EUR"
-    if any(k in m for k in ["PAR", "EPA", "AMS", "EURONEXT", "FRA", "XETRA", "ETR", "GER"]):
+    # Codes marché → EUR (zone euro + UE hors UK)
+    EUR_MARKETS = {
+        "PAR", "EPA", "AMS", "EURONEXT", "FRA", "XETRA", "ETR", "GER",
+        "MIL", "BIT", "MCE", "BME", "HEL", "CPH", "OMX", "WSE",
+        "VIE", "ATH", "LIS", "OSL",
+    }
+    if any(k in m for k in EUR_MARKETS):
         return "EUR"
-    if t.endswith(".L") or "LSE" in m:
+    # GBP
+    if t.endswith(".L") or "LSE" in m or "IOB" in m:
         return "GBP"
     return "USD"
 
-def to_eur(montant, currency, eur_usd):
+def to_eur(montant, currency, eur_usd, eur_gbp=0.86):
     """Convertit un montant en devise native vers EUR."""
     if currency == "USD":
         return round(montant / eur_usd, 2)
     if currency == "GBP":
-        return round(montant / (eur_usd * 0.86), 2)  # approximation GBP/EUR
+        return round(montant * eur_gbp, 2)
     return round(montant, 2)
 
-def maj_position(pos, eur_usd):
+def maj_position(pos, eur_usd, eur_gbp=0.86):
     """
     Met à jour une position : valeur_actuelle en EUR, corrige montant_investi
     legacy (stocké en devise native), recalcule performance en EUR.
@@ -106,7 +123,7 @@ def maj_position(pos, eur_usd):
     currency = pos.get("currency") or detect_currency(pos["ticker"], pos.get("market", ""))
     pos["currency"]        = currency
     pos["prix_actuel"]     = prix
-    pos["valeur_actuelle"] = to_eur(prix * pos["quantite"], currency, eur_usd)
+    pos["valeur_actuelle"] = to_eur(prix * pos["quantite"], currency, eur_usd, eur_gbp)
 
     # Correction legacy : montant_investi stocké en devise native (≈ prix_achat × quantité)
     # → convertir en EUR au taux du jour (meilleure approximation disponible)
@@ -116,7 +133,7 @@ def maj_position(pos, eur_usd):
         native = round(pos["prix_achat"] * pos["quantite"], 2)
         stored = pos.get("montant_investi", 0)
         if stored > 0 and abs(stored - native) / (native + 1) < 0.05:
-            pos["montant_investi"] = to_eur(native, currency, eur_usd)
+            pos["montant_investi"] = to_eur(native, currency, eur_usd, eur_gbp)
 
     # Performance en € — cohérent avec valeur_actuelle et montant_investi (tous les deux en EUR)
     if pos.get("montant_investi", 0) > 0:
@@ -491,7 +508,7 @@ N'inclus que les décisions actionnables (achats et ventes). Les positions conse
     return prompt
 
 # ── EXÉCUTION DES DÉCISIONS ──────────────────────────────────────────────────
-def executer_decisions(decisions_claude, portfolio, watchlist, contexte, eur_usd=1.10, regles_auto=None):
+def executer_decisions(decisions_claude, portfolio, watchlist, contexte, eur_usd=1.10, eur_gbp=0.86, regles_auto=None):
     """
     Prend les décisions de Claude et les exécute.
     Toutes les valeurs monétaires sont stockées en EUR (conversion USD→EUR via eur_usd).
@@ -511,7 +528,7 @@ def executer_decisions(decisions_claude, portfolio, watchlist, contexte, eur_usd
 
     # Mise à jour des prix actuels — valeur_actuelle et performance en EUR
     for pos in positions:
-        maj_position(pos, eur_usd)
+        maj_position(pos, eur_usd, eur_gbp)
 
     # ── Règle 07 : Stop-loss automatique ─────────────────────────────────────
     # Déclenché si perf ≤ -15% ET position détenue ≥ 90 jours ET hors mode panique
@@ -571,7 +588,7 @@ def executer_decisions(decisions_claude, portfolio, watchlist, contexte, eur_usd
             prix_vente = get_prix(ticker) or pos.get("prix_actuel", pos["prix_achat"])
             currency   = pos.get("currency") or detect_currency(ticker, pos.get("market", ""))
             perf       = round((prix_vente - pos["prix_achat"]) / pos["prix_achat"] * 100, 2)
-            montant_eur = to_eur(prix_vente * pos["quantite"], currency, eur_usd)
+            montant_eur = to_eur(prix_vente * pos["quantite"], currency, eur_usd, eur_gbp)
             liquidites  = round(liquidites + montant_eur, 2)
             positions   = [p for p in positions if p["ticker"] != ticker]
 
@@ -654,7 +671,7 @@ def executer_decisions(decisions_claude, portfolio, watchlist, contexte, eur_usd
 
             stock    = stock_map.get(ticker, {})
             currency = detect_currency(ticker, stock.get("market", ""))
-            prix_eur = to_eur(prix, currency, eur_usd)
+            prix_eur = to_eur(prix, currency, eur_usd, eur_gbp)
 
             # Budget en EUR → quantité basée sur prix converti
             quantite     = max(1, int(budget / prix_eur))
@@ -723,15 +740,16 @@ def main():
     # ── Contexte de marché + taux de change + macro news
     contexte    = get_contexte_marche()
     eur_usd     = get_eur_usd_rate()
+    eur_gbp     = get_eur_gbp_rate()
     macro_news  = get_macro_news()
     print(f"   CAC40 semaine : {contexte.get('cac40', {}).get('perf_semaine', 0):+.1f}%")
     print(f"   Mode panique  : {contexte.get('mode_panique')}")
-    print(f"   EUR/USD       : {eur_usd}")
+    print(f"   EUR/USD       : {eur_usd} · EUR/GBP : {eur_gbp}")
     print(f"   Macro news    : {len(macro_news)} article(s) macro sélectionné(s)")
 
     # ── Mise à jour des prix avant de soumettre à Claude (valeur_actuelle et performance en EUR)
     for pos in portfolio.get("positions", []):
-        maj_position(pos, eur_usd)
+        maj_position(pos, eur_usd, eur_gbp)
 
     val_pos = sum(p.get("valeur_actuelle", 0) for p in portfolio.get("positions", []))
     portfolio["capital_actuel"] = round(val_pos + portfolio.get("liquidites", CAPITAL_INITIAL), 2)
@@ -796,12 +814,12 @@ Ne jamais inclure de balises markdown ou de backticks.""",
 
     # ── Exécution des décisions (avec enforcement mécanique Niveau 2)
     positions, liquidites, nouveaux_ordres = executer_decisions(
-        decisions_claude, portfolio, watchlist, contexte, eur_usd, regles_auto=regles_auto
+        decisions_claude, portfolio, watchlist, contexte, eur_usd, eur_gbp, regles_auto=regles_auto
     )
 
     # ── Recalcul final — valeur_actuelle et performance en EUR
     for pos in positions:
-        maj_position(pos, eur_usd)
+        maj_position(pos, eur_usd, eur_gbp)
 
     val_positions  = sum(p.get("valeur_actuelle", 0) for p in positions)
     capital_actuel = round(val_positions + liquidites, 2)

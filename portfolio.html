@@ -143,6 +143,7 @@
     left: 50%;
     transform: translateX(-50%);
     width: 210px;
+    max-width: calc(100vw - 2rem);
     background: var(--surface3);
     border: 1px solid var(--border2);
     border-radius: 8px;
@@ -505,7 +506,7 @@
         <span class="pacc-label">Transparence du modèle</span>
         <div class="pacc-chips" id="pacc-chips">
           <span class="pacc-chip">6 règles</span>
-          <span class="pacc-chip">10 learnings</span>
+          <span class="pacc-chip">12 learnings</span>
         </div>
       </div>
       <span class="pacc-arrow" id="pacc-arrow">▼</span>
@@ -1009,11 +1010,12 @@ function togglePacc() {
 }
 
 function toggleLearnings() {
-  const more = document.getElementById('learnings-more');
-  const btn  = document.getElementById('learnings-toggle');
-  const open = more.style.display !== 'none';
+  const more  = document.getElementById('learnings-more');
+  const btn   = document.getElementById('learnings-toggle');
+  const open  = more.style.display !== 'none';
+  const count = more.querySelectorAll('.learning-item').length;
   more.style.display = open ? 'none' : 'block';
-  btn.textContent = open ? 'Voir les 7 suivants ↓' : 'Réduire ↑';
+  btn.textContent = open ? `Voir les ${count} suivants ↓` : 'Réduire ↑';
 }
 
 async function loadPortfolio() {
@@ -1042,8 +1044,12 @@ async function loadPortfolio() {
     if (history.length >= 2) {
       renderChart(history, d.capital_initial);
     } else {
+      // Fallback : 2 points synthétiques avec dates distinctes pour éviter le doublon de label
+      const d0 = new Date(d.updated_at);
+      d0.setDate(d0.getDate() - 7);
+      const dateDepart = d0.toISOString().slice(0, 10);
       renderChart([
-        { date: d.updated_at, capital: d.capital_initial },
+        { date: dateDepart,   capital: d.capital_initial },
         { date: d.updated_at, capital: d.capital_actuel }
       ], d.capital_initial);
     }
@@ -1076,7 +1082,7 @@ async function loadPortfolio() {
         <div class="th">
           <div class="th-label">Notre performance <span class="kpi-info" data-tip="Rendement total du portefeuille depuis le démarrage de l'expérience, en euros">ⓘ</span></div>
           <div class="th-value ${d.performance>=0?'up':'dn'}">${sign(d.performance)}${fmt(d.performance,1)} %</div>
-          <div class="th-sub">depuis jan. ${new Date().getFullYear()} · base 20 000 €</div>
+          <div class="th-sub">depuis jan. ${new Date().getFullYear()} · base ${fmtEur(d.capital_initial)}</div>
         </div>
         <div class="th">
           <div class="th-label">Marché mondial <span class="kpi-info" data-tip="Ce qu'aurait rapporté un simple ETF mondial (MSCI World) sans aucune gestion active — notre référence de comparaison">ⓘ</span></div>
@@ -1269,16 +1275,10 @@ loadPortfolio();
 
 const _hdr = document.querySelector('header');
 const _starsA = document.querySelector('.hc-stars');
-const _starsB = document.querySelector('.hc-stars-b');
-const _starsC = document.querySelector('.hc-stars-c');
-const _shimmer = document.querySelector('.hc-shimmer');
 const _onScroll = () => {
   const sy = window.scrollY;
   _hdr.classList.toggle('scrolled', sy > 60);
   if (_starsA) _starsA.style.transform = `translateY(${sy * 0.08}px)`;
-  if (_starsB) _starsB.style.transform = `translateY(${sy * 0.13}px)`;
-  if (_starsC) _starsC.style.transform = `translateY(${sy * 0.18}px)`;
-  if (_shimmer) _shimmer.style.transform = `translateY(${sy * 0.05}px)`;
 };
 window.addEventListener('scroll', _onScroll, { passive: true });
 </script>

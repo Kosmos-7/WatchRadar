@@ -1032,16 +1032,10 @@ loadWatchlist();
 
 const _hdr = document.querySelector('header');
 const _starsA = document.querySelector('.hc-stars');
-const _starsB = document.querySelector('.hc-stars-b');
-const _starsC = document.querySelector('.hc-stars-c');
-const _shimmer = document.querySelector('.hc-shimmer');
 const _onScroll = () => {
   const sy = window.scrollY;
   _hdr.classList.toggle('scrolled', sy > 60);
   if (_starsA) _starsA.style.transform = `translateY(${sy * 0.08}px)`;
-  if (_starsB) _starsB.style.transform = `translateY(${sy * 0.13}px)`;
-  if (_starsC) _starsC.style.transform = `translateY(${sy * 0.18}px)`;
-  if (_shimmer) _shimmer.style.transform = `translateY(${sy * 0.05}px)`;
 };
 window.addEventListener('scroll', _onScroll, { passive: true });
 </script>
