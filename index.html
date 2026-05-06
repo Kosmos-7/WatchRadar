@@ -40,6 +40,47 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* ── HERO CANVAS (aurora) ── */
+  .hero-canvas {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 740px;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+    mask-image: linear-gradient(to bottom, black 38%, transparent 90%);
+    -webkit-mask-image: linear-gradient(to bottom, black 38%, transparent 90%);
+  }
+  .hc-layer { position: absolute; inset: 0; }
+  .hc-space {
+    background: radial-gradient(ellipse 160% 65% at 50% -5%, #071e30 0%, #040d1a 42%, #08080d 72%);
+  }
+  .hc-aurora {
+    background:
+      radial-gradient(ellipse 115% 58% at 50% 92%, rgba(28,200,122,0.26) 0%, transparent 62%),
+      radial-gradient(ellipse 58% 44% at 16% 82%, rgba(28,200,122,0.16) 0%, transparent 54%),
+      radial-gradient(ellipse 48% 38% at 84% 78%, rgba(10,165,98,0.13) 0%, transparent 50%),
+      radial-gradient(ellipse 42% 32% at 54% 72%, rgba(28,200,122,0.2) 0%, transparent 44%);
+  }
+  .hc-clouds {
+    background:
+      radial-gradient(ellipse 68% 28% at 24% 72%, rgba(3,10,22,0.74) 0%, transparent 60%),
+      radial-gradient(ellipse 52% 22% at 74% 66%, rgba(3,10,22,0.62) 0%, transparent 55%),
+      radial-gradient(ellipse 36% 18% at 8%  52%, rgba(3,10,22,0.52) 0%, transparent 50%),
+      radial-gradient(ellipse 30% 15% at 92% 56%, rgba(3,10,22,0.46) 0%, transparent 46%);
+  }
+  .hc-stars {
+    background-image:
+      radial-gradient(circle, rgba(255,255,255,0.60) 1px, transparent 1px),
+      radial-gradient(circle, rgba(255,255,255,0.42) 1px, transparent 1px),
+      radial-gradient(circle, rgba(255,255,255,0.35) 1px, transparent 1px),
+      radial-gradient(circle, rgba(200,240,255,0.38) 1px, transparent 1px),
+      radial-gradient(circle, rgba(255,255,255,0.50) 1px, transparent 1px);
+    background-size: 480px 260px, 350px 190px, 290px 215px, 520px 290px, 410px 230px;
+    background-position: 35px 22px, 190px 65px, 95px 130px, 260px 12px, 440px 82px;
+    opacity: 0.72;
+  }
+
   /* ── HEADER ── */
   header {
     border-bottom: 1px solid var(--border);
@@ -49,7 +90,7 @@
     align-items: center;
     position: sticky;
     top: 0;
-    background: rgba(8,8,13,0.88);
+    background: rgba(8,8,13,0.68);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     z-index: 100;
@@ -311,6 +352,13 @@
 </style>
 </head>
 <body>
+
+<div class="hero-canvas" aria-hidden="true">
+  <div class="hc-layer hc-space"></div>
+  <div class="hc-layer hc-aurora"></div>
+  <div class="hc-layer hc-clouds"></div>
+  <div class="hc-layer hc-stars"></div>
+</div>
 
 <header>
   <a class="brand" href="index.html">
