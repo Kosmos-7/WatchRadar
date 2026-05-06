@@ -41,26 +41,21 @@
     position: relative;
   }
   .dots-bg {
-    position: absolute;
-    top: 700px; left: 0; right: 0; bottom: 0;
-    background-image: radial-gradient(circle, rgba(28,200,122,0.06) 1px, transparent 1px);
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(28,200,122,0.035) 1px, transparent 1px);
     background-size: 28px 28px;
-    mask-image: linear-gradient(to bottom, transparent 0%, black 14%);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 14%);
     pointer-events: none;
     z-index: 0;
   }
 
-  /* ── HERO CANVAS (aurora) ── */
+  /* ── HERO CANVAS (stars) ── */
   .hero-canvas {
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 740px;
+    position: fixed;
+    inset: 0;
     pointer-events: none;
     overflow: hidden;
     z-index: 0;
-    mask-image: linear-gradient(to bottom, black 38%, transparent 90%);
-    -webkit-mask-image: linear-gradient(to bottom, black 38%, transparent 90%);
   }
   .hc-layer { position: absolute; inset: 0; }
   .hc-space {
@@ -94,10 +89,10 @@
     z-index: 100;
   }
   header.scrolled {
-    background: rgba(8,8,13,0.82);
-    border-bottom-color: var(--border);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: transparent;
+    border-bottom-color: rgba(255,255,255,0.07);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
   }
   .brand { display: flex; align-items: center; gap: 9px; text-decoration: none; }
   .brand-icon { flex-shrink: 0; display: flex; }
@@ -384,7 +379,7 @@
       <span class="pill pill-beta"><span class="pd"></span>Bêta ouverte</span>
     </div>
     <h1>25 actions à surveiller.</h1>
-    <p>Sélectionnées automatiquement chaque semaine par un agent IA sur un univers de 90 valeurs. Cliquez sur une action pour voir l'analyse détaillée.</p>
+    <p>Sélectionnées automatiquement chaque semaine par un agent IA sur un univers de <span id="universe-count">—</span> valeurs. Cliquez sur une action pour voir l'analyse détaillée.</p>
     <div class="update-meta">
       <span class="umeta" id="update-date">Chargement…</span>
       <span class="umeta-sep">·</span>
@@ -914,6 +909,7 @@ async function loadWatchlist() {
     const { stocks, changelog, updated_at, week, universe_size, finnhub_active } = data;
 
     document.getElementById('update-date').textContent  = `Mise à jour · ${updated_at} · ${week}`;
+    document.getElementById('universe-count').textContent = universe_size;
     document.getElementById('universe-info').textContent = `${universe_size} valeurs analysées`;
     document.getElementById('footer-week').textContent = week;
 
