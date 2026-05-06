@@ -190,6 +190,17 @@
   .learning-fix  { font-size: 0.74rem; color: var(--text2); line-height: 1.6; margin-top: 3px; }
   .learning-fix::before  { content: '✓ '; color: var(--green); }
 
+  /* ── RÈGLES ACTIVES ── */
+  .regles-block { background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.18); border-radius: var(--radius); padding: 1rem 1.1rem; margin-bottom: 1.75rem; }
+  .regles-title { font-size: 0.63rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--red); margin-bottom: 0.65rem; }
+  .regle-item { display: flex; align-items: flex-start; gap: 8px; padding: 5px 0; border-top: 1px solid rgba(239,68,68,0.08); }
+  .regle-item:first-of-type { border-top: none; }
+  .regle-icon { font-size: 0.7rem; margin-top: 2px; flex-shrink: 0; }
+  .regle-msg  { font-size: 0.74rem; color: var(--text2); line-height: 1.5; }
+  /* learning auto-généré */
+  .lcat-auto { background: rgba(100,100,120,0.15); color: var(--text3); border: 1px solid var(--border); font-family: 'Courier New', monospace; font-size: 0.57rem; text-transform: uppercase; letter-spacing: 0.8px; padding: 1px 7px; border-radius: 4px; font-weight: 700; }
+  .learning-weeks { font-size: 0.62rem; color: var(--red); opacity: 0.8; margin-left: 4px; }
+
   /* ── DISCLAIMER ── */
   .disclaimer { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; font-size: 0.75rem; color: var(--text3); line-height: 1.65; }
 
@@ -321,6 +332,11 @@
   <div id="bias-block" style="display:none" class="bias-block">
     <div class="bias-title">⚠ Biais détectés automatiquement</div>
     <div id="bias-items"></div>
+  </div>
+
+  <div id="regles-block" style="display:none" class="regles-block">
+    <div class="regles-title">🚫 Règles mécaniques actives cette semaine</div>
+    <div id="regles-items"></div>
   </div>
 
   <div class="learnings-block">
@@ -745,6 +761,48 @@ async function loadPortfolio() {
     if (biais.length > 0) {
       document.getElementById('bias-block').style.display = 'block';
       document.getElementById('bias-items').innerHTML = biais.map(b => `<div class="bias-item">${b}</div>`).join('');
+    }
+
+    // Règles mécaniques actives (Niveau 2)
+    const regles = d.regles_actives || [];
+    if (regles.length > 0) {
+      document.getElementById('regles-block').style.display = 'block';
+      document.getElementById('regles-items').innerHTML = regles.map(r =>
+        `<div class="regle-item">
+          <span class="regle-icon">🚫</span>
+          <span class="regle-msg">${r.message}</span>
+        </div>`
+      ).join('');
+    }
+
+    // Learnings auto-générés (Niveau 3) — injectés dynamiquement dans la section learnings
+    const learningsAuto = d.learnings_auto || [];
+    if (learningsAuto.length > 0) {
+      const container = document.querySelector('.learnings-block');
+      if (container) {
+        const autoSection = document.createElement('div');
+        autoSection.style.cssText = 'margin-top:1.25rem;border-top:1px solid var(--border);padding-top:1rem';
+        autoSection.innerHTML = `<div style="font-size:0.62rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.75rem">Auto-détectés par le système</div>`
+          + learningsAuto.map(l => {
+              const dateStr = l.detecte_le
+                ? new Date(l.detecte_le).toLocaleDateString('fr-FR', {day:'2-digit',month:'short',year:'numeric'})
+                : '';
+              return `<div class="learning-item">
+                <div class="learning-accent" style="background:var(--red);opacity:0.6"></div>
+                <div class="learning-body">
+                  <div class="learning-header">
+                    <span class="lcat-auto">Auto</span>
+                    <span class="learning-weeks">${l.semaines} sem. consécutives</span>
+                    <span class="learning-date">${dateStr}</span>
+                  </div>
+                  <div class="learning-title">${l.titre}</div>
+                  <div class="learning-prob">${l.probleme}</div>
+                  <div class="learning-fix">${l.correction}</div>
+                </div>
+              </div>`;
+            }).join('');
+        container.appendChild(autoSection);
+      }
     }
 
   } catch(e) {

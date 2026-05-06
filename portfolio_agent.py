@@ -18,6 +18,7 @@ import yfinance as yf
 import json
 import os
 import requests
+from collections import Counter
 from datetime import date, datetime, timedelta
 from anthropic import Anthropic
 
@@ -188,6 +189,143 @@ def calc_max_drawdown(history):
                 max_dd = dd
     return round(max_dd, 2)
 
+# ── FEEDBACK LOOP : BIAIS → RÈGLES AUTO ──────────────────────────────────────
+
+def calculer_regles_auto(portfolio):
+    """
+    Niveau 2 — Règles mécaniques déclenchées par seuils.
+    S'appliquent AVANT Claude et INDÉPENDAMMENT de son raisonnement.
+    Bloquent certaines actions sans appel à l'IA.
+    """
+    positions  = portfolio.get("positions", [])
+    liquidites = portfolio.get("liquidites", CAPITAL_INITIAL)
+    capital    = portfolio.get("capital_actuel", CAPITAL_INITIAL)
+    regles     = []
+
+    # R1 — Concentration sectorielle ≥ 4 positions dans un même secteur
+    secteurs = Counter(p.get("sector", "—") for p in positions if p.get("sector", "—") not in ("—", ""))
+    for s, n in secteurs.items():
+        if n >= 4:
+            regles.append({
+                "type":    "concentration_sectorielle",
+                "secteur": s,
+                "message": f"Secteur {s} : {n} positions ≥ 4 — aucun nouvel achat dans ce secteur",
+                "bloque":  True,
+            })
+
+    # R2 — Trop de lignes ouvertes : mode consolidation
+    if len(positions) >= 13:
+        regles.append({
+            "type":    "dispersion_exces",
+            "message": f"{len(positions)} positions ouvertes ≥ 13 — mode consolidation : achats bloqués",
+            "bloque":  True,
+        })
+
+    # R3 — Liquidités < 10 % du capital
+    pct_liq = liquidites / capital * 100 if capital > 0 else 0
+    if pct_liq < 10:
+        regles.append({
+            "type":    "liquidites_faibles",
+            "message": f"Liquidités {pct_liq:.1f}% < 10% du capital ({liquidites:.0f}€) — achats bloqués",
+            "bloque":  True,
+        })
+
+    # R4 — Trop de thèses non documentées
+    nb_sans_these = sum(
+        1 for p in positions
+        if not p.get("raison_achat") or p.get("raison_achat") == "Non documentée"
+    )
+    if nb_sans_these > 5:
+        regles.append({
+            "type":    "theses_manquantes",
+            "message": f"{nb_sans_these} positions sans thèse documentée > 5 — achats bloqués jusqu'à réduction du portefeuille",
+            "bloque":  True,
+        })
+
+    return regles
+
+
+def construire_contraintes_biais(biais_precedents, regles_auto):
+    """
+    Niveau 1 — Injecte les biais de la semaine précédente et les règles mécaniques
+    actives comme contraintes explicites dans le prompt passe 2.
+    Claude doit répondre à chaque contrainte dans son output.
+    """
+    blocs = []
+
+    if regles_auto:
+        lignes_regles = "\n".join(f"  🚫 {r['message']}" for r in regles_auto)
+        blocs.append(
+            "## RÈGLES MÉCANIQUES ACTIVES (non négociables — appliquées avant et après ton raisonnement)\n"
+            + lignes_regles
+        )
+
+    if biais_precedents:
+        lignes_biais = "\n".join(f"  → {b}" for b in biais_precedents[:6])
+        blocs.append(
+            "## BIAIS DÉTECTÉS LA SEMAINE DERNIÈRE — correction attendue\n"
+            + lignes_biais
+            + "\nPour chaque biais, explique dans ton output ce que tu fais concrètement pour le corriger cette semaine."
+        )
+
+    return ("\n\n" + "\n\n".join(blocs) + "\n") if blocs else ""
+
+
+def _normaliser_biais(texte):
+    """Clé de déduplication : lowercase, 80 premiers caractères."""
+    return texte.lower().strip()[:80]
+
+
+def suivre_biais_persistants(portfolio, nouveaux_biais, today):
+    """
+    Niveau 3 — Suit les biais semaine par semaine.
+    Si un biais apparaît ≥ 3 semaines consécutives → génère un learning automatique.
+    Retourne (biais_historique mis à jour, learnings_auto mis à jour).
+    """
+    historique     = {item["cle"]: item for item in portfolio.get("biais_historique", [])}
+    learnings_auto = list(portfolio.get("learnings_auto", []))
+    cles_semaine   = set()
+
+    for texte in nouveaux_biais:
+        cle = _normaliser_biais(texte)
+        cles_semaine.add(cle)
+        if cle in historique:
+            historique[cle]["semaines_consecutives"] += 1
+            historique[cle]["derniere_detection"]     = today
+        else:
+            historique[cle] = {
+                "cle":                   cle,
+                "texte":                 texte,
+                "semaines_consecutives": 1,
+                "premiere_detection":    today,
+                "derniere_detection":    today,
+                "learning_genere":       False,
+            }
+
+    # Réinitialiser les biais absents cette semaine
+    for cle, item in historique.items():
+        if cle not in cles_semaine:
+            item["semaines_consecutives"] = 0
+
+    # Générer un learning si ≥ 3 semaines consécutives, pas encore généré
+    for cle, item in historique.items():
+        if item["semaines_consecutives"] >= 3 and not item["learning_genere"]:
+            if not any(l.get("cle") == cle for l in learnings_auto):
+                learnings_auto.append({
+                    "cle":          cle,
+                    "titre":        item["texte"][:70],
+                    "probleme":     item["texte"],
+                    "correction":   "Biais détecté automatiquement 3 semaines consécutives sans correction. Une règle structurelle doit être implémentée.",
+                    "detecte_le":   item["premiere_detection"],
+                    "semaines":     item["semaines_consecutives"],
+                    "categorie":    "auto",
+                })
+                item["learning_genere"] = True
+                print(f"  🔔 Learning auto généré : {item['texte'][:70]}…")
+
+    return list(historique.values()), learnings_auto
+
+
 # ── PROMPT CLAUDE ────────────────────────────────────────────────────────────
 def construire_prompt_analyse(portfolio, watchlist, contexte, macro_news=None):
     """
@@ -263,7 +401,8 @@ JSON uniquement :
 }}"""
 
 
-def construire_prompt(portfolio, watchlist, contexte, analyse=None, macro_news=None):
+def construire_prompt(portfolio, watchlist, contexte, analyse=None, macro_news=None,
+                      regles_auto=None, biais_precedents=None):
     """Construit le prompt envoyé à Claude avec tout le contexte."""
 
     positions = portfolio.get("positions", [])
@@ -332,7 +471,11 @@ def construire_prompt(portfolio, watchlist, contexte, analyse=None, macro_news=N
     else:
         macro_news_section = ""
 
+    # Section contraintes (biais précédents + règles mécaniques)
+    contraintes_str = construire_contraintes_biais(biais_precedents or [], regles_auto or [])
+
     prompt = f"""Tu es l'IA qui gère le portefeuille fictif Signal. Tu joues ta survie : tu dois battre le MSCI World sur 12 mois glissants ou tu te réinitialises publiquement.
+{contraintes_str}
 
 ## RÈGLES DE SURVIE (non négociables)
 1. Aucune vente avant 90 jours de détention — sauf signal fondamental majeur documenté
@@ -397,11 +540,13 @@ N'inclus que les décisions actionnables (achats et ventes). Les positions conse
     return prompt
 
 # ── EXÉCUTION DES DÉCISIONS ──────────────────────────────────────────────────
-def executer_decisions(decisions_claude, portfolio, watchlist, contexte, eur_usd=1.10):
+def executer_decisions(decisions_claude, portfolio, watchlist, contexte, eur_usd=1.10, regles_auto=None):
     """
     Prend les décisions de Claude et les exécute.
     Toutes les valeurs monétaires sont stockées en EUR (conversion USD→EUR via eur_usd).
     Les prix unitaires restent en devise native pour l'affichage.
+    Les règles mécaniques (Niveau 2) sont appliquées ici — elles bloquent les achats
+    même si Claude a décidé d'acheter, garantissant leur caractère non négociable.
     """
     positions   = portfolio.get("positions", [])
     liquidites  = portfolio.get("liquidites", CAPITAL_INITIAL)
@@ -515,6 +660,34 @@ def executer_decisions(decisions_claude, portfolio, watchlist, contexte, eur_usd
                 print(f"  ⚠️  ACHAT {ticker} — déjà en portefeuille, ignoré")
                 continue
 
+            # ── Niveau 2 : enforcement mécanique (même si Claude a décidé d'acheter)
+            if regles_auto:
+                bloque = False
+                # Mode consolidation (trop de lignes)
+                if any(r["type"] == "dispersion_exces" for r in regles_auto):
+                    print(f"  🚫 ACHAT {ticker} bloqué — mode consolidation (Règle auto R2)")
+                    bloque = True
+                # Liquidités trop faibles
+                elif any(r["type"] == "liquidites_faibles" for r in regles_auto):
+                    print(f"  🚫 ACHAT {ticker} bloqué — liquidités < 10% (Règle auto R3)")
+                    bloque = True
+                # Thèses non documentées en excès
+                elif any(r["type"] == "theses_manquantes" for r in regles_auto):
+                    print(f"  🚫 ACHAT {ticker} bloqué — thèses manquantes > 5 (Règle auto R4)")
+                    bloque = True
+                else:
+                    # Concentration sectorielle
+                    stock_tmp  = stock_map.get(ticker, {})
+                    sect_tick  = stock_tmp.get("sector", "")
+                    if sect_tick and any(
+                        r["type"] == "concentration_sectorielle" and r.get("secteur") == sect_tick
+                        for r in regles_auto
+                    ):
+                        print(f"  🚫 ACHAT {ticker} bloqué — secteur {sect_tick} concentré (Règle auto R1)")
+                        bloque = True
+                if bloque:
+                    continue
+
             # Allocation dynamique : slots calculés sur l'ensemble des achats décidés (order-independent)
             conviction    = dec.get("conviction", "modérée")
             nb_open       = len(positions)
@@ -607,6 +780,11 @@ def main():
 
     print(f"🧠 Appel à Claude API — architecture deux passes — {semaine()}")
 
+    # ── Biais de la semaine précédente (Niveau 1) — extraits avant la mise à jour
+    biais_precedents = portfolio.get("biais_detectes", [])
+    if biais_precedents:
+        print(f"   Biais semaine précédente : {len(biais_precedents)} détectés → injectés comme contraintes")
+
     # ── Contexte de marché + taux de change + macro news
     contexte    = get_contexte_marche()
     eur_usd     = get_eur_usd_rate()
@@ -630,6 +808,13 @@ def main():
     portfolio["capital_actuel"] = round(val_pos + portfolio.get("liquidites", CAPITAL_INITIAL), 2)
     portfolio["performance"]    = round((portfolio["capital_actuel"] - CAPITAL_INITIAL) / CAPITAL_INITIAL * 100, 2)
 
+    # ── Niveau 2 : règles mécaniques calculées avant d'appeler Claude
+    regles_auto = calculer_regles_auto(portfolio)
+    if regles_auto:
+        print(f"   Règles auto actives : {len(regles_auto)}")
+        for r in regles_auto:
+            print(f"     🚫 {r['message']}")
+
     # ── Passe 1 : analyse neutre (Haiku — rapide et économique)
     analyse = {}
     print(f"   Passe 1 — analyse neutre (Haiku)…")
@@ -650,7 +835,8 @@ def main():
 
     # ── Passe 2 : décisions (Sonnet — raisonnement complet avec contexte enrichi)
     print(f"   Passe 2 — décisions (Sonnet)…")
-    prompt = construire_prompt(portfolio, watchlist, contexte, analyse, macro_news)
+    prompt = construire_prompt(portfolio, watchlist, contexte, analyse, macro_news,
+                               regles_auto=regles_auto, biais_precedents=biais_precedents)
 
     try:
         response = client.messages.create(
@@ -680,9 +866,9 @@ Ne jamais inclure de balises markdown ou de backticks.""",
         print(f"❌ Erreur appel Claude passe 2 : {e}")
         decisions_claude = {"decisions": [], "analyse_macro": f"Erreur : {e}", "biais_detectes": [], "conviction_globale": "neutre"}
 
-    # ── Exécution des décisions
+    # ── Exécution des décisions (avec enforcement mécanique Niveau 2)
     positions, liquidites, nouveaux_ordres = executer_decisions(
-        decisions_claude, portfolio, watchlist, contexte, eur_usd
+        decisions_claude, portfolio, watchlist, contexte, eur_usd, regles_auto=regles_auto
     )
 
     # ── Recalcul final — valeur_actuelle toujours en EUR
@@ -723,6 +909,10 @@ Ne jamais inclure de balises markdown ou de backticks.""",
 
     statut = "reinitialisation" if trim_neg >= 2 else "en_vie"
 
+    # ── Niveau 3 : suivi biais persistants → learnings auto
+    nouveaux_biais = decisions_claude.get("biais_detectes", [])
+    biais_historique, learnings_auto = suivre_biais_persistants(portfolio, nouveaux_biais, today)
+
     tous_ordres = nouveaux_ordres + portfolio.get("ordres", [])
 
     # ── Historique de performance (une entrée par run, max 52 semaines) ──────
@@ -750,7 +940,10 @@ Ne jamais inclure de balises markdown ou de backticks.""",
         "liquidites":          round(liquidites, 2),
         "pct_liquidites":      round(liquidites / capital_actuel * 100, 1) if capital_actuel > 0 else 0,
         "ordres":              tous_ordres[:50],
-        "biais_detectes":      decisions_claude.get("biais_detectes", []),
+        "biais_detectes":      nouveaux_biais,
+        "regles_actives":      regles_auto,
+        "biais_historique":    biais_historique,
+        "learnings_auto":      learnings_auto,
         "nb_positions":        len(positions),
         "nb_positives":        len([p for p in positions if p.get("performance", 0) > 0]),
         "nb_negatives":        len([p for p in positions if p.get("performance", 0) < 0]),
