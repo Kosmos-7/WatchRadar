@@ -445,8 +445,7 @@
     <div class="chart-header">
       <h2>Performance depuis le lancement</h2>
       <div class="legend">
-        <div class="li"><div class="ld" style="background:var(--gold)"></div>Signal (%)</div>
-        <div class="li"><div class="ld" style="background:#5555a0;border-top:1px dashed #5555a0;height:0;width:14px"></div>MSCI World (%)</div>
+        <div class="li"><div class="ld" style="background:var(--gold)"></div>Capital Signal (€)</div>
       </div>
     </div>
     <svg style="width:100%;overflow:visible" viewBox="0 0 600 200" id="perf-chart">
@@ -752,77 +751,58 @@ function fmt(n, d=2)  { return Number(n).toFixed(d); }
 function fmtEur(n)    { return Number(n).toLocaleString('fr-FR', {maximumFractionDigits:0}) + ' €'; }
 function sign(n)      { return n >= 0 ? '+' : ''; }
 
-function renderChart(history) {
+function renderChart(history, capitalInitial = 20000) {
   const svg  = document.getElementById('perf-chart');
   const ns   = 'http://www.w3.org/2000/svg';
   const mk   = (tag, attrs) => { const e = document.createElementNS(ns, tag); Object.entries(attrs).forEach(([k,v]) => e.setAttribute(k,v)); return e; };
   const xMin = 50, xMax = 550, yTop = 22, yBot = 182;
 
-  // ── Performance % Signal + MSCI ───────────────────────────────────────────
-  // Les deux exprimés en % → comparaison équitable quelle que soit l'injection
-  const perfs = history.map(h => h.perf ?? 0);
-  const mscis = history.map(h => h.benchmark_msci ?? h.benchmark_cac40 ?? 0);
+  // ── Capital en € ──────────────────────────────────────────────────────────
+  const caps = history.map(h => h.capital ?? capitalInitial * (1 + (h.perf ?? 0) / 100));
 
-  // ── Plage Y adaptative (%) ────────────────────────────────────────────────
-  const allVals = [...perfs, ...mscis, 0];
-  const rawMin  = Math.min(...allVals);
-  const rawMax  = Math.max(...allVals);
-  const span    = rawMax - rawMin || 5;
-  const step    = span > 20 ? 5 : span > 8 ? 2 : 1;
-  const rangeMin = Math.floor((rawMin - span * 0.2) / step) * step;
-  const rangeMax = Math.ceil( (rawMax + span * 0.2) / step) * step;
+  // ── Plage Y adaptative (k€) ───────────────────────────────────────────────
+  const rawMin  = Math.min(...caps);
+  const rawMax  = Math.max(...caps);
+  const spanK   = (rawMax - rawMin) / 1000;
+  const stepK   = spanK > 15 ? 5 : spanK > 8 ? 2 : 1;
+  const step    = stepK * 1000;
+  const rangeMin = Math.floor(rawMin / step) * step - step;
+  const rangeMax = Math.ceil(rawMax  / step) * step + step;
   const range   = rangeMax - rangeMin;
 
   const toY = v => yTop + (1 - (v - rangeMin) / range) * (yBot - yTop);
   const n   = history.length;
   const toX = i => n < 2 ? xMin : xMin + (i / (n - 1)) * (xMax - xMin);
-  const y0  = Math.min(yBot, Math.max(yTop, toY(0))); // ligne 0%
 
   const pts = history.map((h, i) => ({
-    x: toX(i), y: toY(perfs[i]), msciY: toY(mscis[i]),
-    perf: perfs[i], msci: mscis[i], note: h.note, date: h.date
+    x: toX(i), y: toY(caps[i]), cap: caps[i], note: h.note, date: h.date
   }));
   const last = pts[pts.length - 1];
 
-  // ── Grille Y (%) ──────────────────────────────────────────────────────────
+  // ── Grille Y (k€) ─────────────────────────────────────────────────────────
   for (let v = Math.ceil(rangeMin / step) * step; v <= rangeMax; v += step) {
     const y   = toY(v);
-    const is0 = v === 0;
-    svg.appendChild(mk('line', { x1:40, y1:y, x2:560, y2:y,
-      stroke: is0 ? '#3a3a52' : '#2a2a38',
-      'stroke-width': is0 ? 1 : 0.6,
-      'stroke-dasharray': is0 ? '2,3' : '3,4'
-    }));
-    const lbl = (v >= 0 ? '+' : '') + v.toFixed(0) + ' %';
-    svg.appendChild(mk('text', { x:34, y:y+3, 'font-family':'Courier New', 'font-size':7, fill: is0 ? '#6060a0' : '#50506c', 'text-anchor':'end' })).textContent = lbl;
-  }
-
-  // ── Ligne MSCI (référence, grise pointillée) ──────────────────────────────
-  if (pts.length >= 2) {
-    const mLine = pts.map(p => `${p.x.toFixed(1)},${p.msciY.toFixed(1)}`).join(' ');
-    svg.appendChild(mk('polyline', { points: mLine, fill:'none', stroke:'#5555a0', 'stroke-width':1.5, 'stroke-linejoin':'round', 'stroke-dasharray':'4,3' }));
-    // Dot MSCI au dernier point
-    svg.appendChild(mk('circle', { cx: last.x.toFixed(1), cy: last.msciY.toFixed(1), r:3, fill:'#5555a0', stroke:'#5555a0', 'stroke-width':0 }));
-    // Label MSCI
-    const msciLbl = (last.msci >= 0 ? '+' : '') + last.msci.toFixed(1) + ' %';
-    svg.appendChild(mk('text', { x: (last.x + 6).toFixed(1), y: (last.msciY + 3).toFixed(1), 'font-family':'Courier New', 'font-size':8, fill:'#7070c0', 'text-anchor':'start' })).textContent = msciLbl;
+    const lbl = (v / 1000).toFixed(stepK < 1 ? 1 : 0) + ' k€';
+    svg.appendChild(mk('line', { x1:40, y1:y, x2:560, y2:y, stroke:'#2a2a38', 'stroke-width':0.6, 'stroke-dasharray':'3,4' }));
+    svg.appendChild(mk('text', { x:34, y:y+3, 'font-family':'Courier New', 'font-size':7, fill:'#50506c', 'text-anchor':'end' })).textContent = lbl;
   }
 
   // ── Aire + courbe Signal ───────────────────────────────────────────────────
   const linePts = pts.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
-  const areaPts = linePts + ` ${last.x.toFixed(1)},${y0} ${pts[0].x.toFixed(1)},${y0}`;
+  const areaPts = linePts + ` ${last.x.toFixed(1)},${yBot} ${pts[0].x.toFixed(1)},${yBot}`;
   svg.appendChild(mk('polygon', { points: areaPts, fill:'url(#chartGrad)' }));
   svg.appendChild(mk('polyline', { points: linePts, fill:'none', stroke:'#e8a820', 'stroke-width':2.2, 'stroke-linejoin':'round', 'stroke-linecap':'round' }));
 
-  // ── Marqueurs d'injection ─────────────────────────────────────────────────
+  // ── Marqueurs d'injection (montant seulement, sans les tickers) ───────────
   pts.filter(p => p.note).forEach(p => {
     svg.appendChild(mk('line', { x1:p.x, y1:yTop, x2:p.x, y2:yBot, stroke:'#5080f8', 'stroke-width':0.9, 'stroke-dasharray':'3,3', 'stroke-opacity':0.5 }));
+    const amount = p.note.match(/[+\-]?\d+\s*k€?/i)?.[0] ?? '';
     const t = mk('text', { x:p.x+4, y:yTop+9, 'font-family':'Courier New', 'font-size':7, fill:'#5080f8', 'fill-opacity':0.8, 'text-anchor':'start' });
-    t.textContent = '⊕ ' + p.note.replace('Injection · ', '+');
+    t.textContent = amount ? '⊕ injection ' + amount : '⊕ injection';
     svg.appendChild(t);
   });
 
-  // ── Dots + labels Signal ──────────────────────────────────────────────────
+  // ── Dots + labels ─────────────────────────────────────────────────────────
   pts.forEach((p, i) => {
     const isLast = i === pts.length - 1;
     svg.appendChild(mk('circle', {
@@ -831,22 +811,21 @@ function renderChart(history) {
       stroke: '#e8a820', 'stroke-width': isLast ? 0 : 0.7
     }));
     const d   = new Date(p.date);
-    const lbl = d.toLocaleDateString('fr-FR', { day:'numeric', month:'short' });
     svg.appendChild(mk('text', {
       x: p.x.toFixed(1), y: 197, 'font-family':'Courier New', 'font-size': 7.5,
       fill: isLast ? '#e8a820' : '#50506c', 'text-anchor':'middle'
-    })).textContent = lbl;
+    })).textContent = d.toLocaleDateString('fr-FR', { day:'numeric', month:'short' });
     if (!isLast) {
       svg.appendChild(mk('text', {
         x: p.x.toFixed(1), y: (p.y - 6).toFixed(1), 'font-family':'Courier New', 'font-size': 7.5,
         fill: '#e8a82099', 'text-anchor':'middle'
-      })).textContent = (p.perf >= 0 ? '+' : '') + p.perf.toFixed(1) + ' %';
+      })).textContent = (p.cap / 1000).toFixed(1) + ' k€';
     }
   });
 
-  // ── Box label dernier point Signal ────────────────────────────────────────
-  const lastLbl = (last.perf >= 0 ? '+' : '') + last.perf.toFixed(1) + ' %';
-  svg.appendChild(mk('rect', { x:(last.x-26).toFixed(1), y:(last.y-17).toFixed(1), width:54, height:17, rx:4, fill:'#1a1200', stroke:'#e8a820', 'stroke-width':0.8, 'stroke-opacity':0.7 }));
+  // ── Box dernier point ─────────────────────────────────────────────────────
+  const lastLbl = (last.cap / 1000).toFixed(1) + ' k€';
+  svg.appendChild(mk('rect', { x:(last.x-28).toFixed(1), y:(last.y-17).toFixed(1), width:58, height:17, rx:4, fill:'#1a1200', stroke:'#e8a820', 'stroke-width':0.8, 'stroke-opacity':0.7 }));
   const lt = mk('text', { x: last.x.toFixed(1), y:(last.y-4).toFixed(1), 'font-family':'Courier New', 'font-size':9.5, fill:'#e8a820', 'text-anchor':'middle', 'font-weight':'bold' });
   lt.textContent = lastLbl;
   svg.appendChild(lt);
@@ -1033,12 +1012,12 @@ async function loadPortfolio() {
       }
     }
     if (history.length >= 2) {
-      renderChart(history);
+      renderChart(history, d.capital_initial);
     } else {
       renderChart([
-        { date: d.updated_at, perf: 0,            benchmark_msci: 0 },
-        { date: d.updated_at, perf: d.performance, benchmark_msci: d.benchmark_msci }
-      ]);
+        { date: d.updated_at, capital: d.capital_initial },
+        { date: d.updated_at, capital: d.capital_actuel }
+      ], d.capital_initial);
     }
     const chartNote = document.getElementById('chart-note');
     if (chartNote) {
