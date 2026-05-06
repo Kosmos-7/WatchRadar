@@ -116,7 +116,8 @@
   .th:hover { border-color: rgba(232,168,32,0.22); box-shadow: 0 0 16px rgba(232,168,32,0.05); }
   .th-label { font-family: 'Courier New', monospace; font-size: 0.75rem; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.35rem; }
   .th-value { font-family: Georgia, serif; font-size: 1.35rem; line-height: 1; }
-  .th-sub { font-family: 'Courier New', monospace; font-size: 0.78rem; margin-top: 3px; color: var(--text3); }
+  .th-sub  { font-family: 'Courier New', monospace; font-size: 0.78rem; margin-top: 3px; color: var(--text3); }
+  .th-hint { font-size: 0.74rem; color: var(--text3); opacity: 0.72; margin-top: 5px; line-height: 1.45; font-style: italic; }
 
   /* ── RULES ── */
   .rules-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.75rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.03); }
@@ -135,7 +136,8 @@
   .kpi-accent { position: absolute; top: 0; left: 0; right: 0; height: 3px; }
   .kpi-label { font-family: 'Courier New', monospace; font-size: 0.75rem; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
   .kpi-value { font-family: Georgia, serif; font-size: 1.45rem; line-height: 1; margin-bottom: 4px; }
-  .kpi-sub { font-family: 'Courier New', monospace; font-size: 0.80rem; color: var(--text3); }
+  .kpi-sub  { font-family: 'Courier New', monospace; font-size: 0.80rem; color: var(--text3); }
+  .kpi-hint { font-size: 0.74rem; color: var(--text3); opacity: 0.72; margin-top: 4px; line-height: 1.45; font-style: italic; }
   .up  { color: var(--green); }
   .dn  { color: var(--red); }
   .neu { color: var(--text2); }
@@ -930,57 +932,67 @@ async function loadPortfolio() {
         <div class="th">
           <div class="th-label">Performance Signal</div>
           <div class="th-value ${d.performance>=0?'up':'dn'}">${sign(d.performance)}${fmt(d.performance,1)} %</div>
-          <div class="th-sub">sur 20 000 € · depuis jan. ${new Date().getFullYear()}</div>
+          <div class="th-sub">depuis jan. ${new Date().getFullYear()} · base 20 000 €</div>
+          <div class="th-hint">Rendement total du portefeuille depuis le démarrage de l'expérience</div>
         </div>
         <div class="th">
-          <div class="th-label">MSCI World (même période)</div>
+          <div class="th-label">Marché mondial (même période)</div>
           <div class="th-value neu">${sign(d.benchmark_msci)}${fmt(d.benchmark_msci,1)} %</div>
-          <div class="th-sub">benchmark principal</div>
+          <div class="th-sub">MSCI World · notre référence</div>
+          <div class="th-hint">Ce qu'aurait rapporté un simple ETF mondial sans aucune gestion active</div>
         </div>
         <div class="th">
-          <div class="th-label">Avance sur MSCI World</div>
-          <div class="th-value ${d.vs_benchmark>=0?'up':'dn'}">${sign(d.vs_benchmark)}${fmt(d.vs_benchmark,1)} pp</div>
-          <div class="th-sub">${d.trimestres_negatifs ?? 0}/2 trim. négatifs · mort à 2</div>
+          <div class="th-label">Avance sur le marché</div>
+          <div class="th-value ${d.vs_benchmark>=0?'up':'dn'}">${sign(d.vs_benchmark)}${fmt(d.vs_benchmark,1)} pts de %</div>
+          <div class="th-sub">${d.trimestres_negatifs ?? 0} trimestre${(d.trimestres_negatifs??0)>1?'s':''} en retard · limite : 2 de suite</div>
+          <div class="th-hint">L'IA fait ${Math.abs(d.vs_benchmark).toFixed(1)} points de % ${d.vs_benchmark>=0?'de mieux que':'en dessous du'} le marché — si elle reste derrière 2 trimestres consécutifs, l'expérience s'arrête</div>
         </div>
         <div class="th">
-          <div class="th-label">Drawdown max</div>
+          <div class="th-label">Perte max temporaire</div>
           <div class="th-value ${(d.max_drawdown||0)<-5?'dn':'neu'}">${d.max_drawdown != null ? (d.max_drawdown !== 0 ? sign(d.max_drawdown)+fmt(d.max_drawdown,1)+' %' : '0.0 %') : '—'}</div>
-          <div class="th-sub">perte max depuis un pic</div>
+          <div class="th-sub">depuis le dernier sommet atteint</div>
+          <div class="th-hint">La plus grosse chute enregistrée depuis un point haut — ici aucune perte depuis le départ</div>
         </div>
       </div>`;
 
     // KPI
     const gain = d.capital_actuel - d.capital_initial;
+    const nbNeutres = d.nb_neutres ?? (d.nb_positions - d.nb_positives - d.nb_negatives);
     document.getElementById('kpi-grid').innerHTML = `
       <div class="kpi">
-        <div class="kpi-accent" style="background:var(--text3)"></div>
-        <div class="kpi-label">Capital total</div>
+        <div class="kpi-accent" style="background:${gain>=0?'var(--green)':'var(--red)'}"></div>
+        <div class="kpi-label">Valeur du portefeuille</div>
         <div class="kpi-value">${fmtEur(d.capital_actuel)}</div>
         <div class="kpi-sub ${gain>=0?'up':'dn'}">${sign(gain)}${fmtEur(Math.abs(gain))} de profit net</div>
+        <div class="kpi-hint">Somme de toutes les positions + liquidités non investies — en euros, en temps réel</div>
       </div>
       <div class="kpi">
         <div class="kpi-accent" style="background:${d.performance>=0?'var(--green)':'var(--red)'}"></div>
-        <div class="kpi-label">Performance</div>
+        <div class="kpi-label">Rendement total</div>
         <div class="kpi-value ${d.performance>=0?'up':'dn'}">${sign(d.performance)}${fmt(d.performance,1)} %</div>
-        <div class="kpi-sub">sur 20 000 € investis</div>
+        <div class="kpi-sub">depuis le départ · base 20 000 €</div>
+        <div class="kpi-hint">Si on avait mis 100 € au départ, on aurait aujourd'hui ${(100 + d.performance).toFixed(1)} €</div>
       </div>
       <div class="kpi">
         <div class="kpi-accent" style="background:${d.vs_benchmark>=0?'var(--green)':'var(--red)'}"></div>
-        <div class="kpi-label">Alpha MSCI</div>
-        <div class="kpi-value ${d.vs_benchmark>=0?'up':'dn'}">${sign(d.vs_benchmark)}${fmt(d.vs_benchmark,1)} pp</div>
-        <div class="kpi-sub">pts de % au-dessus du MSCI · réf. ${sign(d.benchmark_msci)}${fmt(d.benchmark_msci,1)} %</div>
+        <div class="kpi-label">Avance sur le marché</div>
+        <div class="kpi-value ${d.vs_benchmark>=0?'up':'dn'}">${sign(d.vs_benchmark)}${fmt(d.vs_benchmark,1)} pts de %</div>
+        <div class="kpi-sub">vs MSCI World ${sign(d.benchmark_msci)}${fmt(d.benchmark_msci,1)} % · même période</div>
+        <div class="kpi-hint">L'IA ${d.vs_benchmark>=0?'surperforme':'sous-performe'} un ETF mondial passif de ${Math.abs(d.vs_benchmark).toFixed(1)} points — c'est l'indicateur clé de la valeur ajoutée</div>
       </div>
       <div class="kpi">
         <div class="kpi-accent" style="background:var(--blue)"></div>
-        <div class="kpi-label">Liquidités</div>
+        <div class="kpi-label">Liquidités disponibles</div>
         <div class="kpi-value liq">${fmtEur(d.liquidites)}</div>
-        <div class="kpi-sub">${fmt(d.pct_liquidites,1)} % du portefeuille</div>
+        <div class="kpi-sub">${fmt(d.pct_liquidites,1)} % du portefeuille non investi</div>
+        <div class="kpi-hint">Argent en attente, disponible immédiatement pour de nouveaux achats</div>
       </div>
       <div class="kpi">
         <div class="kpi-accent" style="background:var(--text3)"></div>
-        <div class="kpi-label">Positions</div>
+        <div class="kpi-label">Titres en portefeuille</div>
         <div class="kpi-value">${d.nb_positions}</div>
-        <div class="kpi-sub"><span class="up">${d.nb_positives} +</span> · <span style="color:var(--text3)">${d.nb_neutres ?? (d.nb_positions - d.nb_positives - d.nb_negatives)} =</span> · <span class="dn">${d.nb_negatives} −</span></div>
+        <div class="kpi-sub"><span class="up">${d.nb_positives} en gain</span> · <span style="color:var(--text3)">${nbNeutres} neutre${nbNeutres>1?'s':''}</span> · <span class="dn">${d.nb_negatives} en perte</span></div>
+        <div class="kpi-hint">Nombre d'entreprises détenues — la diversification réduit le risque lié à une seule action</div>
       </div>`;
 
     // Positions — perf calculée en € + tri desc
