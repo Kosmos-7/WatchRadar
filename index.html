@@ -83,17 +83,22 @@
 
   /* ── HEADER ── */
   header {
-    border-bottom: 1px solid var(--border);
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: sticky;
     top: 0;
-    background: rgba(8,8,13,0.68);
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    transition: background 0.3s, border-color 0.3s, backdrop-filter 0.3s;
+    z-index: 100;
+  }
+  header.scrolled {
+    background: rgba(8,8,13,0.82);
+    border-bottom-color: var(--border);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    z-index: 100;
   }
   .brand { display: flex; align-items: center; gap: 9px; text-decoration: none; }
   .brand-icon { flex-shrink: 0; display: flex; }
@@ -944,6 +949,10 @@ async function loadWatchlist() {
 }
 
 loadWatchlist();
+
+const _hdr = document.querySelector('header');
+const _onScroll = () => _hdr.classList.toggle('scrolled', window.scrollY > 60);
+window.addEventListener('scroll', _onScroll, { passive: true });
 </script>
 </body>
 </html>
