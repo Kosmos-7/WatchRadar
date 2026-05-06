@@ -117,10 +117,6 @@
   .th-label { font-family: 'Courier New', monospace; font-size: 0.75rem; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.35rem; }
   .th-value { font-family: Georgia, serif; font-size: 1.35rem; line-height: 1; }
   .th-sub { font-family: 'Courier New', monospace; font-size: 0.78rem; margin-top: 3px; color: var(--text3); }
-  .perf-track { position: relative; height: 5px; background: var(--surface3); border-radius: 3px; overflow: visible; }
-  .perf-fill { height: 5px; border-radius: 3px; transition: width 0.6s ease; }
-  .perf-danger { position: absolute; top: -5px; bottom: -5px; width: 2px; background: var(--red); border-radius: 1px; opacity: 0.5; left: 20%; }
-  .perf-zero   { position: absolute; top: -5px; bottom: -5px; width: 1px; background: var(--border2); left: 50%; }
 
   /* ── RULES ── */
   .rules-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.75rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.03); }
@@ -446,9 +442,9 @@
           <span class="pacc-chip">10 learnings</span>
         </div>
       </div>
-      <span class="pacc-arrow open" id="pacc-arrow">▼</span>
+      <span class="pacc-arrow" id="pacc-arrow">▼</span>
     </div>
-    <div class="pacc-body open" id="pacc-body">
+    <div class="pacc-body" id="pacc-body">
 
       <!-- Règles fixes -->
       <div class="pacc-section">
@@ -908,7 +904,6 @@ async function loadPortfolio() {
     sb.className = `survival-block ${panic ? 'panic' : alive ? 'alive' : 'dead'}`;
     const sc = panic ? 'var(--orange)' : alive ? 'var(--green)' : 'var(--red)';
     const sl = panic ? 'Mode panique' : alive ? 'En vie · Seuil respecté' : 'Réinitialisation';
-    const pp = Math.max(5, Math.min(96, 50 + d.vs_benchmark * 2));
     sb.innerHTML = `
       <div class="survival-header">
         <div class="survival-title">Statut de survie · ${d.week}</div>
@@ -940,11 +935,6 @@ async function loadPortfolio() {
           <div class="th-value ${(d.max_drawdown||0)<-5?'dn':'neu'}">${d.max_drawdown != null ? (d.max_drawdown !== 0 ? sign(d.max_drawdown)+fmt(d.max_drawdown,1)+' %' : '0.0 %') : '—'}</div>
           <div class="th-sub">perte max depuis un pic</div>
         </div>
-      </div>
-      <div class="perf-track">
-        <div class="perf-danger"></div>
-        <div class="perf-zero"></div>
-        <div class="perf-fill" style="width:${pp}%;background:${sc}"></div>
       </div>`;
 
     // KPI
