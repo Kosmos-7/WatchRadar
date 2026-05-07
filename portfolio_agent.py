@@ -476,6 +476,37 @@ def construire_prompt(portfolio, watchlist, contexte, analyse=None, macro_news=N
     # Tickers watchlist complète
     tickers_watchlist = [s["ticker"] for s in watchlist.get("stocks", [])]
 
+    # Historique des ordres — Claude doit voir ses décisions passées (ventes notamment)
+    # pour éviter les flip-flops (vendre puis racheter sans nouvelle thèse) et apprendre
+    # de ses erreurs. Les positions ouvertes sont déjà dans la section précédente avec
+    # leur thèse d'achat — ici on liste les VENTES et les ACHATS clôturés.
+    ordres_passes = portfolio.get("ordres", [])
+    if ordres_passes:
+        hist_lines = []
+        for o in ordres_passes[:50]:
+            t = o.get("type", "?")
+            tk = o.get("ticker", "?")
+            d = o.get("date", "?")
+            if t == "VENTE":
+                perf = o.get("perf", 0)
+                jours = o.get("jours", 0)
+                raison = (o.get("raison", "") or "")[:120]
+                hist_lines.append(f"  [{d}] VENTE {tk} perf {perf:+.1f}% après {jours}j — {raison}")
+            elif t == "ACHAT":
+                raison = (o.get("raison", "") or "")[:120]
+                hist_lines.append(f"  [{d}] ACHAT {tk} — {raison}")
+            elif t == "APPORT":
+                hist_lines.append(f"  [{d}] APPORT capital {o.get('montant', 0):.0f}€")
+        ordres_section = (
+            "\n## HISTORIQUE DE TES DÉCISIONS (50 dernières, plus récent en premier)\n"
+            "Cet historique inclut tes ventes et achats passés. Important :\n"
+            "- Évite de racheter un titre que tu viens de vendre sauf si une thèse réellement nouvelle le justifie\n"
+            "- Apprends de tes erreurs (ventes en perte, aller-retours, biais récurrents)\n"
+            + "\n".join(hist_lines) + "\n"
+        )
+    else:
+        ordres_section = ""
+
     # Section macro news — indexée pour permettre à Claude de fournir des résumés FR alignés
     if macro_news:
         news_lines = "\n".join(
@@ -508,7 +539,7 @@ def construire_prompt(portfolio, watchlist, contexte, analyse=None, macro_news=N
 - MSCI World : {contexte.get('msci', {}).get('perf_semaine', 0):+.1f}% sur la semaine, {contexte.get('msci', {}).get('perf_ytd', 0):+.1f}% YTD
 - Mode panique : {"OUI — Règle 03 active, aucun ordre possible" if contexte.get('mode_panique') else "NON — ordres possibles"}
 
-{macro_news_section}{synthese_str}## WATCHLIST CETTE SEMAINE (top 10 sur 25)
+{ordres_section}{macro_news_section}{synthese_str}## WATCHLIST CETTE SEMAINE (top 10 sur 25)
 {chr(10).join(top10_lines)}
 Tickers watchlist complète : {', '.join(tickers_watchlist)}
 
