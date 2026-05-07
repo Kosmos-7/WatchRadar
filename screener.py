@@ -68,55 +68,6 @@ def finnhub_fundamentals(ticker):
         print(f"  ⚠️  Finnhub {ticker} — exception : {e}")
     return {}
 
-_ALERT_KEYWORDS = {
-    "guidance":    ["profit warning", "lowered guidance", "cut guidance", "revised down",
-                    "below expectations", "misses estimates", "earnings miss", "downside revision",
-                    "guidance cut", "lowers forecast", "reduces outlook"],
-    "acquisition": ["acquires", "acquired", "acquisition", "merger", "takeover", "buyout",
-                    "to acquire", "deal to buy", "agreed to buy"],
-    "alert":       ["investigation", "fraud", "scandal", "lawsuit", "sec charges", "sec probe",
-                    "fine", "penalty", "bankruptcy", "chapter 11", "accounting irregulari",
-                    "class action", "criminal charges", "regulatory action"],
-}
-
-def fetch_company_news_alert(ticker):
-    """Cherche une actualité critique (guidance, M&A, alerte) sur les 10 derniers jours.
-    Retourne un dict ou None. N'impacte pas le score."""
-    if not FINNHUB_KEY:
-        return None
-    for sfx in (".PA",".DE",".AS",".L",".CO",".BR",".MI",".MC",".AT",".IS",".HE",".ST",".OL",".OB"):
-        ticker = ticker.replace(sfx, "")
-    clean = ticker
-    try:
-        today      = date.today()
-        from_date  = (today - timedelta(days=10)).strftime("%Y-%m-%d")
-        to_date    = today.strftime("%Y-%m-%d")
-        url = (f"https://finnhub.io/api/v1/company-news?symbol={clean}"
-               f"&from={from_date}&to={to_date}&token={FINNHUB_KEY}")
-        r = requests.get(url, timeout=5)
-        if r.status_code != 200:
-            return None
-        articles = r.json()
-        if not isinstance(articles, list):
-            return None
-        for article in articles[:20]:
-            text = ((article.get("headline") or "") + " " + (article.get("summary") or "")).lower()
-            for alert_type, keywords in _ALERT_KEYWORDS.items():
-                for kw in keywords:
-                    if kw in text:
-                        dt = article.get("datetime", 0)
-                        art_date = _dt.utcfromtimestamp(dt).strftime("%Y-%m-%d") if dt else to_date
-                        return {
-                            "type":     alert_type,
-                            "headline": (article.get("headline") or "")[:120],
-                            "date":     art_date,
-                            "url":      article.get("url", ""),
-                            "source":   article.get("source", ""),
-                        }
-    except Exception as e:
-        print(f"  ⚠️  News alert {ticker} — exception : {e}")
-    return None
-
 def valider_fondamentaux(yf_data, fh_data):
     if not fh_data:
         return (1.0, [])
@@ -485,9 +436,6 @@ def score_ticker(ticker):
         reco       = info.get("recommendationMean") or 3.5
 
         fh_data    = finnhub_fundamentals(ticker)
-        news_alert = fetch_company_news_alert(ticker)
-        if news_alert:
-            print(f"  📰 {ticker} — alerte {news_alert['type'].upper()} : {news_alert['headline'][:60]}…")
         confiance, alertes = valider_fondamentaux(info, fh_data)
 
         # ── Calcul du score ──────────────────────────────────────────────────
@@ -643,7 +591,6 @@ def score_ticker(ticker):
             "death_pen":             death_pen,
             "confiance":             round(confiance, 2),
             "sources":               ["Yahoo Finance"] + (["Finnhub"] if fh_data else []),
-            **({"news_alert": news_alert} if news_alert else {}),
         }
 
         nom = info.get("shortName") or info.get("longName") or ticker
@@ -772,9 +719,9 @@ def main():
         else:
             print("ignoré")
 
-        # 2 appels Finnhub par ticker (fundamentals + news) → 1s de délai = 60 req/min max
+        # 1 appel Finnhub par ticker (fundamentals) → 0.5s suffit largement sous 60 req/min
         if FINNHUB_KEY:
-            time.sleep(1)
+            time.sleep(0.5)
 
     resultats.sort(key=lambda x: -x["score"])
     top25 = resultats[:25]

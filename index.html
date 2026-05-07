@@ -246,16 +246,6 @@
   .sb-val { font-family: 'Courier New', monospace; font-size: 0.80rem; color: var(--text2); font-weight: 600; min-width: 30px; text-align: right; }
   .mo-sub { display: block; font-size: 0.75rem; color: var(--text3); margin-top: 4px; font-family: 'Courier New', monospace; }
 
-  .news-alert { margin: 0.6rem 0 0.2rem; padding: 0.55rem 0.75rem; border-radius: 7px; font-size: 0.80rem; line-height: 1.5; display: flex; align-items: flex-start; gap: 0.5rem; }
-  .news-alert.type-guidance    { background: rgba(255,160,0,0.08);  border: 1px solid rgba(255,160,0,0.25); }
-  .news-alert.type-acquisition { background: rgba(80,128,248,0.07); border: 1px solid rgba(80,128,248,0.22); }
-  .news-alert.type-alert       { background: rgba(240,84,84,0.07);  border: 1px solid rgba(240,84,84,0.22); }
-  .news-alert-icon { font-size: 0.88rem; flex-shrink: 0; margin-top: 1px; }
-  .news-alert-body { flex: 1; }
-  .news-alert-hl   { color: var(--text); font-weight: 500; }
-  .news-alert-meta { color: var(--text3); margin-top: 2px; }
-  .news-alert a    { color: inherit; text-decoration: underline; opacity: 0.7; }
-
   .reg-band { margin-bottom: 0.75rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.7rem 0.9rem; }
   .reg-band-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px; }
   .reg-label { font-family: 'Courier New', monospace; font-size: 0.75rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; }
@@ -829,22 +819,6 @@ function renderCard(s) {
     : '';
   const srcs = (bd.sources || ['Yahoo Finance']).join(' + ');
 
-  const na = bd.news_alert || null;
-  const newsAlertHTML = na ? (() => {
-    const icons = { guidance: '⚠️', acquisition: '📋', alert: '🚨' };
-    const labels = { guidance: 'Guidance / résultats', acquisition: 'M&A', alert: 'Alerte réglementaire' };
-    const icon  = icons[na?.type]  || '📰';
-    const label = labels[na?.type] || 'Actualité';
-    const link  = na.url ? ` — <a href="${na.url}" target="_blank" rel="noopener">lire</a>` : '';
-    return `<div class="news-alert type-${na.type}">
-      <span class="news-alert-icon">${icon}</span>
-      <div class="news-alert-body">
-        <div class="news-alert-hl">${label} · ${na.date}</div>
-        <div class="news-alert-meta">${na.headline}${link}</div>
-      </div>
-    </div>`;
-  })() : '';
-
   const crossRegime = bd.cross_regime || 'neutral';
   const crossDays   = bd.cross_days_ago   != null ? bd.cross_days_ago   : null;
   const crossSpread = bd.cross_spread_pct != null ? bd.cross_spread_pct : null;
@@ -1007,7 +981,6 @@ function renderCard(s) {
           </div>
           ${crossHTML}
           ${regBandHTML}
-          ${newsAlertHTML}
           <div class="detail-meta">
             ${metaItems.map(m => `<span>${m}</span>`).join('')}
           </div>

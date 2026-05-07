@@ -42,14 +42,7 @@
         "sources": [
           "Yahoo Finance",
           "Finnhub"
-        ],
-        "news_alert": {
-          "type": "alert",
-          "headline": "Which Quantum Computing Stock Has Dominated in 2026: IonQ, Rigetti, or D-Wave?",
-          "date": "2026-05-06",
-          "url": "https://finnhub.io/api/news?id=6604b7290d5bdeef5cc089caa76fa5bd1424d7fd71836cd3c4a581f3dc7ca540",
-          "source": "Yahoo"
-        }
+        ]
       },
       "justification": "Score 91/100 — Golden Cross récent (12j), cours proche de sa droite de régression, RSI en zone favorable, croissance CA solide (73%/an), marges excellentes (56%), consensus analystes très favorable.",
       "rank": 1
@@ -393,14 +386,7 @@
         "sources": [
           "Yahoo Finance",
           "Finnhub"
-        ],
-        "news_alert": {
-          "type": "acquisition",
-          "headline": "HES FinTech Expands Partnership with Acquired.com to Deliver Next-Generation Recurring Payments via Visa A2A",
-          "date": "2026-05-06",
-          "url": "https://finnhub.io/api/news?id=e5c2e4afcaa4d762e49f3aabef9452115e0e4684b78bc1256debb68d879accf7",
-          "source": "Yahoo"
-        }
+        ]
       },
       "justification": "Score 80/100 — prix sous sa droite de régression (-2.1σ), RSI en zone favorable, croissance CA solide (17%/an), marges excellentes (52%), consensus analystes très favorable.",
       "rank": 9
@@ -572,14 +558,7 @@
         "sources": [
           "Yahoo Finance",
           "Finnhub"
-        ],
-        "news_alert": {
-          "type": "alert",
-          "headline": "JPMorgan tried to settle sexual assault claims before lawsuit, spokesperson says",
-          "date": "2026-05-06",
-          "url": "https://finnhub.io/api/news?id=602ff8be96fdef96bdb8e3baa407d8b8e91c050fd5e4bb16f930c4a886408798",
-          "source": "Finnhub"
-        }
+        ]
       },
       "justification": "Score 79/100 — Golden Cross frais (10j) — fenêtre signal optimale, légèrement au-dessus de sa régression (+1.6σ), RSI en zone favorable, croissance CA modérée (13%/an), marges excellentes (34%), consensus analystes positif.",
       "rank": 13
@@ -622,14 +601,7 @@
         "sources": [
           "Yahoo Finance",
           "Finnhub"
-        ],
-        "news_alert": {
-          "type": "acquisition",
-          "headline": "James Murdoch Makes $300 Million Offer for New York Magazine, Podcasts",
-          "date": "2026-05-05",
-          "url": "https://finnhub.io/api/news?id=3f1aa613cb757e9cd33aff42b3d09266390a3e3d3a554407e0e0a367366bf92f",
-          "source": "Yahoo"
-        }
+        ]
       },
       "justification": "Score 79/100 — cours proche de sa droite de régression, RSI en zone favorable, croissance CA solide (16%/an), marges excellentes (29%), consensus analystes très favorable.",
       "rank": 14
@@ -758,14 +730,7 @@
         "sources": [
           "Yahoo Finance",
           "Finnhub"
-        ],
-        "news_alert": {
-          "type": "alert",
-          "headline": "Adobe’s New Productivity Agent Redefines How People Understand, Create and Share Information",
-          "date": "2026-05-06",
-          "url": "https://finnhub.io/api/news?id=295f4d506be9224101e71a3883a2bd3ead4c4f1cc0da582b8c1afb92c36d396d",
-          "source": "Yahoo"
-        }
+        ]
       },
       "justification": "Score 78/100 — prix sous sa droite de régression (-2.5σ), RSI en zone favorable, croissance CA modérée (12%/an), marges excellentes (29%), consensus analystes positif.",
       "rank": 17
@@ -808,14 +773,7 @@
         "sources": [
           "Yahoo Finance",
           "Finnhub"
-        ],
-        "news_alert": {
-          "type": "acquisition",
-          "headline": "SAP Agrees To Purchase Prior Labs, Terms Not Disclosed",
-          "date": "2026-05-04",
-          "url": "https://finnhub.io/api/news?id=b557e56214a855fb8103d2b3415ea6043b230ef37441807d8a4e8020351d5c49",
-          "source": "Benzinga"
-        }
+        ]
       },
       "justification": "Score 77/100 — prix sous sa droite de régression (-1.4σ), RSI en zone favorable, croissance CA modérée (6%/an), marges excellentes (20%), consensus analystes très favorable.",
       "rank": 18
@@ -858,14 +816,7 @@
         "sources": [
           "Yahoo Finance",
           "Finnhub"
-        ],
-        "news_alert": {
-          "type": "acquisition",
-          "headline": "Update: Market Chatter: Eli Lilly Plans to Sell About $8 Billion of Bonds to Fund Acquisitions",
-          "date": "2026-05-06",
-          "url": "https://finnhub.io/api/news?id=b20fd6ea639256a2c411cfd8b56ecaaf3ebc77a5f56800bee4c359b17a25ea33",
-          "source": "Yahoo"
-        }
+        ]
       },
       "justification": "Score 77/100 — légèrement au-dessus de sa régression (+1.3σ), RSI en zone favorable, croissance CA solide (56%/an), marges excellentes (35%), consensus analystes très favorable.",
       "rank": 19
@@ -908,14 +859,7 @@
         "sources": [
           "Yahoo Finance",
           "Finnhub"
-        ],
-        "news_alert": {
-          "type": "alert",
-          "headline": "Corporate America Earnings Beat Back Wall Street’s Wall of Worry",
-          "date": "2026-05-02",
-          "url": "https://finnhub.io/api/news?id=9d8271fda6efa397de9e237f70b51478e34b502711496c5488933625c24f0d30",
-          "source": "Yahoo"
-        }
+        ]
       },
       "justification": "Score 77/100 — légèrement au-dessus de sa régression (+1.5σ), croissance CA solide (19%/an), marges excellentes (29%), consensus analystes positif.",
       "rank": 20
@@ -1087,14 +1031,7 @@
         "sources": [
           "Yahoo Finance",
           "Finnhub"
-        ],
-        "news_alert": {
-          "type": "alert",
-          "headline": "Mastercard, PayPal, Visa Under U.K. Regulator Investigation Over Alleged Anti-Competitive Conduct Linked To Funding, Usa",
-          "date": "2026-05-06",
-          "url": "https://finnhub.io/api/news?id=b3170ead92dbfceeb5f987a82a8dfda0cca7e5485c786498224c50365d36b189",
-          "source": "Benzinga"
-        }
+        ]
       },
       "justification": "Score 75/100 — prix sous sa droite de régression (-2.4σ), RSI en zone favorable, croissance CA solide (16%/an), marges excellentes (46%), consensus analystes très favorable.",
       "rank": 24
