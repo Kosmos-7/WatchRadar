@@ -811,7 +811,7 @@ def main():
         prompt_analyse = construire_prompt_analyse(portfolio, watchlist, contexte, macro_news)
         resp_analyse = client.messages.create(
             model="claude-haiku-4-5",
-            max_tokens=2000,
+            max_tokens=4000,
             system="Tu es un analyste financier neutre. Réponds UNIQUEMENT en JSON valide, sans texte avant ou après, sans backticks.",
             messages=[{"role": "user", "content": prompt_analyse}]
         )
