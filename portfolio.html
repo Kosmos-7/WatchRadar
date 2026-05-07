@@ -1076,10 +1076,10 @@ function renderOrder(o, idx) {
       <div class="order-detail" id="order-${idx}">
         <div class="order-detail-inner">
           ${o._allerRetour ? `<div class="order-correction-note">
-            <strong>↺ Ordre annulé par un rachat le même jour.</strong>
+            <strong>↺ Position vendue puis rachetée le même jour.</strong>
             ${o.currency === 'GBP'
               ? `Cette décision a été déclenchée par un bug de conversion de change (GBP→EUR) qui surévaluait la perte d'une position en livres sterling. Le système a interprété ce signal erroné comme un stop-loss à atteindre, vendu, puis reconnu le bon signal d'achat dans le même run et racheté la position. Le bug a depuis été corrigé.`
-              : `Le système a vendu puis racheté ${o.ticker} dans le même run, signe d'une décision incohérente — soit un signal de vente fragile contredit par le signal d'achat de la passe suivante, soit un bug de calcul de performance.`}
+              : `Le workflow a été déclenché plusieurs fois ce jour-là. Entre les runs successifs, le screener a régénéré la watchlist et Claude a réinterprété les mêmes données fondamentales avec des conclusions opposées (vente sur signal négatif, puis rachat sur signal d'opportunité). Ce flip-flop illustre une limite de design : l'IA ne mémorise pas ses décisions récentes entre runs.`}
             Le raisonnement ci-dessous est conservé tel quel pour préserver la transparence de l'historique.
           </div>` : ''}
           <div class="order-raison">${o.raison}</div>
