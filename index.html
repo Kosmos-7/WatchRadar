@@ -751,7 +751,7 @@ function applyFilters() {
   const smw = document.getElementById('show-more-wrap');
   const smb = document.getElementById('show-more-btn');
   const concBlock = document.getElementById('concentration-block');
-  const hasConc = concBlock && concBlock.querySelector('.conc-item');
+  const hasConc = concBlock && concBlock.querySelector('.conc-row, .conc-item');
   if (smw && smb) {
     const total = rest.length + (preview ? 1 : 0);
     smw.style.display = total > 0 ? 'block' : 'none';
@@ -1012,7 +1012,7 @@ function showMore() {
   document.getElementById('show-more-wrap').style.display = 'none';
   // Révèle la composition de la sélection (info contextuelle après déroulé complet)
   const conc = document.getElementById('concentration-block');
-  if (conc && conc.querySelector('.conc-item')) {
+  if (conc && conc.querySelector('.conc-row, .conc-item')) {
     conc.style.display = 'block';
   }
 }
