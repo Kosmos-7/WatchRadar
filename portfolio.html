@@ -539,7 +539,6 @@
 
   <div style="margin-bottom:1.75rem">
     <div class="sec-label">Journal des ordres · Cliquez pour le détail</div>
-    <div id="orders-stats"></div>
     <div class="orders-filter">
       <button class="flt-btn active" onclick="setOrderFilter('all', this)">Tous</button>
       <button class="flt-btn" onclick="setOrderFilter('ACHAT', this)">Achats</button>
@@ -1353,43 +1352,7 @@ async function loadPortfolio() {
     document.getElementById('positions-list').innerHTML = posHTML;
     renderAllocCharts(pos);
 
-    // Ordres — stats P&L réalisé
     const allOrdres = d.ordres || [];
-    const ventes = allOrdres.filter(o => o.type === 'VENTE' && o.perf != null);
-    if (ventes.length > 0) {
-      const wins   = ventes.filter(o => o.perf > 0).length;
-      const losses = ventes.length - wins;
-      const winRate = Math.round(wins / ventes.length * 100);
-      // P&L en € : utilise pnl_eur stocké par l'agent si dispo, sinon approximation
-      const pnlEur = ventes.reduce((s, o) => {
-        if (o.pnl_eur != null) return s + o.pnl_eur;
-        return s + o.montant * o.perf / (100 + o.perf); // montant_investi * perf%
-      }, 0);
-      const avgPerf    = ventes.reduce((s, o) => s + o.perf, 0) / ventes.length;
-      const avgDuree   = Math.round(ventes.reduce((s, o) => s + (o.jours || 0), 0) / ventes.length);
-      const pnlColor   = pnlEur  >= 0 ? 'var(--green)' : 'var(--red)';
-      const perfColor  = avgPerf >= 0 ? 'var(--green)' : 'var(--red)';
-      const wrColor    = winRate >= 50 ? 'var(--green)' : 'var(--red)';
-      const statsEl = document.getElementById('orders-stats');
-      if (statsEl) statsEl.innerHTML = `
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:0.9rem 1.1rem;margin-bottom:0.75rem">
-          <div style="font-family:'Courier New',monospace;font-size:0.70rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.75rem">${ventes.length} trade${ventes.length>1?'s':''} clôturé${ventes.length>1?'s':''} · ${wins} gain${wins>1?'s':''}, ${losses} perte${losses>1?'s':''}</div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
-            <div>
-              <div style="font-family:Georgia,serif;font-size:1.4rem;color:${pnlColor};line-height:1">${pnlEur >= 0 ? '+' : '−'}${fmtEur(Math.abs(pnlEur))}</div>
-              <div style="font-family:'Courier New',monospace;font-size:0.70rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-top:3px">${pnlEur >= 0 ? 'Gain' : 'Perte'} net en €</div>
-            </div>
-            <div>
-              <div style="font-family:Georgia,serif;font-size:1.4rem;color:${wrColor};line-height:1">${winRate} %</div>
-              <div style="font-family:'Courier New',monospace;font-size:0.70rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-top:3px">Trades gagnants</div>
-            </div>
-            <div>
-              <div style="font-family:Georgia,serif;font-size:1.4rem;color:${perfColor};line-height:1">${sign(avgPerf)}${fmt(avgPerf,1)} %</div>
-              <div style="font-family:'Courier New',monospace;font-size:0.70rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-top:3px">Perf. moy. / trade · ${avgDuree}j détenus</div>
-            </div>
-          </div>
-        </div>`;
-    }
     // Détecter aller-retours (achat + vente même ticker même date)
     const _arMap = {};
     allOrdres.forEach(o => {
