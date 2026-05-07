@@ -230,9 +230,9 @@
     transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
   }
   .scoring-desc {
-    font-size: 0.83rem;
+    font-size: 0.86rem;
     color: var(--text2);
-    line-height: 1.7;
+    line-height: 1.75;
   }
   .scoring-note {
     background: var(--surface2);
@@ -290,9 +290,9 @@
     line-height: 1.4;
   }
   .concept-body {
-    font-size: 0.84rem;
+    font-size: 0.86rem;
     color: var(--text2);
-    line-height: 1.7;
+    line-height: 1.75;
   }
 
   /* ── PORTFOLIO EXPLAINER ── */
@@ -324,7 +324,7 @@
   }
   .portfo-body {
     padding: 1rem 1.25rem;
-    font-size: 0.84rem;
+    font-size: 0.86rem;
     color: var(--text2);
     line-height: 1.75;
   }
@@ -415,9 +415,9 @@
     line-height: 1.3;
   }
   .advice-body {
-    font-size: 0.84rem;
+    font-size: 0.86rem;
     color: var(--text2);
-    line-height: 1.7;
+    line-height: 1.75;
   }
 
   /* ── RESOURCES ── */
@@ -578,7 +578,7 @@
           <div class="bar-fill" style="width: 40%"></div>
         </div>
         <div class="scoring-desc">
-          L'algorithme évalue si le titre est en tendance haussière claire. Il vérifie notamment le Golden Cross (la moyenne mobile à 21 jours au-dessus de celle à 200 jours), si le RSI se situe dans une zone saine, si les volumes confirment le mouvement de prix, et si le cours reste proche de sa trajectoire long terme. Un titre qui monte régulièrement avec des volumes croissants score bien ici. Un titre qui oscille sans direction nette, mal.
+          L'algorithme repère les tendances claires : Golden Cross (MM21 au-dessus de MM200), RSI en zone saine, volumes qui confirment le mouvement, cours proche de sa trajectoire long terme. Un titre qui monte régulièrement avec du volume score bien. Un titre qui oscille sans direction, mal.
         </div>
       </div>
 
@@ -591,7 +591,7 @@
           <div class="bar-fill" style="width: 50%"></div>
         </div>
         <div class="scoring-desc">
-          C'est le coeur du score. L'entreprise est-elle rentable ? Sa croissance des revenus est-elle réelle et durable ? Sa valorisation est-elle raisonnable par rapport à ses bénéfices (ratio P/E) et à sa trésorerie réelle générée (Free Cash Flow) ? Ces 50 points mesurent la santé financière concrète de l'entreprise — pas ce que le marché espère qu'elle deviendra, mais ce qu'elle produit vraiment.
+          Le cœur du score. L'entreprise est-elle rentable ? Sa croissance est-elle réelle ? Sa valorisation tient-elle face à ses bénéfices (P/E) et à sa trésorerie générée (Free Cash Flow) ? Ces 50 points mesurent la santé concrète — ce qu'elle produit vraiment, pas ce que le marché espère.
         </div>
       </div>
 
@@ -604,7 +604,7 @@
           <div class="bar-fill" style="width: 10%"></div>
         </div>
         <div class="scoring-desc">
-          La recommandation moyenne des analystes sell-side (Acheter / Conserver / Vendre). Volontairement peu pondéré : les analystes de banques ont un biais structurel vers les recommandations d'achat, lié aux conflits d'intérêt (couverture sélective, relations clients). Signal leur préfère ses propres signaux, mais ce consensus reste un signal secondaire utile quand il diverge fortement.
+          Recommandation moyenne des analystes sell-side. Volontairement peu pondéré : ils ont un biais structurel haussier (conflits d'intérêt, couverture sélective). Signal préfère ses propres signaux, mais le consensus reste utile quand il diverge fortement.
         </div>
       </div>
     </div>
@@ -625,7 +625,9 @@
         <span class="concept-label">Score global</span>
         <span class="concept-example">★★★★☆ &nbsp;84</span>
         <div class="concept-body">
-          Le chiffre est le score sur 100, calculé à partir des trois composantes (momentum, fondamentaux, consensus). Les étoiles sont un résumé visuel : 5 étoiles à partir de 90, 4 étoiles à partir de 75, 3 étoiles à partir de 60. Un score élevé ne garantit pas une hausse imminente — il indique que plusieurs signaux convergent favorablement au même moment. Il peut très bien rester haut pendant que le titre corrige à court terme.
+          Score sur 100, somme des trois composantes (momentum + fondamentaux + consensus). Étoiles : 5★ à partir de 90, 4★ à partir de 75, 3★ à partir de 60.
+          <br><br>
+          Un score élevé ne garantit pas une hausse imminente — il signale juste que plusieurs signaux convergent. Le titre peut très bien corriger à court terme tout en gardant un score haut.
         </div>
       </div>
 
@@ -633,7 +635,9 @@
         <span class="concept-label">Croisement des moyennes mobiles</span>
         <span class="concept-example">↑ Golden Cross · 12j depuis le croisement</span>
         <div class="concept-body">
-          La MM21 (moyenne des cours sur 21 jours) a dépassé la MM200 (moyenne sur 200 jours) il y a 12 jours. Ce signal indique que la tendance court terme est désormais au-dessus de la tendance long terme — historiquement haussier dans ~66-72 % des cas dans les 60 premiers jours. Un Death Cross (MM21 repasse sous MM200) est le signal inverse — souvent baissier, mais avec davantage de faux positifs en marché sans tendance claire (~38 % de fiabilité dans ces phases).
+          La MM21 (moyenne 21 jours) a dépassé la MM200 (moyenne 200 jours) il y a 12 jours : la tendance court terme est passée au-dessus du long terme. Historiquement haussier dans ~66-72 % des cas sur 60 jours.
+          <br><br>
+          Un Death Cross (MM21 repasse sous MM200) est le signal inverse — plus fragile en marché sans tendance claire (~38 % de fiabilité).
         </div>
       </div>
 
@@ -641,7 +645,9 @@
         <span class="concept-label">Z-score (écart à la tendance)</span>
         <span class="concept-example">Zone saine · +0.4σ</span>
         <div class="concept-body">
-          Mesure l'écart du cours actuel par rapport à sa trajectoire long terme. Un Z-score de +0,4σ signifie que le titre est légèrement au-dessus de sa moyenne historique — encore dans une zone saine. Dépasser +2σ suggère un probable surachat. Tomber sous −2σ peut signaler un potentiel de rebond, mais aussi une détérioration fondamentale réelle. C'est un outil pour repérer les extrêmes, pas une garantie.
+          Écart du cours actuel par rapport à sa trajectoire long terme, en écarts-types. +0,4σ = légèrement au-dessus de la moyenne historique, zone saine.
+          <br><br>
+          Au-delà de +2σ : surachat probable. Sous −2σ : rebond possible, mais aussi détérioration réelle. Un repère pour les extrêmes, pas une garantie.
         </div>
       </div>
 
@@ -649,7 +655,9 @@
         <span class="concept-label">RSI (force relative)</span>
         <span class="concept-example">RSI 52</span>
         <div class="concept-body">
-          Le RSI (Relative Strength Index) est un oscillateur entre 0 et 100 qui mesure la vitesse et l'ampleur des variations de cours. Entre 40 et 60, le titre est équilibré — ni suracheté ni survendu (Score Signal : 10 pts). Au-dessus de 70 : le titre monte trop vite et risque une correction à court terme. En dessous de 30 : le titre est survendu, potentiel de rebond, mais ce n'est pas automatique. Un RSI à 52 comme ici, c'est idéal — le titre a de la marge dans les deux sens.
+          Oscillateur 0–100 qui mesure la vitesse et l'ampleur des variations. Entre 40 et 60 : équilibré, ni suracheté ni survendu (10 pts dans le score Signal).
+          <br><br>
+          Au-dessus de 70 : monte trop vite, risque de correction. Sous 30 : survendu, rebond possible mais pas automatique. RSI 52 ici = idéal, marge dans les deux sens.
         </div>
       </div>
     </div>
@@ -667,9 +675,9 @@
         <div class="portfo-htitle">Le bloc de survie — jouer sa propre existence</div>
       </div>
       <div class="portfo-body">
-        L'IA doit battre le MSCI World sur 12 mois glissants, ou elle se réinitialise publiquement — capital remis à 20 000 €, historique effacé, recommencer de zéro. Ce mécanisme n'est pas décoratif : c'est ce qui la force à prendre des décisions documentées et honnêtes plutôt que de rationaliser après coup. Sans conséquence réelle, un modèle peut inventer des explications convaincantes pour n'importe quelle décision. Ici, les erreurs ont un coût visible.
+        L'IA doit battre le MSCI World sur 12 mois glissants, ou elle se réinitialise publiquement — capital remis à 20 000 €, historique effacé. Ce mécanisme force des décisions documentées plutôt que rationalisées après coup : sans conséquence réelle, un modèle peut justifier n'importe quoi. Ici, les erreurs ont un coût visible.
         <br><br>
-        Le bloc affiche en temps réel la performance du portefeuille, celle du MSCI World sur la même période, et l'écart entre les deux.
+        Le bloc affiche en temps réel la performance du portefeuille, celle du MSCI World, et l'écart entre les deux.
       </div>
     </div>
 
@@ -732,7 +740,9 @@
         <div class="portfo-htitle">Le journal des ordres</div>
       </div>
       <div class="portfo-body">
-        Chaque achat et chaque vente est documenté avec la raison complète. L'IA doit expliquer pourquoi elle achète — quelle thèse, quels signaux, quelle logique. Si elle veut vendre avant le délai de 90 jours, elle doit obligatoirement citer sa thèse d'achat originale et documenter ce qui a <em>concrètement</em> changé depuis. Si rien n'a changé — si les mêmes données donnent juste une impression différente — la vente est refusée par l'architecture. C'est conçu pour éliminer le biais de rationalisation post-hoc.
+        Chaque achat et vente est documenté avec sa raison complète : thèse, signaux, logique. Pour toute vente avant 90 jours, l'IA doit citer la thèse d'achat originale et expliquer ce qui a <em>concrètement</em> changé depuis.
+        <br><br>
+        Si rien n'a changé — si les mêmes données donnent juste une impression différente — la vente est refusée. Conçu pour éliminer le biais de rationalisation post-hoc.
       </div>
     </div>
   </section>
