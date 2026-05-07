@@ -197,9 +197,10 @@ def get_macro_news():
                 dt = article.get("datetime", 0)
                 art_date = datetime.utcfromtimestamp(dt).strftime("%Y-%m-%d") if dt else ""
                 selected.append({
-                    "headline": (article.get("headline") or "")[:110],
+                    "headline": (article.get("headline") or "")[:140],
                     "date":     art_date,
                     "source":   article.get("source", ""),
+                    "url":      article.get("url", ""),
                 })
                 if len(selected) >= 4:
                     break
@@ -455,9 +456,12 @@ def construire_prompt(portfolio, watchlist, contexte, analyse=None, macro_news=N
     # Tickers watchlist complète
     tickers_watchlist = [s["ticker"] for s in watchlist.get("stocks", [])]
 
-    # Section macro news
+    # Section macro news — indexée pour permettre à Claude de fournir des résumés FR alignés
     if macro_news:
-        news_lines = "\n".join(f"  - [{n['date']}] {n['headline']} ({n['source']})" for n in macro_news)
+        news_lines = "\n".join(
+            f"  [{i}] [{n['date']}] {n['headline']} ({n['source']})"
+            for i, n in enumerate(macro_news)
+        )
         macro_news_section = f"\n## ACTUALITÉS MACRO RÉCENTES (contexte, ne pas sur-pondérer)\n{news_lines}\n"
     else:
         macro_news_section = ""
@@ -518,8 +522,11 @@ Réponds UNIQUEMENT en JSON valide, sans texte avant ou après, selon ce format 
   "analyse_macro": "Analyse du contexte de marché en 2-3 phrases",
   "biais_detectes": ["biais 1", "biais 2"],
   "conviction_globale": "haussier" | "neutre" | "baissier",
-  "message_utilisateurs": "Message transparent aux utilisateurs sur les décisions de cette semaine"
+  "message_utilisateurs": "Message transparent aux utilisateurs sur les décisions de cette semaine",
+  "news_resumes_fr": ["Résumé en français de la news [0] en 1 phrase claire et factuelle", "Résumé de [1]", "Résumé de [2]", "Résumé de [3]"]
 }}
+
+Pour `news_resumes_fr` : un résumé français concis (1 phrase, 15-25 mots max, factuel, neutre) pour CHAQUE news listée plus haut, dans l'ordre des indices [0], [1], etc. Si une news est trop technique ou marginale, garde-la mais résume sa pertinence pour les marchés. Si aucune news n'a été fournie, retourne un tableau vide [].
 
 N'inclus que les décisions actionnables (achats et ventes). Les positions conservées sans changement n'ont pas besoin d'apparaître, sauf si tu veux commenter spécifiquement leur situation.
 """
@@ -887,6 +894,13 @@ Ne jamais inclure de balises markdown ou de backticks.""",
     history = history[-52:]
     max_dd = calc_max_drawdown(history)
 
+    # ── Combine les news macro Finnhub avec les résumés FR de Claude
+    news_resumes = decisions_claude.get("news_resumes_fr", []) or []
+    macro_news_enriched = []
+    for i, news in enumerate(macro_news or []):
+        resume = news_resumes[i] if i < len(news_resumes) else ""
+        macro_news_enriched.append({**news, "resume_fr": resume})
+
     output = {
         "updated_at":          today,
         "week":                semaine(),
@@ -908,6 +922,8 @@ Ne jamais inclure de balises markdown ou de backticks.""",
         "nb_positives":        len([p for p in positions if p.get("performance", 0) > 0]),
         "nb_negatives":        len([p for p in positions if p.get("performance", 0) < 0]),
         "nb_neutres":          len([p for p in positions if p.get("performance", 0) == 0.0]),
+        # Actus macro de la semaine (titres EN + résumés FR par Claude)
+        "macro_news": macro_news_enriched,
         # Analyse Claude — affiché dans le site
         "analyse_claude": {
             "analyse_macro":        decisions_claude.get("analyse_macro", ""),

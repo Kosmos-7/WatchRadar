@@ -185,6 +185,17 @@
   .neu { color: var(--text2); }
   .liq { color: var(--blue); }
 
+  /* ── MACRO NEWS — intégré dans le bloc Raisonnement ── */
+  .macro-news-inline { margin-top: 1.1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .mn-item { padding: 7px 0; border-bottom: 1px solid var(--border); }
+  .mn-item:last-child { border-bottom: none; }
+  .mn-resume { font-size: 0.88rem; color: var(--text2); line-height: 1.55; margin-bottom: 3px; }
+  .mn-headline { font-family: 'Courier New', monospace; font-size: 0.74rem; color: var(--text3); line-height: 1.5; }
+  .mn-headline a { color: var(--text3); text-decoration: none; transition: color 0.15s; }
+  .mn-headline a:hover { color: var(--gold); }
+  .mn-meta-date { color: var(--text3); opacity: 0.7; }
+  .mn-source-note { margin-top: 0.6rem; font-family: 'Courier New', monospace; font-size: 0.70rem; color: var(--text3); opacity: 0.6; }
+
   /* ── PARI DE LA SEMAINE — intégré dans le bloc Raisonnement ── */
   .weekly-pick-inline { margin-top: 1.1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
   .wp-label { font-family: 'Courier New', monospace; font-size: 0.72rem; color: var(--text3); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 0.6rem; }
@@ -461,6 +472,11 @@
       </div>
       <div id="analyse-macro"  class="analyse-text"></div>
       <div id="message-users"  class="message-text"></div>
+      <div id="macro-news-block" class="macro-news-inline" style="display:none">
+        <div class="wp-label">Contexte macro de la semaine</div>
+        <div id="macro-news-items"></div>
+        <div class="mn-source-note">Sources : Finnhub (Reuters, Bloomberg, AP…) · titres en anglais, résumés français par l'IA</div>
+      </div>
       <div id="weekly-pick" class="weekly-pick-inline" style="display:none">
         <div class="wp-label">Décision marquante de la semaine</div>
         <div class="wp-head">
@@ -1057,6 +1073,30 @@ function toggleOrder(idx) {
   if (el) el.classList.toggle('open');
 }
 
+function renderMacroNews(news) {
+  if (!news || news.length === 0) return;
+  const block = document.getElementById('macro-news-block');
+  const list  = document.getElementById('macro-news-items');
+  if (!block || !list) return;
+  // Reformater une date ISO YYYY-MM-DD en JJ/MM
+  const fmtDate = (iso) => {
+    if (!iso || iso.length < 10) return iso || '';
+    return `${iso.slice(8, 10)}/${iso.slice(5, 7)}`;
+  };
+  list.innerHTML = news.map(n => {
+    const resume   = n.resume_fr ? n.resume_fr : '<em style="color:var(--text3)">Résumé indisponible.</em>';
+    const headline = n.url
+      ? `<a href="${n.url}" target="_blank" rel="noopener">${n.headline}</a>`
+      : n.headline;
+    const meta = `<span class="mn-meta-date">${fmtDate(n.date)}</span>${n.source ? ' · ' + n.source : ''}`;
+    return `<div class="mn-item">
+      <div class="mn-resume">${resume}</div>
+      <div class="mn-headline">${meta} — ${headline}</div>
+    </div>`;
+  }).join('');
+  block.style.display = 'block';
+}
+
 function pickWeeklyOrder(orders, updatedAt) {
   if (!orders || orders.length === 0) return;
   // Fenêtre : 7 jours avant la dernière mise à jour
@@ -1366,6 +1406,9 @@ async function loadPortfolio() {
     });
     window._allOrdres = allOrdres;
     renderOrdres(5);
+
+    // ── Actus macro de la semaine (titres EN + résumés FR par Claude) ───────
+    renderMacroNews(d.macro_news || []);
 
     // ── Pari de la semaine : on extrait LA décision la plus parlante ────────
     // Heuristique : ordres de la semaine en cours (~7j), priorité VENTE > ACHAT,
