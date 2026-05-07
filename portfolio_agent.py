@@ -243,12 +243,28 @@ def calc_max_drawdown(history):
 
 # ── FEEDBACK LOOP : BIAIS → RÈGLES AUTO ──────────────────────────────────────
 
+# Familles sectorielles — les libellés yfinance fragmentent le tech (Semi-conducteurs,
+# Équip. semi., Médias & IA…) qui sont en réalité fortement corrélés (cycle, supply chain).
+# On regroupe en clusters pour que R1 voie le risque réel.
+SECTOR_CLUSTERS = {
+    "Technologie":       "Tech & IA",
+    "Semi-conducteurs":  "Tech & IA",
+    "Équip. semi.":      "Tech & IA",
+    "Médias & IA":       "Tech & IA",
+    # Les autres secteurs restent eux-mêmes (Finance, Santé, Industrie, etc.)
+}
+
+def cluster_for(sector):
+    """Renvoie le cluster d'un secteur, ou le secteur lui-même s'il n'est pas regroupé."""
+    return SECTOR_CLUSTERS.get(sector, sector)
+
 def calculer_regles_auto(portfolio):
     """
     Règles mécaniques — s'appliquent AVANT Claude et dans executer_decisions().
     Basées sur la valeur du portfolio, pas sur le comptage arbitraire de titres.
 
-    R1 : 1 secteur > 30% de la valeur totale → achats bloqués dans ce secteur
+    R1 : 1 cluster sectoriel > 30% de la valeur totale → achats bloqués dans ce cluster
+         (clusters = familles corrélées, ex. Tech + Semi-cond + Équip. semi. + Médias IA)
     R2 : 1 position > 20% du capital → renforcement bloqué
     R3 : Liquidités < 5% du capital → achats bloqués
     """
@@ -260,19 +276,20 @@ def calculer_regles_auto(portfolio):
     if capital <= 0:
         return regles
 
-    # R1 — Concentration sectorielle en valeur
-    valeur_par_secteur = {}
+    # R1 — Concentration par cluster sectoriel (regroupe les secteurs corrélés)
+    valeur_par_cluster = {}
     for p in positions:
         s = p.get("sector", "—")
         if s and s != "—":
-            valeur_par_secteur[s] = valeur_par_secteur.get(s, 0) + p.get("valeur_actuelle", 0)
-    for s, val in valeur_par_secteur.items():
+            cl = cluster_for(s)
+            valeur_par_cluster[cl] = valeur_par_cluster.get(cl, 0) + p.get("valeur_actuelle", 0)
+    for cl, val in valeur_par_cluster.items():
         pct = val / capital * 100
         if pct > 30:
             regles.append({
                 "type":    "concentration_sectorielle",
-                "secteur": s,
-                "message": f"Secteur {s} : {pct:.0f}% du portfolio > 30% — aucun nouvel achat dans ce secteur",
+                "secteur": cl,  # cluster name (ex. "Tech & IA")
+                "message": f"Cluster {cl} : {pct:.0f}% du portfolio > 30% — aucun nouvel achat dans ce cluster",
                 "bloque":  True,
             })
 
@@ -653,14 +670,15 @@ def executer_decisions(decisions_claude, portfolio, watchlist, contexte, eur_usd
                     print(f"  🚫 ACHAT {ticker} bloqué — liquidités < 5% (R3)")
                     bloque = True
                 else:
-                    # R1 — Secteur surconcentré en valeur
+                    # R1 — Cluster sectoriel surconcentré (regroupe Tech/Semi/Équip semi/Médias IA)
                     stock_tmp = stock_map.get(ticker, {})
                     sect_tick = stock_tmp.get("sector", "")
-                    if sect_tick and any(
-                        r["type"] == "concentration_sectorielle" and r.get("secteur") == sect_tick
+                    cluster_tick = cluster_for(sect_tick) if sect_tick else ""
+                    if cluster_tick and any(
+                        r["type"] == "concentration_sectorielle" and r.get("secteur") == cluster_tick
                         for r in regles_auto
                     ):
-                        print(f"  🚫 ACHAT {ticker} bloqué — secteur {sect_tick} > 30% du portfolio (R1)")
+                        print(f"  🚫 ACHAT {ticker} bloqué — cluster {cluster_tick} > 30% du portfolio (R1)")
                         bloque = True
                 if bloque:
                     continue

@@ -148,11 +148,11 @@
     max-width: 640px;
   }
 
-  /* ── BRIQUE CARDS ── */
+  /* ── BRIQUE CARDS — 1 colonne pleine largeur pour confort de lecture ── */
   .brique-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
   .brique-card {
     background: var(--surface);
@@ -253,11 +253,11 @@
     padding: 1px 5px;
   }
 
-  /* ── CONCEPT CARDS ── */
+  /* ── CONCEPT CARDS — 1 colonne pour confort de lecture ── */
   .concept-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
   .concept-card {
     background: var(--surface);
@@ -534,9 +534,9 @@
         <span class="brique-number">01 · L'action</span>
         <div class="brique-title">Une part de propriété</div>
         <div class="brique-body">
-          Acheter une action, c'est devenir copropriétaire d'une entreprise. Apple vaut ~3 000 Mds $ pour ~15 Mds d'actions : chaque action représente donc ~200 $.
+          Acheter une action, c'est devenir copropriétaire d'une entreprise cotée en bourse. Apple vaut environ 3 000 milliards de dollars pour ~15 milliards d'actions en circulation : chaque action représente donc une part de ~200 $ du capital de l'entreprise.
           <br><br>
-          Si Apple génère plus de bénéfices, ton action monte. Si elle décline, ton action baisse. Aussi simple que ça.
+          Si Apple génère plus de bénéfices, ouvre de nouveaux marchés ou surprend positivement avec ses résultats, la valeur de ton action monte — d'autres investisseurs sont prêts à payer plus pour la même part. À l'inverse, si Apple perd des clients, rate ses objectifs ou voit sa marge se dégrader, ton action recule. Le cours d'une action reflète, sur le long terme, la santé économique de l'entreprise. À court terme, il fluctue aussi avec le sentiment de marché et l'actualité macro — taux d'intérêt, inflation, géopolitique.
         </div>
       </div>
 
@@ -544,9 +544,9 @@
         <span class="brique-number">02 · L'indice</span>
         <div class="brique-title">Un panier de référence</div>
         <div class="brique-body">
-          Un indice est un panier d'actions. Le CAC 40 contient les 40 plus grandes françaises ; le MSCI World, ~1 500 entreprises dans 23 pays développés.
+          Un indice est un panier d'actions construit pour représenter un marché ou un segment. Le CAC 40 regroupe les 40 plus grandes capitalisations françaises ; le MSCI World couvre ~1 500 grandes entreprises dans 23 pays développés ; le S&P 500, les 500 plus grandes capitalisations américaines. Chaque indice pèse ses composants selon une méthodologie précise (généralement la capitalisation flottante).
           <br><br>
-          Il sert de baromètre : sans référence, +8 % peut être excellent (marché à −5 %) ou décevant (marché à +20 %).
+          Les indices servent de baromètres pour juger une performance. Sans référence, un rendement de +8 % est impossible à interpréter : il peut être excellent (si le marché a fait −5 % sur la période), normal (marché à +8 %), ou décevant (marché à +20 %). C'est pour cette raison que les fonds, gérants et stratégies sont systématiquement comparés à un benchmark — la seule manière de mesurer si la gestion active apporte vraiment de la valeur.
         </div>
       </div>
 
@@ -554,9 +554,9 @@
         <span class="brique-number">03 · La performance</span>
         <div class="brique-title">Battre le marché ou pas ?</div>
         <div class="brique-body">
-          Un ETF MSCI World réplique l'indice mondial pour ~0,2 % de frais annuels — performance automatique, sans effort.
+          Un investisseur passif qui achète un ETF MSCI World obtient automatiquement la performance du marché mondial — sans sélection de titres, sans timing, pour environ 0,2 % de frais annuels. C'est la baseline disponible pour quiconque ouvre un compte-titres ou un PEA.
           <br><br>
-          Signal essaie de faire mieux. Si l'IA ne bat pas l'ETF sur la durée, autant avoir l'ETF directement. La comparaison est le défi.
+          Signal essaie de faire mieux que cette baseline en sélectionnant des actions individuelles à partir de signaux algorithmiques (momentum, fondamentaux, consensus). C'est ce qu'on appelle de la <em>gestion active</em>. La barre est haute : sur 10 ans, environ 85 % des fonds actifs professionnels font moins bien que leur indice de référence (données SPIVA). Si l'IA ne bat pas l'ETF sur la durée, autant avoir l'ETF directement — c'est ce qui rend la comparaison honnête, et le défi réel.
         </div>
       </div>
     </div>
@@ -578,7 +578,7 @@
           <div class="bar-fill" style="width: 40%"></div>
         </div>
         <div class="scoring-desc">
-          L'algorithme repère les tendances claires : Golden Cross (MM21 au-dessus de MM200), RSI en zone saine, volumes qui confirment le mouvement, cours proche de sa trajectoire long terme. Un titre qui monte régulièrement avec du volume score bien. Un titre qui oscille sans direction, mal.
+          L'algorithme évalue si le titre est en tendance haussière claire. Quatre signaux comptent : le Golden Cross (MM21 au-dessus de MM200, avec bonus selon la fraîcheur du croisement), le RSI dans une zone équilibrée (40-60 = 10 pts), le volume des dernières semaines supérieur à la moyenne longue (confirmation), et un cours proche de sa trajectoire de régression long terme (zone saine, ni surachat ni survente). Un titre qui monte régulièrement avec des volumes croissants score bien. Un titre qui oscille sans direction nette ou qui vient de former un Death Cross, mal — avec une pénalité non compensable dans ce dernier cas.
         </div>
       </div>
 
@@ -591,7 +591,7 @@
           <div class="bar-fill" style="width: 50%"></div>
         </div>
         <div class="scoring-desc">
-          Le cœur du score. L'entreprise est-elle rentable ? Sa croissance est-elle réelle ? Sa valorisation tient-elle face à ses bénéfices (P/E) et à sa trésorerie générée (Free Cash Flow) ? Ces 50 points mesurent la santé concrète — ce qu'elle produit vraiment, pas ce que le marché espère.
+          Le cœur du score. Six dimensions sont notées : la croissance du chiffre d'affaires, la marge nette, la marge de Free Cash Flow (la trésorerie réellement générée — bien plus difficile à maquiller comptablement que la marge nette), le PEG ratio (valorisation rapportée à la croissance), la croissance du bénéfice par action (EPS), et l'endettement. Ces 50 points mesurent la santé financière concrète de l'entreprise — pas ce que le marché espère qu'elle deviendra, mais ce qu'elle produit vraiment, trimestre après trimestre.
         </div>
       </div>
 
@@ -604,7 +604,7 @@
           <div class="bar-fill" style="width: 10%"></div>
         </div>
         <div class="scoring-desc">
-          Recommandation moyenne des analystes sell-side. Volontairement peu pondéré : ils ont un biais structurel haussier (conflits d'intérêt, couverture sélective). Signal préfère ses propres signaux, mais le consensus reste utile quand il diverge fortement.
+          Recommandation moyenne des analystes sell-side, sur une échelle Acheter / Conserver / Vendre. Volontairement peu pondéré : la littérature financière documente un biais structurel des analystes vers les recommandations d'achat (conflits d'intérêt, couverture sélective des titres déjà appréciés, relations clients). C'est aussi un signal lagging — les révisions interviennent souvent après les événements. Signal préfère ses propres signaux quantitatifs, mais le consensus reste utile comme contre-indicateur quand il diverge fortement de l'analyse fondamentale.
         </div>
       </div>
     </div>
@@ -625,9 +625,9 @@
         <span class="concept-label">Score global</span>
         <span class="concept-example">★★★★☆ &nbsp;84</span>
         <div class="concept-body">
-          Score sur 100, somme des trois composantes (momentum + fondamentaux + consensus). Étoiles : 5★ à partir de 90, 4★ à partir de 75, 3★ à partir de 60.
+          Le chiffre est le score sur 100, somme des trois composantes : momentum (40 pts), fondamentaux (50 pts), consensus analystes (10 pts). Les étoiles sont un résumé visuel : 5★ à partir de 90, 4★ à partir de 75, 3★ à partir de 60.
           <br><br>
-          Un score élevé ne garantit pas une hausse imminente — il signale juste que plusieurs signaux convergent. Le titre peut très bien corriger à court terme tout en gardant un score haut.
+          Un score élevé ne garantit pas une hausse imminente — il signale que plusieurs signaux convergent favorablement à un instant T. Le score d'un titre peut rester haut pendant qu'il corrige à court terme : les fondamentaux et la tendance long terme évoluent lentement, le cours peut bouger vite. C'est un indicateur de qualité, pas de timing.
         </div>
       </div>
 
@@ -635,9 +635,9 @@
         <span class="concept-label">Croisement des moyennes mobiles</span>
         <span class="concept-example">↑ Golden Cross · 12j depuis le croisement</span>
         <div class="concept-body">
-          La MM21 (moyenne 21 jours) a dépassé la MM200 (moyenne 200 jours) il y a 12 jours : la tendance court terme est passée au-dessus du long terme. Historiquement haussier dans ~66-72 % des cas sur 60 jours.
+          La MM21 (moyenne mobile sur 21 jours) a dépassé la MM200 (moyenne sur 200 jours) il y a 12 jours. Concrètement : la dynamique court terme est désormais au-dessus de la dynamique long terme — un signal classique de retournement haussier. Historiquement, après un Golden Cross sur le S&P 500, le titre est en hausse dans ~66-72 % des cas sur les 60 jours suivants (la fenêtre la plus forte est les 10 premiers jours).
           <br><br>
-          Un Death Cross (MM21 repasse sous MM200) est le signal inverse — plus fragile en marché sans tendance claire (~38 % de fiabilité).
+          Le Death Cross (MM21 repasse sous MM200) est le signal inverse, baissier. Il est plus fragile en marché sans tendance claire (~38 % de fiabilité dans ces phases) — d'où la pondération plus faible dans le score Signal et la pénalité non compensable s'il est récent.
         </div>
       </div>
 
@@ -645,9 +645,9 @@
         <span class="concept-label">Z-score (écart à la tendance)</span>
         <span class="concept-example">Zone saine · +0.4σ</span>
         <div class="concept-body">
-          Écart du cours actuel par rapport à sa trajectoire long terme, en écarts-types. +0,4σ = légèrement au-dessus de la moyenne historique, zone saine.
+          Le Z-score mesure l'écart du cours actuel par rapport à sa trajectoire long terme, exprimé en écarts-types (σ). Cette trajectoire est calculée par régression log-linéaire sur 10 ou 20 ans selon le secteur. +0,4σ = le cours est légèrement au-dessus de sa moyenne historique — encore dans la zone saine, sans signal d'alerte.
           <br><br>
-          Au-delà de +2σ : surachat probable. Sous −2σ : rebond possible, mais aussi détérioration réelle. Un repère pour les extrêmes, pas une garantie.
+          Au-delà de +2σ : surachat probable, retour vers la moyenne possible à court ou moyen terme. Sous −2σ : potentiel de rebond, mais aussi possible signe de détérioration fondamentale réelle (l'entreprise vaut peut-être vraiment moins). C'est un repère pour identifier les extrêmes, pas un déclencheur d'achat ou de vente.
         </div>
       </div>
 
@@ -655,9 +655,9 @@
         <span class="concept-label">RSI (force relative)</span>
         <span class="concept-example">RSI 52</span>
         <div class="concept-body">
-          Oscillateur 0–100 qui mesure la vitesse et l'ampleur des variations. Entre 40 et 60 : équilibré, ni suracheté ni survendu (10 pts dans le score Signal).
+          Le RSI (Relative Strength Index) est un oscillateur entre 0 et 100 qui mesure la vitesse et l'ampleur des variations récentes du cours. Il compare l'amplitude des hausses à celle des baisses sur les 14 derniers jours. Entre 40 et 60 : le titre est équilibré, ni suracheté ni survendu — c'est la zone idéale (10 pts dans le score Signal).
           <br><br>
-          Au-dessus de 70 : monte trop vite, risque de correction. Sous 30 : survendu, rebond possible mais pas automatique. RSI 52 ici = idéal, marge dans les deux sens.
+          Au-dessus de 70 : le titre monte trop vite par rapport à sa moyenne, risque de correction à court terme. Sous 30 : survendu, potentiel de rebond mais pas automatique — un titre peut rester en survente longtemps si la tendance fondamentale est durablement négative. Un RSI à 52 comme ici est confortable : le titre a de la marge dans les deux sens.
         </div>
       </div>
     </div>
