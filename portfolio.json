@@ -2,13 +2,13 @@
   "updated_at": "2026-05-07",
   "week": "Sem. 19 · 2026",
   "capital_initial": 20000.0,
-  "capital_actuel": 22550.22,
-  "performance": 12.75,
-  "benchmark_cac40": 0.5,
-  "benchmark_msci": 7.49,
-  "vs_benchmark": 5.26,
+  "capital_actuel": 22903.83,
+  "performance": 14.52,
+  "benchmark_cac40": 0.08,
+  "benchmark_msci": 7.43,
+  "vs_benchmark": 7.09,
   "mode_panique": false,
-  "perf_cac_semaine": 1.49,
+  "perf_cac_semaine": 1.08,
   "positions": [
     {
       "ticker": "ASML.AS",
@@ -18,13 +18,13 @@
       "currency": "EUR",
       "date_achat": "2026-01-02",
       "prix_achat": 650.0,
-      "prix_actuel": 1302.4,
+      "prix_actuel": 1300.0,
       "quantite": 3,
       "montant_investi": 1950.0,
-      "valeur_actuelle": 3907.2,
-      "performance": 100.37,
+      "valeur_actuelle": 3900.0,
+      "performance": 100.0,
       "score_entree": 88,
-      "poids": 17.3
+      "poids": 17.0
     },
     {
       "ticker": "NVDA",
@@ -34,13 +34,13 @@
       "currency": "USD",
       "date_achat": "2026-01-02",
       "prix_achat": 115.0,
-      "prix_actuel": 212.06,
+      "prix_actuel": 212.75,
       "quantite": 20,
       "montant_investi": 1957.1,
-      "valeur_actuelle": 3601.56,
-      "performance": 84.03,
+      "valeur_actuelle": 3615.12,
+      "performance": 84.72,
       "score_entree": 94,
-      "poids": 16.0
+      "poids": 15.8
     },
     {
       "ticker": "AMD",
@@ -50,13 +50,13 @@
       "currency": "USD",
       "date_achat": "2026-05-05",
       "prix_achat": 341.54,
-      "prix_actuel": 411.285,
+      "prix_actuel": 406.7,
       "quantite": 3,
       "montant_investi": 875.82,
-      "valeur_actuelle": 1047.77,
-      "performance": 19.63,
+      "valeur_actuelle": 1036.62,
+      "performance": 18.36,
       "score_entree": 85,
-      "poids": 4.6
+      "poids": 4.5
     },
     {
       "ticker": "AMZN",
@@ -66,30 +66,13 @@
       "currency": "USD",
       "date_achat": "2026-04-30",
       "prix_achat": 259.27,
-      "prix_actuel": 272.965,
+      "prix_actuel": 273.22,
       "quantite": 2,
       "montant_investi": 441.24,
-      "valeur_actuelle": 463.6,
-      "performance": 5.07,
+      "valeur_actuelle": 464.27,
+      "performance": 5.22,
       "score_entree": 90,
-      "poids": 2.1
-    },
-    {
-      "ticker": "NOW",
-      "nom": "ServiceNow, Inc.",
-      "market": "NYQ",
-      "sector": "Technologie",
-      "currency": "USD",
-      "date_achat": "2026-05-06",
-      "prix_achat": 92.01,
-      "prix_actuel": 95.375,
-      "quantite": 14,
-      "montant_investi": 1095.08,
-      "valeur_actuelle": 1133.87,
-      "performance": 3.54,
-      "score_entree": 82,
-      "raison_achat": "Score watchlist 82/100 avec un z=-3.4σ sous sa droite de régression — la décote est significative et représente une opportunité d'entrée à prix compressé. Death Cross présent depuis 190j mais RSI en zone favorable et croissance CA solide suggèrent un potentiel de retour vers la moyenne. Avec 5486€ de liquidités disponibles, j'achète 1 titre pour initier une position sans surpondérer un seul secteur tech.",
-      "poids": 5.0
+      "poids": 2.0
     },
     {
       "ticker": "CRM",
@@ -99,13 +82,30 @@
       "currency": "USD",
       "date_achat": "2026-05-06",
       "prix_achat": 181.19,
-      "prix_actuel": 187.75,
+      "prix_actuel": 188.05,
       "quantite": 7,
       "montant_investi": 1079.26,
-      "valeur_actuelle": 1116.04,
-      "performance": 3.41,
+      "valeur_actuelle": 1118.39,
+      "performance": 3.63,
       "score_entree": 80,
       "raison_achat": "CRM score 80/100, z=-2.4σ sous régression avec Death Cross mais RSI favorable et croissance CA modérée — profil similaire à NOW/INTU mais avec moins d'écart de régression. Les liquidités disponibles (3375€) permettent l'achat d'environ 1-2 titres à ~200-250€ estimé. La semaine macro est haussière (+2.1% MSCI World) et le portefeuille surperforme largement le benchmark (+11.4pp YTD), ce qui autorise une prise de risque mesurée sur une décote fondamentale documentée. Achat de 2 titres recommandé pour conserver des liquidités de sécurité.",
+      "poids": 4.9
+    },
+    {
+      "ticker": "NOW",
+      "nom": "ServiceNow, Inc.",
+      "market": "NYQ",
+      "sector": "Technologie",
+      "currency": "USD",
+      "date_achat": "2026-05-06",
+      "prix_achat": 92.01,
+      "prix_actuel": 94.97,
+      "quantite": 14,
+      "montant_investi": 1095.08,
+      "valeur_actuelle": 1129.63,
+      "performance": 3.16,
+      "score_entree": 82,
+      "raison_achat": "Score watchlist 82/100 avec un z=-3.4σ sous sa droite de régression — la décote est significative et représente une opportunité d'entrée à prix compressé. Death Cross présent depuis 190j mais RSI en zone favorable et croissance CA solide suggèrent un potentiel de retour vers la moyenne. Avec 5486€ de liquidités disponibles, j'achète 1 titre pour initier une position sans surpondérer un seul secteur tech.",
       "poids": 4.9
     },
     {
@@ -116,11 +116,11 @@
       "currency": "USD",
       "date_achat": "2026-05-06",
       "prix_achat": 398.32,
-      "prix_actuel": 410.24,
+      "prix_actuel": 411.0,
       "quantite": 3,
       "montant_investi": 1015.86,
-      "valeur_actuelle": 1045.11,
-      "performance": 2.88,
+      "valeur_actuelle": 1047.58,
+      "performance": 3.12,
       "score_entree": 82,
       "raison_achat": "Score 82/100, z=-3.6σ sous régression — la décote est la plus marquée de la watchlist, similaire à NOW. Death Cross depuis 129j mais croissance CA solide et RSI favorable signalent une divergence bullish potentielle. L'achat d'1 titre mobilise ~400-500€ (estimation) et diversifie sur le secteur fintech/software hors positions déjà lourdes en semi-conducteurs.",
       "poids": 4.6
@@ -133,11 +133,11 @@
       "currency": "USD",
       "date_achat": "2026-04-30",
       "prix_achat": 413.21,
-      "prix_actuel": 422.055,
+      "prix_actuel": 419.795,
       "quantite": 1,
       "montant_investi": 351.6,
-      "valeur_actuelle": 358.4,
-      "performance": 1.93,
+      "valeur_actuelle": 356.67,
+      "performance": 1.44,
       "score_entree": 100,
       "poids": 1.6
     },
@@ -149,13 +149,13 @@
       "currency": "USD",
       "date_achat": "2026-05-05",
       "prix_achat": 610.41,
-      "prix_actuel": 623.035,
+      "prix_actuel": 622.17,
       "quantite": 2,
       "montant_investi": 1044.14,
-      "valeur_actuelle": 1058.14,
-      "performance": 1.34,
+      "valeur_actuelle": 1057.21,
+      "performance": 1.25,
       "score_entree": 84,
-      "poids": 4.7
+      "poids": 4.6
     },
     {
       "ticker": "BLK",
@@ -165,11 +165,11 @@
       "currency": "USD",
       "date_achat": "2026-04-30",
       "prix_achat": 1060.9,
-      "prix_actuel": 1071.3564,
+      "prix_actuel": 1070.17,
       "quantite": 1,
       "montant_investi": 902.77,
-      "valeur_actuelle": 909.78,
-      "performance": 0.78,
+      "valeur_actuelle": 909.24,
+      "performance": 0.72,
       "score_entree": 93,
       "poids": 4.0
     },
@@ -181,11 +181,11 @@
       "currency": "EUR",
       "date_achat": "2026-04-30",
       "prix_achat": 180.58,
-      "prix_actuel": 181.24,
+      "prix_actuel": 180.68,
       "quantite": 3,
       "montant_investi": 541.74,
-      "valeur_actuelle": 543.72,
-      "performance": 0.37,
+      "valeur_actuelle": 542.04,
+      "performance": 0.06,
       "score_entree": 91,
       "poids": 2.4
     },
@@ -197,13 +197,13 @@
       "currency": "USD",
       "date_achat": "2026-05-05",
       "prix_achat": 967.93,
-      "prix_actuel": 975.17,
+      "prix_actuel": 971.425,
       "quantite": 1,
       "montant_investi": 827.79,
-      "valeur_actuelle": 828.1,
-      "performance": 0.04,
+      "valeur_actuelle": 825.34,
+      "performance": -0.3,
       "score_entree": 89,
-      "poids": 3.7
+      "poids": 3.6
     },
     {
       "ticker": "LSEG.L",
@@ -213,14 +213,14 @@
       "currency": "GBP",
       "date_achat": "2026-05-07",
       "prix_achat": 92.16,
-      "prix_actuel": 92.16,
+      "prix_actuel": 91.86,
       "quantite": 14,
-      "montant_investi": 1114.12,
-      "valeur_actuelle": 1114.12,
-      "performance": 0.0,
+      "montant_investi": 1492.64,
+      "valeur_actuelle": 1487.78,
+      "performance": -0.33,
       "score_entree": 83,
       "raison_achat": "Score 83/100 avec Golden Cross frais (9j) — fenêtre signal optimale — et prix sous régression (-1.1σ), offrant un point d'entrée encore favorable avant retour à la moyenne. Secteur financier infrastructure de marché défensif, non représenté dans le portefeuille. Les liquidités disponibles (3173€) permettent une entrée initiale mesurée.",
-      "poids": 4.9
+      "poids": 6.5
     },
     {
       "ticker": "ADYEN.AS",
@@ -230,13 +230,13 @@
       "currency": "EUR",
       "date_achat": "2026-04-30",
       "prix_achat": 958.5,
-      "prix_actuel": 954.4,
+      "prix_actuel": 948.9,
       "quantite": 1,
       "montant_investi": 958.5,
-      "valeur_actuelle": 954.4,
-      "performance": -0.43,
+      "valeur_actuelle": 948.9,
+      "performance": -1.0,
       "score_entree": 93,
-      "poids": 4.2
+      "poids": 4.1
     },
     {
       "ticker": "JPM",
@@ -246,11 +246,11 @@
       "currency": "USD",
       "date_achat": "2026-04-30",
       "prix_achat": 313.77,
-      "prix_actuel": 311.07,
+      "prix_actuel": 310.37,
       "quantite": 2,
       "montant_investi": 534.0,
-      "valeur_actuelle": 528.31,
-      "performance": -1.07,
+      "valeur_actuelle": 527.39,
+      "performance": -1.24,
       "score_entree": 95,
       "poids": 2.3
     },
@@ -262,11 +262,11 @@
       "currency": "USD",
       "date_achat": "2026-04-30",
       "prix_achat": 330.69,
-      "prix_actuel": 321.89,
+      "prix_actuel": 321.8669,
       "quantite": 2,
       "montant_investi": 562.59,
-      "valeur_actuelle": 546.69,
-      "performance": -2.83,
+      "valeur_actuelle": 546.93,
+      "performance": -2.78,
       "score_entree": 93,
       "poids": 2.4
     },
@@ -278,13 +278,13 @@
       "currency": "EUR",
       "date_achat": "2026-05-05",
       "prix_achat": 261.9,
-      "prix_actuel": 247.2,
+      "prix_actuel": 247.1,
       "quantite": 4,
       "montant_investi": 1047.6,
-      "valeur_actuelle": 988.8,
-      "performance": -5.61,
+      "valeur_actuelle": 988.4,
+      "performance": -5.65,
       "score_entree": 84,
-      "poids": 4.4
+      "poids": 4.3
     },
     {
       "ticker": "ETN",
@@ -294,17 +294,17 @@
       "currency": "USD",
       "date_achat": "2026-04-30",
       "prix_achat": 430.55,
-      "prix_actuel": 406.8,
+      "prix_actuel": 403.895,
       "quantite": 1,
       "montant_investi": 366.37,
-      "valeur_actuelle": 345.45,
-      "performance": -5.71,
+      "valeur_actuelle": 343.16,
+      "performance": -6.34,
       "score_entree": 93,
       "poids": 1.5
     }
   ],
   "liquidites": 2059.16,
-  "pct_liquidites": 9.1,
+  "pct_liquidites": 9.0,
   "ordres": [
     {
       "date": "2026-05-07",
@@ -1020,28 +1020,37 @@
     }
   ],
   "biais_detectes": [
-    "Biais de confirmation sur les positions récentes : plusieurs achats de la semaine dernière (NOW, CRM, INTU, DB1.DE) semblent motivés par des critères similaires — risque de clustering sectoriel tech non diversifié",
-    "Surconcentration technologie : 10 des 17 positions sont dans la tech/semi-conducteurs — exposition asymétrique à un retournement sectoriel",
-    "Thèses d'achat non documentées sur 11 des 17 positions — difficulté à évaluer les deltas fondamentaux en cas de retournement"
+    "Surconcentration sectorielle technologie : ASML, NVDA, AMD, AVGO, NOW, INTU, CRM représentent une part dominante du portefeuille",
+    "Rotation excessive récente : 6+ nouvelles positions ouvertes en moins de 7 jours, fragmentant le capital sur des positions sous-dimensionnées",
+    "Thèses d'achat non documentées sur 10+ positions — manque de traçabilité qui complique les décisions de conservation/vente futures",
+    "Biais de momentum : tendance à acheter après de bons signaux techniques sans suffisamment peser la valorisation absolue"
   ],
   "regles_actives": [
     {
       "type": "concentration_sectorielle",
       "secteur": "Tech & IA",
-      "message": "Cluster Tech & IA : 63% du portfolio > 30% — aucun nouvel achat dans ce cluster",
+      "message": "Cluster Tech & IA : 62% du portfolio > 30% — aucun nouvel achat dans ce cluster",
       "bloque": true
     }
   ],
   "nb_positions": 18,
-  "nb_positives": 12,
-  "nb_negatives": 5,
-  "nb_neutres": 1,
-  "macro_news": [],
+  "nb_positives": 11,
+  "nb_negatives": 7,
+  "nb_neutres": 0,
+  "macro_news": [
+    {
+      "headline": "Gold extends gains as US-Iran peace hopes ease inflation concerns - Reuters",
+      "date": "2026-05-07",
+      "source": "Reuters",
+      "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxOa21wcmpORlVhZVFvRWs3QmduODVRMU9TenpJWXNIX1dpVUFFNzRleEQ0OVFGdkx1dXRkSmN5dXpSNlB1SmZrQ1d5V2czZVZZR3ZLcy1LLUlGRzVOS3Vib01ESGtiTlpDakVjdXFmR2NfWUFWdFhkWWZrWkpSQS1vQlZvbE5UcEVBQjEwQk9jVDFub0RnRjRvSWd2SUhzMWFnRmZITA?oc=5",
+      "resume_fr": "L'or prolonge ses gains alors que les espoirs de paix entre les États-Unis et l'Iran atténuent les craintes inflationnistes selon Reuters."
+    }
+  ],
   "analyse_claude": {
-    "analyse_macro": "Le MSCI World progresse de +2.2% cette semaine, portant son YTD à +7.5%, tandis que le CAC40 reste à la traîne (+0.5% YTD). Le portefeuille Signal surperforme significativement (+12.7% YTD, +5.4pp vs benchmark), ce qui justifie une gestion prudente des positions récentes. L'absence de mode panique permet des décisions normales, mais la surperformance accumulée incite à la discipline plutôt qu'au repositionnement agressif.",
+    "analyse_macro": "Le MSCI World progresse de +2.2% cette semaine portant le YTD à +7.4%, tandis que le CAC40 reste à l'équilibre (+0.1% YTD). Le portefeuille Signal maintient une avance significative (+14.6% YTD vs +7.4% pour le benchmark, soit +7.2pp). La nouvelle sur l'or et les espoirs de paix US-Iran suggère une légère détente géopolitique, favorable aux actifs risqués. Contexte propice à des achats ciblés sur des valeurs à conviction modérée-forte.",
     "conviction_globale": "haussier",
-    "message_utilisateurs": "Cette semaine, Signal maintient le cap avec une surperformance YTD de +12.7% contre +7.5% pour le MSCI World. L'essentiel du portefeuille est conservé sans modification — la règle des 90 jours protège les positions récentes des ajustements prématurés. Un seul achat est initié : LSEG.L (London Stock Exchange Group), Golden Cross frais en zone de décote, qui diversifie notre exposition vers l'infrastructure financière européenne. AVGO (score 100/100) est délibérément non renforcé car son z=+2.1σ au-dessus de régression signale un surachat technique. ETN et DB1.DE sont en léger recul mais restent loin des stop-loss — patience requise. La surconcentration tech reste notre principal risque identifié.",
-    "nb_decisions": 6
+    "message_utilisateurs": "Cette semaine, le portefeuille Signal affiche +14.6% YTD contre +7.4% pour le MSCI World — une avance de +7.2pp maintenue malgré un marché en rebond. Les décisions cette semaine sont volontairement limitées : les liquidités restantes (2059€) permettent une petite initiation sur Netflix (diversification médias/streaming, score 79/100), mais la priorité est à la discipline plutôt qu'à l'activisme. Plusieurs positions récentes (DB1.DE, ETN, AMD, META) affichent des performances négatives à court terme — c'est normal et attendu dans les premières semaines. Les règles des 90 jours et les stop-loss à -15%/-25% assurent une protection structurelle. Le principal point d'attention : documenter rigoureusement les thèses d'achat des positions non documentées pour améliorer la traçabilité des décisions futures.",
+    "nb_decisions": 5
   },
   "performance_history": [
     {
@@ -1075,11 +1084,11 @@
     },
     {
       "date": "2026-05-07",
-      "perf": 12.75,
-      "capital": 22550.22,
-      "benchmark_cac40": 0.5,
-      "benchmark_msci": 7.49
+      "perf": 14.52,
+      "capital": 22903.83,
+      "benchmark_cac40": 0.08,
+      "benchmark_msci": 7.43
     }
   ],
-  "max_drawdown": -0.04
+  "max_drawdown": 0.0
 }
