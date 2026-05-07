@@ -306,14 +306,16 @@
   .order-card:hover .expand-hint { color: var(--gold); }
   .order-detail { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
   .order-detail.open { max-height: 800px; }
-  .order-detail-inner { padding: 0 1rem 0.85rem; border-top: 1px solid var(--border); background: var(--bg); }
-  .order-raison { font-size: 0.86rem; color: var(--text2); line-height: 1.65; padding-top: 0.65rem; }
+  .order-detail-inner { padding: 1rem 1rem 0.85rem; border-top: 1px solid var(--border); background: var(--bg); }
+  .order-raison { font-size: 0.86rem; color: var(--text2); line-height: 1.65; }
   .order-correction-note {
     font-size: 0.82rem; color: var(--text2); line-height: 1.55;
     background: var(--orange-dim); border: 1px solid rgba(248,122,32,0.25); border-radius: 8px;
-    padding: 0.75rem 0.9rem; margin-bottom: 0.65rem;
+    padding: 0.8rem 0.95rem; margin-bottom: 0.85rem;
   }
-  .order-correction-note strong { color: var(--orange); display: block; margin-bottom: 0.3rem; font-weight: 600; }
+  .order-correction-note.is-bug   { background: var(--red-dim);    border-color: rgba(240,84,84,0.25); }
+  .order-correction-note strong   { color: var(--orange); display: block; margin-bottom: 0.35rem; font-weight: 600; }
+  .order-correction-note.is-bug strong { color: var(--red); }
 
   /* ── BIAIS ── */
   .bias-block { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--orange); border-radius: var(--radius); padding: 1.1rem; margin-bottom: 1.75rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.03); }
@@ -1065,7 +1067,9 @@ function renderOrder(o, idx) {
       <div class="order-header" onclick="toggleOrder(${idx})">
         <div class="order-date">${o.date}</div>
         <div class="order-type ${orderTypeClass(o.type)}">${o.type}</div>
-        <div class="order-name">${o.nom}${o._allerRetour ? ' <span style="font-family:\'Courier New\',monospace;font-size:0.72rem;color:var(--orange);background:var(--orange-dim);border:1px solid rgba(248,122,32,0.25);border-radius:4px;padding:1px 6px;vertical-align:middle">↺ corrigé</span>' : ''}</div>
+        <div class="order-name">${o.nom}${o._allerRetour ? (o.type === 'VENTE'
+          ? ' <span style="font-family:\'Courier New\',monospace;font-size:0.72rem;color:var(--red);background:var(--red-dim);border:1px solid rgba(240,84,84,0.25);border-radius:4px;padding:1px 6px;vertical-align:middle">⚠ bug</span>'
+          : ' <span style="font-family:\'Courier New\',monospace;font-size:0.72rem;color:var(--orange);background:var(--orange-dim);border:1px solid rgba(248,122,32,0.25);border-radius:4px;padding:1px 6px;vertical-align:middle">↻ corrigé</span>') : ''}</div>
         <div class="order-right">
           ${joursInfo}
           ${perfBadge}${scoreBadge}
@@ -1075,13 +1079,20 @@ function renderOrder(o, idx) {
       </div>
       <div class="order-detail" id="order-${idx}">
         <div class="order-detail-inner">
-          ${o._allerRetour && o.type === 'VENTE' ? `<div class="order-correction-note">
-            <strong>↺ Vente erronée — rachetée le même jour.</strong>
-            ${o.currency === 'GBP'
-              ? `Cette vente a été déclenchée par un bug de conversion de change (GBP→EUR) qui surévaluait la perte d'une position en livres sterling — le système a vu une fausse perte et déclenché le stop-loss. Le bug a depuis été corrigé. Le rachat dans le même run a été pris sur la base du bon signal d'entrée.`
-              : `Cette vente a été décidée lors d'un run, puis Claude a racheté la position dans un run suivant le même jour en réinterprétant les mêmes données fondamentales avec une conclusion opposée. Ce flip-flop illustre une limite : l'IA ne mémorise pas ses décisions récentes entre runs successifs (cas qui ne se reproduit pas en cron hebdo normal).`}
-            Le raisonnement ci-dessous est conservé tel quel pour préserver la transparence de l'historique.
-          </div>` : ''}
+          ${o._allerRetour ? (o.type === 'VENTE'
+            ? `<div class="order-correction-note is-bug">
+                <strong>⚠ Vente erronée — rachetée le même jour.</strong>
+                ${o.currency === 'GBP'
+                  ? `Cette vente a été déclenchée par un bug de conversion de change (GBP→EUR) qui surévaluait la perte d'une position en livres sterling — le système a vu une fausse perte et déclenché le stop-loss. Le bug a depuis été corrigé.`
+                  : `Cette vente a été décidée lors d'un run, puis Claude a racheté la position dans un run suivant le même jour en réinterprétant les mêmes données avec une conclusion opposée. Limite reconnue : l'IA ne mémorise pas ses décisions entre runs (ne se reproduit pas en cron hebdo normal).`}
+                Le raisonnement ci-dessous est conservé pour préserver la transparence de l'historique.
+              </div>`
+            : `<div class="order-correction-note">
+                <strong>↻ Achat correctif d'une vente erronée du même jour.</strong>
+                ${o.currency === 'GBP'
+                  ? `La vente précédente a été déclenchée par un bug FX (GBP→EUR) corrigé depuis. Cet achat rétablit la position sur la base du bon signal d'entrée.`
+                  : `La vente précédente résultait d'un flip-flop entre runs successifs. Cet achat rétablit la position en cohérence avec le signal réel.`}
+              </div>`) : ''}
           <div class="order-raison">${o.raison}</div>
         </div>
       </div>
