@@ -163,11 +163,15 @@
   .src-item { display: flex; align-items: center; gap: 6px; font-size: 0.84rem; color: var(--text2); }
   .src-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 
-  /* ── CONCENTRATION NOTE — info descriptive en bas de watchlist ── */
-  .concentration-note { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.85rem 1rem; margin: 1.5rem 0 0; }
-  .conc-label { font-family: 'Courier New', monospace; font-size: 0.72rem; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 0.4rem; }
-  .conc-item { font-size: 0.80rem; color: var(--text3); line-height: 1.6; padding: 2px 0; }
-  .conc-item::before { content: '· '; color: var(--text3); }
+  /* ── COMPOSITION SECTORIELLE ── */
+  .concentration-note { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.1rem; margin: 1.5rem 0 0; }
+  .conc-label { font-family: 'Courier New', monospace; font-size: 0.72rem; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 0.85rem; }
+  .conc-rows { display: flex; flex-direction: column; gap: 7px; }
+  .conc-row { display: grid; grid-template-columns: 140px 1fr 42px; align-items: center; gap: 10px; }
+  .conc-sector { font-size: 0.80rem; color: var(--text2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .conc-bar-wrap { height: 5px; background: var(--surface3); border-radius: 99px; overflow: hidden; }
+  .conc-bar { height: 100%; border-radius: 99px; transition: width 0.6s ease; }
+  .conc-pct { font-family: 'Courier New', monospace; font-size: 0.75rem; color: var(--text3); text-align: right; }
 
   /* ── CHANGELOG ── */
   .changelog { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 2rem; }
@@ -1046,13 +1050,58 @@ async function loadWatchlist() {
     document.getElementById('sources-bar').style.display = 'flex';
     if (finnhub_active) document.getElementById('fh-src').style.display = 'flex';
 
-    // Concentration sectorielle : on peuple le contenu, mais l'affichage
-    // est géré par applyFilters() / showMore() — visible seulement quand
-    // toute la liste est dépliée (info contextuelle, pas un alerte top-page)
+    // Composition sectorielle : barres visuelles colorées
+    // Affichage géré par showMore() — visible seulement quand toute la liste est dépliée
     const conc = data.concentration_alerts || [];
     if (conc.length > 0) {
+      // Palette de couleurs par secteur
+      const SECTOR_COLORS = {
+        'technologie':      '#5080f8',
+        'tech':             '#5080f8',
+        'finance':          '#e8a820',
+        'santé':            '#1cc87a',
+        'sante':            '#1cc87a',
+        'industrie':        '#f87a20',
+        'énergie':          '#f8c820',
+        'energie':          '#f8c820',
+        'médias':           '#a060f0',
+        'medias':           '#a060f0',
+        'conso':            '#f05454',
+        'consommation':     '#f05454',
+        'immobilier':       '#20d8e8',
+        'matériaux':        '#88c840',
+        'materiaux':        '#88c840',
+        'services':         '#c08050',
+        'semi':             '#8080f8',
+        'défense':          '#808090',
+        'defense':          '#808090',
+      };
+      function colorForSector(name) {
+        const key = name.toLowerCase();
+        for (const [k, v] of Object.entries(SECTOR_COLORS)) {
+          if (key.includes(k)) return v;
+        }
+        return '#50506c';
+      }
+      // Parse "Secteur : N titres sur M" → {name, count, total}
+      const parsed = conc.map(str => {
+        const m = str.match(/^(.+?)\s*:\s*(\d+)\s+titres?\s+sur\s+(\d+)/i);
+        return m ? { name: m[1].trim(), count: +m[2], total: +m[3] } : null;
+      }).filter(Boolean);
+      const maxPct = parsed.length ? Math.max(...parsed.map(p => p.count / p.total)) : 1;
       document.getElementById('concentration-items').innerHTML =
-        conc.map(c => `<div class="conc-item">${c}</div>`).join('');
+        `<div class="conc-rows">` +
+        parsed.map(p => {
+          const pct   = Math.round(p.count / p.total * 100);
+          const color = colorForSector(p.name);
+          const barW  = Math.round(p.count / p.total / maxPct * 100);
+          return `<div class="conc-row">
+            <span class="conc-sector">${p.name}</span>
+            <div class="conc-bar-wrap"><div class="conc-bar" style="width:${barW}%;background:${color}"></div></div>
+            <span class="conc-pct">${pct}%</span>
+          </div>`;
+        }).join('') +
+        `</div>`;
     }
 
     if (changelog && changelog.length > 0) {

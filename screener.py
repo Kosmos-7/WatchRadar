@@ -504,11 +504,6 @@ def score_ticker(ticker):
         elif reco < 3.0: ana_pts = 3
         score += ana_pts
 
-        # Bonus sectoriel (3 pts)
-        sector = info.get("sector", "")
-        if sector in ["Technology","Healthcare","Industrials","Financial Services"]:
-            score = min(score + 3, 100)
-
         score = round(score * confiance)
 
         # Pénalité Death Cross récent — signal baissier actif non compensable
