@@ -79,10 +79,17 @@ def get_eur_usd_rate():
         return 1.10
 
 def get_eur_gbp_rate():
-    """Taux EUR/GBP du jour via Yahoo Finance (EURGBP=X). Fallback 0.86."""
+    """Taux EUR/GBP du jour via Yahoo Finance (EURGBP=X). Fallback 0.86.
+    Garde : rejette les valeurs hors plage [0.75, 0.95] (ex: Yahoo retourne
+    parfois ~1.0 ou des valeurs aberrantes sans lever d'exception)."""
     try:
         hist = yf.Ticker("EURGBP=X").history(period="2d")
-        return round(float(hist["Close"].iloc[-1]), 4) if not hist.empty else 0.86
+        if not hist.empty:
+            rate = round(float(hist["Close"].iloc[-1]), 4)
+            if 0.75 <= rate <= 0.95:
+                return rate
+            print(f"  ⚠️  EUR/GBP rate {rate} hors plage [0.75, 0.95] — fallback 0.86")
+        return 0.86
     except:
         return 0.86
 
