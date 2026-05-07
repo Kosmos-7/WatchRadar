@@ -308,7 +308,7 @@
   @keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
 
   /* ── SORT BAR ── */
-  .sort-bar { display:flex; align-items:center; gap:8px; margin-bottom:0.75rem; flex-wrap:wrap; }
+  .sort-bar { display:flex; align-items:center; gap:8px; margin-bottom:0.75rem; flex-wrap:wrap; justify-content: center; }
   .sort-lbl { font-family:'Courier New',monospace; font-size:0.70rem; color:var(--text3); text-transform:uppercase; letter-spacing:1px; }
   .srt { font-family:'Courier New',monospace; font-size:0.72rem; padding:3px 10px; border-radius:100px; border:1px solid var(--border); background:var(--surface); color:var(--text3); cursor:pointer; transition:all 0.15s; }
   .srt:hover { color:var(--text2); border-color:var(--border2); background:var(--surface2); }
@@ -324,7 +324,7 @@
   .step p { font-size: 0.86rem; color: var(--text2); line-height: 1.65; }
 
   /* ── FILTER BAR ── */
-  .filter-bar { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 1.25rem; align-items: center; }
+  .filter-bar { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 1.25rem; align-items: center; justify-content: center; }
   .filter-sep { width: 1px; height: 20px; background: var(--border2); margin: 0 2px; }
   .fbtn {
     display: inline-flex; align-items: center; gap: 4px;
@@ -338,7 +338,7 @@
   .fbtn.active.f-golden { color: var(--green); border-color: rgba(28,200,122,0.35); background: rgba(28,200,122,0.07); }
   .fbtn.active.f-death  { color: var(--red);   border-color: rgba(240,84,84,0.35);  background: rgba(240,84,84,0.07); }
   .fbtn.active.f-zone   { color: var(--gold);  border-color: rgba(232,168,32,0.35); background: rgba(232,168,32,0.07); }
-  .filter-count { font-family: 'Courier New', monospace; font-size: 0.70rem; color: var(--text3); margin-left: auto; }
+  .filter-count { font-family: 'Courier New', monospace; font-size: 0.70rem; color: var(--text3); }
 
   /* ── ACCORDION ── */
   .accordion { border: 1px solid var(--border); border-radius: var(--radius-lg); margin-top: 3rem; overflow: hidden; }
@@ -456,7 +456,7 @@
       <span class="pill pill-free"><span class="pd"></span>Accès gratuit</span>
       <span class="pill pill-beta"><span class="pd"></span>Bêta ouverte</span>
     </div>
-    <h1>25 actions à surveiller.</h1>
+    <h1>25 actions à surveiller</h1>
     <p>Sélectionnées automatiquement chaque semaine par un agent IA sur un univers de <span id="universe-count">—</span> valeurs. Cliquez sur une action pour voir l'analyse détaillée.</p>
     <div class="update-meta">
       <span class="umeta" id="update-date">Chargement…</span>
