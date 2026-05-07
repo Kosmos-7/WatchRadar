@@ -252,6 +252,18 @@
     border-radius: 4px;
     padding: 1px 5px;
   }
+  /* Mini-badges Entrer/Sortir cohérents avec ceux de la watchlist */
+  .badge-in, .badge-out {
+    display: inline-block;
+    font-family: 'Courier New', monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    border-radius: 4px;
+    padding: 1px 6px;
+    white-space: nowrap;
+  }
+  .badge-in  { background: var(--green-dim); color: var(--green); border: 1px solid rgba(28,200,122,0.25); }
+  .badge-out { background: var(--red-dim);   color: var(--red);   border: 1px solid rgba(240,84,84,0.25); }
 
   /* ── CONCEPT CARDS — 1 colonne pour confort de lecture ── */
   .concept-grid {
@@ -610,7 +622,7 @@
     </div>
 
     <div class="scoring-note">
-      Les 25 valeurs avec le score le plus élevé apparaissent sur la watchlist chaque lundi. Un titre peut <code>↑ Entrer</code> ou <code>↓ Sortir</code> selon l'évolution hebdomadaire de son score — momentum qui s'améliore, publication de résultats, ou simple recalibrage des signaux.
+      Les 25 valeurs avec le score le plus élevé apparaissent sur la watchlist chaque lundi. Un titre peut <span class="badge-in">↑ Entrer</span> ou <span class="badge-out">↓ Sortir</span> selon l'évolution hebdomadaire de son score — momentum qui s'améliore ou se dégrade, publication de résultats, simple recalibrage des signaux.
     </div>
   </section>
 
