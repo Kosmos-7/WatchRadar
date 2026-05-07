@@ -469,14 +469,19 @@
 
   /* ── RESPONSIVE ── */
   @media (max-width: 640px) {
-    header { padding: 0.9rem 1.1rem; }
-    nav a { padding: 4px 8px; font-size: 0.82rem; }
+    header { padding: 0.9rem 1rem; gap: 0.5rem; }
+    nav { gap: 2px; }
+    nav a { padding: 4px 8px; font-size: 0.78rem; }
+    .brand-name { font-size: 1.2rem; }
     main { padding: 2rem 1rem 5rem; }
     .hero h1 { font-size: 1.65rem; }
     .brique-grid { grid-template-columns: 1fr; }
     .concept-grid { grid-template-columns: 1fr; }
     .advice-grid  { grid-template-columns: 1fr; }
-    .kpi-mini-grid { grid-template-columns: repeat(3, 1fr); }
+    /* 5 items → 2 lignes équilibrées (2 puis 3) plutôt que 3+2 orphelins */
+    .kpi-mini-grid { grid-template-columns: repeat(6, 1fr); }
+    .kpi-mini:nth-child(1), .kpi-mini:nth-child(2) { grid-column: span 3; }
+    .kpi-mini:nth-child(3), .kpi-mini:nth-child(4), .kpi-mini:nth-child(5) { grid-column: span 2; }
     footer { flex-direction: column; align-items: flex-start; padding: 1.25rem 1rem; }
   }
 </style>
@@ -555,7 +560,7 @@
   <section class="section-block">
     <div class="section-label">02 · L'algorithme</div>
     <h2 class="section-title">Comment Signal choisit ses 25 actions</h2>
-    <p class="section-sub">Chaque lundi, un algorithme analyse plus de 200 entreprises cotées et sélectionne les 25 avec le meilleur score. Voici comment ce score est calculé.</p>
+    <p class="section-sub">Chaque lundi, un algorithme analyse une sélection d'environ 90 grandes capitalisations européennes et nord-américaines, et retient les 25 avec le meilleur score. Voici comment ce score est calculé.</p>
 
     <div class="scoring-block">
       <div class="scoring-row">
@@ -614,7 +619,7 @@
         <span class="concept-label">Score global</span>
         <span class="concept-example">★★★★☆ &nbsp;84</span>
         <div class="concept-body">
-          Le chiffre est le score sur 100, calculé à partir des trois composantes (momentum, fondamentaux, consensus). Les étoiles sont un résumé visuel : 5 étoiles pour un score supérieur à 90, 4 étoiles à partir de 75, 3 étoiles à partir de 60. Un score élevé ne garantit pas une hausse imminente — il indique que plusieurs signaux convergent favorablement au même moment. Il peut très bien rester haut pendant que le titre corrige à court terme.
+          Le chiffre est le score sur 100, calculé à partir des trois composantes (momentum, fondamentaux, consensus). Les étoiles sont un résumé visuel : 5 étoiles à partir de 90, 4 étoiles à partir de 75, 3 étoiles à partir de 60. Un score élevé ne garantit pas une hausse imminente — il indique que plusieurs signaux convergent favorablement au même moment. Il peut très bien rester haut pendant que le titre corrige à court terme.
         </div>
       </div>
 
@@ -622,7 +627,7 @@
         <span class="concept-label">Croisement des moyennes mobiles</span>
         <span class="concept-example">↑ Golden Cross · 12j depuis le croisement</span>
         <div class="concept-body">
-          La MM21 (moyenne des cours sur 21 jours) a dépassé la MM200 (moyenne sur 200 jours) il y a 12 jours. Ce signal indique que la tendance court terme est désormais au-dessus de la tendance long terme — historiquement haussier dans ~66-72 % des cas dans les 60 premiers jours. Un Death Cross (MM21 repasse sous MM200) est le signal inverse et marque souvent le début d'une phase baissière prolongée.
+          La MM21 (moyenne des cours sur 21 jours) a dépassé la MM200 (moyenne sur 200 jours) il y a 12 jours. Ce signal indique que la tendance court terme est désormais au-dessus de la tendance long terme — historiquement haussier dans ~66-72 % des cas dans les 60 premiers jours. Un Death Cross (MM21 repasse sous MM200) est le signal inverse — souvent baissier, mais avec davantage de faux positifs en marché sans tendance claire (~38 % de fiabilité dans ces phases).
         </div>
       </div>
 
@@ -708,7 +713,9 @@
           <li><strong>90 jours minimum</strong> avant de pouvoir vendre une position — sauf si la thèse d'achat est explicitement invalidée par des faits nouveaux.</li>
           <li><strong>Maximum 20 %</strong> du capital total sur un seul titre — le renforcement d'une position est bloqué au-delà de ce seuil.</li>
           <li><strong>Zéro ordre en mode panique</strong> — si le CAC 40 chute de plus de 5 % sur une semaine, aucun achat ni vente n'est autorisé. L'urgence perçue est un mauvais conseiller.</li>
-          <li><strong>Liquidités minimales de 5 %</strong> — le portefeuille doit toujours conserver un matelas de cash pour les opportunités imprévues.</li>
+          <li><strong>Stop-loss à −15 %</strong> après 90 jours de détention — une position en perte sévère sur la durée est sortie automatiquement, hors mode panique.</li>
+          <li><strong>Stop-loss catastrophe à −25 %</strong> sans condition de durée, qui ignore même le mode panique. Bouche le trou des 89 premiers jours où la règle des 90 jours empêcherait sinon toute sortie.</li>
+          <li><strong>Liquidités minimales de 5 %</strong> du capital — sous ce seuil, les achats sont bloqués pour conserver un matelas en cas d'opportunité ou d'urgence.</li>
         </ul>
       </div>
     </div>

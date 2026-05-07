@@ -364,14 +364,22 @@
   /* ── RESPONSIVE ── */
   @media (max-width: 700px) {
     main { padding: 2rem 1rem 5rem; }
-    header { padding: 0.85rem 1rem; }
+    header { padding: 0.85rem 1rem; gap: 0.5rem; }
+    nav { gap: 2px; }
+    nav a { padding: 4px 8px; font-size: 0.78rem; }
+    .brand-name { font-size: 1.2rem; }
     .kpi-grid { grid-template-columns: repeat(2, 1fr); }
     .kpi-grid .kpi:last-child { grid-column: span 2; }
     .threshold-row { grid-template-columns: 1fr; }
     .rules-grid { grid-template-columns: 1fr; }
     .fictif-badge { font-size: 0.74rem; letter-spacing: 0.2px; text-transform: none; }
-    .pos-header, .pos-row { grid-template-columns: 1fr 55px 70px 68px; }
-    .pos-header span:nth-child(n+5), .pos-row > *:nth-child(n+5) { display: none; }
+    /* Mobile : on cache Qté (col 2) + Px achat (col 3), on garde Valeur + Perf + Poids
+       — la perf et le poids sont les infos les plus utiles à voir d'un coup d'œil */
+    .pos-header, .pos-row { grid-template-columns: 1fr 72px 64px 56px; gap: 6px; }
+    .pos-header > span:nth-child(2),
+    .pos-header > span:nth-child(3),
+    .pos-row    > *:nth-child(2),
+    .pos-row    > *:nth-child(3) { display: none; }
     .order-header { grid-template-columns: 75px 52px 1fr; }
     .order-header > *:last-child { display: none; }
   }
