@@ -553,7 +553,7 @@ def score_ticker(ticker):
             "Communication Services": "Médias & IA", "Real Estate": "Immobilier",
             "Utilities": "Services pub.",
         }
-        sector_fr = sector_map.get(sector, sector[:14] if sector else "—")
+        sector_fr = sector_map.get(yf_sector, yf_sector[:14] if yf_sector else "—")
 
         breakdown = {
             "momentum":              min(40, momentum_total),
