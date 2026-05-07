@@ -1075,11 +1075,11 @@ function renderOrder(o, idx) {
       </div>
       <div class="order-detail" id="order-${idx}">
         <div class="order-detail-inner">
-          ${o._allerRetour ? `<div class="order-correction-note">
-            <strong>↺ Position vendue puis rachetée le même jour.</strong>
+          ${o._allerRetour && o.type === 'VENTE' ? `<div class="order-correction-note">
+            <strong>↺ Vente erronée — rachetée le même jour.</strong>
             ${o.currency === 'GBP'
-              ? `Cette décision a été déclenchée par un bug de conversion de change (GBP→EUR) qui surévaluait la perte d'une position en livres sterling. Le système a interprété ce signal erroné comme un stop-loss à atteindre, vendu, puis reconnu le bon signal d'achat dans le même run et racheté la position. Le bug a depuis été corrigé.`
-              : `Le workflow a été déclenché plusieurs fois ce jour-là. Entre les runs successifs, le screener a régénéré la watchlist et Claude a réinterprété les mêmes données fondamentales avec des conclusions opposées (vente sur signal négatif, puis rachat sur signal d'opportunité). Ce flip-flop illustre une limite de design : l'IA ne mémorise pas ses décisions récentes entre runs.`}
+              ? `Cette vente a été déclenchée par un bug de conversion de change (GBP→EUR) qui surévaluait la perte d'une position en livres sterling — le système a vu une fausse perte et déclenché le stop-loss. Le bug a depuis été corrigé. Le rachat dans le même run a été pris sur la base du bon signal d'entrée.`
+              : `Cette vente a été décidée lors d'un run, puis Claude a racheté la position dans un run suivant le même jour en réinterprétant les mêmes données fondamentales avec une conclusion opposée. Ce flip-flop illustre une limite : l'IA ne mémorise pas ses décisions récentes entre runs successifs (cas qui ne se reproduit pas en cron hebdo normal).`}
             Le raisonnement ci-dessous est conservé tel quel pour préserver la transparence de l'historique.
           </div>` : ''}
           <div class="order-raison">${o.raison}</div>
