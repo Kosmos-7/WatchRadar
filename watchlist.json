@@ -1170,21 +1170,21 @@
       "ticker": "ADI",
       "name": "Analog Devices, Inc.",
       "score": 80,
-      "reason": "Score 80/100 — momentum faible (12/40), cours en surachat régression (+3.5σ)."
+      "reason": "Score 80 la semaine dernière — sorti du top 25 cette semaine · Momentum quasi-nul (12/40) — tendance qui s'essouffle · Cours largement au-dessus de sa trajectoire long terme (+3.5σ) — risque de correction."
     },
     {
       "action": "out",
       "ticker": "BLK",
       "name": "BlackRock, Inc.",
       "score": 77,
-      "reason": "Score 77/100 — Death Cross récent (44j)."
+      "reason": "Score 77 la semaine dernière — sorti du top 25 cette semaine · Death Cross récent (44j) — momentum cassé."
     },
     {
       "action": "out",
       "ticker": "TSM",
       "name": "Taiwan Semiconductor M",
       "score": 76,
-      "reason": "Score 76/100 — momentum faible (13/40)."
+      "reason": "Score 76 la semaine dernière — sorti du top 25 cette semaine · Momentum quasi-nul (13/40) — tendance qui s'essouffle."
     }
   ],
   "concentration_alerts": [

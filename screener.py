@@ -666,38 +666,75 @@ def score_ticker(ticker):
         return None
 
 # ── CHANGELOG ────────────────────────────────────────────────────────────────
-def raison_sortie(prev_stock):
-    """Génère une raison de sortie spécifique à partir du breakdown de la semaine précédente."""
-    bd    = prev_stock.get("breakdown", {})
-    score = prev_stock.get("score", 0)
+def raison_sortie(prev_stock, current_stock=None):
+    """
+    Génère une raison de sortie narrative.
+
+    Distingue trois cas :
+      A) Score en chute → la qualité du titre s'est dégradée
+      B) Score stable mais dépassé → d'autres titres ont mieux scoré
+      C) Données indisponibles cette semaine (rare : yfinance failed)
+
+    Puis ajoute les signaux concrets responsables de la dégradation s'il y en a.
+    Reformulé pour être lisible par un non-spécialiste, pas juste informatif.
+    """
+    prev_score = prev_stock.get("score", 0)
+    # Si le titre a été re-scoré cette semaine, on utilise le breakdown frais ;
+    # sinon on retombe sur celui de la semaine d'avant (vue dégradée mais utile).
+    if current_stock:
+        new_score = current_stock.get("score", 0)
+        bd        = current_stock.get("breakdown", {})
+    else:
+        new_score = None
+        bd        = prev_stock.get("breakdown", {})
+
     parts = []
 
+    # 1) Lecture narrative de l'évolution du score ─────────────────────────
+    if new_score is not None:
+        delta = new_score - prev_score
+        if delta <= -8:
+            parts.append(f"Score en forte baisse : {prev_score} → {new_score} ({delta:+d} pts)")
+        elif delta <= -3:
+            parts.append(f"Score en baisse : {prev_score} → {new_score} ({delta:+d} pts)")
+        elif delta >= 3:
+            parts.append(f"Score stable/en hausse ({prev_score} → {new_score}) mais dépassé par d'autres titres mieux placés cette semaine")
+        else:
+            parts.append(f"Score stable ({prev_score} → {new_score}) — d'autres titres ont simplement mieux scoré cette semaine")
+    else:
+        parts.append(f"Données indisponibles cette semaine (était {prev_score}/100)")
+
+    # 2) Signaux techniques responsables (s'il y en a) ─────────────────────
     regime = bd.get("cross_regime", "")
     days   = bd.get("cross_days_ago", 999)
     if regime == "death":
-        tag = f"récent ({days}j)" if days <= 60 else "confirmé"
-        parts.append(f"Death Cross {tag}")
+        if days <= 30:
+            parts.append(f"Death Cross très récent ({days}j) — bascule en tendance baissière, signal négatif fort")
+        elif days <= 60:
+            parts.append(f"Death Cross récent ({days}j) — momentum cassé")
+        elif days <= 180:
+            parts.append(f"Death Cross confirmé ({days}j) — régime baissier persistant")
 
     mo = bd.get("momentum", 0)
     if mo < 15:
-        parts.append(f"momentum faible ({mo}/40)")
+        parts.append(f"Momentum quasi-nul ({mo}/40) — tendance qui s'essouffle")
+    elif mo < 22 and new_score is not None and new_score < prev_score:
+        parts.append(f"Momentum dégradé ({mo}/40)")
 
     fund = bd.get("fondamentaux", 0)
     if fund < 20:
-        parts.append(f"fondamentaux insuffisants ({fund}/50)")
+        parts.append(f"Fondamentaux insuffisants ({fund}/50)")
 
     reg = bd.get("regression_signal", "")
     if reg == "surachat":
         z = bd.get("regression_z", 0)
-        parts.append(f"cours en surachat régression (+{z:.1f}σ)")
+        parts.append(f"Cours largement au-dessus de sa trajectoire long terme (+{z:.1f}σ) — risque de correction vers la moyenne")
 
     rsi_v = bd.get("rsi", 50)
-    if rsi_v > 70:
-        parts.append(f"RSI surachat ({rsi_v:.0f})")
+    if rsi_v > 75:
+        parts.append(f"RSI en surachat marqué ({rsi_v:.0f}) — souvent suivi d'une correction technique")
 
-    if not parts:
-        return f"Score {score}/100 — insuffisant pour rester dans le top 25 cette semaine."
-    return f"Score {score}/100 — " + ", ".join(parts) + "."
+    return " · ".join(parts) + "."
 
 def load_previous(path="watchlist.json"):
     try:
@@ -758,12 +795,24 @@ def main():
         elif s["score"] < previous[s["ticker"]].get("score", 0) - 3:
             s["change"] = "down"
 
+    # Index des résultats actuels pour permettre au narratif de sortie
+    # de comparer prev_score vs new_score (cf. raison_sortie)
+    results_by_ticker = {r["ticker"]: r for r in resultats}
+
     changelog = []
     for s in entrees[:5]:
         changelog.append({"action":"in","ticker":s["ticker"],"name":s["name"],"score":s["score"],"reason":s["justification"]})
     for t in sorties[:5]:
         prev = previous[t]
-        changelog.append({"action":"out","ticker":t,"name":prev.get("name",t),"score":prev.get("score",0),"reason":raison_sortie(prev)})
+        current = results_by_ticker.get(t)  # peut être None si scoring failed cette semaine
+        changelog.append({
+            "action": "out",
+            "ticker": t,
+            "name":   prev.get("name", t),
+            "score":  prev.get("score", 0),
+            "new_score": current.get("score") if current else None,
+            "reason": raison_sortie(prev, current),
+        })
 
     for i, s in enumerate(top25):
         s["rank"] = i + 1
