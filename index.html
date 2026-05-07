@@ -1094,7 +1094,7 @@ async function loadWatchlist() {
         parsed.map(p => {
           const pct   = Math.round(p.count / p.total * 100);
           const color = colorForSector(p.name);
-          const barW  = Math.round(p.count / p.total / maxPct * 100);
+          const barW  = Math.round(p.count / p.total * 100);
           return `<div class="conc-row">
             <span class="conc-sector">${p.name}</span>
             <div class="conc-bar-wrap"><div class="conc-bar" style="width:${barW}%;background:${color}"></div></div>
