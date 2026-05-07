@@ -178,6 +178,14 @@
     z-index: 501;
   }
   .kpi-info:hover::after, .kpi-info:hover::before { opacity: 1; visibility: visible; }
+  /* Tooltip déclenché aussi par le survol de la carte parent — zone plus généreuse,
+     pas besoin de viser l'icône ⓘ qui est petite */
+  .kpi:hover .kpi-info::after,
+  .kpi:hover .kpi-info::before,
+  .th:hover  .kpi-info::after,
+  .th:hover  .kpi-info::before { opacity: 1; visibility: visible; }
+  .kpi:hover .kpi-info,
+  .th:hover  .kpi-info { opacity: 1; color: var(--text2); }
   .kpi-value { font-family: Georgia, serif; font-size: 1.45rem; line-height: 1; margin-bottom: 4px; }
   .kpi-sub  { font-family: 'Courier New', monospace; font-size: 0.80rem; color: var(--text3); }
   .up  { color: var(--green); }
