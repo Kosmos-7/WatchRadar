@@ -1084,7 +1084,7 @@ function renderOrder(o, idx) {
                 <strong>⚠ Vente erronée — rachetée le même jour.</strong>
                 ${o.currency === 'GBP'
                   ? `Cette vente a été déclenchée par un bug de conversion de change (GBP→EUR) qui surévaluait la perte d'une position en livres sterling — le système a vu une fausse perte et déclenché le stop-loss. Le bug a depuis été corrigé.`
-                  : `Cette vente a été décidée lors d'un run, puis Claude a racheté la position dans un run suivant le même jour en réinterprétant les mêmes données avec une conclusion opposée. Limite reconnue : l'IA ne mémorise pas ses décisions entre runs (ne se reproduit pas en cron hebdo normal).`}
+                  : `Cette vente a été décidée lors d'un run, puis Claude a racheté la position dans un run suivant le même jour en réinterprétant les mêmes données avec une conclusion opposée. Cause racine : l'IA ne voyait pas ses ventes récentes dans son contexte. Corrigé depuis : l'historique des 50 derniers ordres est désormais injecté dans le prompt à chaque run.`}
                 Le raisonnement ci-dessous est conservé pour préserver la transparence de l'historique.
               </div>`
             : `<div class="order-correction-note">
