@@ -308,8 +308,6 @@
   @keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
 
   /* ── SORT BAR ── */
-  .sort-bar { display:flex; align-items:center; gap:8px; margin-bottom:0.75rem; flex-wrap:wrap; justify-content: center; }
-  .sort-lbl { font-family:'Courier New',monospace; font-size:0.70rem; color:var(--text3); text-transform:uppercase; letter-spacing:1px; }
   .srt { font-family:'Courier New',monospace; font-size:0.72rem; padding:3px 10px; border-radius:100px; border:1px solid var(--border); background:var(--surface); color:var(--text3); cursor:pointer; transition:all 0.15s; }
   .srt:hover { color:var(--text2); border-color:var(--border2); background:var(--surface2); }
   .srt.active { color:var(--text); background:var(--surface2); border-color:var(--border2); }
@@ -323,9 +321,12 @@
   .step-num { font-family: 'Courier New', monospace; font-size: 0.70rem; color: var(--gold); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.4rem; }
   .step p { font-size: 0.86rem; color: var(--text2); line-height: 1.65; }
 
-  /* ── FILTER BAR ── */
-  .filter-bar { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 1.25rem; align-items: center; justify-content: center; }
-  .filter-sep { width: 1px; height: 20px; background: var(--border2); margin: 0 2px; }
+  /* ── FILTER BLOCK — 3 lignes étiquetées (Régime, Zone, Trier par) ── */
+  .filter-block { margin-bottom: 1.25rem; }
+  .filter-row { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin-bottom: 7px; }
+  .filter-row:last-child { margin-bottom: 0; }
+  .filter-label { font-family: 'Courier New', monospace; font-size: 0.70rem; color: var(--text3); text-transform: uppercase; letter-spacing: 1.2px; min-width: 76px; flex-shrink: 0; }
+  @media (max-width: 480px) { .filter-label { min-width: 64px; font-size: 0.66rem; } }
   .fbtn {
     display: inline-flex; align-items: center; gap: 4px;
     font-family: 'Courier New', monospace; font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;
@@ -483,24 +484,28 @@
     <div id="changelog-rows"></div>
   </div>
 
-  <div class="filter-bar" id="filter-bar" style="display:none">
-    <button class="fbtn active" onclick="setFilter('regime','all',this)">Tous</button>
-    <button class="fbtn f-golden" onclick="setFilter('regime','golden',this)">↑ Golden</button>
-    <button class="fbtn f-death"  onclick="setFilter('regime','death',this)">↓ Death</button>
-    <div class="filter-sep"></div>
-    <button class="fbtn active" onclick="setFilter('zone','all',this)">Toutes zones</button>
-    <button class="fbtn f-zone" onclick="setFilter('zone','neutre',this)">Zone saine</button>
-    <button class="fbtn f-zone" onclick="setFilter('zone','au-dessus',this)">Au-dessus</button>
-    <button class="fbtn f-zone" onclick="setFilter('zone','surachat',this)">Surachat</button>
-    <button class="fbtn f-zone" onclick="setFilter('zone','survente',this)">Survente</button>
-    <span class="filter-count" id="filter-count"></span>
-  </div>
-
-  <div class="sort-bar" id="sort-bar" style="display:none">
-    <span class="sort-lbl">Trier</span>
-    <button class="srt active" onclick="setSort('score',this)">Score global</button>
-    <button class="srt" onclick="setSort('fondamentaux',this)">Fondamentaux</button>
-    <button class="srt" onclick="setSort('momentum',this)">Momentum</button>
+  <div class="filter-block" id="filter-bar" style="display:none">
+    <div class="filter-row">
+      <span class="filter-label">Régime</span>
+      <button class="fbtn active" onclick="setFilter('regime','all',this)">Tous</button>
+      <button class="fbtn f-golden" onclick="setFilter('regime','golden',this)">↑ Golden</button>
+      <button class="fbtn f-death"  onclick="setFilter('regime','death',this)">↓ Death</button>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Zone</span>
+      <button class="fbtn active" onclick="setFilter('zone','all',this)">Toutes</button>
+      <button class="fbtn f-zone" onclick="setFilter('zone','neutre',this)">Zone saine</button>
+      <button class="fbtn f-zone" onclick="setFilter('zone','au-dessus',this)">Au-dessus</button>
+      <button class="fbtn f-zone" onclick="setFilter('zone','surachat',this)">Surachat</button>
+      <button class="fbtn f-zone" onclick="setFilter('zone','survente',this)">Survente</button>
+    </div>
+    <div class="filter-row" id="sort-bar">
+      <span class="filter-label">Trier par</span>
+      <button class="srt active" onclick="setSort('score',this)">Score global</button>
+      <button class="srt" onclick="setSort('fondamentaux',this)">Fondamentaux</button>
+      <button class="srt" onclick="setSort('momentum',this)">Momentum</button>
+      <span class="filter-count" id="filter-count"></span>
+    </div>
   </div>
 
   <div class="list-header">
@@ -694,20 +699,16 @@ let currentSort = 'score';
 
 function setSort(field, btn) {
   currentSort = field;
-  document.querySelectorAll('.srt').forEach(b => b.classList.remove('active'));
+  // Chaque ligne (.filter-row) ne contient qu'un seul groupe : reset tous les .srt frères
+  btn.parentElement.querySelectorAll('.srt').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   applyFilters();
 }
 
 function setFilter(type, value, btn) {
   activeFilters[type] = value;
-  const siblings = btn.parentElement.querySelectorAll('.fbtn');
-  siblings.forEach(b => {
-    const sameGroup = (type === 'regime')
-      ? ['all','golden','death'].includes(b.getAttribute('onclick')?.match(/'([^']+)'/g)?.[1]?.replace(/'/g,''))
-      : ['all','neutre','au-dessus','surachat','survente'].includes(b.getAttribute('onclick')?.match(/'([^']+)'/g)?.[1]?.replace(/'/g,''));
-    if (sameGroup) b.classList.remove('active');
-  });
+  // Chaque ligne (.filter-row) = un seul groupe → reset uniquement les frères directs
+  btn.parentElement.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   applyFilters();
 }
@@ -1071,8 +1072,8 @@ async function loadWatchlist() {
     }
 
     allStocks = stocks;
-    document.getElementById('filter-bar').style.display = 'flex';
-    document.getElementById('sort-bar').style.display = 'flex';
+    // Le bloc filter contient les 3 rows (Régime, Zone, Trier par) — un seul show suffit
+    document.getElementById('filter-bar').style.display = 'block';
     applyFilters();
 
   } catch(e) {
