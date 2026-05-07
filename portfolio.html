@@ -615,6 +615,48 @@
       <div class="learning-body">
         <div class="learning-header">
           <span class="learning-cat lcat-score">Méthodologie</span>
+          <span class="learning-version">v1.9</span>
+          <span class="learning-date">07 mai 2026</span>
+        </div>
+        <div class="learning-title">La conversion GBP→EUR utilisait une formule mathématiquement fausse</div>
+        <div class="learning-prob">Pour les positions en livres sterling, la fonction <code>to_eur</code> calculait <code>montant × eur_gbp</code> au lieu de <code>montant / eur_gbp</code>. Avec EUR/GBP ≈ 0.86 cela sous-évaluait toute position GBP de ~26%. Pire : la formule avait été changée entre runs (anciennement <code>montant / (eur_usd × 0.86)</code>), créant une incohérence entre montant_investi (stocké avec l'ancienne formule) et valeur_actuelle (calculée avec la nouvelle). Sur LSEG.L cela a affiché une fausse perte de −17% qui a déclenché à tort le stop-loss catastrophe — vente puis rachat le même jour.</div>
+        <div class="learning-fix">Formule corrigée mathématiquement : <code>montant / eur_gbp</code> (vérifiée par cross-rate via USD). Migration auto dans <code>maj_position</code> : toute position GBP dont <code>montant_investi</code> est inférieur à 0.97× la valeur correcte est rebasée silencieusement au prochain run.</div>
+      </div>
+    </div>
+
+    <div class="learning-item">
+      <div class="learning-accent" style="background:#6366f1"></div>
+      <div class="learning-body">
+        <div class="learning-header">
+          <span class="learning-cat lcat-arch">Architecture</span>
+          <span class="learning-version">v1.9</span>
+          <span class="learning-date">07 mai 2026</span>
+        </div>
+        <div class="learning-title">L'IA n'avait pas accès à l'historique de ses propres décisions</div>
+        <div class="learning-prob">Le prompt ne contenait que les positions actuellement ouvertes (avec leur thèse d'achat). Aucune information sur les ventes passées ni les positions clôturées. Conséquence : Claude pouvait vendre une position dans un run, puis dans un run suivant le même jour voir le même titre dans la watchlist avec un bon score et le racheter — sans aucune conscience qu'il venait de le vendre. Cas observé sur ServiceNow le 6 mai (vente à 11:53 UTC, rachat à 12:29 UTC, données identiques).</div>
+        <div class="learning-fix">Section "Historique de tes décisions" ajoutée au prompt avec les 50 derniers ordres (ventes annotées avec perf et durée de détention, achats avec leur raison). Coût négligeable en tokens (~1K), mais Claude voit désormais ses propres pas. Garde-fou explicite dans le prompt : "Évite de racheter un titre que tu viens de vendre sauf si une thèse réellement nouvelle le justifie".</div>
+      </div>
+    </div>
+
+    <div class="learning-item">
+      <div class="learning-accent" style="background:#a855f7"></div>
+      <div class="learning-body">
+        <div class="learning-header">
+          <span class="learning-cat lcat-score">Méthodologie</span>
+          <span class="learning-version">v1.9</span>
+          <span class="learning-date">07 mai 2026</span>
+        </div>
+        <div class="learning-title">Un bonus sectoriel caché de +3 pts faussait silencieusement le score</div>
+        <div class="learning-prob">Les secteurs Technology, Healthcare, Industrials et Financial Services recevaient automatiquement +3 points sans que ça apparaisse dans le breakdown affiché. Sur NVDA, la fiche montrait 28+50+10 = 88, mais le score réel était 91 — l'écart venait de ce bonus invisible. Double problème : (1) opacité du calcul (la transparence est cassée si la somme affichée ne correspond pas au total), (2) double-comptage car les fondamentaux mesurent déjà la qualité de croissance qui caractérise ces secteurs.</div>
+        <div class="learning-fix">Bonus supprimé. La somme Momentum + Fondamentaux + Analystes correspond désormais exactement au score affiché. Les titres tech perdent ~2-3 pts en absolu, ce qui est un nivellement plus honnête.</div>
+      </div>
+    </div>
+
+    <div class="learning-item">
+      <div class="learning-accent" style="background:#a855f7"></div>
+      <div class="learning-body">
+        <div class="learning-header">
+          <span class="learning-cat lcat-score">Méthodologie</span>
           <span class="learning-version">v1.8</span>
           <span class="learning-date">07 mai 2026</span>
         </div>
