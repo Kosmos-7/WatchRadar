@@ -1188,8 +1188,8 @@
     }
   ],
   "concentration_alerts": [
-    "Technologie (11 titres sur 25 — risque de corrélation sectorielle)",
-    "Finance (7 titres sur 25 — risque de corrélation sectorielle)"
+    "Technologie : 11 titres sur 25",
+    "Finance : 7 titres sur 25"
   ],
   "sector_distribution": {
     "Technologie": 11,

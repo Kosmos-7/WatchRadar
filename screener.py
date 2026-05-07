@@ -768,17 +768,17 @@ def main():
     for i, s in enumerate(top25):
         s["rank"] = i + 1
 
-    # ── Concentration sectorielle : alerter si >5 titres dans un même secteur ─
+    # ── Composition de la sélection : descriptif des secteurs dominants ──────
     from collections import Counter
     sector_counts = Counter(s["sector"] for s in top25)
     concentration_alerts = [
-        f"{sector} ({n} titres sur 25 — risque de corrélation sectorielle)"
+        f"{sector} : {n} titres sur 25"
         for sector, n in sector_counts.items() if n >= 5
     ]
     if concentration_alerts:
-        print("\n⚠ Concentration sectorielle détectée :")
+        print("\nℹ Secteurs dominants dans la sélection :")
         for alert in concentration_alerts:
-            print(f"   → {alert}")
+            print(f"   · {alert}")
 
     d = date.today()
     output = {
