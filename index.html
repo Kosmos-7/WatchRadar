@@ -307,10 +307,7 @@
   .skel::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent); animation: shimmer 1.4s infinite; }
   @keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
 
-  /* ── SORT BAR ── */
-  .srt { font-family:'Courier New',monospace; font-size:0.72rem; padding:3px 10px; border-radius:100px; border:1px solid var(--border); background:var(--surface); color:var(--text3); cursor:pointer; transition:all 0.15s; }
-  .srt:hover { color:var(--text2); border-color:var(--border2); background:var(--surface2); }
-  .srt.active { color:var(--text); background:var(--surface2); border-color:var(--border2); }
+  /* (anciens .srt et .fbtn supprimés — remplacés par .filter-select) */
 
   /* ── HOW IT WORKS ── */
   .how { margin-top: 3.5rem; padding-top: 2rem; border-top: 1px solid var(--border); }
@@ -321,25 +318,47 @@
   .step-num { font-family: 'Courier New', monospace; font-size: 0.70rem; color: var(--gold); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.4rem; }
   .step p { font-size: 0.86rem; color: var(--text2); line-height: 1.65; }
 
-  /* ── FILTER BLOCK — 3 lignes étiquetées (Régime, Zone, Trier par) ── */
+  /* ── FILTER BLOCK — 3 picklists (Régime / Zone / Trier par) ── */
   .filter-block { margin-bottom: 1.25rem; }
-  .filter-row { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin-bottom: 7px; }
-  .filter-row:last-child { margin-bottom: 0; }
-  .filter-label { font-family: 'Courier New', monospace; font-size: 0.70rem; color: var(--text3); text-transform: uppercase; letter-spacing: 1.2px; min-width: 76px; flex-shrink: 0; }
-  @media (max-width: 480px) { .filter-label { min-width: 64px; font-size: 0.66rem; } }
-  .fbtn {
-    display: inline-flex; align-items: center; gap: 4px;
-    font-family: 'Courier New', monospace; font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;
-    padding: 4px 12px; border-radius: 100px;
-    border: 1px solid var(--border); background: var(--surface); color: var(--text3);
-    cursor: pointer; transition: all 0.15s;
+  .filter-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
   }
-  .fbtn:hover { color: var(--text2); border-color: var(--border2); background: var(--surface2); }
-  .fbtn.active { color: var(--text); background: var(--surface2); border-color: var(--border2); }
-  .fbtn.active.f-golden { color: var(--green); border-color: rgba(28,200,122,0.35); background: rgba(28,200,122,0.07); }
-  .fbtn.active.f-death  { color: var(--red);   border-color: rgba(240,84,84,0.35);  background: rgba(240,84,84,0.07); }
-  .fbtn.active.f-zone   { color: var(--gold);  border-color: rgba(232,168,32,0.35); background: rgba(232,168,32,0.07); }
-  .filter-count { font-family: 'Courier New', monospace; font-size: 0.70rem; color: var(--text3); }
+  .filter-col-label {
+    font-family: 'Courier New', monospace;
+    font-size: 0.68rem;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    display: block;
+    margin-bottom: 5px;
+  }
+  .filter-select {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 7px 30px 7px 14px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.78rem;
+    color: var(--text);
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    color-scheme: dark;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%2350506c' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .filter-select:hover  { border-color: var(--border2); }
+  .filter-select:focus  { outline: none; border-color: rgba(232,168,32,0.5); box-shadow: 0 0 0 2px rgba(232,168,32,0.08); }
+  .filter-select option { background: var(--surface2); color: var(--text); }
+  .filter-count-row { margin-top: 0.5rem; text-align: right; min-height: 14px; }
+  .filter-count     { font-family: 'Courier New', monospace; font-size: 0.70rem; color: var(--text3); }
+  @media (max-width: 600px) { .filter-grid { grid-template-columns: 1fr; gap: 8px; } }
 
   /* ── ACCORDION ── */
   .accordion { border: 1px solid var(--border); border-radius: var(--radius-lg); margin-top: 3rem; overflow: hidden; }
@@ -485,27 +504,35 @@
   </div>
 
   <div class="filter-block" id="filter-bar" style="display:none">
-    <div class="filter-row">
-      <span class="filter-label">Régime</span>
-      <button class="fbtn active" onclick="setFilter('regime','all',this)">Tous</button>
-      <button class="fbtn f-golden" onclick="setFilter('regime','golden',this)">↑ Golden</button>
-      <button class="fbtn f-death"  onclick="setFilter('regime','death',this)">↓ Death</button>
+    <div class="filter-grid">
+      <div class="filter-col">
+        <label class="filter-col-label">Régime</label>
+        <select class="filter-select" onchange="setFilter('regime', this.value)">
+          <option value="all">Tous</option>
+          <option value="golden">↑ Golden Cross</option>
+          <option value="death">↓ Death Cross</option>
+        </select>
+      </div>
+      <div class="filter-col">
+        <label class="filter-col-label">Zone de régression</label>
+        <select class="filter-select" onchange="setFilter('zone', this.value)">
+          <option value="all">Toutes</option>
+          <option value="neutre">Zone saine</option>
+          <option value="au-dessus">Au-dessus</option>
+          <option value="surachat">Surachat</option>
+          <option value="survente">Survente</option>
+        </select>
+      </div>
+      <div class="filter-col">
+        <label class="filter-col-label">Trier par</label>
+        <select class="filter-select" onchange="setSort(this.value)">
+          <option value="score">Score global</option>
+          <option value="fondamentaux">Fondamentaux</option>
+          <option value="momentum">Momentum</option>
+        </select>
+      </div>
     </div>
-    <div class="filter-row">
-      <span class="filter-label">Zone</span>
-      <button class="fbtn active" onclick="setFilter('zone','all',this)">Toutes</button>
-      <button class="fbtn f-zone" onclick="setFilter('zone','neutre',this)">Zone saine</button>
-      <button class="fbtn f-zone" onclick="setFilter('zone','au-dessus',this)">Au-dessus</button>
-      <button class="fbtn f-zone" onclick="setFilter('zone','surachat',this)">Surachat</button>
-      <button class="fbtn f-zone" onclick="setFilter('zone','survente',this)">Survente</button>
-    </div>
-    <div class="filter-row" id="sort-bar">
-      <span class="filter-label">Trier par</span>
-      <button class="srt active" onclick="setSort('score',this)">Score global</button>
-      <button class="srt" onclick="setSort('fondamentaux',this)">Fondamentaux</button>
-      <button class="srt" onclick="setSort('momentum',this)">Momentum</button>
-      <span class="filter-count" id="filter-count"></span>
-    </div>
+    <div class="filter-count-row"><span id="filter-count" class="filter-count"></span></div>
   </div>
 
   <div class="list-header">
@@ -697,19 +724,13 @@ let allStocks = [];
 let activeFilters = { regime: 'all', zone: 'all' };
 let currentSort = 'score';
 
-function setSort(field, btn) {
+function setSort(field) {
   currentSort = field;
-  // Chaque ligne (.filter-row) ne contient qu'un seul groupe : reset tous les .srt frères
-  btn.parentElement.querySelectorAll('.srt').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
   applyFilters();
 }
 
-function setFilter(type, value, btn) {
+function setFilter(type, value) {
   activeFilters[type] = value;
-  // Chaque ligne (.filter-row) = un seul groupe → reset uniquement les frères directs
-  btn.parentElement.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
   applyFilters();
 }
 
