@@ -318,21 +318,12 @@
   .step-num { font-family: 'Courier New', monospace; font-size: 0.70rem; color: var(--gold); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.4rem; }
   .step p { font-size: 0.86rem; color: var(--text2); line-height: 1.65; }
 
-  /* ── FILTER BLOCK — 3 picklists (Régime / Zone / Trier par) ── */
+  /* ── FILTER BLOCK — 3 picklists self-descriptives, sans labels ── */
   .filter-block { margin-bottom: 1.25rem; }
   .filter-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-  }
-  .filter-col-label {
-    font-family: 'Courier New', monospace;
-    font-size: 0.68rem;
-    color: var(--text3);
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    display: block;
-    margin-bottom: 5px;
+    gap: 8px;
   }
   .filter-select {
     width: 100%;
@@ -505,32 +496,23 @@
 
   <div class="filter-block" id="filter-bar" style="display:none">
     <div class="filter-grid">
-      <div class="filter-col">
-        <label class="filter-col-label">Régime</label>
-        <select class="filter-select" onchange="setFilter('regime', this.value)">
-          <option value="all">Tous</option>
-          <option value="golden">↑ Golden Cross</option>
-          <option value="death">↓ Death Cross</option>
-        </select>
-      </div>
-      <div class="filter-col">
-        <label class="filter-col-label">Zone de régression</label>
-        <select class="filter-select" onchange="setFilter('zone', this.value)">
-          <option value="all">Toutes</option>
-          <option value="neutre">Zone saine</option>
-          <option value="au-dessus">Au-dessus</option>
-          <option value="surachat">Surachat</option>
-          <option value="survente">Survente</option>
-        </select>
-      </div>
-      <div class="filter-col">
-        <label class="filter-col-label">Trier par</label>
-        <select class="filter-select" onchange="setSort(this.value)">
-          <option value="score">Score global</option>
-          <option value="fondamentaux">Fondamentaux</option>
-          <option value="momentum">Momentum</option>
-        </select>
-      </div>
+      <select class="filter-select" onchange="setFilter('regime', this.value)">
+        <option value="all">Tous régimes</option>
+        <option value="golden">↑ Golden Cross</option>
+        <option value="death">↓ Death Cross</option>
+      </select>
+      <select class="filter-select" onchange="setFilter('zone', this.value)">
+        <option value="all">Toutes zones</option>
+        <option value="neutre">Zone saine</option>
+        <option value="au-dessus">Au-dessus de la tendance</option>
+        <option value="surachat">Surachat</option>
+        <option value="survente">Survente</option>
+      </select>
+      <select class="filter-select" onchange="setSort(this.value)">
+        <option value="score">Trier par score global</option>
+        <option value="fondamentaux">Trier par fondamentaux</option>
+        <option value="momentum">Trier par momentum</option>
+      </select>
     </div>
     <div class="filter-count-row"><span id="filter-count" class="filter-count"></span></div>
   </div>
