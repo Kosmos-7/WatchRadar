@@ -304,8 +304,8 @@
   .order-amount { font-family: 'Courier New', monospace; font-size: 0.82rem; color: var(--text3); white-space: nowrap; }
   .expand-hint { font-family: 'Courier New', monospace; font-size: 0.75rem; color: var(--text3); }
   .order-card:hover .expand-hint { color: var(--gold); }
-  .order-detail { max-height: 0; overflow: hidden; transition: max-height 0.25s ease; }
-  .order-detail.open { max-height: 220px; }
+  .order-detail { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+  .order-detail.open { max-height: 800px; }
   .order-detail-inner { padding: 0 1rem 0.85rem; border-top: 1px solid var(--border); background: var(--bg); }
   .order-raison { font-size: 0.86rem; color: var(--text2); line-height: 1.65; padding-top: 0.65rem; }
   .order-correction-note {
@@ -1077,7 +1077,10 @@ function renderOrder(o, idx) {
         <div class="order-detail-inner">
           ${o._allerRetour ? `<div class="order-correction-note">
             <strong>↺ Ordre annulé par un rachat le même jour.</strong>
-            Cette décision a été déclenchée par un bug de conversion de change (GBP→EUR) qui surévaluait la perte d'une position en livres sterling. Le système a interprété ce signal erroné comme un stop-loss à atteindre, vendu, puis reconnu le bon signal d'achat dans le même run et racheté la position. Le bug a depuis été corrigé. Le raisonnement ci-dessous reflète la décision telle que prise — il n'est pas révisé pour préserver la transparence de l'historique.
+            ${o.currency === 'GBP'
+              ? `Cette décision a été déclenchée par un bug de conversion de change (GBP→EUR) qui surévaluait la perte d'une position en livres sterling. Le système a interprété ce signal erroné comme un stop-loss à atteindre, vendu, puis reconnu le bon signal d'achat dans le même run et racheté la position. Le bug a depuis été corrigé.`
+              : `Le système a vendu puis racheté ${o.ticker} dans le même run, signe d'une décision incohérente — soit un signal de vente fragile contredit par le signal d'achat de la passe suivante, soit un bug de calcul de performance.`}
+            Le raisonnement ci-dessous est conservé tel quel pour préserver la transparence de l'historique.
           </div>` : ''}
           <div class="order-raison">${o.raison}</div>
         </div>
