@@ -79,17 +79,10 @@ def get_eur_usd_rate():
         return 1.10
 
 def get_eur_gbp_rate():
-    """Taux EUR/GBP du jour via Yahoo Finance (EURGBP=X). Fallback 0.86.
-    Garde : rejette les valeurs hors plage [0.75, 0.95] (ex: Yahoo retourne
-    parfois ~1.0 ou des valeurs aberrantes sans lever d'exception)."""
+    """Taux EUR/GBP du jour via Yahoo Finance (EURGBP=X). Fallback 0.86."""
     try:
         hist = yf.Ticker("EURGBP=X").history(period="2d")
-        if not hist.empty:
-            rate = round(float(hist["Close"].iloc[-1]), 4)
-            if 0.75 <= rate <= 0.95:
-                return rate
-            print(f"  ⚠️  EUR/GBP rate {rate} hors plage [0.75, 0.95] — fallback 0.86")
-        return 0.86
+        return round(float(hist["Close"].iloc[-1]), 4) if not hist.empty else 0.86
     except:
         return 0.86
 
@@ -115,17 +108,26 @@ def detect_currency(ticker, market=""):
     return "USD"
 
 def to_eur(montant, currency, eur_usd, eur_gbp=0.86):
-    """Convertit un montant en devise native vers EUR."""
+    """Convertit un montant en devise native vers EUR.
+
+    Conventions FX (Yahoo) :
+      EURUSD=X = nb USD pour 1 EUR (ex: 1.18) → USD→EUR : montant / eur_usd
+      EURGBP=X = nb GBP pour 1 EUR (ex: 0.86) → GBP→EUR : montant / eur_gbp
+    Anciennement la formule GBP utilisait `montant * eur_gbp` (sous-évaluation
+    de ~26%) puis avant ça `montant / (eur_usd * 0.86)` (proche de 1:1, aussi
+    incorrect). Les positions GBP stockées avec ces formules sont migrées
+    automatiquement dans maj_position().
+    """
     if currency == "USD":
         return round(montant / eur_usd, 2)
     if currency == "GBP":
-        return round(montant * eur_gbp, 2)
+        return round(montant / eur_gbp, 2)
     return round(montant, 2)
 
 def maj_position(pos, eur_usd, eur_gbp=0.86):
     """
-    Met à jour une position : valeur_actuelle en EUR, corrige montant_investi
-    legacy (stocké en devise native), recalcule performance en EUR.
+    Met à jour une position : valeur_actuelle en EUR, migre montant_investi
+    si stocké avec une ancienne formule GBP, recalcule performance en EUR.
     Retourne True si le prix a pu être récupéré.
     """
     prix = get_prix(pos["ticker"])
@@ -136,17 +138,28 @@ def maj_position(pos, eur_usd, eur_gbp=0.86):
     pos["prix_actuel"]     = prix
     pos["valeur_actuelle"] = to_eur(prix * pos["quantite"], currency, eur_usd, eur_gbp)
 
-    # Correction legacy : montant_investi stocké en devise native (≈ prix_achat × quantité)
-    # → convertir en EUR au taux du jour (meilleure approximation disponible)
-    # Seulement pour les positions achetées AVANT le 2026-05-05 (date du fix EUR)
-    LEGACY_CUTOFF = "2026-05-05"
-    if currency != "EUR" and pos.get("date_achat", "9999") < LEGACY_CUTOFF:
-        native = round(pos["prix_achat"] * pos["quantite"], 2)
-        stored = pos.get("montant_investi", 0)
-        if stored > 0 and abs(stored - native) / (native + 1) < 0.05:
-            pos["montant_investi"] = to_eur(native, currency, eur_usd, eur_gbp)
+    # ── Migration GBP : 2 anciennes formules incorrectes existent dans les positions
+    # historiques. La formule correcte (montant / eur_gbp) donne ~1.16× la valeur
+    # GBP native. Toute position GBP dont montant_investi est strictement inférieur
+    # à 0.97× la valeur correcte a été stockée avec une ancienne formule → recompute.
+    if currency == "GBP":
+        native_gbp  = round(pos["prix_achat"] * pos["quantite"], 2)
+        correct_eur = round(native_gbp / eur_gbp, 2)
+        stored      = pos.get("montant_investi", 0)
+        if stored > 0 and stored < correct_eur * 0.97:
+            print(f"  🔧 {pos['ticker']} montant_investi migré : {stored:.2f}€ → {correct_eur:.2f}€ (ancienne formule GBP)")
+            pos["montant_investi"] = correct_eur
 
-    # Performance en € — cohérent avec valeur_actuelle et montant_investi (tous les deux en EUR)
+    # ── Correction legacy USD : montant_investi stocké en USD natif
+    elif currency == "USD":
+        LEGACY_CUTOFF = "2026-05-05"
+        if pos.get("date_achat", "9999") < LEGACY_CUTOFF:
+            native = round(pos["prix_achat"] * pos["quantite"], 2)
+            stored = pos.get("montant_investi", 0)
+            if stored > 0 and abs(stored - native) / (native + 1) < 0.05:
+                pos["montant_investi"] = to_eur(native, currency, eur_usd, eur_gbp)
+
+    # Performance en € — cohérent avec valeur_actuelle et montant_investi (tous deux en EUR)
     if pos.get("montant_investi", 0) > 0:
         pos["performance"] = round(
             (pos["valeur_actuelle"] - pos["montant_investi"]) / pos["montant_investi"] * 100, 2
