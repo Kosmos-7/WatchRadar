@@ -185,6 +185,20 @@
   .neu { color: var(--text2); }
   .liq { color: var(--blue); }
 
+  /* ── PARI DE LA SEMAINE ── */
+  .weekly-pick { margin-bottom: 1.75rem; }
+  .wp-label { font-family: 'Courier New', monospace; font-size: 0.74rem; color: var(--text3); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 0.5rem; }
+  .wp-card { background: linear-gradient(135deg, var(--surface) 0%, rgba(232,168,32,0.025) 100%); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: var(--radius); padding: 1rem 1.2rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.03); }
+  .wp-head { display: flex; align-items: center; gap: 8px; margin-bottom: 0.7rem; flex-wrap: wrap; }
+  .wp-type { font-family: 'Courier New', monospace; font-size: 0.78rem; padding: 3px 9px; border-radius: 5px; font-weight: 600; letter-spacing: 0.3px; }
+  .wp-type.t-achat { background: var(--green-dim); color: var(--green); border: 1px solid rgba(28,200,122,0.25); }
+  .wp-type.t-vente { background: var(--red-dim);   color: var(--red);   border: 1px solid rgba(240,84,84,0.25); }
+  .wp-ticker { font-family: 'Courier New', monospace; font-size: 0.95rem; font-weight: 600; color: var(--text); }
+  .wp-conv { font-family: 'Courier New', monospace; font-size: 0.74rem; color: var(--gold); text-transform: uppercase; letter-spacing: 0.6px; }
+  .wp-date { font-family: 'Courier New', monospace; font-size: 0.76rem; color: var(--text3); margin-left: auto; }
+  .wp-raison { font-size: 0.92rem; color: var(--text2); line-height: 1.7; margin-bottom: 0.6rem; }
+  .wp-meta { font-family: 'Courier New', monospace; font-size: 0.78rem; color: var(--text3); display: flex; gap: 12px; flex-wrap: wrap; }
+
   /* ── ALLOC CHARTS ── */
   .alloc-grid  { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.75rem; }
   .alloc-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.1rem 0.6rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.03); }
@@ -414,7 +428,7 @@
 <main>
   <div class="hero">
     <div class="fictif-badge">⬡ Portefeuille 100 % fictif · Prix réels du marché</div>
-    <h1>L'IA investit, on documente.</h1>
+    <h1>Une IA, <span id="hero-h1-capital">20 000 €</span>, le MSCI World.</h1>
     <p>Capital fictif de <span id="hero-capital">20 000 €</span>. L'IA investit automatiquement selon sa watchlist, documente chaque décision d'achat et de vente, et analyse ses erreurs chaque semaine. Performance comparée au MSCI World.</p>
     <div class="update-line" id="update-line">Chargement…</div>
   </div>
@@ -456,6 +470,8 @@
       <h2>Performance depuis le lancement</h2>
       <div class="legend">
         <div class="li"><div class="ld" style="background:var(--gold)"></div>Capital Signal (€)</div>
+        <div class="li"><div class="ld" style="background:var(--green);border-radius:50%;width:6px;height:6px"></div>Achat</div>
+        <div class="li"><div class="ld" style="background:var(--red);border-radius:50%;width:6px;height:6px"></div>Vente</div>
       </div>
     </div>
     <svg style="width:100%;overflow:visible" viewBox="0 0 600 200" id="perf-chart">
@@ -494,6 +510,20 @@
     <div class="alloc-block">
       <div class="sec-label">Répartition géographique</div>
       <div id="chart-geo"></div>
+    </div>
+  </div>
+
+  <div id="weekly-pick" class="weekly-pick" style="display:none">
+    <div class="wp-label">Le pari de la semaine</div>
+    <div class="wp-card">
+      <div class="wp-head">
+        <span id="wp-type" class="wp-type"></span>
+        <span id="wp-ticker" class="wp-ticker"></span>
+        <span id="wp-conv" class="wp-conv"></span>
+        <span id="wp-date" class="wp-date"></span>
+      </div>
+      <div id="wp-raison" class="wp-raison"></div>
+      <div id="wp-meta" class="wp-meta"></div>
     </div>
   </div>
 
@@ -832,7 +862,7 @@ function fmt(n, d=2)  { return Number(n).toFixed(d); }
 function fmtEur(n)    { return Number(n).toLocaleString('fr-FR', {maximumFractionDigits:0}) + ' €'; }
 function sign(n)      { return n >= 0 ? '+' : ''; }
 
-function renderChart(history, capitalInitial = 20000) {
+function renderChart(history, capitalInitial = 20000, orders = []) {
   const svg  = document.getElementById('perf-chart');
   const ns   = 'http://www.w3.org/2000/svg';
   const mk   = (tag, attrs) => { const e = document.createElementNS(ns, tag); Object.entries(attrs).forEach(([k,v]) => e.setAttribute(k,v)); return e; };
@@ -903,6 +933,49 @@ function renderChart(history, capitalInitial = 20000) {
       })).textContent = (p.cap / 1000).toFixed(1) + ' k€';
     }
   });
+
+  // ── Marqueurs de trades (achats verts en bas, ventes rouges en haut) ─────
+  // On regroupe les ordres par date pour éviter d'empiler 5 cercles au même point
+  if (orders && orders.length > 0 && history.length >= 2) {
+    const firstDate = history[0].date;
+    const lastDate  = history[history.length - 1].date;
+    // Index temporel : pour chaque date d'ordre, la position fractionnelle [0..n-1]
+    const dateToIdx = (d) => {
+      // Trouve le datapoint history le plus proche (même date ou avant)
+      for (let i = history.length - 1; i >= 0; i--) {
+        if (history[i].date <= d) return i;
+      }
+      return 0;
+    };
+    // Groupage par date+type
+    const byKey = {};
+    orders.forEach(o => {
+      if (!o.date || !o.type) return;
+      if (o.type !== 'ACHAT' && o.type !== 'VENTE') return;
+      if (o.date < firstDate || o.date > lastDate) return;
+      const key = `${o.date}|${o.type}`;
+      if (!byKey[key]) byKey[key] = { date: o.date, type: o.type, count: 0, tickers: [] };
+      byKey[key].count++;
+      byKey[key].tickers.push(o.ticker);
+    });
+    Object.values(byKey).forEach(g => {
+      const idx = dateToIdx(g.date);
+      const x = toX(idx);
+      const isBuy = g.type === 'ACHAT';
+      const color = isBuy ? '#1cc87a' : '#f05454';
+      const y = isBuy ? yBot - 4 : yTop + 4;
+      const r = g.count > 1 ? 3.6 : 2.8;
+      const c = mk('circle', {
+        cx: x.toFixed(1), cy: y.toFixed(1), r: r,
+        fill: color, 'fill-opacity': 0.85, stroke: '#08080d', 'stroke-width': 0.5,
+      });
+      // Tooltip natif avec liste des tickers
+      const t = mk('title', {});
+      t.textContent = `${g.date} · ${isBuy ? 'Achat' : 'Vente'}${g.count > 1 ? ' (×'+g.count+')' : ''} : ${g.tickers.join(', ')}`;
+      c.appendChild(t);
+      svg.appendChild(c);
+    });
+  }
 
   // ── Box dernier point ─────────────────────────────────────────────────────
   const lastLbl = (last.cap / 1000).toFixed(1) + ' k€';
@@ -1033,6 +1106,64 @@ function toggleOrder(idx) {
   if (el) el.classList.toggle('open');
 }
 
+function pickWeeklyOrder(orders, updatedAt) {
+  if (!orders || orders.length === 0) return;
+  // Fenêtre : 7 jours avant la dernière mise à jour
+  const refDate = new Date(updatedAt);
+  const cutoff = new Date(refDate);
+  cutoff.setDate(cutoff.getDate() - 7);
+  const recent = orders.filter(o => {
+    if (!o.date || !o.type) return false;
+    if (o.type !== 'ACHAT' && o.type !== 'VENTE') return false;
+    return new Date(o.date) >= cutoff;
+  });
+  if (recent.length === 0) return;
+
+  // Score de "parlant" : priorité au type + conviction + longueur du raisonnement
+  const score = o => {
+    let s = 0;
+    if (o.type === 'VENTE')   s += 12;   // une vente raconte plus qu'un achat (renoncer = thèse révisée)
+    if (o.type === 'ACHAT')   s += 8;
+    if (o.conviction === 'forte')   s += 5;
+    if (o.conviction === 'modérée') s += 2;
+    s += Math.min((o.raison || '').length / 80, 5); // bonus argumentation, cap à +5
+    if (o._allerRetour)             s -= 3;            // les aller-retours sont parasites
+    return s;
+  };
+  const pick = [...recent].sort((a, b) => score(b) - score(a))[0];
+  if (!pick) return;
+
+  // Render
+  const block  = document.getElementById('weekly-pick');
+  const tType  = document.getElementById('wp-type');
+  const tTick  = document.getElementById('wp-ticker');
+  const tConv  = document.getElementById('wp-conv');
+  const tDate  = document.getElementById('wp-date');
+  const tRais  = document.getElementById('wp-raison');
+  const tMeta  = document.getElementById('wp-meta');
+
+  tType.textContent = pick.type;
+  tType.className = 'wp-type ' + (pick.type === 'ACHAT' ? 't-achat' : 't-vente');
+  tTick.textContent = `${pick.ticker}${pick.nom ? ' · ' + pick.nom : ''}`;
+  tConv.textContent = pick.conviction ? `· conviction ${pick.conviction}` : '';
+  tDate.textContent = pick.date;
+  tRais.textContent = pick.raison || 'Pas de justification documentée pour cette décision.';
+
+  // Méta : montant, perf si vente, jours détenus
+  const metaParts = [];
+  if (pick.montant) metaParts.push(`${fmtEur(pick.montant)}`);
+  if (pick.qte && pick.prix) metaParts.push(`${pick.qte} × ${pick.prix}${pick.currency === 'EUR' ? '€' : pick.currency === 'USD' ? '$' : pick.currency === 'GBP' ? '£' : ''}`);
+  if (pick.type === 'VENTE' && pick.perf != null) {
+    const perfStr = `${sign(pick.perf)}${fmt(pick.perf, 1)} %`;
+    const pnlStr  = pick.pnl_eur != null ? ` (${sign(pick.pnl_eur)}${fmtEur(Math.abs(pick.pnl_eur))})` : '';
+    metaParts.push(`${perfStr}${pnlStr}`);
+  }
+  if (pick.type === 'VENTE' && pick.jours != null) metaParts.push(`${pick.jours}j détenus`);
+  tMeta.textContent = metaParts.join(' · ');
+
+  block.style.display = 'block';
+}
+
 let currentOrderFilter = 'all';
 
 function setOrderFilter(type, btn) {
@@ -1079,6 +1210,8 @@ async function loadPortfolio() {
     document.getElementById('footer-week').textContent = d.week;
     const heroCapEl = document.getElementById('hero-capital');
     if (heroCapEl) heroCapEl.textContent = fmtEur(d.capital_initial);
+    const heroH1Cap = document.getElementById('hero-h1-capital');
+    if (heroH1Cap) heroH1Cap.textContent = fmtEur(d.capital_initial);
 
     // Graphe dynamique
     const history = d.performance_history || [];
@@ -1094,7 +1227,7 @@ async function loadPortfolio() {
       }
     }
     if (history.length >= 2) {
-      renderChart(history, d.capital_initial);
+      renderChart(history, d.capital_initial, d.ordres || []);
     } else {
       // Fallback : 2 points synthétiques avec dates distinctes pour éviter le doublon de label
       const d0 = new Date(d.updated_at);
@@ -1103,7 +1236,7 @@ async function loadPortfolio() {
       renderChart([
         { date: dateDepart,   capital: d.capital_initial },
         { date: d.updated_at, capital: d.capital_actuel }
-      ], d.capital_initial);
+      ], d.capital_initial, d.ordres || []);
     }
     const chartNote = document.getElementById('chart-note');
     if (chartNote) {
@@ -1282,6 +1415,11 @@ async function loadPortfolio() {
     });
     window._allOrdres = allOrdres;
     renderOrdres(5);
+
+    // ── Pari de la semaine : on extrait LA décision la plus parlante ────────
+    // Heuristique : ordres de la semaine en cours (~7j), priorité VENTE > ACHAT,
+    // conviction forte > modérée, raison la plus longue (= la plus argumentée)
+    pickWeeklyOrder(allOrdres, d.updated_at);
 
     // Analyse Claude
     const ac = d.analyse_claude;

@@ -108,6 +108,37 @@
   .pill-beta { background: var(--gold-dim);  border: 1px solid rgba(232,168,32,0.2); color: var(--gold); }
   .pd { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
 
+  /* ── TRACK BAR — proof of life du portefeuille IA en home ── */
+  .track-bar {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    padding: 0.65rem 1rem;
+    margin-bottom: 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    text-decoration: none;
+    transition: border-color 0.18s, box-shadow 0.18s, transform 0.18s;
+    font-size: 0.84rem;
+  }
+  .track-bar:hover {
+    border-color: rgba(232,168,32,0.4);
+    box-shadow: 0 0 24px rgba(232,168,32,0.08);
+  }
+  .tb-label { font-family: 'Courier New', monospace; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); }
+  .tb-stat  { font-family: Georgia, serif; color: var(--text); }
+  .tb-stat.up   { color: var(--green); }
+  .tb-stat.dn   { color: var(--red); }
+  .tb-stat.tb-bench  { color: var(--text2); font-family: 'Courier New', monospace; font-size: 0.82rem; }
+  .tb-stat.tb-orders { color: var(--text3); font-family: 'Courier New', monospace; font-size: 0.78rem; }
+  .tb-sep   { color: var(--text3); font-size: 0.76rem; }
+  .tb-arrow { margin-left: auto; color: var(--text3); transition: color 0.18s, transform 0.18s; }
+  .track-bar:hover .tb-arrow { color: var(--gold); transform: translateX(3px); }
+  @media (max-width: 640px) {
+    .track-bar { font-size: 0.78rem; padding: 0.6rem 0.85rem; gap: 7px; }
+    .tb-label { display: none; }
+    .tb-arrow { margin-left: auto; }
+  }
+
   /* ── HERO ── */
   .hero { margin-bottom: 2.5rem; position: relative; }
   .hero h1 {
@@ -419,6 +450,17 @@
 </header>
 
 <main>
+
+  <a href="portfolio.html" class="track-bar" id="track-bar" style="display:none">
+    <span class="tb-label">Portefeuille IA</span>
+    <span class="tb-stat" id="tb-perf">—</span>
+    <span class="tb-sep">vs MSCI</span>
+    <span class="tb-stat tb-bench" id="tb-bench">—</span>
+    <span class="tb-sep">·</span>
+    <span class="tb-stat tb-orders" id="tb-orders">—</span>
+    <span class="tb-arrow">→</span>
+  </a>
+
   <section class="hero">
     <div class="pill-row">
       <span class="pill pill-free"><span class="pd"></span>Accès gratuit</span>
@@ -1071,6 +1113,30 @@ async function loadWatchlist() {
   const nb   = document.querySelectorAll('.lex-item').length;
   const chip = document.getElementById('chip-lexique');
   if (chip) chip.textContent = `Lexique · ${nb} terme${nb > 1 ? 's' : ''}`;
+})();
+
+// ── Track-bar : proof of life du portfolio en home (fetch silencieux)
+(async function initTrackBar() {
+  try {
+    const res = await fetch('portfolio.json?v=' + Date.now());
+    if (!res.ok) return;
+    const d = await res.json();
+    const perf  = d.performance ?? 0;
+    const bench = d.benchmark_msci ?? 0;
+    const vs    = d.vs_benchmark ?? (perf - bench);
+    const nOrd  = (d.ordres || []).length;
+    const sign  = n => n >= 0 ? '+' : '';
+    const cls   = n => n >= 0 ? 'up' : 'dn';
+    const fmt1  = n => Number(n).toFixed(1);
+    const perfEl  = document.getElementById('tb-perf');
+    const benchEl = document.getElementById('tb-bench');
+    const ordEl   = document.getElementById('tb-orders');
+    const bar     = document.getElementById('track-bar');
+    if (perfEl)  { perfEl.textContent  = `${sign(perf)}${fmt1(perf)} %`;  perfEl.classList.add(cls(perf)); }
+    if (benchEl)   benchEl.textContent = `${sign(bench)}${fmt1(bench)} %`;
+    if (ordEl)     ordEl.textContent   = `${nOrd} décision${nOrd > 1 ? 's' : ''}`;
+    if (bar)       bar.style.display   = 'flex';
+  } catch (e) { /* silencieux : si le JSON manque, le bandeau reste caché */ }
 })();
 
 loadWatchlist();
