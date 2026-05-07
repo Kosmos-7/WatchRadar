@@ -6,7 +6,7 @@ Il reçoit :
 - L'état actuel du portefeuille (positions, performance, liquidités)
 - La watchlist de la semaine (25 actions scorées)
 - Le contexte de marché (CAC40, performances sectorielles)
-- Les règles de survie
+- Les règles non négociables (patience, taille, panique, stop-loss)
 
 Il décide :
 - Quoi acheter, quoi vendre, quoi conserver — et pourquoi
@@ -213,8 +213,7 @@ def portfolio_vide():
         "updated_at": str(date.today()), "week": semaine(),
         "capital_initial": CAPITAL_INITIAL_DEF, "capital_actuel": CAPITAL_INITIAL_DEF,
         "performance": 0.0, "benchmark_cac40": 0.0, "benchmark_msci": 0.0,
-        "vs_benchmark": 0.0, "statut_survie": "en_vie",
-        "trimestres_negatifs": 0, "dernier_trim_check": "", "positions": [],
+        "vs_benchmark": 0.0, "positions": [],
         "liquidites": CAPITAL_INITIAL_DEF, "ordres": [], "biais_detectes": [],
         "analyse_claude": None, "performance_history": [], "max_drawdown": 0.0,
     }
@@ -400,7 +399,6 @@ def construire_prompt(portfolio, watchlist, contexte, analyse=None, macro_news=N
     perf = portfolio.get("performance", 0)
     bench = portfolio.get("benchmark_cac40", 0)
     vs = portfolio.get("vs_benchmark", 0)
-    trim_neg = portfolio.get("trimestres_negatifs", 0)
 
     today = str(date.today())
 
@@ -464,21 +462,20 @@ def construire_prompt(portfolio, watchlist, contexte, analyse=None, macro_news=N
     else:
         macro_news_section = ""
 
-    prompt = f"""Tu es l'IA qui gère le portefeuille fictif Signal. Tu joues ta survie : tu dois battre le MSCI World sur 12 mois glissants ou tu te réinitialises publiquement.
+    prompt = f"""Tu es l'IA qui gère le portefeuille fictif Signal. Ton objectif : battre le MSCI World (en euros, via EUNL.DE) sur la durée. La performance et l'écart au benchmark sont publiés en transparence à chaque mise à jour hebdomadaire.
 
-## RÈGLES DE SURVIE (non négociables)
+## RÈGLES NON NÉGOCIABLES
 1. Aucune vente avant 90 jours de détention — sauf signal fondamental majeur documenté
-2. Maximum 30% du capital sur un seul titre
-3. Zéro ajustement en mode panique (CAC40 < -5% sur la semaine) — sauf si mode_panique = false
+2. Maximum 20% du capital sur un seul titre (renforcement bloqué au-delà)
+3. Zéro ajustement en mode panique (CAC40 < -5% sur la semaine) — sauf stop-loss catastrophe
 4. Chaque décision doit être expliquée avec les données qui la motivent
 5. Les retours utilisateurs et les erreurs passées doivent influencer les décisions
-6. Deux trimestres consécutifs sous le MSCI World = remise à zéro publique
+6. Stop-loss automatique : -15% après 90 jours, ou -25% sans condition de durée
 
 ## ÉTAT ACTUEL DU PORTEFEUILLE
 - Date : {today}
 - Capital : {capital:.0f}€ (performance YTD : {perf:+.1f}% vs MSCI World {bench:+.1f}%, soit {vs:+.1f}pp)
 - Liquidités disponibles : {liquidites:.0f}€
-- Trimestres négatifs vs benchmark : {trim_neg}/2
 - Positions ouvertes ({len(positions)}) :
 {chr(10).join(pos_lines) if pos_lines else "  Aucune position"}
 
@@ -496,7 +493,7 @@ Décide des actions à prendre cette semaine en t'appuyant sur l'analyse ci-dess
 Pour chaque décision, explique ton raisonnement en tenant compte :
 - Des thèses d'achat originales et du delta identifié en passe 1
 - Du contexte macro de la semaine
-- Des règles de survie
+- Des règles non négociables
 - Des erreurs passées (positions perdantes, biais identifiés)
 
 ⚠️ RÈGLE ANTI-CONTRADICTION : Pour toute VENTE sur une position détenue < 90 jours,
@@ -871,22 +868,6 @@ Ne jamais inclure de balises markdown ou de backticks.""",
     bench_msci = contexte.get("msci",  {}).get("perf_ytd", portfolio.get("benchmark_msci", 0))
     vs_bench   = round(performance - bench_msci, 2)
 
-    # ── Trimestres négatifs — évaluation une seule fois par trimestre ──────────
-    trim_neg = portfolio.get("trimestres_negatifs", 0)
-    d_today  = date.today()
-    trimestre_actuel = f"{d_today.year}-Q{(d_today.month - 1) // 3 + 1}"
-    dernier_trim_check = portfolio.get("dernier_trim_check", "")
-
-    if trimestre_actuel != dernier_trim_check:
-        if vs_bench < 0:
-            trim_neg = min(trim_neg + 1, 2)
-        else:
-            trim_neg = max(trim_neg - 1, 0)
-        dernier_trim_check = trimestre_actuel
-    # Sinon : trimestre déjà compté, on ne change pas trim_neg cette semaine
-
-    statut = "reinitialisation" if trim_neg >= 2 else "en_vie"
-
     tous_ordres = nouveaux_ordres + portfolio.get("ordres", [])
 
     # ── Historique de performance (upsert : toujours la valeur finale du jour) ──
@@ -915,9 +896,6 @@ Ne jamais inclure de balises markdown ou de backticks.""",
         "benchmark_cac40":     bench_cac,
         "benchmark_msci":      bench_msci,
         "vs_benchmark":        vs_bench,
-        "statut_survie":       statut,
-        "trimestres_negatifs": trim_neg,
-        "dernier_trim_check":  dernier_trim_check,
         "mode_panique": bool(contexte.get("mode_panique", False)),
         "perf_cac_semaine": float(contexte.get("cac40", {}).get("perf_semaine", 0)),
         "positions":           sorted(positions, key=lambda x: -x.get("performance", 0)),

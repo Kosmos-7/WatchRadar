@@ -414,8 +414,8 @@
 <main>
   <div class="hero">
     <div class="fictif-badge">⬡ Portefeuille 100 % fictif · Prix réels du marché</div>
-    <h1>L'IA joue sa survie.</h1>
-    <p>Capital fictif de <span id="hero-capital">20 000 €</span>. L'IA investit automatiquement selon sa watchlist, documente chaque décision d'achat et de vente, et analyse ses erreurs chaque semaine.</p>
+    <h1>L'IA investit, on documente.</h1>
+    <p>Capital fictif de <span id="hero-capital">20 000 €</span>. L'IA investit automatiquement selon sa watchlist, documente chaque décision d'achat et de vente, et analyse ses erreurs chaque semaine. Performance comparée au MSCI World.</p>
     <div class="update-line" id="update-line">Chargement…</div>
   </div>
   <div class="hero-sep"></div>
@@ -531,9 +531,8 @@
           <div class="rule"><div class="rule-num">Règle 03 · Calme</div><div class="rule-title">Zéro ajustement en panique</div><p>Si le CAC40 chute de plus de 5 % sur la semaine, l'IA n'agit pas.</p></div>
           <div class="rule"><div class="rule-num">Règle 04 · Honnêteté</div><div class="rule-title">Chaque décision documentée</div><p>Chaque achat et vente est expliqué avec les données qui ont motivé la décision.</p></div>
           <div class="rule"><div class="rule-num">Règle 05 · Sources</div><div class="rule-title">Données multi-sources</div><p>Yahoo Finance pour le momentum, Finnhub pour valider les fondamentaux.</p></div>
-          <div class="rule"><div class="rule-num">Règle 06 · Survie</div><div class="rule-title">Deux trimestres négatifs = zéro</div><p>Sous-performance durable = post-mortem public + remise à zéro de la méthodologie.</p></div>
-          <div class="rule"><div class="rule-num">Règle 07 · Stop-loss</div><div class="rule-title">−15 % après 90 jours = sortie</div><p>Une position en perte ≥ 15 % détenue depuis plus de 90 jours est vendue automatiquement, hors mode panique.</p></div>
-          <div class="rule"><div class="rule-num">Règle 08 · Catastrophe</div><div class="rule-title">−25 % = sortie immédiate</div><p>Si une position perd 25 % ou plus, vente forcée sans condition de durée — même en mode panique. Bouche le trou des 89 premiers jours.</p></div>
+          <div class="rule"><div class="rule-num">Règle 06 · Stop-loss</div><div class="rule-title">−15 % après 90 jours = sortie</div><p>Une position en perte ≥ 15 % détenue depuis plus de 90 jours est vendue automatiquement, hors mode panique.</p></div>
+          <div class="rule"><div class="rule-num">Règle 07 · Catastrophe</div><div class="rule-title">−25 % = sortie immédiate</div><p>Si une position perd 25 % ou plus, vente forcée sans condition de durée — même en mode panique. Garde-fou contre les effondrements rapides.</p></div>
         </div>
       </div>
 
@@ -565,7 +564,7 @@
           <span class="learning-date">07 mai 2026</span>
         </div>
         <div class="learning-title">Le benchmark MSCI était comparé en mauvaise devise</div>
-        <div class="learning-prob">L'ETF utilisé pour mesurer "Signal vs marché mondial" était <code>URTH</code>, coté en dollars. Le portfolio Signal est calculé en euros. On soustrayait directement deux performances en devises différentes pour produire l'alpha — un mouvement EUR/USD de 5% sur l'année faussait l'alpha affiché de 5 points de pourcentage, sans aucun rapport avec la qualité des décisions de l'IA. La règle de survie "deux trimestres sous le MSCI" pouvait se déclencher purement à cause du dollar.</div>
+        <div class="learning-prob">L'ETF utilisé pour mesurer "Signal vs marché mondial" était <code>URTH</code>, coté en dollars. Le portfolio Signal est calculé en euros. On soustrayait directement deux performances en devises différentes pour produire l'alpha — un mouvement EUR/USD de 5% sur l'année faussait l'alpha affiché de 5 points de pourcentage, sans aucun rapport avec la qualité des décisions de l'IA.</div>
         <div class="learning-fix">Bascule sur <code>EUNL.DE</code> (iShares Core MSCI World UCITS, Xetra, coté en euros). Le même indice sous-jacent, mais quoté dans la devise du portfolio. L'alpha mesure désormais ce qu'il prétend mesurer.</div>
       </div>
     </div>
@@ -798,7 +797,7 @@
       <div class="pacc-section">
         <div class="pacc-section-title">Portefeuille &amp; Performance</div>
         <div class="lex-grid">
-          <div class="lex-item"><div class="lex-term">MSCI World</div><div class="lex-def">Indice mondial couvrant ~1 500 grandes et moyennes capitalisations dans 23 pays développés. <em>Benchmark de référence</em> de Signal : deux trimestres consécutifs sous le MSCI World = post-mortem public + remise à zéro de la méthodologie.</div></div>
+          <div class="lex-item"><div class="lex-term">MSCI World</div><div class="lex-def">Indice mondial couvrant ~1 500 grandes et moyennes capitalisations dans 23 pays développés. <em>Benchmark de référence</em> de Signal — toute la performance du portefeuille est mesurée par rapport à cet indice (en euros, via l'ETF EUNL).</div></div>
           <div class="lex-item"><div class="lex-term">Alpha MSCI</div><div class="lex-def">Écart de performance entre Signal et le MSCI World, exprimé en <em>points de pourcentage (pp)</em>. Un alpha de +5.4 pp signifie que Signal a surperformé l'indice de 5.4 points sur la même période. Objectif : maintenir un alpha positif sur 12 mois glissants.</div></div>
           <div class="lex-item"><div class="lex-term">Drawdown max</div><div class="lex-def">Perte maximale enregistrée depuis un pic du portefeuille, en %. Mesure le <em>pire scénario traversé</em> : un drawdown de −15% signifie que la valeur a chuté de 15% depuis son plus haut avant de se redresser. Indicateur de risque clé, indépendant de la performance finale.</div></div>
           <div class="lex-item"><div class="lex-term">P&amp;L réalisé</div><div class="lex-def">Profit and Loss — gain ou perte <em>effectivement encaissé</em> sur les positions fermées. Distinct du P&amp;L latent (positions ouvertes), qui peut encore s'inverser. Seul le P&amp;L réalisé est définitif.</div></div>
@@ -1114,38 +1113,38 @@ async function loadPortfolio() {
 
     if (d.mode_panique) document.getElementById('panic-banner').style.display = 'block';
 
-    // Survival block
+    // Bloc Performance vs MSCI — comparaison neutre, plus de dramatisation "survie"
     const sb    = document.getElementById('survival-block');
-    const alive = d.statut_survie === 'en_vie';
     const panic = d.mode_panique;
-    sb.className = `survival-block ${panic ? 'panic' : alive ? 'alive' : 'dead'}`;
-    const sc = panic ? 'var(--orange)' : alive ? 'var(--green)' : 'var(--red)';
-    const sl = panic ? 'Mode panique' : alive ? 'En vie · Seuil respecté' : 'Réinitialisation';
+    const ahead = (d.vs_benchmark ?? 0) >= 0;
+    sb.className = `survival-block ${panic ? 'panic' : ahead ? 'alive' : 'dead'}`;
+    const sc = panic ? 'var(--orange)' : ahead ? 'var(--green)' : 'var(--red)';
+    const sl = panic ? 'Mode panique' : ahead ? 'En avance sur le marché' : 'En retard sur le marché';
     sb.innerHTML = `
       <div class="survival-header">
-        <div class="survival-title">Statut de survie · ${d.week}</div>
+        <div class="survival-title">Performance vs MSCI World · ${d.week}</div>
         <div class="status-pill" style="color:${sc}">
           <div class="sdot" style="background:${sc}"></div>${sl}
         </div>
       </div>
       <div class="survival-desc">
-        L'IA doit <strong>battre le MSCI World sur 12 mois glissants</strong>. Deux trimestres consécutifs sous le MSCI World = post-mortem public + remise à zéro. <strong>Transparence totale.</strong>
+        Le portefeuille est comparé au <strong>MSCI World</strong> (indice mondial coté en euros via EUNL). C'est la référence pour juger si la sélection active de Signal apporte de la valeur par rapport à un simple ETF passif.
       </div>
       <div class="threshold-row">
         <div class="th">
-          <div class="th-label">Notre performance <span class="kpi-info" data-tip="Rendement total du portefeuille depuis le démarrage de l'expérience, en euros">ⓘ</span></div>
+          <div class="th-label">Notre performance <span class="kpi-info" data-tip="Rendement total du portefeuille depuis le démarrage, en euros">ⓘ</span></div>
           <div class="th-value ${d.performance>=0?'up':'dn'}">${sign(d.performance)}${fmt(d.performance,1)} %</div>
           <div class="th-sub">depuis jan. ${new Date().getFullYear()} · base ${fmtEur(d.capital_initial)}</div>
         </div>
         <div class="th">
-          <div class="th-label">Marché mondial <span class="kpi-info" data-tip="Ce qu'aurait rapporté un simple ETF mondial (MSCI World) sans aucune gestion active — notre référence de comparaison">ⓘ</span></div>
+          <div class="th-label">Marché mondial <span class="kpi-info" data-tip="Ce qu'aurait rapporté un simple ETF MSCI World sur la même période, sans gestion active">ⓘ</span></div>
           <div class="th-value neu">${sign(d.benchmark_msci)}${fmt(d.benchmark_msci,1)} %</div>
           <div class="th-sub">MSCI World · même période</div>
         </div>
         <div class="th">
-          <div class="th-label">Avance sur le marché <span class="kpi-info" data-tip="Écart entre notre performance et celle du MSCI World. Si négatif 2 trimestres de suite, l'expérience s'arrête">ⓘ</span></div>
-          <div class="th-value ${d.vs_benchmark>=0?'up':'dn'}">${sign(d.vs_benchmark)}${fmt(d.vs_benchmark,1)} pts de %</div>
-          <div class="th-sub">${d.trimestres_negatifs ?? 0} trimestre${(d.trimestres_negatifs??0)>1?'s':''} en retard · limite : 2 de suite</div>
+          <div class="th-label">Écart au marché <span class="kpi-info" data-tip="Différence entre notre performance et celle du MSCI World. Positif = on bat le marché. Négatif = on fait moins bien.">ⓘ</span></div>
+          <div class="th-value ${d.vs_benchmark>=0?'up':'dn'}">${sign(d.vs_benchmark)}${fmt(d.vs_benchmark,1)} pts</div>
+          <div class="th-sub">vs MSCI World</div>
         </div>
         <div class="th">
           <div class="th-label">Perte max <span class="kpi-info" data-tip="La plus grosse chute enregistrée depuis un pic du portefeuille. Mesure le pire scénario traversé, indépendamment de la performance finale">ⓘ</span></div>
