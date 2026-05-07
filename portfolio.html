@@ -185,19 +185,18 @@
   .neu { color: var(--text2); }
   .liq { color: var(--blue); }
 
-  /* ── PARI DE LA SEMAINE ── */
-  .weekly-pick { margin-bottom: 1.75rem; }
-  .wp-label { font-family: 'Courier New', monospace; font-size: 0.74rem; color: var(--text3); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 0.5rem; }
-  .wp-card { background: linear-gradient(135deg, var(--surface) 0%, rgba(232,168,32,0.025) 100%); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: var(--radius); padding: 1rem 1.2rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.03); }
-  .wp-head { display: flex; align-items: center; gap: 8px; margin-bottom: 0.7rem; flex-wrap: wrap; }
-  .wp-type { font-family: 'Courier New', monospace; font-size: 0.78rem; padding: 3px 9px; border-radius: 5px; font-weight: 600; letter-spacing: 0.3px; }
+  /* ── PARI DE LA SEMAINE — intégré dans le bloc Raisonnement ── */
+  .weekly-pick-inline { margin-top: 1.1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .wp-label { font-family: 'Courier New', monospace; font-size: 0.72rem; color: var(--text3); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 0.6rem; }
+  .wp-head { display: flex; align-items: center; gap: 8px; margin-bottom: 0.55rem; flex-wrap: wrap; }
+  .wp-type { font-family: 'Courier New', monospace; font-size: 0.76rem; padding: 2px 8px; border-radius: 4px; font-weight: 600; letter-spacing: 0.3px; }
   .wp-type.t-achat { background: var(--green-dim); color: var(--green); border: 1px solid rgba(28,200,122,0.25); }
   .wp-type.t-vente { background: var(--red-dim);   color: var(--red);   border: 1px solid rgba(240,84,84,0.25); }
-  .wp-ticker { font-family: 'Courier New', monospace; font-size: 0.95rem; font-weight: 600; color: var(--text); }
-  .wp-conv { font-family: 'Courier New', monospace; font-size: 0.74rem; color: var(--gold); text-transform: uppercase; letter-spacing: 0.6px; }
-  .wp-date { font-family: 'Courier New', monospace; font-size: 0.76rem; color: var(--text3); margin-left: auto; }
-  .wp-raison { font-size: 0.92rem; color: var(--text2); line-height: 1.7; margin-bottom: 0.6rem; }
-  .wp-meta { font-family: 'Courier New', monospace; font-size: 0.78rem; color: var(--text3); display: flex; gap: 12px; flex-wrap: wrap; }
+  .wp-ticker { font-family: 'Courier New', monospace; font-size: 0.90rem; font-weight: 600; color: var(--text); }
+  .wp-conv { font-family: 'Courier New', monospace; font-size: 0.72rem; color: var(--gold); text-transform: uppercase; letter-spacing: 0.5px; }
+  .wp-date { font-family: 'Courier New', monospace; font-size: 0.74rem; color: var(--text3); margin-left: auto; }
+  .wp-raison { font-size: 0.88rem; color: var(--text2); line-height: 1.65; margin-bottom: 0.5rem; }
+  .wp-meta { font-family: 'Courier New', monospace; font-size: 0.76rem; color: var(--text3); display: flex; gap: 12px; flex-wrap: wrap; }
 
   /* ── ALLOC CHARTS ── */
   .alloc-grid  { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.75rem; }
@@ -462,6 +461,17 @@
       </div>
       <div id="analyse-macro"  class="analyse-text"></div>
       <div id="message-users"  class="message-text"></div>
+      <div id="weekly-pick" class="weekly-pick-inline" style="display:none">
+        <div class="wp-label">Décision marquante de la semaine</div>
+        <div class="wp-head">
+          <span id="wp-type" class="wp-type"></span>
+          <span id="wp-ticker" class="wp-ticker"></span>
+          <span id="wp-conv" class="wp-conv"></span>
+          <span id="wp-date" class="wp-date"></span>
+        </div>
+        <div id="wp-raison" class="wp-raison"></div>
+        <div id="wp-meta" class="wp-meta"></div>
+      </div>
     </div>
   </div>
 
@@ -470,8 +480,6 @@
       <h2>Performance depuis le lancement</h2>
       <div class="legend">
         <div class="li"><div class="ld" style="background:var(--gold)"></div>Capital Signal (€)</div>
-        <div class="li"><div class="ld" style="background:var(--green);border-radius:50%;width:6px;height:6px"></div>Achat</div>
-        <div class="li"><div class="ld" style="background:var(--red);border-radius:50%;width:6px;height:6px"></div>Vente</div>
       </div>
     </div>
     <svg style="width:100%;overflow:visible" viewBox="0 0 600 200" id="perf-chart">
@@ -510,20 +518,6 @@
     <div class="alloc-block">
       <div class="sec-label">Répartition géographique</div>
       <div id="chart-geo"></div>
-    </div>
-  </div>
-
-  <div id="weekly-pick" class="weekly-pick" style="display:none">
-    <div class="wp-label">Le pari de la semaine</div>
-    <div class="wp-card">
-      <div class="wp-head">
-        <span id="wp-type" class="wp-type"></span>
-        <span id="wp-ticker" class="wp-ticker"></span>
-        <span id="wp-conv" class="wp-conv"></span>
-        <span id="wp-date" class="wp-date"></span>
-      </div>
-      <div id="wp-raison" class="wp-raison"></div>
-      <div id="wp-meta" class="wp-meta"></div>
     </div>
   </div>
 
@@ -862,7 +856,7 @@ function fmt(n, d=2)  { return Number(n).toFixed(d); }
 function fmtEur(n)    { return Number(n).toLocaleString('fr-FR', {maximumFractionDigits:0}) + ' €'; }
 function sign(n)      { return n >= 0 ? '+' : ''; }
 
-function renderChart(history, capitalInitial = 20000, orders = []) {
+function renderChart(history, capitalInitial = 20000) {
   const svg  = document.getElementById('perf-chart');
   const ns   = 'http://www.w3.org/2000/svg';
   const mk   = (tag, attrs) => { const e = document.createElementNS(ns, tag); Object.entries(attrs).forEach(([k,v]) => e.setAttribute(k,v)); return e; };
@@ -933,49 +927,6 @@ function renderChart(history, capitalInitial = 20000, orders = []) {
       })).textContent = (p.cap / 1000).toFixed(1) + ' k€';
     }
   });
-
-  // ── Marqueurs de trades (achats verts en bas, ventes rouges en haut) ─────
-  // On regroupe les ordres par date pour éviter d'empiler 5 cercles au même point
-  if (orders && orders.length > 0 && history.length >= 2) {
-    const firstDate = history[0].date;
-    const lastDate  = history[history.length - 1].date;
-    // Index temporel : pour chaque date d'ordre, la position fractionnelle [0..n-1]
-    const dateToIdx = (d) => {
-      // Trouve le datapoint history le plus proche (même date ou avant)
-      for (let i = history.length - 1; i >= 0; i--) {
-        if (history[i].date <= d) return i;
-      }
-      return 0;
-    };
-    // Groupage par date+type
-    const byKey = {};
-    orders.forEach(o => {
-      if (!o.date || !o.type) return;
-      if (o.type !== 'ACHAT' && o.type !== 'VENTE') return;
-      if (o.date < firstDate || o.date > lastDate) return;
-      const key = `${o.date}|${o.type}`;
-      if (!byKey[key]) byKey[key] = { date: o.date, type: o.type, count: 0, tickers: [] };
-      byKey[key].count++;
-      byKey[key].tickers.push(o.ticker);
-    });
-    Object.values(byKey).forEach(g => {
-      const idx = dateToIdx(g.date);
-      const x = toX(idx);
-      const isBuy = g.type === 'ACHAT';
-      const color = isBuy ? '#1cc87a' : '#f05454';
-      const y = isBuy ? yBot - 4 : yTop + 4;
-      const r = g.count > 1 ? 3.6 : 2.8;
-      const c = mk('circle', {
-        cx: x.toFixed(1), cy: y.toFixed(1), r: r,
-        fill: color, 'fill-opacity': 0.85, stroke: '#08080d', 'stroke-width': 0.5,
-      });
-      // Tooltip natif avec liste des tickers
-      const t = mk('title', {});
-      t.textContent = `${g.date} · ${isBuy ? 'Achat' : 'Vente'}${g.count > 1 ? ' (×'+g.count+')' : ''} : ${g.tickers.join(', ')}`;
-      c.appendChild(t);
-      svg.appendChild(c);
-    });
-  }
 
   // ── Box dernier point ─────────────────────────────────────────────────────
   const lastLbl = (last.cap / 1000).toFixed(1) + ' k€';
@@ -1227,7 +1178,7 @@ async function loadPortfolio() {
       }
     }
     if (history.length >= 2) {
-      renderChart(history, d.capital_initial, d.ordres || []);
+      renderChart(history, d.capital_initial);
     } else {
       // Fallback : 2 points synthétiques avec dates distinctes pour éviter le doublon de label
       const d0 = new Date(d.updated_at);
@@ -1236,7 +1187,7 @@ async function loadPortfolio() {
       renderChart([
         { date: dateDepart,   capital: d.capital_initial },
         { date: d.updated_at, capital: d.capital_actuel }
-      ], d.capital_initial, d.ordres || []);
+      ], d.capital_initial);
     }
     const chartNote = document.getElementById('chart-note');
     if (chartNote) {
