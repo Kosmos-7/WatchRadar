@@ -1,0 +1,45 @@
+# .github/workflows/daily-prices.yml
+# Refresh quotidien des prix portfolio (pas de scoring, pas d'appel Claude)
+name: Daily prices refresh
+
+on:
+  schedule:
+    # Lundi-Vendredi à 22h UTC (= 1h après close US 21h UTC)
+    # Capture le close du jour pour chaque jour ouvré
+    - cron: '0 22 * * 1-5'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Refresh portfolio prices
+        run: python update_prices.py
+
+      - name: Commit if changed
+        run: |
+          git config user.email "bot@signal.fr"
+          git config user.name "Signal Bot"
+          git add portfolio.json
+          if git diff --staged --quiet; then
+            echo "Aucun changement de prix (marché fermé ou jour férié)."
+          else
+            git commit -m "prices: refresh $(date -u +'%Y-%m-%d')"
+            git push
+          fi
