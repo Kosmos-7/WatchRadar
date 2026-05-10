@@ -483,6 +483,8 @@ Tu es ANALYSTE — PAS décideur. N'émets aucune recommandation d'achat ou de v
 Pour chaque position : identifie forces, risques actuels, et surtout ce qui a changé vs la thèse d'achat.
 Pour les 5 meilleures opportunités watchlist : évalue qualité du signal et timing.
 
+🕒 **Ancre tes observations dans le temps** : "ce qui a changé depuis l'achat [date]" ou "depuis le dernier run [derniere_maj]". La synthèse_marche doit explicitement nommer la fenêtre couverte (ex : "sur la semaine écoulée"), pas "actuellement" sans repère.
+
 JSON uniquement :
 {{
   "positions_analyse": {{
@@ -703,6 +705,13 @@ Pour chaque décision, explique ton raisonnement en tenant compte :
 - Si tu appliques R7 (signal en transition) ou R8 (cross-validation analystes/cours), **mentionne-le explicitement** dans `raison` (ex : "R8 déclenchée : score 42 + 11 buy + cours -38% sur 1 an, suspect données screener — j'ai croisé avec dernier trimestriel publié").
 - Si la pré-flight a révélé un drapeau notable (M&A récente, divergence screener/réalité organique, signal en transition), **mentionne-le dans `analyse_macro`** comme élément de contexte pour les lecteurs.
 - L'idée : que les utilisateurs du site puissent comprendre POURQUOI tu as décidé, pas juste QUE tu as décidé. La méthodologie doit être visible, pas implicite.
+
+🕒 **ANCRE TON RAISONNEMENT DANS LE TEMPS** (un lecteur lit ton output 7 jours plus tard) :
+- L'`analyse_macro` doit **commencer par un repère temporel précis** : "Sur la semaine écoulée du [date-7j au today]..." ou "Depuis le dernier run du [derniere_maj]...". Pas de "le marché reprend" sans préciser SUR QUELLE PÉRIODE.
+- Les pourcentages cités (perf positions, perf marché) doivent **toujours** être accompagnés de leur fenêtre temporelle : "JPM à -4% **depuis l'achat le [date]**" ou "CAC40 +1.7% **sur les 7 derniers jours**".
+- Le `message_utilisateurs` est lu sur le site avec un `updated_at` visible, mais **pas tout le monde calcule** — donne le contexte temporel explicitement (ex : "Cette semaine [date début]→[today]" plutôt que "cette semaine" seul).
+- Si le run actuel est le même jour qu'un précédent (delta_j=0), **mentionne-le** dans le message ("Run de contrôle [heure] UTC, peu de changement vs run de [heure précédente]").
+- Pour chaque décision dans `raison`, ancrer la durée : "détenu depuis 47 jours" plutôt que "récemment".
 
 ⚠️ RÈGLE ANTI-CONTRADICTION : Pour toute VENTE sur une position détenue < 90 jours,
 tu DOIS dans le champ "raison" :
