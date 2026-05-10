@@ -12,7 +12,7 @@
       "score": 81,
       "stars": 4,
       "badge": null,
-      "change": "up",
+      "change": "stable",
       "breakdown": {
         "momentum": 38,
         "fondamentaux": 40,
@@ -62,7 +62,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 81/100 — Golden Cross récent (12j), légèrement au-dessus de sa régression (+1.4σ), RSI en zone favorable, croissance CA modérée (13%/an), marges excellentes (34%), consensus analystes positif.",
+      "justification": "Score 81/100 — Golden Cross récent (12j), légèrement au-dessus de sa régression (+1.4σ), RSI en zone favorable, pullback sain -9.3% sous le top 52w (zone d'entrée idéale, zone Fibo 23.6%), croissance CA modérée (13%/an), marges excellentes (34%).",
       "rank": 1
     },
     {
@@ -73,7 +73,7 @@
       "score": 80,
       "stars": 4,
       "badge": null,
-      "change": "down",
+      "change": "stable",
       "breakdown": {
         "momentum": 25,
         "fondamentaux": 50,
@@ -134,7 +134,7 @@
       "score": 77,
       "stars": 4,
       "badge": null,
-      "change": "down",
+      "change": "stable",
       "breakdown": {
         "momentum": 22,
         "fondamentaux": 50,
@@ -184,7 +184,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 77/100 — Golden Cross récent (14j), cours proche de sa droite de régression, croissance CA solide (73%/an), marges excellentes (56%), consensus analystes très favorable.",
+      "justification": "Score 77/100 — Golden Cross récent (14j), cours proche de sa droite de régression, ⚠ près du top 52w (-0.7%) — chase de rally pénalisée, croissance CA solide (73%/an), marges excellentes (56%), consensus analystes très favorable.",
       "rank": 3
     },
     {
@@ -195,7 +195,7 @@
       "score": 77,
       "stars": 4,
       "badge": null,
-      "change": "down",
+      "change": "stable",
       "breakdown": {
         "momentum": 27,
         "fondamentaux": 45,
@@ -245,7 +245,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 77/100 — Golden Cross récent (12j), cours proche de sa droite de régression, croissance CA solide (17%/an), marges positives, consensus analystes très favorable.",
+      "justification": "Score 77/100 — Golden Cross récent (12j), cours proche de sa droite de régression, ⚠ près du top 52w (-0.8%) — chase de rally pénalisée, croissance CA solide (17%/an), marges positives, consensus analystes très favorable.",
       "rank": 4
     },
     {
@@ -306,7 +306,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 77/100 — légèrement au-dessus de sa régression (+1.2σ), RSI en zone favorable, croissance CA solide (56%/an), marges excellentes (35%), consensus analystes très favorable.",
+      "justification": "Score 77/100 — légèrement au-dessus de sa régression (+1.2σ), RSI en zone favorable, correction modérée -14.4% sous le top (zone Fibo 23.6%), croissance CA solide (56%/an), marges excellentes (35%), consensus analystes très favorable.",
       "rank": 5
     },
     {
@@ -354,7 +354,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 75/100 — prix sous sa droite de régression (-2.1σ), RSI en zone favorable, croissance CA solide (17%/an), marges excellentes (52%), consensus analystes très favorable.",
+      "justification": "Score 75/100 — prix sous sa droite de régression (-2.1σ), RSI en zone favorable, correction modérée -14.1% sous le top, croissance CA solide (17%/an), marges excellentes (52%), consensus analystes très favorable.",
       "rank": 6
     },
     {
@@ -365,7 +365,7 @@
       "score": 74,
       "stars": 3,
       "badge": "GB",
-      "change": "down",
+      "change": "stable",
       "breakdown": {
         "momentum": 34,
         "fondamentaux": 35,
@@ -413,7 +413,7 @@
       "score": 74,
       "stars": 3,
       "badge": null,
-      "change": "down",
+      "change": "stable",
       "breakdown": {
         "momentum": 19,
         "fondamentaux": 50,
@@ -450,7 +450,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 74/100 — prix sous sa droite de régression (-3.6σ), RSI en zone favorable, croissance CA solide (22%/an), marges positives, consensus analystes très favorable.",
+      "justification": "Score 74/100 — prix sous sa droite de régression (-3.6σ), RSI en zone favorable, ⚠ -56.4% sous le top 52w — trend probablement cassée, croissance CA solide (22%/an), marges positives, consensus analystes très favorable.",
       "rank": 8
     },
     {
@@ -461,7 +461,7 @@
       "score": 74,
       "stars": 3,
       "badge": null,
-      "change": "down",
+      "change": "stable",
       "breakdown": {
         "momentum": 19,
         "fondamentaux": 50,
@@ -511,7 +511,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 74/100 — prix sous sa droite de régression (-3.9σ), RSI en zone favorable, croissance CA solide (17%/an), marges excellentes (22%), consensus analystes très favorable.",
+      "justification": "Score 74/100 — prix sous sa droite de régression (-3.9σ), RSI en zone favorable, ⚠ -50.6% sous le top 52w — trend probablement cassée, croissance CA solide (17%/an), marges excellentes (22%), consensus analystes très favorable.",
       "rank": 9
     },
     {
@@ -572,7 +572,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 74/100 — prix sous sa droite de régression (-1.5σ), RSI en zone favorable, croissance CA solide (19%/an), marges excellentes (30%), consensus analystes très favorable.",
+      "justification": "Score 74/100 — prix sous sa droite de régression (-1.5σ), RSI en zone favorable, correction modérée -11.9% sous le top (zone Fibo 23.6%), croissance CA solide (19%/an), marges excellentes (30%), consensus analystes très favorable.",
       "rank": 10
     },
     {
@@ -583,7 +583,7 @@
       "score": 73,
       "stars": 3,
       "badge": "EU",
-      "change": "down",
+      "change": "stable",
       "breakdown": {
         "momentum": 23,
         "fondamentaux": 45,
@@ -633,7 +633,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 73/100 — cours proche de sa droite de régression, RSI en zone favorable, croissance CA modérée (13%/an), marges excellentes (30%), consensus analystes très favorable.",
+      "justification": "Score 73/100 — cours proche de sa droite de régression, RSI en zone favorable, ⚠ près du top 52w (+0.0%) — chase de rally pénalisée, croissance CA modérée (13%/an), marges excellentes (30%), consensus analystes très favorable.",
       "rank": 11
     },
     {
@@ -692,7 +692,7 @@
       "score": 73,
       "stars": 3,
       "badge": null,
-      "change": "new",
+      "change": "stable",
       "breakdown": {
         "momentum": 18,
         "fondamentaux": 50,
@@ -742,7 +742,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 73/100 — prix en surachat régression (+2.1σ) — prudence, RSI en zone favorable, croissance CA solide (35%/an), marges excellentes (47%), consensus analystes très favorable.",
+      "justification": "Score 73/100 — prix en surachat régression (+2.1σ) — prudence, RSI en zone favorable, ⚠ près du top 52w (-1.9%) — chase de rally pénalisée, croissance CA solide (35%/an), marges excellentes (47%), consensus analystes très favorable.",
       "rank": 13
     },
     {
@@ -753,7 +753,7 @@
       "score": 72,
       "stars": 3,
       "badge": null,
-      "change": "down",
+      "change": "stable",
       "breakdown": {
         "momentum": 17,
         "fondamentaux": 50,
@@ -803,7 +803,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 72/100 — Golden Cross récent (17j), prix en surachat régression (+2.2σ) — prudence, croissance CA solide (30%/an), marges excellentes (37%), consensus analystes très favorable.",
+      "justification": "Score 72/100 — Golden Cross récent (17j), prix en surachat régression (+2.2σ) — prudence, ⚠ près du top 52w (+0.0%) — chase de rally pénalisée, croissance CA solide (30%/an), marges excellentes (37%), consensus analystes très favorable.",
       "rank": 14
     },
     {
@@ -814,7 +814,7 @@
       "score": 72,
       "stars": 3,
       "badge": null,
-      "change": "down",
+      "change": "stable",
       "breakdown": {
         "momentum": 17,
         "fondamentaux": 50,
@@ -851,7 +851,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 72/100 — prix sous sa droite de régression (-2.5σ), RSI en zone favorable, croissance CA modérée (12%/an), marges excellentes (18%), consensus analystes très favorable.",
+      "justification": "Score 72/100 — prix sous sa droite de régression (-2.5σ), RSI en zone favorable, ⚠ -37.1% sous le top 52w — trend probablement cassée, croissance CA modérée (12%/an), marges excellentes (18%), consensus analystes très favorable.",
       "rank": 15
     },
     {
@@ -912,7 +912,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 72/100 — légèrement au-dessus de sa régression (+1.1σ), croissance CA solide (38%/an), marges positives, consensus analystes très favorable.",
+      "justification": "Score 72/100 — légèrement au-dessus de sa régression (+1.1σ), ⚠ près du top 52w (+0.0%) — chase de rally pénalisée, croissance CA solide (38%/an), marges positives, consensus analystes très favorable.",
       "rank": 16
     },
     {
@@ -960,7 +960,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 72/100 — prix sous sa droite de régression (-2.6σ), RSI en zone favorable, croissance CA modérée (12%/an), marges excellentes (29%), consensus analystes positif.",
+      "justification": "Score 72/100 — prix sous sa droite de régression (-2.6σ), RSI en zone favorable, ⚠ -39.8% sous le top 52w — trend probablement cassée, croissance CA modérée (12%/an), marges excellentes (29%), consensus analystes positif.",
       "rank": 17
     },
     {
@@ -1008,7 +1008,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 71/100 — Golden Cross récent (14j), légèrement au-dessus de sa régression (+1.1σ), RSI en zone favorable, marges positives, consensus analystes très favorable.",
+      "justification": "Score 71/100 — Golden Cross récent (14j), légèrement au-dessus de sa régression (+1.1σ), RSI en zone favorable, pullback sain -5.4% sous le top 52w (zone d'entrée idéale), marges positives, consensus analystes très favorable.",
       "rank": 18
     },
     {
@@ -1019,7 +1019,7 @@
       "score": 71,
       "stars": 3,
       "badge": "EU",
-      "change": "down",
+      "change": "stable",
       "breakdown": {
         "momentum": 19,
         "fondamentaux": 47,
@@ -1056,7 +1056,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 71/100 — prix sous sa droite de régression (-1.6σ), RSI en zone favorable, croissance CA solide (17%/an), marges excellentes (45%), consensus analystes très favorable.",
+      "justification": "Score 71/100 — prix sous sa droite de régression (-1.6σ), RSI en zone favorable, ⚠ -46.0% sous le top 52w — trend probablement cassée, croissance CA solide (17%/an), marges excellentes (45%), consensus analystes très favorable.",
       "rank": 19
     },
     {
@@ -1096,7 +1096,7 @@
             "23.6": 515.05,
             "38.2": 499.72,
             "50.0": 487.33,
-            "61.8": 474.95,
+            "61.8": 474.94,
             "78.6": 457.31
           }
         },
@@ -1178,7 +1178,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 71/100 — légèrement au-dessus de sa régression (+1.4σ), croissance CA solide (19%/an), marges excellentes (29%), consensus analystes positif.",
+      "justification": "Score 71/100 — légèrement au-dessus de sa régression (+1.4σ), ⚠ près du top 52w (-0.6%) — chase de rally pénalisée, croissance CA solide (19%/an), marges excellentes (29%), consensus analystes positif.",
       "rank": 21
     },
     {
@@ -1226,7 +1226,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 70/100 — prix sous sa droite de régression (-2.4σ), RSI en zone favorable, croissance CA solide (16%/an), marges excellentes (46%), consensus analystes très favorable.",
+      "justification": "Score 70/100 — prix sous sa droite de régression (-2.4σ), RSI en zone favorable, correction modérée -16.9% sous le top, croissance CA solide (16%/an), marges excellentes (46%), consensus analystes très favorable.",
       "rank": 22
     },
     {
@@ -1237,7 +1237,7 @@
       "score": 69,
       "stars": 3,
       "badge": null,
-      "change": "down",
+      "change": "stable",
       "breakdown": {
         "momentum": 19,
         "fondamentaux": 45,
@@ -1274,7 +1274,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 69/100 — prix sous sa droite de régression (-1.6σ), RSI en zone favorable, croissance CA modérée (6%/an), marges excellentes (20%), consensus analystes très favorable.",
+      "justification": "Score 69/100 — prix sous sa droite de régression (-1.6σ), RSI en zone favorable, ⚠ -45.4% sous le top 52w — trend probablement cassée, croissance CA modérée (6%/an), marges excellentes (20%), consensus analystes très favorable.",
       "rank": 23
     },
     {
@@ -1285,7 +1285,7 @@
       "score": 69,
       "stars": 3,
       "badge": null,
-      "change": "down",
+      "change": "stable",
       "breakdown": {
         "momentum": 14,
         "fondamentaux": 50,
@@ -1335,7 +1335,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 69/100 — cours proche de sa droite de régression, croissance CA solide (16%/an), marges excellentes (29%), consensus analystes très favorable.",
+      "justification": "Score 69/100 — cours proche de sa droite de régression, ⚠ -34.7% sous le top 52w — trend probablement cassée, croissance CA solide (16%/an), marges excellentes (29%), consensus analystes très favorable.",
       "rank": 24
     },
     {
@@ -1396,27 +1396,11 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 68/100 — cours proche de sa droite de régression, RSI en zone favorable, croissance CA modérée (14%/an), marges positives, consensus analystes positif.",
+      "justification": "Score 68/100 — cours proche de sa droite de régression, RSI en zone favorable, pullback sain -3.2% sous le top 52w (zone d'entrée idéale, < Fibo 23.6%), croissance CA modérée (14%/an), marges positives, consensus analystes positif.",
       "rank": 25
     }
   ],
-  "changelog": [
-    {
-      "action": "in",
-      "ticker": "TSM",
-      "name": "Taiwan Semiconductor M",
-      "score": 73,
-      "reason": "Score 73/100 — prix en surachat régression (+2.1σ) — prudence, RSI en zone favorable, croissance CA solide (35%/an), marges excellentes (47%), consensus analystes très favorable."
-    },
-    {
-      "action": "out",
-      "ticker": "SE",
-      "name": "Sea Limited",
-      "score": 69,
-      "new_score": 64,
-      "reason": "Score en baisse : 69 → 64 (-5 pts) · Death Cross confirmé (117j) — régime baissier persistant · Momentum quasi-nul (14/40) — tendance qui s'essouffle."
-    }
-  ],
+  "changelog": [],
   "concentration_alerts": [
     "Technologie : 13 titres sur 25",
     "Finance : 6 titres sur 25",

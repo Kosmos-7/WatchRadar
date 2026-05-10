@@ -1020,11 +1020,10 @@
     }
   ],
   "biais_detectes": [
-    "Disposition effect (biais de conservation des gagnants ASML/NVDA sans profit-taking documenté malgré +100%/+86%)",
-    "Recency bias (entrées massives en mai sur des positions sans thèse documentée, désormais en perte dans un marché haussier)",
-    "Overconfidence sur le scoring watchlist (achats au score 90-100 qui sous-performent immédiatement : JPM, V, ETN, DB1.DE)",
-    "Absence de documentation systématique des thèses d'achat — erreur process répétée sur 12+ positions",
-    "Concentration sectorielle technologie/finance sans diversification intentionnelle documentée"
+    "Aller-retour LSEG.L : vente stop-loss puis rachat 5 jours plus tard sur le même titre sans thèse nouvelle documentée — biais d'ancrage sur le ticker",
+    "Thèses d'achat non documentées pour 12 des 18 positions — biais de confirmation post-hoc et impossibilité d'appliquer la règle anti-contradiction correctement",
+    "Accumulation de positions simultanées en zone Death Cross (NOW 193j, INTU 132j, META 119j, V 73j) — biais de diversification illusoire sur des titres partageant un signal baissier commun",
+    "Rechargement INTU et NOW le 2026-05-06 après les avoir vendus le même jour — comportement aller-retour intra-journalier contraire au mantra 'process > outcome'"
   ],
   "regles_actives": [
     {
@@ -1040,18 +1039,18 @@
   "nb_neutres": 0,
   "macro_news": [
     {
-      "headline": "Iran price shock highlights limits of inflation-linked bonds - Reuters",
-      "date": "2026-05-08",
-      "source": "Reuters",
-      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOV3Fua3dDd2N1VEo0UGc3WkdvTmhpbWNEQnNrUzNxV05tSzY1ZHRYeHBDaUp4Y3AzSHl1WmxtTXNhMkM1cG81RXZRTHhLOHNRbmFILUJicm1ZNVNqeWMzNEJTeXhDLW1VbU1RRUlLSzA4RC12d1Z4a1h5aFpGTy00OVJIRHNQMXdmbGdRWUVRRE1MVnFUS3lDODlBMFRYYmx1NWJtVmRSN3RxbUtkSklkQg?oc=5",
-      "resume_fr": "Un choc pétrolier lié à l'Iran révèle les limites des obligations indexées sur l'inflation comme protection contre les hausses de prix énergétiques."
+      "headline": "Here are the 2 big things we're watching in the stock market in the week ahead",
+      "date": "2026-05-10",
+      "source": "CNBC",
+      "url": "https://www.cnbc.com/2026/05/10/here-are-the-2-big-things-were-watching-in-the-stock-market-in-the-week-ahead.html",
+      "resume_fr": "CNBC identifie deux facteurs clés à surveiller sur les marchés actions américains dans la semaine à venir."
     }
   ],
   "analyse_claude": {
-    "analyse_macro": "Marché en légère reprise (+1.7% CAC40, +1.8% MSCI World) mais le portefeuille Signal affiche une sous-performance relative : la majorité des positions récentes (JPM, V, DB1.DE, ETN) sont en territoire négatif malgré la hausse générale — signal d'alerte sur la qualité des entrées récentes. Pré-flight notable cette semaine : dégradation marquée des scores watchlist pour plusieurs positions (NVDA 94→77, JPM 95→81, LLY 89→77, LSEG.L 83→74, META 84→80) — ces baisses de score sans mouvement fondamental documenté déclenchent R8 de façon préventive. R7 appliquée sur V (Death Cross 73j + pente spread positive = signal en transition, ne pas conclure sur le cross seul) et META (Death Cross 119j potentiellement en résorption). La règle 1 (90j minimum) est le principal frein aux ventes cette semaine — elle protège contre la sur-réaction à de courtes périodes de sous-performance. ETN et DB1.DE méritent une surveillance renforcée : -7% en moins de 10j sur un marché haussier sans thèse documentée est un drapeau rouge.",
+    "analyse_macro": "Sur la semaine écoulée du 2026-05-04 au 2026-05-10, le marché a rebondi significativement : CAC40 +1.7% sur la semaine (YTD -1.0%), MSCI World +1.8% sur la semaine (YTD +7.4%). Le portefeuille Signal affiche une performance YTD +0.0% soit +7.0pp au-dessus du MSCI World YTD, portée principalement par ASML (+103.0% depuis achat en janvier) et NVDA (+86.5%). Ce run est le second de la journée du 2026-05-10 (run de contrôle 16h58 UTC), les marchés EU/US/LSE étant fermés le weekend — aucun ordre ne peut être exécuté avant lundi matin. Éléments méthodologiques notables cette semaine : (1) R7 appliquée sur NOW et INTU — leurs signal_dynamics_warning confirment des Death Cross durables (193j et 132j) avec pentes négatives, traitées comme signaux ambigus au moment de l'achat initial, désormais confirmées baissières mais bloquées par la règle anti-contradiction (pas de delta_these fondamental documenté) ; (2) L'aller-retour sur LSEG.L (vendu en stop-loss catastrophe J+2, racheté J+7) est un biais d'anchoring/FOMO documenté à ne pas reproduire ; (3) DB1.DE et ETN sous-performent le benchmark sur leur première semaine sans thèse documentée — absence de documentation des thèses d'achat est un défaut process récurrent à corriger.",
     "conviction_globale": "neutre",
-    "message_utilisateurs": "Semaine sans mouvement : la règle des 90 jours de détention minimum bloque toute vente sur les positions récentes, et il n'y a pas d'opportunité d'achat convaincante avec seulement 2059€ de liquidités disponibles. Ce qui ressort clairement cette semaine, c'est un problème de process persistant : la grande majorité des positions ouvertes n'ont pas de thèse d'achat documentée, ce qui rend impossible l'évaluation du delta (qu'est-ce qui a changé depuis l'achat ?). Plusieurs positions récentes sous-performent le marché dans une semaine pourtant positive — JPM à -4%, V à -3.9%, DB1.DE à -7.3%, ETN à -7.0% — ce qui interroge la qualité des entrées de début mai. Les dégradations de score watchlist (NVDA 94→77, JPM 95→81) sont à surveiller. La priorité pour les prochaines semaines : documenter les thèses a posteriori pour les positions existantes afin de pouvoir prendre des décisions éclairées à l'approche des seuils de 90 jours.",
-    "nb_decisions": 18
+    "message_utilisateurs": "Run de contrôle du dimanche 2026-05-10 à 16h58 UTC — marchés fermés (weekend), aucun ordre exécutable avant lundi 2026-05-11 à l'ouverture. Peu de changements par rapport au run de ce matin. La semaine du 2026-05-04 au 2026-05-10 a été positive pour les marchés (+1.8% MSCI World sur la semaine), et le portefeuille Signal maintient son avance YTD à +7.0pp au-dessus du benchmark. Les décisions cette semaine se limitent à des conservations commentées : les positions récentes (NOW, INTU, LSEG.L, DB1.DE) sont toutes sous pression ou flat, mais aucune ne déclenche de stop-loss. Je documente deux biais process importants : l'aller-retour sur LSEG.L (vendu en catastrophe puis racheté 5 jours plus tard) et l'absence de thèses d'achat formalisées pour la majorité des positions ouvertes depuis le 30 avril. Ces lacunes fragilisent l'application de la règle anti-contradiction et seront corrigées progressivement. Aucun nouvel achat cette semaine : les liquidités (2 059€) sont conservées, le portefeuille est déjà concentré sur 18 positions et le marché vient de rebondir sans signal d'entrée clairement favorable.",
+    "nb_decisions": 5
   },
   "performance_history": [
     {
