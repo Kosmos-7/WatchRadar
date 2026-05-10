@@ -650,7 +650,38 @@
         <span class="concept-example">↑ Golden Cross · 12j depuis le croisement</span>
         <div class="concept-body">
           La MM21 (moyenne mobile sur 21 jours) a dépassé la MM200 (moyenne sur 200 jours) il y a 12 jours. Concrètement : la dynamique court terme est désormais au-dessus de la dynamique long terme — un signal classique de retournement haussier. Historiquement, après un Golden Cross sur le S&P 500, le titre est en hausse dans ~66-72 % des cas sur les 60 jours suivants (la fenêtre la plus forte est les 10 premiers jours).
-          <br><br>
+
+          <div style="margin:1rem 0;padding:0.9rem 1rem;background:#0a0a0f;border:1px solid var(--border);border-radius:var(--radius)">
+            <div style="font-family:'Courier New',monospace;font-size:0.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:0.6rem">Schéma : Golden Cross vs Death Cross</div>
+            <svg viewBox="0 0 600 180" style="width:100%;max-width:560px;height:auto;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg">
+              <!-- axe horizontal -->
+              <line x1="40" y1="160" x2="580" y2="160" stroke="#33334e" stroke-width="1"/>
+
+              <!-- MM200 (bleue, plus lisse, plus lente) -->
+              <path d="M 40,110 Q 150,108 250,100 T 460,80 T 580,75" stroke="#5080f8" stroke-width="2.5" fill="none"/>
+              <text x="585" y="78" fill="#5080f8" font-family="Courier New,monospace" font-size="11" font-weight="600">MM200</text>
+
+              <!-- MM21 (or, plus volatile) — passe SOUS la MM200 puis traverse vers le HAUT (Golden Cross) -->
+              <path d="M 40,135 Q 100,140 150,130 Q 200,115 250,108 Q 300,90 360,72 Q 420,58 480,52 Q 540,50 580,48" stroke="#e8a820" stroke-width="2.5" fill="none"/>
+              <text x="585" y="51" fill="#e8a820" font-family="Courier New,monospace" font-size="11" font-weight="600">MM21</text>
+
+              <!-- marquage du croisement -->
+              <circle cx="252" cy="105" r="6" fill="none" stroke="#1cc87a" stroke-width="2"/>
+              <line x1="252" y1="40" x2="252" y2="160" stroke="#1cc87a" stroke-width="1" stroke-dasharray="3,4" opacity="0.6"/>
+              <text x="195" y="35" fill="#1cc87a" font-family="Inter,sans-serif" font-size="11" font-weight="600">↑ Golden Cross</text>
+              <text x="200" y="178" fill="var(--text3)" font-family="Courier New,monospace" font-size="9">jour J</text>
+
+              <!-- annotations zones -->
+              <text x="50" y="155" fill="#f05454" font-family="Inter,sans-serif" font-size="10" font-style="italic">phase baissière</text>
+              <text x="50" y="170" fill="var(--text3)" font-family="Courier New,monospace" font-size="9">MM21 sous MM200</text>
+              <text x="350" y="155" fill="#1cc87a" font-family="Inter,sans-serif" font-size="10" font-style="italic">phase haussière</text>
+              <text x="350" y="170" fill="var(--text3)" font-family="Courier New,monospace" font-size="9">MM21 au-dessus de MM200</text>
+            </svg>
+            <div style="font-size:0.78rem;color:var(--text3);line-height:1.55;margin-top:0.5rem;font-style:italic">
+              La MM21 (or, dynamique court terme) traverse la MM200 (bleue, dynamique long terme) à la hausse → <em>Golden Cross</em>. Plus le croisement est récent (≤ 30 jours), plus la prime de momentum est forte. Inversement : MM21 repasse sous MM200 → <em>Death Cross</em>, signal baissier.
+            </div>
+          </div>
+
           Le Death Cross (MM21 repasse sous MM200) est le signal inverse, baissier. Il est plus fragile en marché sans tendance claire (~38 % de fiabilité dans ces phases) — d'où la pondération plus faible dans le score Signal et la pénalité non compensable s'il est récent.
         </div>
       </div>
@@ -670,7 +701,29 @@
         <span class="concept-example">RSI 52</span>
         <div class="concept-body">
           Le RSI (Relative Strength Index) est un oscillateur entre 0 et 100 qui mesure la vitesse et l'ampleur des variations récentes du cours. Il compare l'amplitude des hausses à celle des baisses sur les 14 derniers jours. Entre 40 et 60 : le titre est équilibré, ni suracheté ni survendu — c'est la zone idéale (10 pts dans le score Signal).
-          <br><br>
+
+          <div style="margin:1rem 0;padding:0.9rem 1rem;background:#0a0a0f;border:1px solid var(--border);border-radius:var(--radius)">
+            <div style="font-family:'Courier New',monospace;font-size:0.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:0.6rem">L'échelle RSI 0–100</div>
+            <div style="position:relative;height:36px;border-radius:6px;overflow:hidden;background:linear-gradient(to right, rgba(80,128,248,0.35) 0%, rgba(80,128,248,0.18) 30%, rgba(28,200,122,0.12) 35%, rgba(28,200,122,0.28) 50%, rgba(28,200,122,0.12) 65%, rgba(240,84,84,0.18) 70%, rgba(240,84,84,0.35) 100%)">
+              <!-- repères -->
+              <div style="position:absolute;left:30%;top:0;bottom:0;width:1px;background:#33334e"></div>
+              <div style="position:absolute;left:35%;top:0;bottom:0;width:1px;background:#1cc87a;opacity:0.6"></div>
+              <div style="position:absolute;left:40%;top:0;bottom:0;width:1px;background:#1cc87a"></div>
+              <div style="position:absolute;left:60%;top:0;bottom:0;width:1px;background:#1cc87a"></div>
+              <div style="position:absolute;left:65%;top:0;bottom:0;width:1px;background:#1cc87a;opacity:0.6"></div>
+              <div style="position:absolute;left:70%;top:0;bottom:0;width:1px;background:#33334e"></div>
+              <!-- aiguille à RSI 52 -->
+              <div style="position:absolute;left:52%;top:-3px;bottom:-3px;width:2px;background:#e8a820"></div>
+              <div style="position:absolute;left:calc(52% - 14px);top:-22px;font-family:'Courier New',monospace;font-size:0.72rem;color:#e8a820;font-weight:700">RSI 52</div>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:6px;font-family:'Courier New',monospace;font-size:0.7rem;color:var(--text3)">
+              <span><span style="color:var(--blue)">0–30</span> survente</span>
+              <span><span style="color:#1cc87a;opacity:0.7">35–65</span> zone élargie · 5 pts</span>
+              <span><span style="color:var(--green);font-weight:600">40–60</span> idéal · 10 pts</span>
+              <span><span style="color:var(--red)">70–100</span> surachat</span>
+            </div>
+          </div>
+
           Au-dessus de 70 : le titre monte trop vite par rapport à sa moyenne, risque de correction à court terme. Sous 30 : survendu, potentiel de rebond mais pas automatique — un titre peut rester en survente longtemps si la tendance fondamentale est durablement négative. Un RSI à 52 comme ici est confortable : le titre a de la marge dans les deux sens.
         </div>
       </div>
@@ -692,6 +745,49 @@
         <span class="concept-example">Rally +85% · zone Fibo 38.2%</span>
         <div class="concept-body">
           La valorisation actuelle est annotée d'une lecture <strong>chartiste classique</strong> : où se situe le cours dans le retracement du dernier rally ? Le screener identifie automatiquement le <em>swing low</em> (plus bas avant le plus haut 52w) et calcule les 5 niveaux que TradingView et la majorité des plateformes affichent : <em>23.6%, 38.2%, 50%, 61.8%, 78.6%</em>.
+
+          <div style="margin:1.2rem 0;padding:1rem;background:#0a0a0f;border:1px solid var(--border);border-radius:var(--radius)">
+            <div style="font-family:'Courier New',monospace;font-size:0.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:0.6rem">Exemple : action passée de 100€ à 200€ (rally +100%), corrigeant à 162€</div>
+            <svg viewBox="0 0 600 280" style="width:100%;max-width:560px;height:auto;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg">
+              <!-- axes -->
+              <line x1="60" y1="20" x2="60" y2="260" stroke="#33334e" stroke-width="1"/>
+              <line x1="60" y1="260" x2="580" y2="260" stroke="#33334e" stroke-width="1"/>
+
+              <!-- price curve : montée 100→200, puis correction à 162 -->
+              <path d="M 60,260 Q 200,250 280,140 T 380,40 L 380,40 Q 420,80 460,116" stroke="#5080f8" stroke-width="2" fill="none"/>
+              <circle cx="380" cy="40" r="3" fill="#1cc87a"/>
+              <circle cx="460" cy="116" r="4" fill="#e8a820"/>
+              <circle cx="60"  cy="260" r="3" fill="#f05454"/>
+
+              <!-- niveaux Fibo (lignes horizontales pointillées) entre y=40 (200€) et y=260 (100€) -->
+              <line x1="60" y1="40"  x2="540" y2="40"  stroke="#1cc87a" stroke-width="1" stroke-dasharray="4,3" opacity="0.7"/>
+              <line x1="60" y1="92"  x2="540" y2="92"  stroke="#8888a8" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+              <line x1="60" y1="124" x2="540" y2="124" stroke="#8888a8" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+              <line x1="60" y1="150" x2="540" y2="150" stroke="#a07010" stroke-width="1" stroke-dasharray="4,3" opacity="0.55"/>
+              <line x1="60" y1="176" x2="540" y2="176" stroke="#e8a820" stroke-width="1.4" stroke-dasharray="4,3" opacity="0.85"/>
+              <line x1="60" y1="213" x2="540" y2="213" stroke="#f87a20" stroke-width="1" stroke-dasharray="4,3" opacity="0.55"/>
+              <line x1="60" y1="260" x2="540" y2="260" stroke="#f05454" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+
+              <!-- labels niveaux à droite -->
+              <text x="546" y="44"  fill="#1cc87a" font-family="Courier New,monospace" font-size="11" font-weight="600">200€ · swing high</text>
+              <text x="546" y="96"  fill="#8888a8" font-family="Courier New,monospace" font-size="10">176€ · Fibo 23.6%</text>
+              <text x="546" y="128" fill="#8888a8" font-family="Courier New,monospace" font-size="10">162€ · Fibo 38.2%  ← cours actuel</text>
+              <text x="546" y="154" fill="#a07010" font-family="Courier New,monospace" font-size="10">150€ · Fibo 50% (Dow/Gann)</text>
+              <text x="546" y="180" fill="#e8a820" font-family="Courier New,monospace" font-size="11" font-weight="600">138€ · Fibo 61.8% (Golden Zone)</text>
+              <text x="546" y="217" fill="#f87a20" font-family="Courier New,monospace" font-size="10">121€ · Fibo 78.6%</text>
+              <text x="546" y="264" fill="#f05454" font-family="Courier New,monospace" font-size="11" font-weight="600">100€ · swing low</text>
+
+              <!-- annotations rally + correction -->
+              <text x="200" y="245" fill="#5080f8" font-family="Inter,sans-serif" font-size="10" font-style="italic">rally +100%</text>
+              <text x="395" y="60"  fill="#1cc87a" font-family="Inter,sans-serif" font-size="10" font-weight="600">peak</text>
+              <text x="430" y="135" fill="#e8a820" font-family="Inter,sans-serif" font-size="10" font-style="italic">correction</text>
+              <text x="65"  y="275" fill="#f05454" font-family="Inter,sans-serif" font-size="10">départ rally</text>
+            </svg>
+            <div style="font-size:0.78rem;color:var(--text3);line-height:1.55;margin-top:0.5rem;font-style:italic">
+              Le cours à 162€ se situe en <em>zone Fibo 38.2%</em> — la "première vraie zone d'entrée" selon les chartistes. Si la trend tient, le rebond se fera ici ; sinon le prochain palier est 150€ (50%) puis la Golden Zone à 138€. Sous 121€ (78.6%), le rally est techniquement annulé.
+            </div>
+          </div>
+
           <br><br>
           <strong>Pourquoi ça marche ?</strong> Pas de magie mathématique. C'est une <em>prophétie auto-réalisatrice</em> : des millions de traders, d'analystes institutionnels et surtout d'algorithmes scrutent les mêmes niveaux simultanément. Quand le prix approche du 61.8%, une masse critique d'ordres d'achat se concentre à cet endroit précis — et cette concentration crée mécaniquement le rebond attendu. Les ratios Fibonacci correspondent aussi à des proportions de "respiration" naturelle des trends (les marchés ne montent pas en ligne droite, ils prennent leurs respirations comme un sprinteur).
           <br><br>
