@@ -555,6 +555,21 @@ def score_ticker(ticker):
         }
         sector_fr = sector_map.get(yf_sector, yf_sector[:14] if yf_sector else "—")
 
+        # Détection d'un signal en transition (cross historique mais dynamique inverse)
+        _ct      = cross_info["cross_type"]
+        _slope   = cross_info["slope_mm21_pct"]
+        _spread  = cross_info["spread_pct"]
+        _days    = cross_info["days_since_cross"]
+        _signal_warning = ""
+        if _ct == "death" and _slope > 0 and -3 < _spread < 0 and _days is not None and _days < 90:
+            _signal_warning = "Death Cross en cours de résorption — pente MM21 positive, spread tendu, signal possiblement en transition"
+        elif _ct == "golden" and _slope < 0 and 0 < _spread < 3 and _days is not None and _days < 90:
+            _signal_warning = "Golden Cross en cours d'affaiblissement — pente MM21 négative, signal possiblement en transition"
+        elif _ct == "death" and _slope > 3 and _spread < -5 and _days is not None and _days > 90:
+            _signal_warning = "Rebond mean-reversion en cours sur cross stale — pente MM21 fortement positive, cours encore largement sous MM200 (setup B opportunities.md)"
+        elif _ct == "golden" and _slope < -3 and _spread > 5 and _days is not None and _days > 90:
+            _signal_warning = "Affaiblissement post-rally sur cross stale — pente MM21 fortement négative malgré cours largement au-dessus de MM200"
+
         breakdown = {
             "momentum":              min(40, momentum_total),
             "fondamentaux":          min(50, fund_pts),
@@ -566,6 +581,7 @@ def score_ticker(ticker):
             "cross_spread_pct":      cross_info["spread_pct"],
             "cross_slope_mm21_pct":  cross_info["slope_mm21_pct"],
             "cross_volume_confirmed":cross_info["volume_confirmed"],
+            "signal_dynamics_warning": _signal_warning,
             "cross_pts":             cross_pts,
             "rsi_pts":               rsi_pts,
             "vol_pts":               vol_pts,
@@ -785,6 +801,19 @@ def main():
 
     with open("watchlist.json", "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
+
+    # ── Archive snapshot point-in-time (capture pour backtest fondamentaux futur) ──
+    # Permet dans 6+ mois de reconstituer un historique fonda point-in-time pour backtester
+    # les 60% du score (Fondamentaux + Analystes) actuellement non testés (cf backtest.py ligne 12-14).
+    try:
+        import shutil, os
+        archive_dir = os.path.join("notes", "watchlist_archive")
+        os.makedirs(archive_dir, exist_ok=True)
+        archive_path = os.path.join(archive_dir, f"{d}.json")
+        shutil.copy("watchlist.json", archive_path)
+        print(f"📦 Snapshot archivé → {archive_path}")
+    except Exception as e:
+        print(f"⚠️  Échec archive snapshot : {e}")
 
     top1 = top25[0]
     print(f"\n✅ watchlist.json — {len(top25)} actions")
