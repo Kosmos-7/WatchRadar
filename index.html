@@ -597,19 +597,19 @@
       </div>
       <div class="lex-item">
         <div class="lex-term">MM21 / MM200</div>
-        <div class="lex-def">Moyennes mobiles simples sur <em>21 jours</em> (tendance court terme) et <em>200 jours</em> (tendance longue, proxy du cycle de marché). L'écart entre les deux mesure la force du régime en cours.</div>
+        <div class="lex-def">Moyennes mobiles simples du cours de clôture sur <em>21 jours</em> de bourse (~1 mois, dynamique court terme) et <em>200 jours</em> (~10 mois, dynamique longue, proxy du cycle de marché). Image : la MM21 c'est le pouls, la MM200 c'est le rythme cardiaque au repos. Quand le pouls (MM21) monte au-dessus du rythme de fond (MM200), le titre est en accélération. Exemple : NVDA avec MM21=210 et MM200=180 → écart +16%, régime haussier installé.</div>
       </div>
       <div class="lex-item">
         <div class="lex-term">RSI (Relative Strength Index)</div>
-        <div class="lex-def">Oscillateur 0–100 mesurant la vitesse et l'amplitude des variations récentes. <em>Zone saine : 40–60</em> (10 pts). Zone élargie 35–65 (5 pts). Au-delà : surachat (&gt;70) ou survente (&lt;30).</div>
+        <div class="lex-def">Oscillateur 0–100 calculé sur 14 jours qui compare l'ampleur moyenne des hausses à celle des baisses. <em>RSI 50</em> = équilibre parfait. <em>40–60</em> = zone saine (10 pts). Au-delà de 70 : le titre est monté trop vite, statistiquement plus de 65% des cas connaissent une correction dans les 4 semaines. Sous 30 : survendu, possible rebond technique mais aussi possible alerte fondamentale (les marchés ont parfois raison de baisser).</div>
       </div>
       <div class="lex-item">
         <div class="lex-term">Volume confirmé</div>
-        <div class="lex-def">Le volume des échanges au moment du croisement dépasse la moyenne récente. Un Golden Cross avec volume élevé est considéré plus fiable qu'un croisement en faible liquidité.</div>
+        <div class="lex-def">Le volume échangé au jour exact du croisement MM21/MM200 dépasse de <em>+40%</em> la moyenne des 50 jours précédents. Logique Murphy : un cassure sans volume, c'est un mouvement sans conviction collective — souvent un faux signal. Avec volume confirmé, le win rate du Golden Cross passe de ~66% à ~72% (+6 pp), justifiant le bonus de 2 pts dans le score.</div>
       </div>
       <div class="lex-item">
         <div class="lex-term">Écart MM21/MM200</div>
-        <div class="lex-def">Différence relative entre les deux moyennes mobiles, en %. Un écart <em>très large</em> (ex. +35%) signale une tendance haussière mature mais potentiellement essoufflée. Un écart faible indique un croisement récent ou une neutralisation en cours.</div>
+        <div class="lex-def">Différence relative entre les deux MM, en %. Calcul : (MM21 − MM200) / MM200 × 100. <em>+5%</em> : régime haussier établi, sain. <em>+15%</em> : tendance forte, tirée. <em>+30% ou plus</em> : extension extrême, mean-reversion statistiquement probable à 3 mois. <em>−10%</em> : régime baissier confirmé. Plus l'écart est large, plus le retour vers la moyenne devient probable.</div>
       </div>
       <div class="lex-item">
         <div class="lex-term">Pente du MM21</div>
@@ -689,27 +689,27 @@
     <div class="lex-grid">
       <div class="lex-item">
         <div class="lex-term">Croissance du CA</div>
-        <div class="lex-def">Variation annuelle du chiffre d'affaires. <em>&gt;10%/an</em> : 15 pts. <em>&gt;5%/an</em> : 8 pts. Mesure si l'entreprise conquiert de nouveaux marchés ou perd du terrain.</div>
+        <div class="lex-def">Variation annuelle du chiffre d'affaires sur les 12 derniers mois. <em>&gt;10%/an</em> : 15 pts (vraie croissance organique). <em>&gt;5%/an</em> : 8 pts (croissance modérée). Mesure si l'entreprise conquiert de nouveaux marchés ou perd du terrain. Image : c'est le "thermomètre commercial" — une marge peut s'améliorer mais si le CA stagne, l'entreprise ne grandit plus. Exemple : NVDA +73% (boom datacenter IA), Coca-Cola +5% (matures stables), Intel −2% (en déclin).</div>
       </div>
       <div class="lex-item">
         <div class="lex-term">Marge nette</div>
-        <div class="lex-def">Bénéfice net / chiffre d'affaires. Mesure la rentabilité réelle après tous les coûts (opérationnels, financiers, fiscaux). <em>&gt;10%</em> : solide (10 pts). <em>&gt;0%</em> : acceptable (5 pts).</div>
+        <div class="lex-def">Bénéfice net / chiffre d'affaires, en %. Indique combien de centimes l'entreprise garde sur chaque euro vendu, après tous coûts (production, R&D, intérêts, impôts). <em>&gt;10%</em> : solide (10 pts). <em>&gt;0%</em> : acceptable (5 pts). Repères : MasterCard ~45% (modèle royaltaire), Apple ~25% (premium), Walmart ~3% (volume), compagnie aérienne souvent &lt; 5% ou négative.</div>
       </div>
       <div class="lex-item">
         <div class="lex-term">FCF Margin (marge de trésorerie libre)</div>
-        <div class="lex-def">Free Cash Flow / chiffre d'affaires. Mesure la trésorerie <em>réellement générée</em> après investissements — beaucoup plus difficile à maquiller comptablement que la marge nette. <em>&gt;15%</em> : +5 pts. <em>&gt;5%</em> : +3 pts. Source de différenciation clé entre rentabilité comptable et rentabilité réelle.</div>
+        <div class="lex-def">Free Cash Flow / chiffre d'affaires. Mesure la <strong>trésorerie réellement générée</strong> après les investissements (capex). Beaucoup plus dur à maquiller comptablement que la marge nette — l'argent est là ou il n'y est pas. <em>&gt;15%</em> : +5 pts. <em>&gt;5%</em> : +3 pts. Pourquoi ça compte : une entreprise peut afficher 15% de marge nette mais 0% de FCF si tous les profits comptables partent en investissement (cas WeWork, Uber des débuts). Le FCF margin est le bullshit-detector de la rentabilité.</div>
       </div>
       <div class="lex-item">
         <div class="lex-term">PEG Ratio</div>
-        <div class="lex-def">Price/Earnings divisé par la croissance des bénéfices. Ajuste la valorisation à la croissance. <em>PEG &lt; 1</em> : sous-évalué par rapport à sa croissance (15 pts). <em>PEG &gt; 3</em> : croissance très chère (0 pt).</div>
+        <div class="lex-def">Price/Earnings divisé par la croissance annuelle des bénéfices. Ajuste la valorisation à la dynamique de croissance. <em>PEG = 1</em> : valorisation alignée sur la croissance (Peter Lynch : "fair price"). <em>PEG &lt; 1</em> : sous-évalué (15 pts), occasion. <em>PEG &gt; 3</em> : croissance très chère (0 pt), pari sur l'avenir. Exemple concret : un titre à PER 30 avec croissance 30%/an a un PEG = 1 (raisonnable), tandis qu'un PER 20 avec croissance 5% a un PEG = 4 (très cher pour ce qu'il est).</div>
       </div>
       <div class="lex-item">
         <div class="lex-term">EPS Growth</div>
-        <div class="lex-def">Croissance du bénéfice par action (Earnings Per Share). Signal de progression de la rentabilité par actionnaire. <em>&gt;15%</em> : 5 pts. <em>&gt;5%</em> : 2 pts. Distingue la croissance organique du simple effet de levier.</div>
+        <div class="lex-def">Croissance du bénéfice par action (Earnings Per Share). Signal de progression de la rentabilité <em>par actionnaire</em>, qui peut différer de la croissance du CA. <em>&gt;15%</em> : 5 pts. <em>&gt;5%</em> : 2 pts. Subtilité : si une entreprise rachète massivement ses actions (Apple), l'EPS croît plus vite que les bénéfices totaux — la "vraie" croissance opérationnelle est dans le CA, l'EPS reflète aussi l'allocation du capital.</div>
       </div>
       <div class="lex-item">
         <div class="lex-term">Dette / Fonds propres</div>
-        <div class="lex-def">Ratio d'endettement. Mesure la dépendance de l'entreprise au financement externe. <em>0–100%</em> : gérable (5 pts). Au-delà, le service de la dette pèse sur les marges et amplifie le risque en cas de retournement.</div>
+        <div class="lex-def">Ratio Debt/Equity. Indique combien d'euros empruntés pour 100€ de fonds propres. <em>&lt;100%</em> (D/E &lt; 1) : levier raisonnable (5 pts). <em>200%+</em> : levier élevé, cyclique-dépendant (0 pt). Repères sectoriels : tech &lt; 50% (peu d'actifs lourds), industrie ~80%, banques 500%+ (par construction). Risque : en cas de retournement (taux qui montent, crise), une entreprise endettée voit sa marge nette ravagée par les frais financiers.</div>
       </div>
     </div>
 
