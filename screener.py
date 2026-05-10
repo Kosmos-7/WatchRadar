@@ -334,6 +334,21 @@ def generer_justification(nom, score, details, alertes):
     elif regime == "death" and days <= 30:
         points.append(f"⚠ Death Cross récent ({days}j) — signal baissier actif")
 
+    # Signal dynamics — surface la transition du cross quand détectée
+    # (cross apparemment baissier en résorption, golden en affaiblissement,
+    # rebond mean-reversion sur cross stale, etc.) Priorité haute en visibilité.
+    dyn_warn = details.get("signal_dynamics_warning", "")
+    if dyn_warn:
+        # Forme abrégée pour la justification (le warning complet est dans le breakdown JSON)
+        if "résorption" in dyn_warn:
+            points.append("⚠ cross en résorption — signal en transition (pas exploitable seul)")
+        elif "affaiblissement" in dyn_warn and "post-rally" not in dyn_warn:
+            points.append("⚠ cross en affaiblissement — signal en transition (pas exploitable seul)")
+        elif "mean-reversion" in dyn_warn:
+            points.append("rebond mean-reversion sur cross stale (setup B opportunities)")
+        elif "post-rally" in dyn_warn:
+            points.append("⚠ affaiblissement post-rally sur cross stale")
+
     # Régression
     reg_sig = details.get("reg_signal", "")
     reg_z   = details.get("reg_z", 0)
@@ -460,10 +475,30 @@ def score_ticker(ticker):
         details["cross_regime"]        = cross_info["regime"]
         details["cross_days"]          = cross_info["days_since_cross"]
         details["cross_vol_confirmed"] = cross_info["volume_confirmed"]
+        details["cross_slope_mm21"]    = cross_info["slope_mm21_pct"]
+        details["cross_spread"]        = cross_info["spread_pct"]
         details["rsi_ok"]              = rsi_ok
         details["rsi"]                 = round(rsi, 1)
         details["reg_z"]               = regression_z
         details["reg_signal"]          = reg_signal
+
+        # Détection signal en transition (4 cas, cf v1.10) — disponible pour
+        # generer_justification et raison_sortie. Recomputed dans le breakdown
+        # plus bas pour cohérence (pas de coût significatif, lisibilité préservée).
+        _ct_d = cross_info["cross_type"]
+        _sl_d = cross_info["slope_mm21_pct"]
+        _sp_d = cross_info["spread_pct"]
+        _dy_d = cross_info["days_since_cross"]
+        _warn_d = ""
+        if _ct_d == "death" and _sl_d > 0 and -3 < _sp_d < 0 and _dy_d is not None and _dy_d < 90:
+            _warn_d = "Death Cross en cours de résorption — pente MM21 positive, spread tendu, signal possiblement en transition"
+        elif _ct_d == "golden" and _sl_d < 0 and 0 < _sp_d < 3 and _dy_d is not None and _dy_d < 90:
+            _warn_d = "Golden Cross en cours d'affaiblissement — pente MM21 négative, signal possiblement en transition"
+        elif _ct_d == "death" and _sl_d > 3 and _sp_d < -5 and _dy_d is not None and _dy_d > 90:
+            _warn_d = "Rebond mean-reversion en cours sur cross stale — pente MM21 fortement positive, cours encore largement sous MM200"
+        elif _ct_d == "golden" and _sl_d < -3 and _sp_d > 5 and _dy_d is not None and _dy_d > 90:
+            _warn_d = "Affaiblissement post-rally sur cross stale — pente MM21 fortement négative malgré cours largement au-dessus de MM200"
+        details["signal_dynamics_warning"] = _warn_d
 
         # Fondamentaux (50 pts, cap strict)
         earnings_growth = info.get("earningsGrowth") or 0
@@ -665,6 +700,18 @@ def raison_sortie(prev_stock, current_stock=None):
     # 2) Signaux techniques responsables (s'il y en a) ─────────────────────
     regime = bd.get("cross_regime", "")
     days   = bd.get("cross_days_ago", 999)
+    dyn_warn = bd.get("signal_dynamics_warning", "")
+
+    # Si le cross est en transition, le sortie peut être discutable — on le mentionne
+    # pour la transparence (le screener est mécanique mais le signal était nuancé).
+    if dyn_warn:
+        if "résorption" in dyn_warn:
+            parts.append("nuance : le death cross était en cours de résorption (pente MM21 positive) — sortie sur dégradation fonda/momentum global, pas sur le seul cross")
+        elif "mean-reversion" in dyn_warn:
+            parts.append("nuance : rebond mean-reversion en cours, mais score global insuffisant pour rester top 25")
+        elif "affaiblissement" in dyn_warn:
+            parts.append(f"nuance : {dyn_warn.split(' — ')[0].lower()} — confirme la sortie")
+
     if regime == "death":
         if days <= 30:
             parts.append(f"Death Cross très récent ({days}j) — bascule en tendance baissière, signal négatif fort")
