@@ -5,6 +5,55 @@ Format inspiré de [keepachangelog.com](https://keepachangelog.com/fr/).
 
 ---
 
+## [1.10.0] — 2026-05-10
+
+> NB : les versions v1.6 → v1.9 ont été tracées dans `portfolio.html` learnings (07 mai 2026)
+> sans être reportées ici à l'époque (FX bug GBP, sector bonus caché, order memory dans le prompt,
+> z-score holdout 20j, stop-loss catastrophe R08, MSCI EUR-denominated). On reprend à 1.10.0
+> pour maintenir la cohérence avec le versioning learnings.
+
+### Architecture (portfolio_agent.py + sync_skill.py) — alignement skill ↔ prod
+
+**Le skill `portfolio-analyst` existe désormais à 2 niveaux** :
+- **User-level** : `~/.claude/skills/portfolio-analyst/` — master éditable. Claude Code en local le charge en priorité (hiérarchie personal > project) pour toutes les questions portfolio, dans ou hors repo Signal.
+- **Project-level** : `<repo>/.claude/skills/portfolio-analyst/` — copie synchronisée, committée dans Git, déployée avec le code. Lue par `portfolio_agent.py` sur le runner GitHub Actions où le user-level n'existe pas.
+
+**Synchronisation user-level → project-level via `sync_skill.py`** :
+- Direction : user-level (master éditable) → project-level (copie déployable)
+- Usage : `python sync_skill.py` avant chaque commit qui touche le skill
+- Mode `--check` pour CI / pre-commit hook (échoue si désynchronisé)
+- Pourquoi cette direction : tu édites naturellement le user-level via Claude Code, et Claude Code en local prime sur project-level de toute façon (hiérarchie)
+
+**`load_skill_discipline()` (portfolio_agent.py)** :
+- Lit désormais le project-level via chemin **relatif** : `Path(__file__).parent / ".claude" / "skills" / "portfolio-analyst" / "SKILL.md"`
+- Marche partout où le repo est cloné (runner GitHub Actions inclus)
+- Bug d'architecture v1.6.0-rc1 corrigé : la version initiale lisait `Path.home()` qui n'existe pas sur le runner
+
+### Prompt agent (portfolio_agent.py)
+- **Injection skill au début du prompt passe 2** via `load_skill_discipline()` — single source of truth
+- **Watchlist top 10 enrichie** (passes 1 et 2) : ajout de `cross_slope_mm21_pct`, `cross_spread_pct` et **`signal_dynamics_warning`** (death cross qui se résorbe, golden qui s'affaiblit, rebond mean-reversion sur cross stale, affaiblissement post-rally). L'agent peut désormais lire le signal **en mouvement**, plus statiquement.
+- **Règles non négociables 7 et 8** ajoutées :
+  - R7 — Signal en transition : si `signal_dynamics_warning` non-vide, traiter le cross technique comme ambigu, ne pas vendre/acheter sur ce signal seul
+  - R8 — Cross-validation analystes/cours : pour titres en zone d'incertitude (score 30-65), si consensus très favorable mais cours en dégradation 6-12m, suspecter une dégradation des données screener (effet change, périmètre M&A, désync data)
+- **Watchlist top 10 enrichie** (passes 1 et 2) : ajout de `cross_slope_mm21_pct`, `cross_spread_pct` et **`signal_dynamics_warning`** (death cross qui se résorbe, golden qui s'affaiblit, rebond mean-reversion sur cross stale, affaiblissement post-rally). L'agent peut désormais lire le signal **en mouvement**, plus statiquement.
+- **Règles non négociables 7 et 8** ajoutées :
+  - R7 — Signal en transition : si `signal_dynamics_warning` non-vide, traiter le cross technique comme ambigu, ne pas vendre/acheter sur ce signal seul
+  - R8 — Cross-validation analystes/cours : pour titres en zone d'incertitude (score 30-65), si consensus très favorable mais cours en dégradation 6-12m, suspecter une dégradation des données screener (effet change, périmètre M&A, désync data)
+
+### Scoring (screener.py)
+- **`signal_dynamics_warning`** étendu : 4 conditions désormais détectées
+  - Death Cross en cours de résorption (récent + pente MM21 positive + spread tendu)
+  - Golden Cross en cours d'affaiblissement (récent + pente MM21 négative + spread tendu)
+  - **Rebond mean-reversion sur cross stale** (death stale + pente MM21 forte + cours largement sous MM200) — setup B opportunities.md
+  - **Affaiblissement post-rally sur cross stale** (golden stale + pente MM21 négative + cours largement au-dessus MM200)
+- **Archive snapshot hebdo** : `notes/watchlist_archive/YYYY-MM-DD.json` créé à chaque run du screener. Permet dans 6+ mois de reconstituer un historique fonda point-in-time pour backtester les 60% du score (Fondamentaux + Analystes) actuellement non testés (limitation reconnue ligne 12-14 de backtest.py).
+
+### Validation
+- Backtest baseline 2026-05-10 : Alpha CAGR **+13.68pp/an**, Sharpe **1.68 vs 0.95 SPY**, Max DD **-22.70%**, Win rate **65.2%** sur 281 semaines (2019-2024). Cohérent avec methodology.md (+13.5pp).
+- Note honnête : `backtest.py` simule la stratégie momentum-only (top N → achat mécanique). **Il ne simule pas Claude.** Les modifs prompt agent n'apparaîtront pas dans ce backtest. Validation des règles 7/8 nécessite observation live sur 4-8 semaines.
+
+---
+
 ## [1.5.0] — 2026-05-06
 
 ### Architecture (portfolio_agent.py)

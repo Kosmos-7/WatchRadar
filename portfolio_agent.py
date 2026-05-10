@@ -336,6 +336,39 @@ def calculer_regles_auto(portfolio):
     return regles
 
 
+# ── SKILL INJECTION (single source of truth : skill project-level committable) ──
+def load_skill_discipline():
+    """Lit le SKILL.md depuis le project-level skill (.claude/skills/portfolio-analyst/).
+
+    Architecture (cf décisions 2026-05-10) :
+    - Le skill est versionné dans le repo Git, déployé avec le code.
+    - Sur runner GitHub Actions : lecture via chemin relatif, marche partout où le repo est cloné.
+    - En local Claude Code : Claude Code charge automatiquement la version user-level
+      (~/.claude/skills/) qui est synchronisée vers project-level via `python sync_skill.py`.
+    - Hiérarchie Claude Code : personal > project — donc en local le user-level prime,
+      et le project-level (committable) est l'artefact pour la production.
+
+    Returns:
+        str: contenu markdown du skill (sans frontmatter YAML), ou "" si introuvable.
+    """
+    from pathlib import Path
+    skill_path = Path(__file__).parent / ".claude" / "skills" / "portfolio-analyst" / "SKILL.md"
+    if not skill_path.exists():
+        print(f"  ⚠️  load_skill_discipline — skill absent à {skill_path} (sync_skill.py exécuté ?)")
+        return ""
+    try:
+        content = skill_path.read_text(encoding="utf-8")
+        # Strip frontmatter YAML (--- ... ---)
+        if content.startswith("---"):
+            parts = content.split("---", 2)
+            if len(parts) >= 3:
+                content = parts[2].strip()
+        return content
+    except Exception as e:
+        print(f"  ⚠️  load_skill_discipline — exception : {e}")
+        return ""
+
+
 # ── PROMPT CLAUDE ────────────────────────────────────────────────────────────
 def construire_prompt_analyse(portfolio, watchlist, contexte, macro_news=None):
     """
@@ -363,11 +396,13 @@ def construire_prompt_analyse(portfolio, watchlist, contexte, macro_news=None):
         z      = bd.get("regression_z")
         regime = bd.get("cross_regime", "")
         days   = bd.get("cross_days_ago")
+        dyn_warn = bd.get("signal_dynamics_warning", "")
         icon   = "🟢" if regime == "golden" else "🔴" if regime == "death" else "⚪"
         cross_str = f" {icon} {regime.upper()} {days}j" if days is not None and regime in ("golden","death") else ""
         z_str = f" z={z:+.1f}σ" if z is not None else ""
+        warn_str = f"\n      ⚠ {dyn_warn}" if dyn_warn else ""
         top10_lines.append(
-            f"  #{s['rank']} {s['ticker']} score={s['score']}/100{cross_str}{z_str} — {s.get('justification','')[:100]}"
+            f"  #{s['rank']} {s['ticker']} score={s['score']}/100{cross_str}{z_str} — {s.get('justification','')[:100]}{warn_str}"
         )
 
     macro_section = ""
@@ -452,6 +487,7 @@ def construire_prompt(portfolio, watchlist, contexte, analyse=None, macro_news=N
     synthese_str    = f"\n## ANALYSE MARCHÉ (passe 1)\n{synthese_marche}\n" if synthese_marche else ""
 
     # Format watchlist top 10 avec signaux cross + régression + analyse passe 1
+    # + dynamique du signal (pente MM21, spread, signal_dynamics_warning) — anti-statique
     opportunites_analyse = (analyse or {}).get("opportunites_analyse", {})
     top10_lines = []
     for s in watchlist.get("stocks", [])[:10]:
@@ -460,17 +496,24 @@ def construire_prompt(portfolio, watchlist, contexte, analyse=None, macro_news=N
         cross_days = bd.get("cross_days_ago")
         z = bd.get("regression_z")
         vol_conf = bd.get("cross_volume_confirmed", False)
+        slope = bd.get("cross_slope_mm21_pct")
+        spread = bd.get("cross_spread_pct")
+        dyn_warn = bd.get("signal_dynamics_warning", "")
 
         regime_icon = "🟢" if regime == "golden" else "🔴" if regime == "death" else "⚪"
         cross_str = f" | {regime_icon} {regime.upper()} {cross_days}j" if cross_days is not None and regime in ("golden","death") else ""
         vol_str   = " vol✓" if vol_conf else ""
         z_str     = f" | z={z:+.1f}σ" if z is not None else ""
+        # Dynamique : spread + pente MM21 → permet à l'agent de lire le signal en mouvement
+        dyn_str = f" | spread {spread:+.1f}% pente {slope:+.1f}%" if slope is not None and spread is not None else ""
 
         opp_a    = opportunites_analyse.get(s["ticker"], {})
         opp_str  = f" | signal {opp_a['signal_qualite']}, timing {opp_a['timing']}" if opp_a else ""
+        # Warning de transition (death cross qui se résorbe, golden qui s'affaiblit, mean-reversion)
+        warn_str = f"\n      ⚠ {dyn_warn}" if dyn_warn else ""
         top10_lines.append(
             f"  #{s['rank']} {s['ticker']} ({s['name']}) — score {s['score']}/100 — {s['sector']}"
-            f"{cross_str}{vol_str}{z_str}{opp_str} — {s.get('justification', '')[:100]}"
+            f"{cross_str}{vol_str}{z_str}{dyn_str}{opp_str} — {s.get('justification', '')[:100]}{warn_str}"
         )
 
     # Tickers watchlist complète
@@ -517,7 +560,24 @@ def construire_prompt(portfolio, watchlist, contexte, analyse=None, macro_news=N
     else:
         macro_news_section = ""
 
-    prompt = f"""Tu es l'IA qui gère le portefeuille fictif Signal. Ton objectif : battre le MSCI World (en euros, via EUNL.DE) sur la durée. La performance et l'écart au benchmark sont publiés en transparence à chaque mise à jour hebdomadaire.
+    # Injection du skill portfolio-analyst — single source of truth
+    # Le skill local définit la persona analyste, les mantras, la pré-flight discipline.
+    # Si modifié localement (~/.claude/skills/portfolio-analyst/SKILL.md), le prochain run
+    # voit automatiquement les changements. Évite la duplication contenu skill ↔ code.
+    skill_discipline = load_skill_discipline()
+    skill_section = f"""## DISCIPLINE D'ANALYSE (skill portfolio-analyst — autorité méthodologique)
+Les sections "Persona", "5 mantras", "Pré-flight avant tout verdict" et "Ce que tu NE FAIS PAS"
+ci-dessous sont l'autorité méthodologique. Les sections sur les outils (Données disponibles,
+WebSearch, etc.) ne s'appliquent pas à ton contexte d'agent — ignore-les. Les triggers
+ne s'appliquent pas non plus, tu es invoqué automatiquement chaque semaine.
+
+{skill_discipline}
+
+---
+
+""" if skill_discipline else ""
+
+    prompt = f"""{skill_section}Tu es l'IA qui gère le portefeuille fictif Signal. Ton objectif : battre le MSCI World (en euros, via EUNL.DE) sur la durée. La performance et l'écart au benchmark sont publiés en transparence à chaque mise à jour hebdomadaire.
 
 ## RÈGLES NON NÉGOCIABLES
 1. Aucune vente avant 90 jours de détention — sauf signal fondamental majeur documenté
@@ -526,6 +586,8 @@ def construire_prompt(portfolio, watchlist, contexte, analyse=None, macro_news=N
 4. Chaque décision doit être expliquée avec les données qui la motivent
 5. Les retours utilisateurs et les erreurs passées doivent influencer les décisions
 6. Stop-loss automatique : -15% après 90 jours, ou -25% sans condition de durée
+7. **Signal en transition** : si un titre watchlist a un `signal_dynamics_warning` non-vide (death cross qui se résorbe, golden cross qui s'affaiblit, rebond mean-reversion sur cross stale, affaiblissement post-rally), traiter le cross technique comme **ambigu** — ne pas vendre/acheter sur ce signal seul. Croiser avec fonda et delta_these.
+8. **Cross-validation analystes / cours** : pour les titres en zone d'incertitude (score 30-65), si le consensus analystes est très favorable mais le cours en dégradation 6-12m, suspecter une dégradation des données screener (effet change, périmètre M&A, désync data) — ne pas conclure trop vite sur la base du score seul. Re-lire la justification.
 
 ## ÉTAT ACTUEL DU PORTEFEUILLE
 - Date : {today}
