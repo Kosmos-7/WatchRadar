@@ -513,7 +513,7 @@ def construire_prompt(portfolio, watchlist, contexte, analyse=None, macro_news=N
     liquidites = portfolio.get("liquidites", CAPITAL_INITIAL)
     capital = portfolio.get("capital_actuel", CAPITAL_INITIAL)
     perf = portfolio.get("performance", 0)
-    bench = portfolio.get("benchmark_cac40", 0)
+    bench = portfolio.get("benchmark_msci", 0)  # MSCI World est le benchmark primaire (vs_benchmark = perf - bench_msci)
     vs = portfolio.get("vs_benchmark", 0)
 
     today = str(date.today())
@@ -613,10 +613,14 @@ def construire_prompt(portfolio, watchlist, contexte, analyse=None, macro_news=N
             tk = o.get("ticker", "?")
             d = o.get("date", "?")
             if t == "VENTE":
-                perf = o.get("perf", 0)
+                # Note : variable locale renommée pour éviter de shadower `perf` (la perf totale du portfolio)
+                # déclarée plus haut dans la fonction. Bug historique : perf était écrasée par la dernière
+                # itération de la boucle, et la f-string "Performance portefeuille = {perf}%" affichait alors
+                # la perf de la dernière vente (souvent ~0% ou la valeur de stop-loss).
+                ord_perf = o.get("perf", 0)
                 jours = o.get("jours", 0)
                 raison = (o.get("raison", "") or "")[:120]
-                hist_lines.append(f"  [{d}] VENTE {tk} perf {perf:+.1f}% après {jours}j — {raison}")
+                hist_lines.append(f"  [{d}] VENTE {tk} perf {ord_perf:+.1f}% après {jours}j — {raison}")
             elif t == "ACHAT":
                 raison = (o.get("raison", "") or "")[:120]
                 hist_lines.append(f"  [{d}] ACHAT {tk} — {raison}")
@@ -678,10 +682,20 @@ ne s'appliquent pas non plus, tu es invoqué automatiquement chaque semaine.
 - Marchés au moment du run : EU {contexte.get('marches',{}).get('EU','?')} | LSE {contexte.get('marches',{}).get('LSE','?')} | US {contexte.get('marches',{}).get('US','?')}
 
 ## ÉTAT ACTUEL DU PORTEFEUILLE
-- Capital : {capital:.0f}€ (performance totale depuis création : {perf:+.1f}% — alpha vs MSCI World YTD {bench:+.1f}%, soit {vs:+.1f}pp)
-- Note : "performance" ici = écart vs capital_initial (depuis la création du portefeuille). Le benchmark MSCI World est mesuré YTD année courante. L'alpha (+pp) est la différence des deux. Ne pas dire "YTD +X%" pour le portefeuille — la perf affichée n'est pas restreinte à l'année.
-- Liquidités disponibles : {liquidites:.0f}€
-- Positions ouvertes ({len(positions)}) :
+- Capital initial (création) : {CAPITAL_INITIAL:.0f}€
+- Capital actuel             : {capital:.0f}€
+- **Performance portefeuille (depuis création) = {perf:+.2f}%**  (= {capital - CAPITAL_INITIAL:+.0f}€ vs {CAPITAL_INITIAL:.0f}€ initial)
+- Benchmark MSCI World (YTD 2026) = {bench:+.2f}%
+- **Alpha portefeuille vs MSCI = {vs:+.2f} points de pourcentage** (= perf portefeuille − MSCI YTD)
+- Liquidités disponibles      : {liquidites:.0f}€
+
+🔢 IMPORTANT — chiffres à recopier EXACTEMENT :
+  · Performance portefeuille : "{perf:+.2f}%" (NE PAS dire +0.0%, NE PAS dire YTD pour le portefeuille — c'est la perf cumulée depuis la création)
+  · Alpha vs MSCI           : "{vs:+.2f}pp"
+  · Capital actuel          : "{capital:.0f}€"
+Si tu cites ces chiffres dans `analyse_macro` ou `message_utilisateurs`, recopie-les depuis cette section, ne les recalcule pas toi-même.
+
+Positions ouvertes ({len(positions)}) :
 {chr(10).join(pos_lines) if pos_lines else "  Aucune position"}
 
 ## CONTEXTE DE MARCHÉ CETTE SEMAINE
