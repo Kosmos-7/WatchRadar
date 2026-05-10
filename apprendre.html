@@ -814,43 +814,79 @@
 
           <div style="margin:1.2rem 0;padding:1rem;background:#0a0a0f;border:1px solid var(--border);border-radius:var(--radius)">
             <div style="font-family:'Courier New',monospace;font-size:0.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:0.6rem">Exemple : action passée de 100€ à 200€ (rally +100%), corrigeant à 162€</div>
-            <svg viewBox="0 0 600 280" style="width:100%;max-width:560px;height:auto;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 720 320" style="width:100%;max-width:680px;height:auto;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg">
+
+              <!-- ZONES COLORÉES entre les niveaux Fibo (du peak en bas vers swing low) -->
+              <!-- Zone 1 : 0% → 23.6% (peak à Fibo 23.6%) — chase / FOMO -->
+              <rect x="50" y="50"  width="380" height="52"  fill="#f05454" opacity="0.10"/>
+              <!-- Zone 2 : 23.6% → 38.2% — pullback léger -->
+              <rect x="50" y="102" width="380" height="32"  fill="#1cc87a" opacity="0.10"/>
+              <!-- Zone 3 : 38.2% → 50% — ZONE D'ENTRÉE CHARTISTE STANDARD ★ -->
+              <rect x="50" y="134" width="380" height="26"  fill="#1cc87a" opacity="0.28"/>
+              <!-- Zone 4 : 50% → 61.8% — Dow/Gann + transition vers Golden Zone -->
+              <rect x="50" y="160" width="380" height="26"  fill="#e8a820" opacity="0.18"/>
+              <!-- Zone 5 : 61.8% → 78.6% — Golden Zone ★★ -->
+              <rect x="50" y="186" width="380" height="37"  fill="#e8a820" opacity="0.28"/>
+              <!-- Zone 6 : 78.6% → 100% — rally annulé / ultime rempart -->
+              <rect x="50" y="223" width="380" height="47"  fill="#f05454" opacity="0.18"/>
+
               <!-- axes -->
-              <line x1="60" y1="20" x2="60" y2="260" stroke="#33334e" stroke-width="1"/>
-              <line x1="60" y1="260" x2="580" y2="260" stroke="#33334e" stroke-width="1"/>
+              <line x1="50" y1="50"  x2="50"  y2="270" stroke="#33334e" stroke-width="1"/>
+              <line x1="50" y1="270" x2="430" y2="270" stroke="#33334e" stroke-width="1"/>
 
-              <!-- price curve : montée 100→200, puis correction à 162 -->
-              <path d="M 60,260 Q 200,250 280,140 T 380,40 L 380,40 Q 420,80 460,116" stroke="#5080f8" stroke-width="2" fill="none"/>
-              <circle cx="380" cy="40" r="3" fill="#1cc87a"/>
-              <circle cx="460" cy="116" r="4" fill="#e8a820"/>
-              <circle cx="60"  cy="260" r="3" fill="#f05454"/>
+              <!-- niveaux Fibo (lignes horizontales pointillées) -->
+              <line x1="50" y1="50"  x2="430" y2="50"  stroke="#1cc87a" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.85"/>
+              <line x1="50" y1="102" x2="430" y2="102" stroke="#8888a8" stroke-width="1" stroke-dasharray="4,3" opacity="0.55"/>
+              <line x1="50" y1="134" x2="430" y2="134" stroke="#1cc87a" stroke-width="1.2" stroke-dasharray="4,3" opacity="0.7"/>
+              <line x1="50" y1="160" x2="430" y2="160" stroke="#a07010" stroke-width="1" stroke-dasharray="4,3" opacity="0.55"/>
+              <line x1="50" y1="186" x2="430" y2="186" stroke="#e8a820" stroke-width="1.6" stroke-dasharray="4,3" opacity="0.95"/>
+              <line x1="50" y1="223" x2="430" y2="223" stroke="#f87a20" stroke-width="1" stroke-dasharray="4,3" opacity="0.55"/>
+              <line x1="50" y1="270" x2="430" y2="270" stroke="#f05454" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
 
-              <!-- niveaux Fibo (lignes horizontales pointillées) entre y=40 (200€) et y=260 (100€) -->
-              <line x1="60" y1="40"  x2="540" y2="40"  stroke="#1cc87a" stroke-width="1" stroke-dasharray="4,3" opacity="0.7"/>
-              <line x1="60" y1="92"  x2="540" y2="92"  stroke="#8888a8" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
-              <line x1="60" y1="124" x2="540" y2="124" stroke="#8888a8" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
-              <line x1="60" y1="150" x2="540" y2="150" stroke="#a07010" stroke-width="1" stroke-dasharray="4,3" opacity="0.55"/>
-              <line x1="60" y1="176" x2="540" y2="176" stroke="#e8a820" stroke-width="1.4" stroke-dasharray="4,3" opacity="0.85"/>
-              <line x1="60" y1="213" x2="540" y2="213" stroke="#f87a20" stroke-width="1" stroke-dasharray="4,3" opacity="0.55"/>
-              <line x1="60" y1="260" x2="540" y2="260" stroke="#f05454" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+              <!-- price curve : 100€ (départ) → 200€ (peak) → 162€ (correction) -->
+              <path d="M 50,270 Q 150,260 220,200 Q 290,130 360,50 L 360,50 Q 380,80 410,135" stroke="#5080f8" stroke-width="2.2" fill="none"/>
+              <circle cx="360" cy="50"  r="4" fill="#1cc87a"/>
+              <circle cx="410" cy="135" r="5" fill="#e8a820" stroke="#fff" stroke-width="1.5"/>
+              <circle cx="50"  cy="270" r="3" fill="#f05454"/>
 
-              <!-- labels niveaux à droite -->
-              <text x="546" y="44"  fill="#1cc87a" font-family="Courier New,monospace" font-size="11" font-weight="600">200€ · swing high</text>
-              <text x="546" y="96"  fill="#8888a8" font-family="Courier New,monospace" font-size="10">176€ · Fibo 23.6%</text>
-              <text x="546" y="128" fill="#8888a8" font-family="Courier New,monospace" font-size="10">162€ · Fibo 38.2%  ← cours actuel</text>
-              <text x="546" y="154" fill="#a07010" font-family="Courier New,monospace" font-size="10">150€ · Fibo 50% (Dow/Gann)</text>
-              <text x="546" y="180" fill="#e8a820" font-family="Courier New,monospace" font-size="11" font-weight="600">138€ · Fibo 61.8% (Golden Zone)</text>
-              <text x="546" y="217" fill="#f87a20" font-family="Courier New,monospace" font-size="10">121€ · Fibo 78.6%</text>
-              <text x="546" y="264" fill="#f05454" font-family="Courier New,monospace" font-size="11" font-weight="600">100€ · swing low</text>
+              <!-- LABELS DE ZONE à l'intérieur du chart (taille moyenne, italique) -->
+              <text x="240" y="80"  fill="#f05454" font-family="Inter,sans-serif" font-size="10" font-style="italic" text-anchor="middle">chase / FOMO</text>
+              <text x="240" y="123" fill="#1cc87a" font-family="Inter,sans-serif" font-size="10" font-style="italic" text-anchor="middle">pullback léger</text>
+              <text x="240" y="153" fill="#1cc87a" font-family="Inter,sans-serif" font-size="11" font-weight="600" text-anchor="middle">★ zone d'entrée saine</text>
+              <text x="240" y="178" fill="#a07010" font-family="Inter,sans-serif" font-size="10" font-style="italic" text-anchor="middle">démarcation Dow/Gann</text>
+              <text x="240" y="210" fill="#e8a820" font-family="Inter,sans-serif" font-size="11" font-weight="700" text-anchor="middle">★★ Golden Zone</text>
+              <text x="240" y="252" fill="#f05454" font-family="Inter,sans-serif" font-size="10" font-style="italic" text-anchor="middle">rally annulé / ultime rempart</text>
 
-              <!-- annotations rally + correction -->
-              <text x="200" y="245" fill="#5080f8" font-family="Inter,sans-serif" font-size="10" font-style="italic">rally +100%</text>
-              <text x="395" y="60"  fill="#1cc87a" font-family="Inter,sans-serif" font-size="10" font-weight="600">peak</text>
-              <text x="430" y="135" fill="#e8a820" font-family="Inter,sans-serif" font-size="10" font-style="italic">correction</text>
-              <text x="65"  y="275" fill="#f05454" font-family="Inter,sans-serif" font-size="10">départ rally</text>
+              <!-- LABELS PRIX À DROITE (compact, deux lignes par niveau si besoin) -->
+              <text x="440" y="54"  fill="#1cc87a" font-family="Courier New,monospace" font-size="11" font-weight="700">200€</text>
+              <text x="478" y="54"  fill="#1cc87a" font-family="Inter,sans-serif" font-size="10" font-style="italic">swing high (peak)</text>
+
+              <text x="440" y="106" fill="#8888a8" font-family="Courier New,monospace" font-size="11">176€</text>
+              <text x="478" y="106" fill="#8888a8" font-family="Inter,sans-serif" font-size="10" font-style="italic">Fibo 23.6%</text>
+
+              <text x="440" y="138" fill="#1cc87a" font-family="Courier New,monospace" font-size="11" font-weight="700">162€</text>
+              <text x="478" y="138" fill="#1cc87a" font-family="Inter,sans-serif" font-size="10" font-weight="600">Fibo 38.2% ← cours</text>
+
+              <text x="440" y="164" fill="#a07010" font-family="Courier New,monospace" font-size="11">150€</text>
+              <text x="478" y="164" fill="#a07010" font-family="Inter,sans-serif" font-size="10" font-style="italic">Fibo 50%</text>
+
+              <text x="440" y="190" fill="#e8a820" font-family="Courier New,monospace" font-size="11" font-weight="700">138€</text>
+              <text x="478" y="190" fill="#e8a820" font-family="Inter,sans-serif" font-size="10" font-weight="600">Fibo 61.8% (Golden)</text>
+
+              <text x="440" y="227" fill="#f87a20" font-family="Courier New,monospace" font-size="11">121€</text>
+              <text x="478" y="227" fill="#f87a20" font-family="Inter,sans-serif" font-size="10" font-style="italic">Fibo 78.6%</text>
+
+              <text x="440" y="274" fill="#f05454" font-family="Courier New,monospace" font-size="11" font-weight="700">100€</text>
+              <text x="478" y="274" fill="#f05454" font-family="Inter,sans-serif" font-size="10" font-style="italic">swing low</text>
+
+              <!-- Annotations sur la courbe -->
+              <text x="170" y="245" fill="#5080f8" font-family="Inter,sans-serif" font-size="10" font-style="italic">rally +100%</text>
+              <text x="375" y="42"  fill="#1cc87a" font-family="Inter,sans-serif" font-size="10" font-weight="600">peak</text>
+              <text x="392" y="155" fill="#e8a820" font-family="Inter,sans-serif" font-size="10" font-style="italic">correction</text>
+              <text x="55"  y="285" fill="#f05454" font-family="Inter,sans-serif" font-size="10">départ rally</text>
             </svg>
             <div style="font-size:0.78rem;color:var(--text3);line-height:1.55;margin-top:0.5rem;font-style:italic">
-              Le cours à 162€ se situe en <em>zone Fibo 38.2%</em> — la "première vraie zone d'entrée" selon les chartistes. Si la trend tient, le rebond se fera ici ; sinon le prochain palier est 150€ (50%) puis la Golden Zone à 138€. Sous 121€ (78.6%), le rally est techniquement annulé.
+              Le cours à 162€ se situe en <span style="color:var(--green);font-weight:600">zone Fibo 38.2% — zone d'entrée saine selon les chartistes</span>. Si la trend tient, le rebond se fera dans cette bande verte. Sinon le prochain palier est 150€ (50%, démarcation Dow/Gann), puis la <span style="color:var(--gold);font-weight:600">Golden Zone à 138€ (61.8%)</span>. Sous 121€ (78.6%), le rally est techniquement annulé — on entre dans la bande rouge.
             </div>
           </div>
 
