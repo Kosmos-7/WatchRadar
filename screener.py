@@ -8,16 +8,22 @@ Sources de données :
 
 Dépendances : pip install yfinance pandas ta numpy requests finnhub-python
 
-─── MODÈLE DE SCORING (100 pts) ─────────────────────────────────────────────
-Momentum     (40 pts) = Croisement MM21/MM200 (20 pts, fraîcheur + volume)
+─── MODÈLE DE SCORING (100 pts, version v2.0) ───────────────────────────────
+Momentum     (45 pts) = Croisement MM21/MM200 (20 pts, fraîcheur + volume)
                        + RSI (10 pts, gradué : zone 40-60 = 10, 35-65 = 5)
                        + Volume (5 pts)
                        + Régression log-linéaire (5 pts)
+                       + Valorisation actuelle (5 pts, drawdown vs 52w high :
+                         −3 à −10% = 5, −10 à −20% = 3, −20 à −30% = 1, sinon 0)
 Fondamentaux (50 pts) = Rev. growth (15) + Marges nettes (10) + FCF margin (5)
                        + PEG ratio (15) + EPS growth (5) + Dette (5)
                        [FCF complémentaire : +5 si >15%, +3 si >5% — cap 50 pts]
-Analystes    (10 pts) = Reco consensus (signal lagging, réduit vs momentum)
+Analystes    (5 pts)  = Reco consensus (signal lagging, réduit vs valorisation)
 Pénalité     Death Cross récent ≤30j : −5 pts | ≤60j : −3 pts
+
+Annotation chartiste (informationnelle, hors scoring) :
+  Retracement Fibonacci sur le dernier rally identifié — niveaux 23.6/38.2/50/61.8/78.6
+  Permet de contextualiser le drawdown selon la taille du rally (cf opportunities.md)
 
 Croisement MM21/MM200 — études de référence :
   Win rate moyen après Golden Cross : 66.7 % (S&P 500, 20 ans)
@@ -441,6 +447,25 @@ def generer_justification(nom, score, details, alertes):
     if details.get("rsi_ok"):
         points.append("RSI en zone favorable")
 
+    # Valorisation actuelle (timing d'entrée) — surface val_pts + Fibo si pertinent
+    val_pts = details.get("val_pts")
+    dd52w   = details.get("drawdown_52w_pct")
+    fibo    = details.get("fibo") or {}
+    fibo_zone = fibo.get("closest_fibo", "")
+    if val_pts == 5 and dd52w is not None:
+        # Pullback sain — zone d'entrée idéale
+        zone_str = f", {fibo_zone}" if fibo_zone and "Fibo" in fibo_zone else ""
+        points.append(f"pullback sain {dd52w:+.1f}% sous le top 52w (zone d'entrée idéale{zone_str})")
+    elif val_pts == 0 and dd52w is not None and dd52w >= -3:
+        # Près du top — chase de rally
+        points.append(f"⚠ près du top 52w ({dd52w:+.1f}%) — chase de rally pénalisée")
+    elif val_pts == 0 and dd52w is not None and dd52w <= -30:
+        # Chute libre
+        points.append(f"⚠ {dd52w:+.1f}% sous le top 52w — trend probablement cassée")
+    elif val_pts == 3 and dd52w is not None:
+        zone_str = f" ({fibo_zone})" if fibo_zone and "Fibo" in fibo_zone else ""
+        points.append(f"correction modérée {dd52w:+.1f}% sous le top{zone_str}")
+
     # Fondamentaux
     rev = details.get("rev_growth", 0)
     if rev > 0.15:
@@ -576,6 +601,10 @@ def score_ticker(ticker):
         details["rsi"]                 = round(rsi, 1)
         details["reg_z"]               = regression_z
         details["reg_signal"]          = reg_signal
+        # v2.0 — valorisation actuelle (timing d'entrée) + retracement Fibonacci
+        details["val_pts"]             = val_pts
+        details["drawdown_52w_pct"]    = drawdown_52w_pct
+        details["fibo"]                = fibo
 
         # Détection signal en transition (4 cas, cf v1.10) — disponible pour
         # generer_justification et raison_sortie. Recomputed dans le breakdown
