@@ -5,16 +5,16 @@ Approche en 3 piliers, validée empiriquement sur des décennies de recherche ac
 ## Scoring synthétique : 100 points
 
 ```
-Momentum technique  →  40 pts
+Momentum technique  →  45 pts  (cross 20 + RSI 10 + vol 5 + reg 5 + valorisation 5)
 Fondamentaux        →  50 pts
-Analystes           →  10 pts
+Analystes           →  5 pts
                        ─────
                        100 pts
 ```
 
-Pondération calibrée par l'expérience (le projet Signal applique cette logique en production sur 90 tickers, backtest 2019-2024 : +13.5pp/an d'alpha vs SPY sur les 40 pts de momentum seuls).
+Pondération calibrée par l'expérience (le projet Signal applique cette logique en production sur 90 tickers, backtest 2019-2024 : +13.5pp/an d'alpha vs SPY sur les 40 pts de momentum seuls — version actuelle ajoute 5 pts de timing d'entrée).
 
-## Pilier 1 — Momentum technique (40 pts)
+## Pilier 1 — Momentum technique (45 pts)
 
 ### 1.1 Croisement MM21 / MM200 (20 pts)
 
@@ -55,6 +55,19 @@ Position du cours actuel vs sa droite de tendance log-linéaire long terme, expr
 
 **Référence empirique** : Jegadeesh & Titman (1993) montrent que le momentum 3-12 mois fonctionne, mais Asness (AQR) note que l'effet s'inverse aux extrêmes par mean-reversion.
 
+### 1.5 Valorisation actuelle / timing d'entrée (5 pts)
+
+Drawdown du cours actuel vs plus haut 52 semaines :
+- 0% à -3% (proche du top) → 0 pt — chase de rally, mauvais timing
+- -3% à -10% (pullback sain) → 5 pts — zone d'entrée idéale
+- -10% à -20% (correction modérée) → 3 pts — entrée agressive possible si trend intacte
+- -20% à -30% (momentum cassé) → 1 pt
+- < -30% (chute libre) → 0 pt — la trend est probablement perdue
+
+C'est un proxy systématique du **range d'entrée** détaillé dans `opportunities.md` (entre MM21 et Fibo 38.2%). Pénalise les achats au plus haut, récompense les achats sur pullback sain.
+
+**Logique** : un Golden Cross frais a beau être un bon signal, l'acheter quand le cours est collé à son plus haut 52w est statistiquement défavorable (mean-reversion à court terme). Un Golden Cross frais avec un pullback de -7% est le sweet spot.
+
 ## Pilier 2 — Fondamentaux (50 pts)
 
 50 pts répartis sur :
@@ -67,15 +80,15 @@ Position du cours actuel vs sa droite de tendance log-linéaire long terme, expr
 
 Sources de données : Yahoo Finance + Finnhub (cross-validation). Quand divergence importante, baisse de la confiance globale.
 
-## Pilier 3 — Consensus analystes (10 pts)
+## Pilier 3 — Consensus analystes (5 pts)
 
 Recommandation moyenne sur échelle 1-5 :
-- < 2.0 (strong buy) → 10 pts
-- < 2.5 (buy) → 6 pts
-- < 3.0 (hold) → 3 pts
+- < 2.0 (strong buy) → 5 pts
+- < 2.5 (buy) → 3 pts
+- < 3.0 (hold) → 1 pt
 - ≥ 3.0 → 0 pt
 
-**Pondération volontairement faible** car signal lagging (les analystes réagissent souvent aux mouvements de prix, plus qu'ils ne les précèdent) avec biais haussier structurel (~80% des recommandations sont buy/hold).
+**Pondération volontairement faible** car signal lagging (les analystes réagissent souvent aux mouvements de prix, plus qu'ils ne les précèdent) avec biais haussier structurel (~80% des recommandations sont buy/hold). Réduit de 10 à 5 pts pour libérer la place à la valorisation actuelle (timing d'entrée), plus actionnable et moins biaisée.
 
 ## Le facteur lens : croiser momentum / value / quality
 

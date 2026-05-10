@@ -397,12 +397,18 @@ def construire_prompt_analyse(portfolio, watchlist, contexte, macro_news=None):
         regime = bd.get("cross_regime", "")
         days   = bd.get("cross_days_ago")
         dyn_warn = bd.get("signal_dynamics_warning", "")
+        val_pts = bd.get("val_pts")
+        dd52w   = bd.get("drawdown_52w_pct")
+        fibo    = bd.get("fibo") or {}
         icon   = "🟢" if regime == "golden" else "🔴" if regime == "death" else "⚪"
         cross_str = f" {icon} {regime.upper()} {days}j" if days is not None and regime in ("golden","death") else ""
         z_str = f" z={z:+.1f}σ" if z is not None else ""
+        # Timing d'entrée : drawdown 52w + zone Fibo (annotation chartiste)
+        val_str = f" val={val_pts}/5 (DD{dd52w:+.1f}%)" if val_pts is not None and dd52w is not None else ""
+        fibo_str = f" [{fibo['closest_fibo']}]" if fibo.get("closest_fibo") else ""
         warn_str = f"\n      ⚠ {dyn_warn}" if dyn_warn else ""
         top10_lines.append(
-            f"  #{s['rank']} {s['ticker']} score={s['score']}/100{cross_str}{z_str} — {s.get('justification','')[:100]}{warn_str}"
+            f"  #{s['rank']} {s['ticker']} score={s['score']}/100{cross_str}{z_str}{val_str}{fibo_str} — {s.get('justification','')[:100]}{warn_str}"
         )
 
     macro_section = ""
@@ -507,13 +513,20 @@ def construire_prompt(portfolio, watchlist, contexte, analyse=None, macro_news=N
         # Dynamique : spread + pente MM21 → permet à l'agent de lire le signal en mouvement
         dyn_str = f" | spread {spread:+.1f}% pente {slope:+.1f}%" if slope is not None and spread is not None else ""
 
+        # Timing d'entrée — valorisation actuelle (val_pts) + zone Fibo annotée
+        val_pts = bd.get("val_pts")
+        dd52w   = bd.get("drawdown_52w_pct")
+        fibo    = bd.get("fibo") or {}
+        val_str = f" | val={val_pts}/5 (DD{dd52w:+.1f}%)" if val_pts is not None and dd52w is not None else ""
+        fibo_str = f" [{fibo['closest_fibo']}]" if fibo.get("closest_fibo") else ""
+
         opp_a    = opportunites_analyse.get(s["ticker"], {})
         opp_str  = f" | signal {opp_a['signal_qualite']}, timing {opp_a['timing']}" if opp_a else ""
         # Warning de transition (death cross qui se résorbe, golden qui s'affaiblit, mean-reversion)
         warn_str = f"\n      ⚠ {dyn_warn}" if dyn_warn else ""
         top10_lines.append(
             f"  #{s['rank']} {s['ticker']} ({s['name']}) — score {s['score']}/100 — {s['sector']}"
-            f"{cross_str}{vol_str}{z_str}{dyn_str}{opp_str} — {s.get('justification', '')[:100]}{warn_str}"
+            f"{cross_str}{vol_str}{z_str}{val_str}{fibo_str}{dyn_str}{opp_str} — {s.get('justification', '')[:100]}{warn_str}"
         )
 
     # Tickers watchlist complète
