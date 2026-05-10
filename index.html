@@ -1024,44 +1024,23 @@ function renderCard(s) {
           ${crossHTML}
           ${regBandHTML}
           ${(() => {
-            // Valorisation actuelle (drawdown 52w) + annotation Fibo
+            // Valorisation actuelle — version compacte (1 ligne meta)
             const dd  = bd.drawdown_52w_pct;
             const vp  = bd.val_pts;
             const fibo = bd.fibo;
             if (dd == null || vp == null) return '';
-            // Couleur selon zone de val_pts
             const zoneCfg = vp === 5
-              ? { color: 'var(--green)',  bg: 'rgba(28,200,122,0.12)',  label: 'PULLBACK SAIN' }
+              ? { color: 'var(--green)',  label: 'pullback sain' }
               : vp === 3
-              ? { color: 'var(--gold)',   bg: 'rgba(232,168,32,0.12)',  label: 'CORRECTION MODÉRÉE' }
+              ? { color: 'var(--gold)',   label: 'correction modérée' }
               : vp === 1
-              ? { color: 'var(--orange)', bg: 'rgba(248,122,32,0.12)',  label: 'MOMENTUM CASSÉ' }
+              ? { color: 'var(--orange)', label: 'momentum cassé' }
               : (dd >= -3
-                ? { color: 'var(--red)',   bg: 'rgba(240,84,84,0.12)',   label: 'PRÈS DU TOP — CHASE' }
-                : { color: 'var(--red)',   bg: 'rgba(240,84,84,0.12)',   label: 'CHUTE LIBRE' });
-            // Position du curseur sur l'échelle 0% → -30% (cap visuel)
-            const ddCapped = Math.max(-30, Math.min(0, dd));
-            const ddPct = Math.abs(ddCapped) / 30 * 100;
-            // Annotation Fibo si disponible
-            const fiboLine = fibo ? `
-              <div style="margin-top:6px;font-family:'Courier New',monospace;font-size:0.70rem;color:var(--text3)">
-                Rally identifié +${fibo.rally_pct}% · retracement ${fibo.retrace_pct}% · <span style="color:${zoneCfg.color}">${fibo.closest_fibo}</span>
-              </div>` : '';
-            return `<div class="reg-band" style="background:${zoneCfg.bg};border-color:${zoneCfg.color}33">
-              <div class="reg-band-header">
-                <span class="reg-label">Valorisation actuelle · Drawdown vs 52w high</span>
-                <span style="font-family:'Courier New',monospace;font-size:0.72rem;color:${zoneCfg.color};font-weight:600">${zoneCfg.label} · ${vp}/5</span>
-              </div>
-              <div style="position:relative;height:6px;background:var(--surface3);border-radius:3px;overflow:hidden">
-                <div style="position:absolute;left:${100-(10/30*100)}%;width:${(7/30*100)}%;top:0;bottom:0;background:rgba(28,200,122,0.2);border-radius:3px"></div>
-                <div style="position:absolute;left:calc(${100-ddPct}% - 1px);top:-2px;width:2px;height:10px;background:${zoneCfg.color}"></div>
-              </div>
-              <div style="display:flex;justify-content:space-between;font-size:0.68rem;color:var(--text3);font-family:'Courier New',monospace;margin-top:4px">
-                <span>−30%</span><span>−20%</span><span style="color:var(--green)">−10% → −3%</span><span>0% (top)</span>
-              </div>
-              <div style="margin-top:5px;font-family:'Courier New',monospace;font-size:0.70rem;color:${zoneCfg.color}">
-                Cours actuel à ${dd.toFixed(1)}% sous le plus haut 52w (${bd.high_52w ? '$' + bd.high_52w : ''})
-              </div>${fiboLine}
+                ? { color: 'var(--red)',  label: 'près du top' }
+                : { color: 'var(--red)',  label: 'chute libre' });
+            const fiboStr = fibo ? ` · ${fibo.closest_fibo}` : '';
+            return `<div style="margin-top:6px;font-family:'Courier New',monospace;font-size:0.72rem;color:var(--text3);padding:6px 10px;background:var(--surface);border-left:2px solid ${zoneCfg.color};border-radius:3px">
+              Valorisation : <span style="color:${zoneCfg.color}">${dd.toFixed(1)}% du top 52w · ${zoneCfg.label} (${vp}/5)</span>${fiboStr}
             </div>`;
           })()}
           <div class="detail-meta">

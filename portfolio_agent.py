@@ -678,7 +678,8 @@ ne s'appliquent pas non plus, tu es invoqué automatiquement chaque semaine.
 - Marchés au moment du run : EU {contexte.get('marches',{}).get('EU','?')} | LSE {contexte.get('marches',{}).get('LSE','?')} | US {contexte.get('marches',{}).get('US','?')}
 
 ## ÉTAT ACTUEL DU PORTEFEUILLE
-- Capital : {capital:.0f}€ (performance YTD : {perf:+.1f}% vs MSCI World {bench:+.1f}%, soit {vs:+.1f}pp)
+- Capital : {capital:.0f}€ (performance totale depuis création : {perf:+.1f}% — alpha vs MSCI World YTD {bench:+.1f}%, soit {vs:+.1f}pp)
+- Note : "performance" ici = écart vs capital_initial (depuis la création du portefeuille). Le benchmark MSCI World est mesuré YTD année courante. L'alpha (+pp) est la différence des deux. Ne pas dire "YTD +X%" pour le portefeuille — la perf affichée n'est pas restreinte à l'année.
 - Liquidités disponibles : {liquidites:.0f}€
 - Positions ouvertes ({len(positions)}) :
 {chr(10).join(pos_lines) if pos_lines else "  Aucune position"}
@@ -732,7 +733,7 @@ Réponds UNIQUEMENT en JSON valide, sans texte avant ou après, selon ce format 
       "score_watchlist": 0
     }}
   ],
-  "analyse_macro": "Analyse du contexte de marché en 2-3 phrases — incluant les éléments de pré-flight notables observés cette semaine quand pertinents : drapeaux de transformation détectés (M&A, rebrand), divergences screener/réalité (effets change, périmètre, désync data), signaux en transition (signal_dynamics_warning), titres en setup mean-reversion remarquable. Le but est de surfacer la méthodologie aux lecteurs.",
+  "analyse_macro": "Texte ÉDITORIAL style newsletter (4-6 phrases bien construites, ton journaliste financier, fluide à lire) qui synthétise : (1) ce qui s'est passé sur les marchés cette semaine en intégrant les actualités macro fournies plus haut (Fed, inflation, CPI, BCE, tensions, etc.) — pas la news brute mais ses implications ; (2) la performance du portefeuille avec son contexte (hausse, sous-performance, biais détectés) ; (3) éléments de pré-flight notables (transformations, divergences screener/réalité, signaux en transition, setups remarquables). C'est CE TEXTE qui sera lu sur le site comme analyse de la semaine — il doit pouvoir se lire seul, sans bloc séparé pour les news. NE PAS répéter les news brutes : intègre-les dans un narratif. Si pas de news macro fournie, fais une analyse purement portefeuille/marché.",
   "biais_detectes": ["biais 1", "biais 2"],
   "conviction_globale": "haussier" | "neutre" | "baissier",
   "message_utilisateurs": "Message transparent aux utilisateurs sur les décisions de cette semaine",

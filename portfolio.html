@@ -193,16 +193,15 @@
   .neu { color: var(--text2); }
   .liq { color: var(--blue); }
 
-  /* ── MACRO NEWS — intégré dans le bloc Raisonnement ── */
-  .macro-news-inline { margin-top: 1.1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
-  .mn-item { padding: 7px 0; border-bottom: 1px solid var(--border); }
-  .mn-item:last-child { border-bottom: none; }
-  .mn-resume { font-size: 0.88rem; color: var(--text2); line-height: 1.55; margin-bottom: 3px; }
-  .mn-headline { font-family: 'Courier New', monospace; font-size: 0.74rem; color: var(--text3); line-height: 1.5; }
+  /* ── MACRO NEWS — sources discrètes en pied du Raisonnement ── */
+  .macro-news-inline { margin-top: 1.1rem; padding-top: 0.85rem; border-top: 1px solid var(--border); opacity: 0.85; }
+  .mn-item { padding: 4px 0; }
+  .mn-resume { display: none; }  /* on n'affiche plus le résumé long, juste les titres */
+  .mn-headline { font-family: 'Courier New', monospace; font-size: 0.72rem; color: var(--text3); line-height: 1.5; }
   .mn-headline a { color: var(--text3); text-decoration: none; transition: color 0.15s; }
   .mn-headline a:hover { color: var(--gold); }
-  .mn-meta-date { color: var(--text3); opacity: 0.7; }
-  .mn-source-note { margin-top: 0.6rem; font-family: 'Courier New', monospace; font-size: 0.70rem; color: var(--text3); opacity: 0.6; }
+  .mn-meta-date { color: var(--text3); opacity: 0.6; }
+  .mn-source-note { margin-top: 0.5rem; font-family: 'Courier New', monospace; font-size: 0.68rem; color: var(--text3); opacity: 0.55; }
 
   /* ── PARI DE LA SEMAINE — intégré dans le bloc Raisonnement ── */
   .weekly-pick-inline { margin-top: 1.1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
@@ -489,9 +488,9 @@
       <div id="analyse-macro"  class="analyse-text"></div>
       <div id="message-users"  class="message-text"></div>
       <div id="macro-news-block" class="macro-news-inline" style="display:none">
-        <div class="wp-label">Contexte macro de la semaine</div>
+        <div class="wp-label">Sources actualités macro consultées</div>
         <div id="macro-news-items"></div>
-        <div class="mn-source-note">Sources : Finnhub (Reuters, Bloomberg, AP…) · titres en anglais, résumés français par l'IA</div>
+        <div class="mn-source-note">Finnhub (Reuters, Bloomberg, AP…) · ces titres ont alimenté l'analyse ci-dessus</div>
       </div>
       <div id="weekly-pick" class="weekly-pick-inline" style="display:none">
         <div class="wp-label">Décision marquante de la semaine</div>
