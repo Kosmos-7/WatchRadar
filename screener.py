@@ -457,7 +457,7 @@ def score_ticker(ticker):
         score   = 0
         details = {}
 
-        # Momentum (40 pts) = cross (20) + RSI (10 gradué) + volume (5) + régression (5)
+        # Momentum (45 pts) = cross (20) + RSI (10) + volume (5) + régression (5) + valorisation (5)
         vol_ok        = vol_recent > vol_annual
 
         # RSI gradué : zone stricte 40-60 = 10, élargie 35-65 = 5, hors zone = 0
@@ -468,7 +468,21 @@ def score_ticker(ticker):
 
         vol_pts = 5  if vol_ok else 0
         reg_pts = 5  if reg_zone_saine else 0
-        momentum_total = cross_pts + rsi_pts + vol_pts + reg_pts
+
+        # Valorisation actuelle (5 pts) — drawdown vs plus haut 52 semaines.
+        # Récompense un setup d'entrée propre (pullback sain) plutôt que la chase
+        # de rally en haut de range. Proxy systématique du "range d'entrée"
+        # discuté dans opportunities.md (entre MM21 et Fibo 38.2%).
+        close_52w = close.iloc[-252:] if len(close) >= 252 else close
+        high_52w  = float(close_52w.max())
+        drawdown_52w_pct = (prix / high_52w - 1) * 100 if high_52w > 0 else 0
+        if   drawdown_52w_pct >= -3:                          val_pts = 0   # proche du top → chase
+        elif -10 <= drawdown_52w_pct < -3:                    val_pts = 5   # pullback sain → zone idéale
+        elif -20 <= drawdown_52w_pct < -10:                   val_pts = 3   # correction modérée
+        elif -30 <= drawdown_52w_pct < -20:                   val_pts = 1   # momentum cassé
+        else:                                                 val_pts = 0   # chute libre
+
+        momentum_total = cross_pts + rsi_pts + vol_pts + reg_pts + val_pts
 
         score += momentum_total
 
@@ -532,11 +546,12 @@ def score_ticker(ticker):
         details["peg"]        = peg
         details["reco"]       = reco
 
-        # Consensus analystes (10 pts — signal lagging, réduit au profit des fondamentaux)
+        # Consensus analystes (5 pts — signal lagging à fort biais haussier structurel,
+        # réduit pour faire place à la valorisation actuelle dans le bloc momentum)
         ana_pts = 0
-        if reco < 2.0:   ana_pts = 10
-        elif reco < 2.5: ana_pts = 6
-        elif reco < 3.0: ana_pts = 3
+        if reco < 2.0:   ana_pts = 5
+        elif reco < 2.5: ana_pts = 3
+        elif reco < 3.0: ana_pts = 1
         score += ana_pts
 
         score = round(score * confiance)
@@ -606,9 +621,9 @@ def score_ticker(ticker):
             _signal_warning = "Affaiblissement post-rally sur cross stale — pente MM21 fortement négative malgré cours largement au-dessus de MM200"
 
         breakdown = {
-            "momentum":              min(40, momentum_total),
+            "momentum":              min(45, momentum_total),
             "fondamentaux":          min(50, fund_pts),
-            "analystes":             min(10, ana_pts),
+            "analystes":             min(5, ana_pts),
             # Croisement MM21/MM200
             "cross_regime":          cross_info["regime"],
             "cross_type":            cross_info["cross_type"],
@@ -621,6 +636,9 @@ def score_ticker(ticker):
             "rsi_pts":               rsi_pts,
             "vol_pts":               vol_pts,
             "reg_pts":               reg_pts,
+            "val_pts":               val_pts,
+            "drawdown_52w_pct":      round(drawdown_52w_pct, 1),
+            "high_52w":              round(high_52w, 2),
             # Indicateurs techniques
             "rsi":                   round(rsi, 1),
             "mm21":                  round(mm21, 2),

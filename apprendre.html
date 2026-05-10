@@ -584,13 +584,13 @@
       <div class="scoring-row">
         <div class="scoring-header">
           <span class="scoring-name">Momentum</span>
-          <span class="scoring-pts">40 pts</span>
+          <span class="scoring-pts">45 pts</span>
         </div>
         <div class="bar-track">
-          <div class="bar-fill" style="width: 40%"></div>
+          <div class="bar-fill" style="width: 45%"></div>
         </div>
         <div class="scoring-desc">
-          L'algorithme évalue si le titre est en tendance haussière claire. Quatre signaux comptent : le Golden Cross (MM21 au-dessus de MM200, avec bonus selon la fraîcheur du croisement), le RSI dans une zone équilibrée (40-60 = 10 pts), le volume des dernières semaines supérieur à la moyenne longue (confirmation), et un cours proche de sa trajectoire de régression long terme (zone saine, ni surachat ni survente). Un titre qui monte régulièrement avec des volumes croissants score bien. Un titre qui oscille sans direction nette ou qui vient de former un Death Cross, mal — avec une pénalité non compensable dans ce dernier cas.
+          L'algorithme évalue si le titre est en tendance haussière claire. Cinq signaux comptent : le Golden Cross (MM21 au-dessus de MM200, avec bonus selon la fraîcheur du croisement), le RSI dans une zone équilibrée (40-60 = 10 pts), le volume des dernières semaines supérieur à la moyenne longue (confirmation), un cours proche de sa trajectoire de régression long terme (zone saine), et la valorisation actuelle (5 pts si le cours est dans une zone de pullback sain de −3% à −10% sous le plus haut 52 semaines — la zone d'entrée idéale, ni au top, ni en chute libre). Un titre qui monte régulièrement avec des volumes croissants <em>et</em> qui offre un point d'entrée correct score bien. Un titre qui oscille sans direction, qui vient de former un Death Cross, ou qui est collé à son plus haut récent (chase de rally), score moins.
           <br><br>
           <strong>Lecture dynamique :</strong> un cross n'est pas un état figé. Le screener flag automatiquement les signaux en transition (death cross qui se résorbe, golden qui s'affaiblit, rebond mean-reversion sur cross ancien) via un champ <code>signal_dynamics_warning</code> — pour éviter les lectures binaires d'un signal qui se nuance. Quand ce drapeau est levé, l'IA traite le cross comme ambigu et ne tranche pas dessus seul.
         </div>
@@ -612,13 +612,13 @@
       <div class="scoring-row">
         <div class="scoring-header">
           <span class="scoring-name">Consensus analystes</span>
-          <span class="scoring-pts">10 pts</span>
+          <span class="scoring-pts">5 pts</span>
         </div>
         <div class="bar-track">
-          <div class="bar-fill" style="width: 10%"></div>
+          <div class="bar-fill" style="width: 5%"></div>
         </div>
         <div class="scoring-desc">
-          Recommandation moyenne des analystes sell-side, sur une échelle Acheter / Conserver / Vendre. Volontairement peu pondéré : la littérature financière documente un biais structurel des analystes vers les recommandations d'achat (conflits d'intérêt, couverture sélective des titres déjà appréciés, relations clients). C'est aussi un signal lagging — les révisions interviennent souvent après les événements. Signal préfère ses propres signaux quantitatifs, mais le consensus reste utile comme contre-indicateur quand il diverge fortement de l'analyse fondamentale.
+          Recommandation moyenne des analystes sell-side, sur une échelle Acheter / Conserver / Vendre. Volontairement peu pondéré : la littérature financière documente un biais structurel des analystes vers les recommandations d'achat (conflits d'intérêt, couverture sélective des titres déjà appréciés, relations clients). C'est aussi un signal lagging — les révisions interviennent souvent après les événements. Le poids a été ramené de 10 à 5 pts pour libérer de l'espace au scoring de timing d'entrée (valorisation actuelle), plus actionnable. Signal préfère ses propres signaux quantitatifs, mais le consensus reste utile comme contre-indicateur quand il diverge fortement de l'analyse fondamentale.
         </div>
       </div>
     </div>
@@ -639,7 +639,7 @@
         <span class="concept-label">Score global</span>
         <span class="concept-example">★★★★☆ &nbsp;84</span>
         <div class="concept-body">
-          Le chiffre est le score sur 100, somme des trois composantes : momentum (40 pts), fondamentaux (50 pts), consensus analystes (10 pts). Les étoiles sont un résumé visuel : 5★ à partir de 90, 4★ à partir de 75, 3★ à partir de 60.
+          Le chiffre est le score sur 100, somme des trois composantes : momentum (45 pts), fondamentaux (50 pts), consensus analystes (5 pts). Les étoiles sont un résumé visuel : 5★ à partir de 90, 4★ à partir de 75, 3★ à partir de 60.
           <br><br>
           Un score élevé ne garantit pas une hausse imminente — il signale que plusieurs signaux convergent favorablement à un instant T. Le score d'un titre peut rester haut pendant qu'il corrige à court terme : les fondamentaux et la tendance long terme évoluent lentement, le cours peut bouger vite. C'est un indicateur de qualité, pas de timing.
         </div>

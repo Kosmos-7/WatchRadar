@@ -566,16 +566,16 @@
         <h2>Comment fonctionne le scoring</h2>
         <div class="steps">
           <div class="step">
-            <div class="step-num">Momentum · 40 pts</div>
-            <p>Golden/Death Cross MM21/MM200 (jusqu'à 20 pts selon fraîcheur du signal), RSI gradué (10 pts en zone 40–60, 5 pts en 35–65), volume confirmé (5 pts), régression long terme (5 pts).</p>
+            <div class="step-num">Momentum · 45 pts</div>
+            <p>Golden/Death Cross MM21/MM200 (jusqu'à 20 pts selon fraîcheur du signal), RSI gradué (10 pts en zone 40–60, 5 pts en 35–65), volume confirmé (5 pts), régression long terme (5 pts), valorisation actuelle (5 pts si pullback sain depuis le plus haut 52 semaines).</p>
           </div>
           <div class="step">
             <div class="step-num">Fondamentaux · 50 pts</div>
             <p>Croissance du CA (15 pts), marges nettes (10 pts), PEG ratio — 15 pts si PEG &lt; 1 (10 si &lt; 2) —, croissance EPS (5 pts), endettement (5 pts). Sources : Yahoo Finance + Finnhub.</p>
           </div>
           <div class="step">
-            <div class="step-num">Analystes · 10 pts</div>
-            <p>Recommandation moyenne des analystes (échelle 1–5). Réduit de 20 à 10 pts : signal lagging à fort biais haussier structurel, redistributé vers les fondamentaux.</p>
+            <div class="step-num">Analystes · 5 pts</div>
+            <p>Recommandation moyenne des analystes (échelle 1–5). Réduit de 10 à 5 pts : signal lagging à fort biais haussier structurel, et les 5 pts récupérés vont à la <em>valorisation actuelle</em> (timing d'entrée) intégrée au momentum.</p>
           </div>
         </div>
       </div>
@@ -647,6 +647,10 @@
         <div class="lex-term">Fenêtre de régression</div>
         <div class="lex-def">Durée historique sur laquelle la droite est calculée : <em>10 ans</em> (actions growth / tech) ou <em>20 ans</em> (valeurs matures). Une fenêtre plus longue lisse les cycles mais peut masquer un changement de régime récent.</div>
       </div>
+      <div class="lex-item">
+        <div class="lex-term">Valorisation actuelle (timing d'entrée)</div>
+        <div class="lex-def">Drawdown du cours actuel par rapport au plus haut des 52 dernières semaines, sur 5 pts. Récompense un setup d'entrée propre (pullback de <em>−3% à −10%</em> = 5 pts) plutôt que la chase de rally en haut de range (0 à −3% = 0 pt). Correction modérée −10 à −20% = 3 pts ; momentum cassé au-delà.</div>
+      </div>
     </div>
 
     <div class="lex-cat">Fondamentaux</div>
@@ -681,7 +685,7 @@
     <div class="lex-grid">
       <div class="lex-item">
         <div class="lex-term">Consensus analystes</div>
-        <div class="lex-def">Moyenne des recommandations sell-side sur une échelle <em>1 (Strong Buy) à 5 (Strong Sell)</em>. Signal utile mais structurellement biaisé vers l'achat et lagging : les révisions interviennent souvent après les événements. Poids réduit à 10 pts.</div>
+        <div class="lex-def">Moyenne des recommandations sell-side sur une échelle <em>1 (Strong Buy) à 5 (Strong Sell)</em>. Signal utile mais structurellement biaisé vers l'achat et lagging : les révisions interviennent souvent après les événements. Poids réduit à 5 pts pour libérer de l'espace au scoring de timing d'entrée (valorisation actuelle).</div>
       </div>
       <div class="lex-item">
         <div class="lex-term">Bonus sectoriel</div>
