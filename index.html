@@ -918,6 +918,7 @@ function renderCard(s) {
           ${crossVol ? '<span class="cv-ok">Volume ✓</span>' : '<span class="cv-no">Volume —</span>'}
         </div>
         <div class="cross-interp">${cfg.interp}</div>
+        ${bd.signal_dynamics_warning ? `<div class="cross-warn" style="margin-top:8px;padding:7px 10px;background:rgba(232,168,32,0.1);border:1px solid rgba(232,168,32,0.3);border-radius:6px;font-size:0.78rem;color:var(--gold);line-height:1.5"><strong>⚠ Signal en transition :</strong> ${bd.signal_dynamics_warning}</div>` : ''}
       </div>`;
   })();
 

@@ -402,7 +402,7 @@ def generer_justification(nom, score, details, alertes):
 
     # Signal de croisement (priorité haute)
     regime = details.get("cross_regime", "")
-    days   = details.get("cross_days", 999)
+    days   = details.get("cross_days_ago", 999)
     vol_c  = details.get("cross_vol_confirmed", False)
     vol_txt = " (volume confirmé)" if vol_c else ""
 
@@ -593,7 +593,7 @@ def score_ticker(ticker):
         score += momentum_total
 
         details["cross_regime"]        = cross_info["regime"]
-        details["cross_days"]          = cross_info["days_since_cross"]
+        details["cross_days_ago"]      = cross_info["days_since_cross"]
         details["cross_vol_confirmed"] = cross_info["volume_confirmed"]
         details["cross_slope_mm21"]    = cross_info["slope_mm21_pct"]
         details["cross_spread"]        = cross_info["spread_pct"]
