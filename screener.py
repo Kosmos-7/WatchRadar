@@ -338,8 +338,9 @@ def fibonacci_retracement(close_series, lookback=252):
         fibo_levels = {
             "23.6": round(swing_high - 0.236 * rally, 2),
             "38.2": round(swing_high - 0.382 * rally, 2),
-            "50.0": round(swing_high - 0.500 * rally, 2),
-            "61.8": round(swing_high - 0.618 * rally, 2),
+            "50.0": round(swing_high - 0.500 * rally, 2),  # Dow/Gann, pas Fibonacci stricto sensu
+            "61.8": round(swing_high - 0.618 * rally, 2),  # "Golden Zone" — ratio Φ inversé
+            "78.6": round(swing_high - 0.786 * rally, 2),  # ultime rempart de la trend
         }
 
         # Label de zone — couvre les cas pathologiques (cours au-dessus du swing
