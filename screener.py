@@ -289,6 +289,81 @@ def reg_signal_label(z):
     elif z > -1.5: return "sous tendance"
     else:          return "survente"
 
+# ── RETRACEMENT DE FIBONACCI ─────────────────────────────────────────────────
+def fibonacci_retracement(close_series, lookback=252):
+    """
+    Identifie le swing low avant le plus haut de la fenêtre, calcule les niveaux
+    Fibo 23.6 / 38.2 / 50 / 61.8 et la position actuelle dans le retracement.
+
+    Annotation INFORMATIONNELLE — n'entre pas dans le scoring (qui reste sur
+    drawdown 52w simple). Donne le contexte chartiste classique pour interpréter
+    si le repli actuel est un retracement sain ou une trend cassée.
+
+    Retourne dict ou None si pas de rally identifiable :
+      swing_low      : prix du plus bas avant le plus haut
+      swing_high     : plus haut de la fenêtre (≈ high_52w)
+      rally_pct      : taille du rally (high-low)/low en %
+      retrace_pct    : retracement actuel en % du rally (0=top, 100=swing_low)
+      closest_fibo   : niveau Fibo le plus proche du cours actuel (label)
+      fibo_levels    : dict {label → prix} des 4 niveaux classiques
+    """
+    try:
+        if len(close_series) < 50:
+            return None
+        window = close_series.iloc[-lookback:] if len(close_series) >= lookback else close_series
+        if len(window) < 30:
+            return None
+
+        # Plus haut de la fenêtre
+        high_idx = window.idxmax()
+        high_pos = window.index.get_loc(high_idx)
+        if high_pos == 0:
+            return None  # high au tout début → pas de swing low identifiable
+
+        # Swing low : plus bas avant le plus haut (dans la même fenêtre)
+        pre_high   = window.iloc[:high_pos + 1]
+        swing_low  = float(pre_high.min())
+        swing_high = float(window.iloc[high_pos])
+        rally      = swing_high - swing_low
+
+        # Rally minimum 15% pour que le retracement Fibo ait du sens chartistement
+        # (en-dessous, on est dans le bruit, pas dans une trend identifiable)
+        if swing_low <= 0 or rally / swing_low < 0.15:
+            return None
+
+        rally_pct  = rally / swing_low * 100
+        current    = float(close_series.iloc[-1])
+        retrace_pct = (swing_high - current) / rally * 100 if rally > 0 else 0
+
+        fibo_levels = {
+            "23.6": round(swing_high - 0.236 * rally, 2),
+            "38.2": round(swing_high - 0.382 * rally, 2),
+            "50.0": round(swing_high - 0.500 * rally, 2),
+            "61.8": round(swing_high - 0.618 * rally, 2),
+        }
+
+        # Label de zone — couvre les cas pathologiques (cours au-dessus du swing
+        # high, ou cours sous le swing low → trend déstructurée)
+        if   retrace_pct < 0:      label = "nouveau plus haut"
+        elif retrace_pct < 23.6:   label = "< Fibo 23.6%"
+        elif retrace_pct < 38.2:   label = "zone Fibo 23.6%"
+        elif retrace_pct < 50.0:   label = "zone Fibo 38.2%"
+        elif retrace_pct < 61.8:   label = "zone Fibo 50%"
+        elif retrace_pct < 78.6:   label = "zone Fibo 61.8%"
+        elif retrace_pct < 100:    label = "rally annulé (> 78.6%)"
+        else:                      label = "trend déstructurée (sous swing low)"
+
+        return {
+            "swing_low":     round(swing_low, 2),
+            "swing_high":    round(swing_high, 2),
+            "rally_pct":     round(rally_pct, 1),
+            "retrace_pct":   round(retrace_pct, 1),
+            "closest_fibo":  label,
+            "fibo_levels":   fibo_levels,
+        }
+    except Exception:
+        return None
+
 # ── UNIVERS ──────────────────────────────────────────────────────────────────
 UNIVERS = [
     # CAC 40 — 12 valeurs (liquidité + compatibilité modèle momentum)
@@ -484,6 +559,11 @@ def score_ticker(ticker):
 
         momentum_total = cross_pts + rsi_pts + vol_pts + reg_pts + val_pts
 
+        # ── Retracement Fibonacci (annotation informationnelle, hors scoring)
+        # Fournit le contexte chartiste classique : -10% sur un rally de +20% est très
+        # différent de -10% sur un rally de +500%. Ne change pas le score, enrichit la lecture.
+        fibo = fibonacci_retracement(close, lookback=252)
+
         score += momentum_total
 
         details["cross_regime"]        = cross_info["regime"]
@@ -639,6 +719,8 @@ def score_ticker(ticker):
             "val_pts":               val_pts,
             "drawdown_52w_pct":      round(drawdown_52w_pct, 1),
             "high_52w":              round(high_52w, 2),
+            # Retracement Fibonacci — annotation informationnelle (hors scoring)
+            "fibo":                  fibo,  # dict ou None si pas de rally identifiable
             # Indicateurs techniques
             "rsi":                   round(rsi, 1),
             "mm21":                  round(mm21, 2),
