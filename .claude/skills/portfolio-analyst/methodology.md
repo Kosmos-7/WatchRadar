@@ -149,7 +149,7 @@ Si pas dans le repo Signal, tu appliques la même logique manuellement via yfina
 Après scoring + factor lens + sizing, formule canonique d'output :
 
 ```
-Score: 78/100 (momentum 32, fonda 38, analystes 8)
+Score: 78/100 (momentum 35, fonda 39, analystes 4)
 Profile: momentum frais + value modéré + quality solide
 Verdict: ACHAT — conviction modérée
 Sizing: 5% du capital max
