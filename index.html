@@ -858,8 +858,9 @@ function renderCard(s) {
   const rsiPts   = bd.rsi_pts   != null ? bd.rsi_pts   : null;
   const volPts   = bd.vol_pts   != null ? bd.vol_pts   : null;
   const regPts   = bd.reg_pts   != null ? bd.reg_pts   : null;
+  const valPts   = bd.val_pts   != null ? bd.val_pts   : null;
   const moSub    = (crossPts !== null)
-    ? `<span class="mo-sub">Cross ${crossPts ?? '—'}/20 · RSI ${rsiPts ?? '—'}/10 · Vol ${volPts ?? '—'}/5 · Rég ${regPts ?? '—'}/5</span>`
+    ? `<span class="mo-sub">Cross ${crossPts ?? '—'}/20 · RSI ${rsiPts ?? '—'}/10 · Vol ${volPts ?? '—'}/5 · Rég ${regPts ?? '—'}/5${valPts !== null ? ` · Val ${valPts}/5` : ''}</span>`
     : '';
   const srcs = (bd.sources || ['Yahoo Finance']).join(' + ');
 
@@ -1003,8 +1004,8 @@ function renderCard(s) {
             <div class="sb-item">
               <div class="sb-label">Momentum</div>
               <div class="sb-bar-row">
-                <div class="sb-track"><div class="sb-fill" style="width:${mo/40*100}%"></div></div>
-                <div class="sb-val">${mo}/40</div>
+                <div class="sb-track"><div class="sb-fill" style="width:${mo/45*100}%"></div></div>
+                <div class="sb-val">${mo}/45</div>
               </div>
               ${moSub}
             </div>
@@ -1018,8 +1019,8 @@ function renderCard(s) {
             <div class="sb-item">
               <div class="sb-label">Analystes</div>
               <div class="sb-bar-row">
-                <div class="sb-track"><div class="sb-fill" style="width:${an/10*100}%"></div></div>
-                <div class="sb-val">${an}/10</div>
+                <div class="sb-track"><div class="sb-fill" style="width:${an/5*100}%"></div></div>
+                <div class="sb-val">${an}/5</div>
               </div>
             </div>
           </div>
