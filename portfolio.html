@@ -610,6 +610,51 @@
   <div class="learnings-block" style="margin-bottom:0">
 
     <!-- Learnings principaux toujours visibles (v1.7+) -->
+
+    <!-- v1.10 — Skill integration + signal dynamics + cross-validation analystes -->
+    <div class="learning-item">
+      <div class="learning-accent" style="background:#6366f1"></div>
+      <div class="learning-body">
+        <div class="learning-header">
+          <span class="learning-cat lcat-arch">Architecture</span>
+          <span class="learning-version">v1.10</span>
+          <span class="learning-date">10 mai 2026</span>
+        </div>
+        <div class="learning-title">L'agent prod n'utilisait pas la discipline méthodologique éprouvée localement</div>
+        <div class="learning-prob">En local Claude Code, les questions portfolio chargeaient automatiquement le skill <code>portfolio-analyst</code> — persona analyste, 5 mantras, pré-flight de 5 checks (fraîcheur données, drapeaux de transformation, dynamique du signal, conviction conservative, anti-auto-anchoring). Mais l'agent prod (<code>portfolio_agent.py</code>) n'y avait pas accès : son prompt contenait juste les règles non négociables. Conséquence : la méthodologie raffinée session après session n'arrivait jamais en production.</div>
+        <div class="learning-fix">Architecture dual-level. Skill committé à <code>&lt;repo&gt;/.claude/skills/portfolio-analyst/</code> (project-level), synchronisé avec le user-level via <code>python sync_skill.py</code>. <code>portfolio_agent.py</code> injecte le <code>SKILL.md</code> au début du prompt passe 2 via <code>load_skill_discipline()</code> en chemin relatif (marche aussi sur le runner GitHub Actions où le user-level n'existe pas).</div>
+      </div>
+    </div>
+
+    <div class="learning-item">
+      <div class="learning-accent" style="background:#a855f7"></div>
+      <div class="learning-body">
+        <div class="learning-header">
+          <span class="learning-cat lcat-score">Méthodologie</span>
+          <span class="learning-version">v1.10</span>
+          <span class="learning-date">10 mai 2026</span>
+        </div>
+        <div class="learning-title">Un cross technique était lu en statique alors que sa dynamique inversait le signal</div>
+        <div class="learning-prob">Le cross MM21/MM200 était traité comme un état figé : "Death Cross frais → vente". Mais un cross peut être en train de se résorber (pente MM21 redevenue positive, spread tendu vers zéro) ou un cross stale &gt;90j peut signaler une mean-reversion en cours (pente fortement positive avec cours largement sous MM200). Cas observé sur Valeo (death cross 29j en résorption — premier verdict "vente forte" trop catégorique) et Reply (rebond mean-reversion sur cross stale 229j que le signal binaire ratait complètement).</div>
+        <div class="learning-fix">Champ <code>signal_dynamics_warning</code> ajouté au breakdown screener avec 4 conditions (résorption death, affaiblissement golden, rebond mean-reversion sur cross stale, affaiblissement post-rally). Règle R7 dans le prompt agent : si <code>signal_dynamics_warning</code> non-vide, traiter le cross comme ambigu, ne pas trancher dessus seul. Le cross devient un signal nuancé, plus binaire.</div>
+      </div>
+    </div>
+
+    <div class="learning-item">
+      <div class="learning-accent" style="background:#a855f7"></div>
+      <div class="learning-body">
+        <div class="learning-header">
+          <span class="learning-cat lcat-score">Méthodologie</span>
+          <span class="learning-version">v1.10</span>
+          <span class="learning-date">10 mai 2026</span>
+        </div>
+        <div class="learning-title">La croissance CA annuelle peut masquer la réalité sur titres en transformation</div>
+        <div class="learning-prob"><code>rev_growth_pct</code> annuel Yahoo Finance est trompeur quand : effet change important (Dassault Q1 2026 : −4% publié vs +3% à change constant), prix énergies (Veolia 0% annuel vs EBITDA +5.1% pcc), désync data (Reply 0.6% annuel vs +8% organique réel sur chiffres officiels), M&amp;A récent (FDJ +10.6% annuel vs −1% à pcc post-Kindred). Pattern observé sur 3-4 titres consécutifs cette session : score screener tiède (30-65) + consensus analystes très favorable + cours en dégradation 6-12m = donnée annuelle désynchronisée.</div>
+        <div class="learning-fix">Règle R8 dans le prompt agent — si score 30-65 + consensus ≥10 buy/≤2 sell + cours en dégradation 6-12m, suspecter données screener désynchronisées (effet change, M&amp;A, désync) et ne pas trancher uniquement sur le score. Drapeaux de transformation (M&amp;A &lt;24m, rebrand, scission, restructuration) ajoutés à la pré-flight skill comme déclencheur de croisement avec dernier trimestriel + communiqué IR.</div>
+      </div>
+    </div>
+
+    <!-- v1.9 entries below -->
     <div class="learning-item">
       <div class="learning-accent" style="background:#a855f7"></div>
       <div class="learning-body">

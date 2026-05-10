@@ -5,7 +5,12 @@ Format inspiré de [keepachangelog.com](https://keepachangelog.com/fr/).
 
 ---
 
-## [1.6.0] — 2026-05-10
+## [1.10.0] — 2026-05-10
+
+> NB : les versions v1.6 → v1.9 ont été tracées dans `portfolio.html` learnings (07 mai 2026)
+> sans être reportées ici à l'époque (FX bug GBP, sector bonus caché, order memory dans le prompt,
+> z-score holdout 20j, stop-loss catastrophe R08, MSCI EUR-denominated). On reprend à 1.10.0
+> pour maintenir la cohérence avec le versioning learnings.
 
 ### Architecture (portfolio_agent.py + sync_skill.py) — alignement skill ↔ prod
 

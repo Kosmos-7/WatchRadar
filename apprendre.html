@@ -591,6 +591,8 @@
         </div>
         <div class="scoring-desc">
           L'algorithme évalue si le titre est en tendance haussière claire. Quatre signaux comptent : le Golden Cross (MM21 au-dessus de MM200, avec bonus selon la fraîcheur du croisement), le RSI dans une zone équilibrée (40-60 = 10 pts), le volume des dernières semaines supérieur à la moyenne longue (confirmation), et un cours proche de sa trajectoire de régression long terme (zone saine, ni surachat ni survente). Un titre qui monte régulièrement avec des volumes croissants score bien. Un titre qui oscille sans direction nette ou qui vient de former un Death Cross, mal — avec une pénalité non compensable dans ce dernier cas.
+          <br><br>
+          <strong>Lecture dynamique :</strong> un cross n'est pas un état figé. Le screener flag automatiquement les signaux en transition (death cross qui se résorbe, golden qui s'affaiblit, rebond mean-reversion sur cross ancien) via un champ <code>signal_dynamics_warning</code> — pour éviter les lectures binaires d'un signal qui se nuance. Quand ce drapeau est levé, l'IA traite le cross comme ambigu et ne tranche pas dessus seul.
         </div>
       </div>
 
@@ -742,6 +744,8 @@
           <li><strong>Stop-loss à −15 %</strong> après 90 jours de détention — une position en perte sévère sur la durée est sortie automatiquement, hors mode panique.</li>
           <li><strong>Stop-loss catastrophe à −25 %</strong> sans condition de durée, qui ignore même le mode panique. Bouche le trou des 89 premiers jours où la règle des 90 jours empêcherait sinon toute sortie.</li>
           <li><strong>Liquidités minimales de 5 %</strong> du capital — sous ce seuil, les achats sont bloqués pour conserver un matelas en cas d'opportunité ou d'urgence.</li>
+          <li><strong>Lecture dynamique du signal technique</strong> — un cross MM21/MM200 n'est pas un état figé. Si le screener détecte une transition (death cross qui se résorbe avec pente MM21 redevenue positive, golden cross qui s'affaiblit, rebond mean-reversion sur cross stale), le cross est traité comme ambigu — l'IA ne tranche pas sur ce seul signal et exige un croisement avec les fondamentaux.</li>
+          <li><strong>Cross-validation analystes ↔ cours</strong> — sur les titres en zone d'incertitude (score 30-65), si le consensus analystes est très favorable mais le cours dégradé sur 6-12 mois, l'IA suspecte une donnée screener désynchronisée (effet change, M&amp;A récent, désync data) et ne tranche pas uniquement sur le score annuel. Croisement avec le dernier communiqué trimestriel obligatoire.</li>
         </ul>
       </div>
     </div>
