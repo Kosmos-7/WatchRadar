@@ -38,15 +38,15 @@ jobs:
           FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
         run: python portfolio_agent.py
 
-      - name: Commit JSON files
+      - name: Commit JSON files + archive snapshot
         run: |
           git config user.email "bot@signal.fr"
           git config user.name "Signal Bot"
-          git add watchlist.json portfolio.json
+          git add watchlist.json portfolio.json notes/watchlist_archive/
           if git diff --staged --quiet; then
             echo "Aucun changement cette semaine."
           else
             WEEK=$(python -c "from datetime import date; d=date.today(); print(f'Sem. {d.isocalendar()[1]} · {d.year}')")
-            git commit -m "update: $WEEK — watchlist + portfolio"
+            git commit -m "update: $WEEK — watchlist + portfolio + archive"
             git push
           fi
