@@ -705,6 +705,11 @@ Pour chaque décision, explique ton raisonnement en tenant compte :
 - Si un titre watchlist a un `signal_dynamics_warning` non-vide qui a influencé ta décision (achat, vente, ou conservation), **cite le warning** dans `raison` et explique comment tu l'as croisé avec d'autres signaux.
 - Si tu appliques R7 (signal en transition) ou R8 (cross-validation analystes/cours), **mentionne-le explicitement** dans `raison` (ex : "R8 déclenchée : score 42 + 11 buy + cours -38% sur 1 an, suspect données screener — j'ai croisé avec dernier trimestriel publié").
 - Si la pré-flight a révélé un drapeau notable (M&A récente, divergence screener/réalité organique, signal en transition), **mentionne-le dans `analyse_macro`** comme élément de contexte pour les lecteurs.
+- **Timing d'entrée (val_pts) — TOUJOURS commenter quand significatif** :
+  · Si tu décides d'ACHETER un titre avec `val=5/5` (pullback −3 à −10%, zone d'entrée idéale), **dis-le** dans `raison` (ex: "Setup d'entrée propre : pullback −7% sous le top 52w en zone Fibo 38.2%, conviction renforcée").
+  · Si tu REFUSES un achat tentant à cause de `val=0/5` près du top 52w (DD ≥ −3%), **dis-le** (ex: "Score 84/100 mais val=0/5 — collé au top 52w, attendre consolidation à −5/−10%").
+  · Si tu décides d'ACHETER malgré `val=1/5` ou `val=0/5` en chute libre, **justifie pourquoi tu passes outre** (mean-reversion thesis, fonda exceptionnels, etc.).
+  · Si la zone Fibo est notable (`zone Fibo 38.2%` = retracement standard, `zone Fibo 61.8%` = Golden Zone, `rally annulé` = trend cassée), **cite-la** comme contexte chartiste.
 - L'idée : que les utilisateurs du site puissent comprendre POURQUOI tu as décidé, pas juste QUE tu as décidé. La méthodologie doit être visible, pas implicite.
 
 🕒 **ANCRE TON RAISONNEMENT DANS LE TEMPS** (un lecteur lit ton output 7 jours plus tard) :
