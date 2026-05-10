@@ -166,8 +166,37 @@ def maj_position(pos, eur_usd, eur_gbp=0.86):
         )
     return True
 
+def market_status(now_utc=None):
+    """Statut d'ouverture des marchés majeurs au moment du run.
+
+    Heures approximatives (winter UTC, ne tient pas compte du DST exact) :
+      Euronext (Paris/AMS/Bruxelles) + Xetra (DAX) : 8h-16h30 UTC
+      LSE (Londres)                                : 8h-16h30 UTC
+      US (NYSE/NASDAQ)                             : 14h30-21h UTC
+
+    Tokyo (TSM ADR négocié à NYSE — donc traité comme US).
+    Weekends : tous fermés.
+    Jours fériés non gérés (rare et imprévisible sans calendrier dédié).
+    """
+    if now_utc is None:
+        now_utc = datetime.utcnow()
+    h = now_utc.hour + now_utc.minute / 60
+    weekday = now_utc.weekday()  # 0=lundi, 6=dimanche
+    if weekday >= 5:
+        return {
+            "EU":  "fermé (weekend)",
+            "LSE": "fermé (weekend)",
+            "US":  "fermé (weekend)",
+        }
+    return {
+        "EU":  "ouvert" if 8 <= h < 16.5 else f"fermé (ouverture à 8h UTC)",
+        "LSE": "ouvert" if 8 <= h < 16.5 else f"fermé (ouverture à 8h UTC)",
+        "US":  "ouvert" if 14.5 <= h < 21 else f"fermé (ouverture à 14h30 UTC)",
+    }
+
+
 def get_contexte_marche():
-    """Récupère le contexte macro de la semaine."""
+    """Récupère le contexte macro de la semaine + statut temporel et marchés."""
     ctx = {}
     annee = date.today().year
     debut = f"{annee}-01-01"
@@ -185,8 +214,16 @@ def get_contexte_marche():
     # Mode panique
     cac_sem = ctx.get("cac40", {}).get("perf_semaine", 0)
     ctx["mode_panique"] = cac_sem < -5.0
+
+    # Conscience temporelle
+    now_utc = datetime.utcnow()
+    jours_fr = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"]
     ctx["date"]         = str(date.today())
+    ctx["jour_semaine"] = jours_fr[now_utc.weekday()]
+    ctx["heure_utc"]    = now_utc.strftime("%Hh%M")
     ctx["semaine"]      = semaine()
+    ctx["marches"]      = market_status(now_utc)
+
     return ctx
 
 _MACRO_KEYWORDS = [
@@ -416,8 +453,23 @@ def construire_prompt_analyse(portfolio, watchlist, contexte, macro_news=None):
         news_lines = "\n".join(f"  - [{n['date']}] {n['headline']}" for n in macro_news[:4])
         macro_section = f"\n## MACRO\n{news_lines}\n"
 
+    # Conscience temporelle
+    derniere_maj = portfolio.get("updated_at", "—")
+    try:
+        delta_j = (date.today() - datetime.strptime(derniere_maj, "%Y-%m-%d").date()).days
+        delta_str = f"il y a {delta_j} jour{'s' if delta_j > 1 else ''}" if delta_j else "aujourd'hui (déjà run plus tôt)"
+    except Exception:
+        delta_str = "inconnu"
+    marches = contexte.get("marches", {})
+    marches_str = f"EU {marches.get('EU','?')} | LSE {marches.get('LSE','?')} | US {marches.get('US','?')}"
+
     return f"""Analyse le portefeuille Signal de façon neutre et factuelle.
 Tu es ANALYSTE — PAS décideur. N'émets aucune recommandation d'achat ou de vente.
+
+## DATE & MARCHÉS
+- Run actuel       : {contexte.get('jour_semaine','?')} {today} {contexte.get('heure_utc','?')} UTC ({contexte.get('semaine','?')})
+- Dernière mise à jour : {derniere_maj} ({delta_str})
+- Marchés au moment du run : {marches_str}
 
 ## POSITIONS EN COURS
 {chr(10).join(pos_lines) if pos_lines else "  Aucune position"}
@@ -463,6 +515,21 @@ def construire_prompt(portfolio, watchlist, contexte, analyse=None, macro_news=N
     vs = portfolio.get("vs_benchmark", 0)
 
     today = str(date.today())
+
+    # Conscience temporelle : date du run + délai depuis la dernière mise à jour
+    # Permet à Claude de raisonner différemment si le run vient après 7j (cron normal)
+    # ou après quelques heures (run manuel) — dans ce dernier cas, peu de raison d'agir.
+    derniere_maj = portfolio.get("updated_at", "—")
+    try:
+        delta_j = (date.today() - datetime.strptime(derniere_maj, "%Y-%m-%d").date()).days
+        if delta_j == 0:
+            derniere_maj_str = f"{derniere_maj} (aujourd'hui — déjà run plus tôt, peu de raison d'agir à nouveau sauf événement)"
+        elif delta_j == 1:
+            derniere_maj_str = f"{derniere_maj} (hier)"
+        else:
+            derniere_maj_str = f"{derniere_maj} (il y a {delta_j} jours)"
+    except Exception:
+        derniere_maj_str = derniere_maj
 
     # Format positions — inclut la thèse d'achat originale pour éviter les contradictions
     pos_lines = []
@@ -601,9 +668,14 @@ ne s'appliquent pas non plus, tu es invoqué automatiquement chaque semaine.
 6. Stop-loss automatique : -15% après 90 jours, ou -25% sans condition de durée
 7. **Signal en transition** : si un titre watchlist a un `signal_dynamics_warning` non-vide (death cross qui se résorbe, golden cross qui s'affaiblit, rebond mean-reversion sur cross stale, affaiblissement post-rally), traiter le cross technique comme **ambigu** — ne pas vendre/acheter sur ce signal seul. Croiser avec fonda et delta_these.
 8. **Cross-validation analystes / cours** : pour les titres en zone d'incertitude (score 30-65), si le consensus analystes est très favorable mais le cours en dégradation 6-12m, suspecter une dégradation des données screener (effet change, périmètre M&A, désync data) — ne pas conclure trop vite sur la base du score seul. Re-lire la justification.
+9. **Heures de marché** : tes décisions sont enregistrées au moment du run, mais l'exécution réelle attend l'ouverture du marché du titre. Si tu décides un ACHAT NVDA (US) à 8h UTC un lundi, l'ordre attendra 14h30 UTC (+6h30) pour s'exécuter — le prix peut bouger entre temps. Tiens-en compte : ne pas paniquer sur des données pré-ouverture, et si tous les marchés concernés sont fermés (weekend, jour férié), privilégier l'attente de la prochaine ouverture sauf urgence (stop-loss catastrophe).
+
+## DATE & MOMENT DU RUN
+- Run actuel       : {contexte.get('jour_semaine','?')} {today} {contexte.get('heure_utc','?')} UTC ({contexte.get('semaine','?')})
+- Dernière mise à jour : {derniere_maj_str}
+- Marchés au moment du run : EU {contexte.get('marches',{}).get('EU','?')} | LSE {contexte.get('marches',{}).get('LSE','?')} | US {contexte.get('marches',{}).get('US','?')}
 
 ## ÉTAT ACTUEL DU PORTEFEUILLE
-- Date : {today}
 - Capital : {capital:.0f}€ (performance YTD : {perf:+.1f}% vs MSCI World {bench:+.1f}%, soit {vs:+.1f}pp)
 - Liquidités disponibles : {liquidites:.0f}€
 - Positions ouvertes ({len(positions)}) :
