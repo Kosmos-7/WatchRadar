@@ -791,7 +791,32 @@
         <span class="concept-label">Retracement de Fibonacci (annotation chartiste)</span>
         <span class="concept-example">Rally +85% · zone Fibo 38.2%</span>
         <div class="concept-body">
-          La valorisation actuelle est annotée d'une lecture <strong>chartiste classique</strong> : où se situe le cours dans le retracement du dernier rally ? Le screener identifie automatiquement le <em>swing low</em> (plus bas avant le plus haut 52w) et calcule les 5 niveaux que TradingView et la majorité des plateformes affichent : <em>23.6%, 38.2%, 50%, 61.8%, 78.6%</em>.
+          <strong>Le problème que ça résout</strong> : un titre vient de monter de +50%, +100% ou +500%. Maintenant il corrige. <em>Jusqu'où va aller la baisse avant que les acheteurs reviennent ?</em> C'est la question que se posent tous les analystes techniques depuis 100 ans.
+          <br><br>
+          <strong>L'observation empirique</strong> : les marchés ne corrigent pas n'importe où. Ils s'arrêtent à des niveaux récurrents qui correspondent à des proportions du rally précédent : <em>23.6%, 38.2%, 50%, 61.8%, 78.6%</em>. Ces nombres ne sortent pas du chapeau — ils dérivent d'une séquence mathématique millénaire.
+          <br><br>
+          <strong>D'où viennent ces ratios ?</strong> De la <em>suite de Fibonacci</em> (1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89...), où chaque nombre est la somme des deux précédents. Quand on divise un nombre par le suivant, on tend vers <strong>0.618</strong> (l'inverse du nombre d'or Φ). Quand on divise par celui d'après, on tend vers <strong>0.382</strong>. Et 0.236 = 0.618 × 0.382. Le ratio 0.5 vient en réalité des travaux de Dow/Gann (pas de Fibonacci stricto sensu) mais est inclus par tradition.
+
+          <div style="margin:1rem 0;padding:0.8rem 1rem;background:#0a0a0f;border:1px solid var(--border);border-radius:var(--radius);font-family:'Courier New',monospace;font-size:0.78rem;color:var(--text2);line-height:1.7">
+            <span style="color:var(--text3)">Suite Fibonacci : 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144...</span><br>
+            55 ÷ 89  ≈ <span style="color:var(--gold)">0.618</span> &nbsp;→ <span style="color:var(--gold)">Fibo 61.8%</span> (Golden Zone, 1/Φ)<br>
+            34 ÷ 89  ≈ <span style="color:var(--green)">0.382</span> &nbsp;→ <span style="color:var(--green)">Fibo 38.2%</span> (zone d'entrée chartiste)<br>
+            21 ÷ 89  ≈ <span style="color:var(--text3)">0.236</span> &nbsp;→ <span style="color:var(--text3)">Fibo 23.6%</span> (pullback léger)<br>
+            <span style="color:var(--text3)">[bonus tradition]</span> ─→ <span style="color:var(--text3)">Fibo 50%</span> (Dow/Gann, pas Fibonacci)
+          </div>
+
+          <strong>Le calcul concret</strong> : on identifie le rally — son point bas (<em>swing low</em>) et son point haut (<em>swing high</em>). Puis chaque niveau Fibo se calcule par :
+          <br><br>
+          <span style="font-family:'Courier New',monospace;font-size:0.85rem;color:var(--gold);background:#0a0a0f;padding:0.4rem 0.7rem;border-radius:4px;border-left:2px solid var(--gold);display:inline-block">
+            niveau X% &nbsp;=&nbsp; swing_high &nbsp;−&nbsp; (swing_high − swing_low) × X%
+          </span>
+          <br><br>
+          Exemple ci-dessous : action rallie de 100€ (swing low) à 200€ (swing high). Le rally vaut 100€. Donc :
+          <br>· Fibo 23.6% = 200 − 100 × 0.236 = <strong>176€</strong>
+          <br>· Fibo 38.2% = 200 − 100 × 0.382 = <strong>162€</strong>
+          <br>· Fibo 50% = 200 − 100 × 0.50 = <strong>150€</strong>
+          <br>· Fibo 61.8% = 200 − 100 × 0.618 = <strong>138€</strong>
+          <br>· Fibo 78.6% = 200 − 100 × 0.786 = <strong>121€</strong>
 
           <div style="margin:1.2rem 0;padding:1rem;background:#0a0a0f;border:1px solid var(--border);border-radius:var(--radius)">
             <div style="font-family:'Courier New',monospace;font-size:0.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:0.6rem">Exemple : action passée de 100€ à 200€ (rally +100%), corrigeant à 162€</div>
@@ -872,21 +897,34 @@
           </div>
 
           <br><br>
-          <strong>Pourquoi ça marche ?</strong> Pas de magie mathématique. C'est une <em>prophétie auto-réalisatrice</em> : des millions de traders, d'analystes institutionnels et surtout d'algorithmes scrutent les mêmes niveaux simultanément. Quand le prix approche du 61.8%, une masse critique d'ordres d'achat se concentre à cet endroit précis — et cette concentration crée mécaniquement le rebond attendu. Les ratios Fibonacci correspondent aussi à des proportions de "respiration" naturelle des trends (les marchés ne montent pas en ligne droite, ils prennent leurs respirations comme un sprinteur).
+          <strong>Pourquoi ça marche en pratique ?</strong> Pas de magie mathématique mystique. C'est une <em>prophétie auto-réalisatrice</em> : des millions de traders et d'algorithmes surveillent <strong>les mêmes niveaux simultanément</strong>. Quand le prix approche du 61.8%, une masse critique d'ordres d'achat se concentre à cet endroit précis — et cette concentration crée mécaniquement le rebond. Le marché respire, comme un sprinteur entre deux accélérations.
           <br><br>
-          <strong>Psychologie de chaque niveau</strong> :
-          <br>· <em>23.6%</em> — pullback superficiel. Force d'achat quasi hystérique, FOMO des retardataires. Signal d'une <strong>tendance exceptionnellement forte</strong>.
-          <br>· <em>38.2%</em> — premier support significatif. Les spéculateurs fragiles ont été purgés mais la structure haussière reste solide. Zone d'entrée chartiste classique.
-          <br>· <em>50%</em> — ligne de démarcation. <strong>Subtilité</strong> : ce niveau ne vient pas vraiment de Fibonacci mais des travaux de Dow et Gann, qui ont observé empiriquement qu'un marché tend à corriger la moitié de son impulsion avant de retrouver un consensus. Les chartistes l'incluent par tradition mais ce n'est pas un ratio Φ.
-          <br>· <em>61.8%</em> — la <strong>"Golden Zone"</strong>, dérivée directement de l'inverse du nombre d'or (1/Φ). C'est le niveau le plus surveillé de l'analyse technique moderne, où le ratio risque/rendement devient le plus asymétrique possible. Sa cassure définitive est presque toujours le signe d'un effondrement structurel.
-          <br>· <em>78.6%</em> — l'ultime rempart. Un repli jusqu'ici révèle une faiblesse sévère. Un rebond reste techniquement possible (parfois violent par panique des shorts) mais la configuration globale est très précaire.
-          <br>· <em>&gt;78.6%</em> — rally annulé. Le mouvement haussier précédent ne sert plus de support, la trend est cassée plutôt qu'en pullback.
+          <strong>Psychologie de chaque zone</strong> :
+          <br>· <em>0% → 23.6%</em> — Force d'achat quasi hystérique, FOMO. Signal d'une tendance exceptionnellement forte. Pas une zone d'entrée — vous chassez le rally.
+          <br>· <em>23.6% → 38.2%</em> — Pullback léger, premier support. Les spéculateurs fragiles purgés, structure haussière intacte.
+          <br>· <em>38.2% → 50%</em> — <strong style="color:var(--green)">★ Zone d'entrée chartiste classique</strong>. C'est ici que les acheteurs systématiques se positionnent.
+          <br>· <em>50% → 61.8%</em> — Démarcation Dow/Gann. Acheteurs et vendeurs s'affrontent à armes égales.
+          <br>· <em>61.8% → 78.6%</em> — <strong style="color:var(--gold)">★★ Golden Zone</strong>. Le niveau le plus surveillé de l'analyse technique. Ratio risque/rendement maximal. Sa cassure définitive = effondrement structurel.
+          <br>· <em>&gt;78.6%</em> — Rally annulé. La trend précédente ne sert plus de support, on est dans une nouvelle baisse.
           <br><br>
-          <strong>Différence vs la valorisation actuelle</strong> : la valorisation regarde le drawdown brut (−10% du top, peu importe le rally). Fibo regarde la <em>proportion du rally retracée</em> (−10% sur un rally de +20% = Fibo 50%, mais sur un rally de +500% = à peine sous le peak). La même chute brute n'a pas le même sens chartistement.
+          <strong>Comment lire l'annotation Signal</strong> dans une fiche action :
           <br><br>
-          <strong>Limites à connaître</strong> : Fibo ne fonctionne <em>que</em> sur une tendance directionnelle claire. Sur un marché en range, c'est de la pollution visuelle. Et le niveau est une <em>zone</em>, pas une ligne — le prix peut le transpercer brièvement (stop hunting institutionnel) avant de rebondir. Penser en épaisseur, pas en parois de béton.
+          <div style="background:#0a0a0f;border:1px solid var(--border);border-radius:var(--radius);padding:0.85rem 1rem;font-family:'Courier New',monospace;font-size:0.78rem;color:var(--text2);line-height:1.6">
+            Valorisation : <span style="color:var(--green)">−7% du top 52w · pullback sain (5/5)</span> <span style="color:var(--gold)">· zone Fibo 38.2%</span>
+          </div>
+          <br>
+          Lecture : le cours est à −7% sous le plus haut 52 semaines (drawdown brut), et ce repli correspond à un retracement de 38.2% du dernier rally identifié. <strong>Cohérence des deux signaux : entrée propre</strong>, le drawdown te dit "en zone idéale" et Fibo te dit "zone chartiste classique" — ils convergent.
           <br><br>
-          Fibo n'est <strong>pas dans le scoring</strong> — c'est une annotation pour Claude (qui pondère son verdict) et pour toi (qui lis la fiche). Le scoring reste sur le drawdown 52w, plus simple et plus robuste pour comparer 90 tickers de profils très différents.
+          Si au contraire tu vois <span style="color:var(--gold)">val=3/5 (DD −15%)</span> + <span style="color:var(--gold)">zone Fibo 61.8%</span> → tu es dans la Golden Zone, retracement profond mais setup chartiste solide, conviction modérée. Si tu vois <span style="color:var(--red)">rally annulé</span> → la trend est cassée, c'est plus un cas value/contrarien qu'un trade momentum.
+          <br><br>
+          <strong>Drawdown 52w vs Fibonacci — quelle différence ?</strong> Le drawdown regarde la chute en absolu (−10% du top). Fibo regarde la <em>proportion du rally</em> retracée. Concrètement : −10% sur un rally de +20% = Fibo 50% (correction profonde), mais −10% sur un rally de +500% = à peine sous le peak (Fibo &lt; 23.6%). Même chute brute, sens chartiste opposé.
+          <br><br>
+          <strong>Limites importantes</strong> :
+          <br>· Fibo ne fonctionne que sur une <em>tendance directionnelle claire</em>. Sur un marché en range (oscillation latérale), c'est de la pollution visuelle.
+          <br>· Le rally minimum considéré par Signal est <em>+15%</em>. En dessous, le retracement n'est pas chartistement significatif → l'annotation Fibo est absente.
+          <br>· Un niveau est une <em>zone</em>, pas une ligne. Le prix peut transpercer brièvement (stop hunting institutionnel) avant de rebondir. Penser en épaisseur, pas en parois de béton.
+          <br><br>
+          <strong>Pas dans le scoring</strong> — Fibo est une <em>annotation</em>, pas une métrique notée. C'est du contexte chartiste pour pondérer ton verdict (et celui de Claude). Le scoring quantitatif reste sur le drawdown 52w, plus robuste pour comparer 90 tickers de profils très différents.
         </div>
       </div>
     </div>
