@@ -255,6 +255,7 @@ def get_macro_news():
                 art_date = datetime.utcfromtimestamp(dt).strftime("%Y-%m-%d") if dt else ""
                 selected.append({
                     "headline": (article.get("headline") or "")[:140],
+                    "summary":  (article.get("summary")  or "")[:600],  # contenu réel de la dépêche
                     "date":     art_date,
                     "source":   article.get("source", ""),
                     "url":      article.get("url", ""),
@@ -450,8 +451,11 @@ def construire_prompt_analyse(portfolio, watchlist, contexte, macro_news=None):
 
     macro_section = ""
     if macro_news:
-        news_lines = "\n".join(f"  - [{n['date']}] {n['headline']}" for n in macro_news[:4])
-        macro_section = f"\n## MACRO\n{news_lines}\n"
+        news_lines = "\n".join(
+            f"  - [{n['date']}] **{n['headline']}** ({n['source']})\n    → {n.get('summary','')[:400]}"
+            for n in macro_news[:4]
+        )
+        macro_section = f"\n## MACRO (titres + contenu de la dépêche, exploite-les pour ton analyse)\n{news_lines}\n"
 
     # Conscience temporelle
     derniere_maj = portfolio.get("updated_at", "—")
@@ -637,12 +641,13 @@ def construire_prompt(portfolio, watchlist, contexte, analyse=None, macro_news=N
         ordres_section = ""
 
     # Section macro news — indexée pour permettre à Claude de fournir des résumés FR alignés
+    # Inclut maintenant le SUMMARY de la dépêche (pas juste le headline) pour permettre une vraie analyse
     if macro_news:
         news_lines = "\n".join(
-            f"  [{i}] [{n['date']}] {n['headline']} ({n['source']})"
+            f"  [{i}] [{n['date']}] **{n['headline']}** ({n['source']})\n      → {n.get('summary','')[:500]}"
             for i, n in enumerate(macro_news)
         )
-        macro_news_section = f"\n## ACTUALITÉS MACRO RÉCENTES (contexte, ne pas sur-pondérer)\n{news_lines}\n"
+        macro_news_section = f"\n## ACTUALITÉS MACRO RÉCENTES (titres + contenu réel de la dépêche)\nCes news ont été pré-filtrées pour leur pertinence macro (Fed, inflation, BCE, géopol, taux, etc.). Le contenu de la dépêche est fourni pour que tu puisses l'analyser, pas seulement la titrer.\n{news_lines}\n"
     else:
         macro_news_section = ""
 
@@ -726,11 +731,11 @@ Pour chaque décision, explique ton raisonnement en tenant compte :
   · Si la zone Fibo est notable (`zone Fibo 38.2%` = retracement standard, `zone Fibo 61.8%` = Golden Zone, `rally annulé` = trend cassée), **cite-la** comme contexte chartiste.
 - L'idée : que les utilisateurs du site puissent comprendre POURQUOI tu as décidé, pas juste QUE tu as décidé. La méthodologie doit être visible, pas implicite.
 
-🕒 **ANCRE TON RAISONNEMENT DANS LE TEMPS** (un lecteur lit ton output 7 jours plus tard) :
-- L'`analyse_macro` doit **commencer par un repère temporel précis** : "Sur la semaine écoulée du [date-7j au today]..." ou "Depuis le dernier run du [derniere_maj]...". Pas de "le marché reprend" sans préciser SUR QUELLE PÉRIODE.
-- Les pourcentages cités (perf positions, perf marché) doivent **toujours** être accompagnés de leur fenêtre temporelle : "JPM à -4% **depuis l'achat le [date]**" ou "CAC40 +1.7% **sur les 7 derniers jours**".
-- Le `message_utilisateurs` est lu sur le site avec un `updated_at` visible, mais **pas tout le monde calcule** — donne le contexte temporel explicitement (ex : "Cette semaine [date début]→[today]" plutôt que "cette semaine" seul).
-- Si le run actuel est le même jour qu'un précédent (delta_j=0), **mentionne-le** dans le message ("Run de contrôle [heure] UTC, peu de changement vs run de [heure précédente]").
+🕒 **ANCRE LE RAISONNEMENT DANS LE TEMPS** (un lecteur lit ton output 7 jours plus tard) :
+- L'`analyse_macro` doit **inclure un repère temporel** quelque part dans les 2 premières phrases (ex : "cette semaine du X au Y", "ces 7 derniers jours", "depuis le dernier run mardi"). PAS d'ouverture bureaucratique du type "Sur la semaine écoulée du XXXX-XX-XX au XXXX-XX-XX..." — ça casse le ton newsletter. Préfère une accroche éditoriale qui glisse la date naturellement.
+- Les pourcentages cités (perf positions, perf marché) doivent **toujours** être accompagnés de leur fenêtre : "JPM à -4% **depuis l'achat il y a 11 jours**" ou "MSCI +1.8% **sur la semaine**".
+- Le `message_utilisateurs` est lu sur le site avec un `updated_at` visible, mais **pas tout le monde calcule** — donne le contexte temporel explicitement.
+- Si le run actuel est le même jour qu'un précédent (delta_j=0), **mentionne-le** ("run de contrôle de [heure] UTC, peu de changement vs run de ce matin").
 - Pour chaque décision dans `raison`, ancrer la durée : "détenu depuis 47 jours" plutôt que "récemment".
 
 ⚠️ RÈGLE ANTI-CONTRADICTION : Pour toute VENTE sur une position détenue < 90 jours,
@@ -752,7 +757,7 @@ Réponds UNIQUEMENT en JSON valide, sans texte avant ou après, selon ce format 
       "score_watchlist": 0
     }}
   ],
-  "analyse_macro": "Texte ÉDITORIAL style newsletter (4-6 phrases bien construites, ton journaliste financier, fluide à lire) qui synthétise : (1) ce qui s'est passé sur les marchés cette semaine en intégrant les actualités macro fournies plus haut (Fed, inflation, CPI, BCE, tensions, etc.) — pas la news brute mais ses implications ; (2) la performance du portefeuille avec son contexte (hausse, sous-performance, biais détectés) ; (3) éléments de pré-flight notables (transformations, divergences screener/réalité, signaux en transition, setups remarquables). C'est CE TEXTE qui sera lu sur le site comme analyse de la semaine — il doit pouvoir se lire seul, sans bloc séparé pour les news. NE PAS répéter les news brutes : intègre-les dans un narratif. Si pas de news macro fournie, fais une analyse purement portefeuille/marché.",
+  "analyse_macro": "TEXTE NEWSLETTER (200-350 mots, 5-8 paragraphes courts) — c'est CE QUE LE LECTEUR LIT chaque semaine sur le site. Adresse-toi DIRECTEMENT à lui ('vous', pas 'on' ni 'l'investisseur'). Ton : analyste rigoureux mais avec un brin d'humour décalé pour contraster avec les chiffres sérieux — pense à un Howard Marks qui aurait lu Charlie Munger ET aurait un sens de la formule. Tu peux te permettre une métaphore, une vanne fine sur les marchés, un clin d'œil. Pas de sarcasme méchant, pas de blagues lourdes. Reste pro mais vivant. STRUCTURE indicative : (1) accroche sur l'événement de la semaine en quelques mots (cite explicitement les news macro reçues plus haut — leur contenu réel, pas juste leur titre — par exemple si la news parle d'inflation CPI à 2.4%, dis ça, pas 'inflation reste centrale') ; (2) ce que ça veut dire concrètement pour le portefeuille ; (3) chiffres clés (perf, alpha) recopiés depuis la section ÉTAT ACTUEL DU PORTEFEUILLE ; (4) éléments méthodologiques qui ont guidé tes décisions (R7, val_pts, signal_dynamics_warning si pertinent) ; (5) biais ou learnings de la semaine ; (6) un mot pour la semaine à venir. NE PAS commencer par 'Sur la semaine écoulée du X au Y' (trop bureaucratique pour une newsletter — préfère une accroche qui pose le contexte) mais l'ancrage temporel reste obligatoire ailleurs dans le texte. Évite les formulations creuses ('le marché reste un paramètre central', 'l'attention est portée à...') — sois précis et concret.",
   "biais_detectes": ["biais 1", "biais 2"],
   "conviction_globale": "haussier" | "neutre" | "baissier",
   "message_utilisateurs": "Message transparent aux utilisateurs sur les décisions de cette semaine",
