@@ -799,10 +799,11 @@
 
           <div style="margin:1rem 0;padding:0.8rem 1rem;background:#0a0a0f;border:1px solid var(--border);border-radius:var(--radius);font-family:'Courier New',monospace;font-size:0.78rem;color:var(--text2);line-height:1.7">
             <span style="color:var(--text3)">Suite Fibonacci : 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144...</span><br>
-            55 ÷ 89  ≈ <span style="color:var(--gold)">0.618</span> &nbsp;→ <span style="color:var(--gold)">Fibo 61.8%</span> (Golden Zone, 1/Φ)<br>
-            34 ÷ 89  ≈ <span style="color:var(--green)">0.382</span> &nbsp;→ <span style="color:var(--green)">Fibo 38.2%</span> (zone d'entrée chartiste)<br>
-            21 ÷ 89  ≈ <span style="color:var(--text3)">0.236</span> &nbsp;→ <span style="color:var(--text3)">Fibo 23.6%</span> (pullback léger)<br>
-            <span style="color:var(--text3)">[bonus tradition]</span> ─→ <span style="color:var(--text3)">Fibo 50%</span> (Dow/Gann, pas Fibonacci)
+            55 ÷ 89   ≈ <span style="color:var(--gold)">0.618</span> &nbsp;→ <span style="color:var(--gold)">Fibo 61.8%</span> (Golden Zone, 1/Φ)<br>
+            34 ÷ 89   ≈ <span style="color:var(--green)">0.382</span> &nbsp;→ <span style="color:var(--green)">Fibo 38.2%</span> (= n ÷ n+2 dans la suite)<br>
+            21 ÷ 89   ≈ <span style="color:var(--text3)">0.236</span> &nbsp;→ <span style="color:var(--text3)">Fibo 23.6%</span> (= n ÷ n+3 dans la suite)<br>
+            √0.618    ≈ <span style="color:var(--orange)">0.786</span> &nbsp;→ <span style="color:var(--orange)">Fibo 78.6%</span> (racine du ratio d'or)<br>
+            <span style="color:var(--text3)">[bonus tradition]</span>  ─→ <span style="color:var(--text3)">Fibo 50%</span> (Dow/Gann, pas Fibonacci)
           </div>
 
           <strong>Le calcul concret</strong> : on identifie le rally — son point bas (<em>swing low</em>) et son point haut (<em>swing high</em>). Puis chaque niveau Fibo se calcule par :
@@ -919,7 +920,12 @@
           <br><br>
           <strong>Drawdown 52w vs Fibonacci — quelle différence ?</strong> Le drawdown regarde la chute en absolu (−10% du top). Fibo regarde la <em>proportion du rally</em> retracée. Concrètement : −10% sur un rally de +20% = Fibo 50% (correction profonde), mais −10% sur un rally de +500% = à peine sous le peak (Fibo &lt; 23.6%). Même chute brute, sens chartiste opposé.
           <br><br>
-          <strong>Limites importantes</strong> :
+          <strong>Ce que dit la recherche académique</strong> (pour rester honnête) :
+          <br>· Bhattacharya & Kumar (2014, <em>Expert Systems with Applications</em>) sur 3 marchés actions : <em>relation positive entre la largeur de la zone Fibo et la probabilité d'un rebond</em> — mais cela ne prouve pas une stratégie profitable une fois frais et slippage déduits.
+          <br>· <strong>Asymétrie documentée</strong> : les niveaux Fibo tiennent mieux en phase haussière qu'en phase baissière (les violations sont plus fréquentes pendant les chutes). Donc Fibo est un meilleur outil pour identifier des supports en bull market que des résistances en bear market.
+          <br>· Aucune étude ne valide une utilisation isolée de Fibo. C'est un outil de <em>confluence</em> — sa valeur vient de la convergence avec d'autres signaux (MM200, volume, niveau psychologique). C'est exactement comme ça qu'on l'utilise dans Signal : annotation en complément du score, pas comme métrique seule.
+          <br><br>
+          <strong>Limites pratiques</strong> :
           <br>· Fibo ne fonctionne que sur une <em>tendance directionnelle claire</em>. Sur un marché en range (oscillation latérale), c'est de la pollution visuelle.
           <br>· Le rally minimum considéré par Signal est <em>+15%</em>. En dessous, le retracement n'est pas chartistement significatif → l'annotation Fibo est absente.
           <br>· Un niveau est une <em>zone</em>, pas une ligne. Le prix peut transpercer brièvement (stop hunting institutionnel) avant de rebondir. Penser en épaisseur, pas en parois de béton.
