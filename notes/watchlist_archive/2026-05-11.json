@@ -73,7 +73,7 @@
       "score": 78,
       "stars": 4,
       "badge": "EU",
-      "change": "up",
+      "change": "stable",
       "breakdown": {
         "momentum": 28,
         "fondamentaux": 45,
@@ -142,8 +142,8 @@
         "cross_regime": "golden",
         "cross_type": "golden",
         "cross_days_ago": 15,
-        "cross_spread_pct": 10.3,
-        "cross_slope_mm21_pct": 3.41,
+        "cross_spread_pct": 10.29,
+        "cross_slope_mm21_pct": 3.4,
         "cross_volume_confirmed": false,
         "signal_dynamics_warning": "",
         "cross_pts": 17,
@@ -152,25 +152,25 @@
         "reg_pts": 5,
         "val_pts": 0,
         "drawdown_52w_pct": 0.0,
-        "high_52w": 220.4,
+        "high_52w": 219.99,
         "fibo": {
           "swing_low": 116.62,
-          "swing_high": 220.4,
-          "rally_pct": 89.0,
+          "swing_high": 219.99,
+          "rally_pct": 88.6,
           "retrace_pct": 0.0,
           "closest_fibo": "< Fibo 23.6%",
           "fibo_levels": {
-            "23.6": 195.91,
-            "38.2": 180.76,
-            "50.0": 168.51,
-            "61.8": 156.27,
-            "78.6": 138.83
+            "23.6": 195.59,
+            "38.2": 180.5,
+            "50.0": 168.3,
+            "61.8": 156.11,
+            "78.6": 138.74
           }
         },
-        "rsi": 69.0,
-        "mm21": 204.0,
+        "rsi": 68.8,
+        "mm21": 203.98,
         "mm200": 184.95,
-        "regression_z": 0.54,
+        "regression_z": 0.53,
         "regression_signal": "neutre",
         "regression_pente_pct": 48.5,
         "regression_window_years": 10,
@@ -203,8 +203,8 @@
         "cross_regime": "golden",
         "cross_type": "golden",
         "cross_days_ago": 13,
-        "cross_spread_pct": 13.75,
-        "cross_slope_mm21_pct": 4.68,
+        "cross_spread_pct": 13.74,
+        "cross_slope_mm21_pct": 4.67,
         "cross_volume_confirmed": false,
         "signal_dynamics_warning": "",
         "cross_pts": 17,
@@ -212,13 +212,13 @@
         "vol_pts": 5,
         "reg_pts": 5,
         "val_pts": 0,
-        "drawdown_52w_pct": -1.2,
+        "drawdown_52w_pct": -1.3,
         "high_52w": 274.99,
         "fibo": {
           "swing_low": 193.06,
           "swing_high": 274.99,
           "rally_pct": 42.4,
-          "retrace_pct": 4.1,
+          "retrace_pct": 4.4,
           "closest_fibo": "< Fibo 23.6%",
           "fibo_levels": {
             "23.6": 255.65,
@@ -228,8 +228,8 @@
             "78.6": 210.59
           }
         },
-        "rsi": 73.2,
-        "mm21": 260.17,
+        "rsi": 72.7,
+        "mm21": 260.16,
         "mm200": 228.72,
         "regression_z": 0.24,
         "regression_signal": "neutre",
@@ -245,7 +245,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 77/100 — Golden Cross récent (13j), cours proche de sa droite de régression, ⚠ près du top 52w (-1.2%) — chase de rally pénalisée, croissance CA solide (17%/an), marges positives, consensus analystes très favorable.",
+      "justification": "Score 77/100 — Golden Cross récent (13j), cours proche de sa droite de régression, ⚠ près du top 52w (-1.3%) — chase de rally pénalisée, croissance CA solide (17%/an), marges positives, consensus analystes très favorable.",
       "rank": 4
     },
     {
@@ -265,7 +265,7 @@
         "cross_type": "golden",
         "cross_days_ago": 144,
         "cross_spread_pct": 1.25,
-        "cross_slope_mm21_pct": 0.87,
+        "cross_slope_mm21_pct": 0.86,
         "cross_volume_confirmed": false,
         "signal_dynamics_warning": "",
         "cross_pts": 11,
@@ -273,13 +273,13 @@
         "vol_pts": 0,
         "reg_pts": 5,
         "val_pts": 3,
-        "drawdown_52w_pct": -12.1,
+        "drawdown_52w_pct": -12.2,
         "high_52w": 1108.09,
         "fibo": {
           "swing_low": 622.32,
           "swing_high": 1108.09,
           "rally_pct": 78.1,
-          "retrace_pct": 27.6,
+          "retrace_pct": 27.8,
           "closest_fibo": "zone Fibo 23.6%",
           "fibo_levels": {
             "23.6": 993.45,
@@ -289,8 +289,8 @@
             "78.6": 726.28
           }
         },
-        "rsi": 57.0,
-        "mm21": 927.0,
+        "rsi": 56.8,
+        "mm21": 926.94,
         "mm200": 915.54,
         "regression_z": 1.31,
         "regression_signal": "au-dessus",
@@ -306,7 +306,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 77/100 — légèrement au-dessus de sa régression (+1.3σ), RSI en zone favorable, correction modérée -12.1% sous le top (zone Fibo 23.6%), croissance CA solide (56%/an), marges excellentes (35%), consensus analystes très favorable.",
+      "justification": "Score 77/100 — légèrement au-dessus de sa régression (+1.3σ), RSI en zone favorable, correction modérée -12.2% sous le top (zone Fibo 23.6%), croissance CA solide (56%/an), marges excellentes (35%), consensus analystes très favorable.",
       "rank": 5
     },
     {
@@ -317,7 +317,7 @@
       "score": 75,
       "stars": 4,
       "badge": null,
-      "change": "down",
+      "change": "stable",
       "breakdown": {
         "momentum": 20,
         "fondamentaux": 50,
@@ -326,7 +326,7 @@
         "cross_type": "death",
         "cross_days_ago": 120,
         "cross_spread_pct": -4.13,
-        "cross_slope_mm21_pct": 0.2,
+        "cross_slope_mm21_pct": 0.19,
         "cross_volume_confirmed": false,
         "signal_dynamics_warning": "",
         "cross_pts": 4,
@@ -334,13 +334,13 @@
         "vol_pts": 5,
         "reg_pts": 5,
         "val_pts": 1,
-        "drawdown_52w_pct": -23.7,
+        "drawdown_52w_pct": -23.8,
         "high_52w": 788.15,
         "fibo": {
           "swing_low": 590.65,
           "swing_high": 788.15,
           "rally_pct": 33.4,
-          "retrace_pct": 94.6,
+          "retrace_pct": 94.9,
           "closest_fibo": "rally annulé (> 78.6%)",
           "fibo_levels": {
             "23.6": 741.54,
@@ -350,8 +350,8 @@
             "78.6": 632.91
           }
         },
-        "rsi": 39.8,
-        "mm21": 646.59,
+        "rsi": 39.7,
+        "mm21": 646.56,
         "mm200": 674.44,
         "regression_z": 0.22,
         "regression_signal": "neutre",
@@ -395,11 +395,11 @@
         "vol_pts": 5,
         "reg_pts": 0,
         "val_pts": 3,
-        "drawdown_52w_pct": -12.7,
+        "drawdown_52w_pct": -12.8,
         "high_52w": 371.15,
         "fibo": null,
-        "rsi": 57.5,
-        "mm21": 317.41,
+        "rsi": 57.4,
+        "mm21": 317.4,
         "mm200": 331.04,
         "regression_z": -2.06,
         "regression_signal": "survente",
@@ -415,7 +415,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 75/100 — prix sous sa droite de régression (-2.1σ), RSI en zone favorable, correction modérée -12.7% sous le top, croissance CA solide (17%/an), marges excellentes (52%), consensus analystes très favorable.",
+      "justification": "Score 75/100 — prix sous sa droite de régression (-2.1σ), RSI en zone favorable, correction modérée -12.8% sous le top, croissance CA solide (17%/an), marges excellentes (52%), consensus analystes très favorable.",
       "rank": 7
     },
     {
@@ -482,8 +482,8 @@
         "cross_regime": "death",
         "cross_type": "death",
         "cross_days_ago": 194,
-        "cross_spread_pct": -37.13,
-        "cross_slope_mm21_pct": -0.86,
+        "cross_spread_pct": -37.12,
+        "cross_slope_mm21_pct": -0.85,
         "cross_volume_confirmed": false,
         "signal_dynamics_warning": "",
         "cross_pts": 4,
@@ -491,11 +491,11 @@
         "vol_pts": 5,
         "reg_pts": 0,
         "val_pts": 0,
-        "drawdown_52w_pct": -56.6,
+        "drawdown_52w_pct": -56.5,
         "high_52w": 208.94,
         "fibo": null,
-        "rsi": 44.5,
-        "mm21": 92.37,
+        "rsi": 44.7,
+        "mm21": 92.38,
         "mm200": 146.91,
         "regression_z": -3.62,
         "regression_signal": "survente",
@@ -511,7 +511,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 74/100 — prix sous sa droite de régression (-3.6σ), RSI en zone favorable, ⚠ -56.6% sous le top 52w — trend probablement cassée, croissance CA solide (22%/an), marges positives, consensus analystes très favorable.",
+      "justification": "Score 74/100 — prix sous sa droite de régression (-3.6σ), RSI en zone favorable, ⚠ -56.5% sous le top 52w — trend probablement cassée, croissance CA solide (22%/an), marges positives, consensus analystes très favorable.",
       "rank": 9
     },
     {
@@ -539,13 +539,13 @@
         "vol_pts": 5,
         "reg_pts": 0,
         "val_pts": 0,
-        "drawdown_52w_pct": -51.4,
+        "drawdown_52w_pct": -51.3,
         "high_52w": 801.96,
         "fibo": {
           "swing_low": 647.56,
           "swing_high": 801.96,
           "rally_pct": 23.8,
-          "retrace_pct": 266.8,
+          "retrace_pct": 266.5,
           "closest_fibo": "trend déstructurée (sous swing low)",
           "fibo_levels": {
             "23.6": 765.52,
@@ -555,8 +555,8 @@
             "78.6": 680.6
           }
         },
-        "rsi": 46.0,
-        "mm21": 393.52,
+        "rsi": 46.1,
+        "mm21": 393.54,
         "mm200": 575.08,
         "regression_z": -3.93,
         "regression_signal": "survente",
@@ -572,7 +572,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 74/100 — prix sous sa droite de régression (-3.9σ), RSI en zone favorable, ⚠ -51.4% sous le top 52w — trend probablement cassée, croissance CA solide (17%/an), marges excellentes (22%), consensus analystes très favorable.",
+      "justification": "Score 74/100 — prix sous sa droite de régression (-3.9σ), RSI en zone favorable, ⚠ -51.3% sous le top 52w — trend probablement cassée, croissance CA solide (17%/an), marges excellentes (22%), consensus analystes très favorable.",
       "rank": 10
     },
     {
@@ -600,13 +600,13 @@
         "vol_pts": 0,
         "reg_pts": 0,
         "val_pts": 3,
-        "drawdown_52w_pct": -13.0,
+        "drawdown_52w_pct": -12.9,
         "high_52w": 811.29,
         "fibo": {
           "swing_low": 481.15,
           "swing_high": 811.29,
           "rally_pct": 68.6,
-          "retrace_pct": 31.9,
+          "retrace_pct": 31.7,
           "closest_fibo": "zone Fibo 23.6%",
           "fibo_levels": {
             "23.6": 733.38,
@@ -616,8 +616,8 @@
             "78.6": 551.8
           }
         },
-        "rsi": 41.4,
-        "mm21": 730.81,
+        "rsi": 41.5,
+        "mm21": 730.84,
         "mm200": 687.32,
         "regression_z": -1.55,
         "regression_signal": "survente",
@@ -633,7 +633,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 74/100 — prix sous sa droite de régression (-1.6σ), RSI en zone favorable, correction modérée -13.0% sous le top (zone Fibo 23.6%), croissance CA solide (19%/an), marges excellentes (30%), consensus analystes très favorable.",
+      "justification": "Score 74/100 — prix sous sa droite de régression (-1.6σ), RSI en zone favorable, correction modérée -12.9% sous le top (zone Fibo 23.6%), croissance CA solide (19%/an), marges excellentes (30%), consensus analystes très favorable.",
       "rank": 11
     },
     {
@@ -644,7 +644,7 @@
       "score": 73,
       "stars": 3,
       "badge": null,
-      "change": "new",
+      "change": "stable",
       "breakdown": {
         "momentum": 38,
         "fondamentaux": 30,
@@ -773,8 +773,8 @@
             "78.6": 226.82
           }
         },
-        "rsi": 60.0,
-        "mm21": 390.32,
+        "rsi": 60.1,
+        "mm21": 390.33,
         "mm200": 309.34,
         "regression_z": 2.01,
         "regression_signal": "surachat",
@@ -809,7 +809,7 @@
         "cross_regime": "golden",
         "cross_type": "golden",
         "cross_days_ago": 18,
-        "cross_spread_pct": 19.78,
+        "cross_spread_pct": 19.77,
         "cross_slope_mm21_pct": 4.85,
         "cross_volume_confirmed": false,
         "signal_dynamics_warning": "",
@@ -824,7 +824,7 @@
           "swing_low": 206.53,
           "swing_high": 430.0,
           "rally_pct": 108.2,
-          "retrace_pct": 0.1,
+          "retrace_pct": 0.3,
           "closest_fibo": "< Fibo 23.6%",
           "fibo_levels": {
             "23.6": 377.26,
@@ -834,10 +834,10 @@
             "78.6": 254.35
           }
         },
-        "rsi": 65.7,
-        "mm21": 411.1,
+        "rsi": 65.5,
+        "mm21": 411.09,
         "mm200": 343.22,
-        "regression_z": 2.21,
+        "regression_z": 2.2,
         "regression_signal": "surachat",
         "regression_pente_pct": 32.5,
         "regression_window_years": 10,
@@ -871,7 +871,7 @@
         "cross_type": "death",
         "cross_days_ago": 76,
         "cross_spread_pct": -19.68,
-        "cross_slope_mm21_pct": 0.9,
+        "cross_slope_mm21_pct": 0.91,
         "cross_volume_confirmed": true,
         "signal_dynamics_warning": "",
         "cross_pts": 2,
@@ -882,10 +882,10 @@
         "drawdown_52w_pct": -38.9,
         "high_52w": 288.99,
         "fibo": null,
-        "rsi": 44.4,
+        "rsi": 44.5,
         "mm21": 181.01,
         "mm200": 225.36,
-        "regression_z": -2.68,
+        "regression_z": -2.67,
         "regression_signal": "survente",
         "regression_pente_pct": 12.3,
         "regression_window_years": 10,
@@ -918,8 +918,8 @@
         "cross_regime": "golden",
         "cross_type": "golden",
         "cross_days_ago": 218,
-        "cross_spread_pct": 52.06,
-        "cross_slope_mm21_pct": 15.72,
+        "cross_spread_pct": 52.05,
+        "cross_slope_mm21_pct": 15.71,
         "cross_volume_confirmed": false,
         "signal_dynamics_warning": "",
         "cross_pts": 7,
@@ -928,23 +928,23 @@
         "reg_pts": 5,
         "val_pts": 0,
         "drawdown_52w_pct": 0.0,
-        "high_52w": 464.2,
+        "high_52w": 464.0,
         "fibo": {
           "swing_low": 102.84,
-          "swing_high": 464.2,
-          "rally_pct": 351.4,
+          "swing_high": 464.0,
+          "rally_pct": 351.2,
           "retrace_pct": 0.0,
           "closest_fibo": "< Fibo 23.6%",
           "fibo_levels": {
-            "23.6": 378.92,
-            "38.2": 326.16,
-            "50.0": 283.52,
-            "61.8": 240.88,
-            "78.6": 180.17
+            "23.6": 378.77,
+            "38.2": 326.04,
+            "50.0": 283.42,
+            "61.8": 240.8,
+            "78.6": 180.13
           }
         },
         "rsi": 81.5,
-        "mm21": 332.8,
+        "mm21": 332.79,
         "mm200": 218.86,
         "regression_z": 1.17,
         "regression_signal": "au-dessus",
@@ -988,10 +988,10 @@
         "vol_pts": 5,
         "reg_pts": 0,
         "val_pts": 0,
-        "drawdown_52w_pct": -41.6,
+        "drawdown_52w_pct": -41.7,
         "high_52w": 420.68,
         "fibo": null,
-        "rsi": 47.9,
+        "rsi": 47.8,
         "mm21": 247.0,
         "mm200": 310.73,
         "regression_z": -2.67,
@@ -1008,7 +1008,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 72/100 — prix sous sa droite de régression (-2.7σ), RSI en zone favorable, ⚠ -41.6% sous le top 52w — trend probablement cassée, croissance CA modérée (12%/an), marges excellentes (29%), consensus analystes positif.",
+      "justification": "Score 72/100 — prix sous sa droite de régression (-2.7σ), RSI en zone favorable, ⚠ -41.7% sous le top 52w — trend probablement cassée, croissance CA modérée (12%/an), marges excellentes (29%), consensus analystes positif.",
       "rank": 18
     },
     {
@@ -1124,7 +1124,7 @@
         "cross_type": "death",
         "cross_days_ago": 80,
         "cross_spread_pct": -10.36,
-        "cross_slope_mm21_pct": 2.43,
+        "cross_slope_mm21_pct": 2.42,
         "cross_volume_confirmed": false,
         "signal_dynamics_warning": "",
         "cross_pts": 2,
@@ -1132,13 +1132,13 @@
         "vol_pts": 5,
         "reg_pts": 0,
         "val_pts": 1,
-        "drawdown_52w_pct": -24.2,
+        "drawdown_52w_pct": -24.3,
         "high_52w": 539.83,
         "fibo": {
           "swing_low": 435.4,
           "swing_high": 539.83,
           "rally_pct": 24.0,
-          "retrace_pct": 125.3,
+          "retrace_pct": 125.4,
           "closest_fibo": "trend déstructurée (sous swing low)",
           "fibo_levels": {
             "23.6": 515.18,
@@ -1176,7 +1176,7 @@
       "score": 71,
       "stars": 3,
       "badge": null,
-      "change": "new",
+      "change": "stable",
       "breakdown": {
         "momentum": 30,
         "fondamentaux": 40,
@@ -1184,8 +1184,8 @@
         "cross_regime": "golden",
         "cross_type": "golden",
         "cross_days_ago": 0,
-        "cross_spread_pct": 2.59,
-        "cross_slope_mm21_pct": 13.53,
+        "cross_spread_pct": 2.58,
+        "cross_slope_mm21_pct": 13.52,
         "cross_volume_confirmed": true,
         "signal_dynamics_warning": "",
         "cross_pts": 20,
@@ -1194,23 +1194,23 @@
         "reg_pts": 5,
         "val_pts": 0,
         "drawdown_52w_pct": 0.0,
-        "high_52w": 234.81,
+        "high_52w": 234.43,
         "fibo": {
           "swing_low": 124.07,
-          "swing_high": 234.81,
-          "rally_pct": 89.3,
+          "swing_high": 234.43,
+          "rally_pct": 88.9,
           "retrace_pct": 0.0,
           "closest_fibo": "< Fibo 23.6%",
           "fibo_levels": {
-            "23.6": 208.68,
-            "38.2": 192.51,
-            "50.0": 179.44,
-            "61.8": 166.37,
-            "78.6": 147.77
+            "23.6": 208.39,
+            "38.2": 192.27,
+            "50.0": 179.25,
+            "61.8": 166.23,
+            "78.6": 147.69
           }
         },
         "rsi": 88.1,
-        "mm21": 160.79,
+        "mm21": 160.77,
         "mm200": 156.73,
         "regression_z": 0.74,
         "regression_signal": "neutre",
@@ -1237,7 +1237,7 @@
       "score": 70,
       "stars": 3,
       "badge": "GB",
-      "change": "new",
+      "change": "stable",
       "breakdown": {
         "momentum": 20,
         "fondamentaux": 45,
@@ -1307,7 +1307,7 @@
         "cross_type": "death",
         "cross_days_ago": 74,
         "cross_spread_pct": -6.91,
-        "cross_slope_mm21_pct": -0.21,
+        "cross_slope_mm21_pct": -0.2,
         "cross_volume_confirmed": true,
         "signal_dynamics_warning": "",
         "cross_pts": 2,
@@ -1315,13 +1315,13 @@
         "vol_pts": 5,
         "reg_pts": 0,
         "val_pts": 3,
-        "drawdown_52w_pct": -16.3,
+        "drawdown_52w_pct": -16.2,
         "high_52w": 596.25,
         "fibo": null,
-        "rsi": 47.2,
-        "mm21": 507.29,
-        "mm200": 544.95,
-        "regression_z": -2.35,
+        "rsi": 47.4,
+        "mm21": 507.32,
+        "mm200": 544.96,
+        "regression_z": -2.34,
         "regression_signal": "survente",
         "regression_pente_pct": 22.4,
         "regression_window_years": 20,
@@ -1335,7 +1335,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 70/100 — prix sous sa droite de régression (-2.4σ), RSI en zone favorable, correction modérée -16.3% sous le top, croissance CA solide (16%/an), marges excellentes (46%), consensus analystes très favorable.",
+      "justification": "Score 70/100 — prix sous sa droite de régression (-2.3σ), RSI en zone favorable, correction modérée -16.2% sous le top, croissance CA solide (16%/an), marges excellentes (46%), consensus analystes très favorable.",
       "rank": 24
     },
     {
@@ -1387,53 +1387,7 @@
       "rank": 25
     }
   ],
-  "changelog": [
-    {
-      "action": "in",
-      "ticker": "DB1.DE",
-      "name": "DEUTSCHE BOERSE AG    ",
-      "score": 73,
-      "reason": "Score 73/100 — Golden Cross confirmé (34j), cours proche de sa droite de régression, RSI en zone favorable, correction modérée -14.1% sous le top, croissance CA modérée (8%/an), marges excellentes (27%)."
-    },
-    {
-      "action": "in",
-      "ticker": "QCOM",
-      "name": "QUALCOMM Incorporated",
-      "score": 71,
-      "reason": "Score 71/100 — Golden Cross frais (0j) (volume confirmé) — fenêtre signal optimale, cours proche de sa droite de régression, ⚠ près du top 52w (+0.0%) — chase de rally pénalisée, marges excellentes (22%)."
-    },
-    {
-      "action": "in",
-      "ticker": "AZN.L",
-      "name": "ASTRAZENECA PLC ORD SH",
-      "score": 70,
-      "reason": "Score 70/100 — cours proche de sa droite de régression, RSI en zone favorable, correction modérée -13.1% sous le top (zone Fibo 23.6%), croissance CA modérée (12%/an), marges excellentes (17%), consensus analystes très favorable."
-    },
-    {
-      "action": "out",
-      "ticker": "TXN",
-      "name": "Texas Instruments Inco",
-      "score": 71,
-      "new_score": 66,
-      "reason": "Score en baisse : 71 → 66 (-5 pts) · Momentum dégradé (15/40) · RSI en surachat marqué (78) — souvent suivi d'une correction technique."
-    },
-    {
-      "action": "out",
-      "ticker": "NFLX",
-      "name": "Netflix, Inc.",
-      "score": 69,
-      "new_score": 69,
-      "reason": "Score stable (69 → 69) — d'autres titres ont simplement mieux scoré cette semaine · Death Cross confirmé (120j) — régime baissier persistant · Momentum quasi-nul (14/40) — tendance qui s'essouffle."
-    },
-    {
-      "action": "out",
-      "ticker": "VWS.CO",
-      "name": "Vestas Wind Systems A/",
-      "score": 68,
-      "new_score": 63,
-      "reason": "Score en baisse : 68 → 63 (-5 pts) · Momentum dégradé (20/40)."
-    }
-  ],
+  "changelog": [],
   "concentration_alerts": [
     "Technologie : 13 titres sur 25",
     "Finance : 7 titres sur 25",

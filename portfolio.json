@@ -2,11 +2,11 @@
   "updated_at": "2026-05-11",
   "week": "Sem. 20 · 2026",
   "capital_initial": 20000.0,
-  "capital_actuel": 22938.99,
-  "performance": 14.69,
+  "capital_actuel": 22934.72,
+  "performance": 14.67,
   "benchmark_cac40": -1.69,
   "benchmark_msci": 7.73,
-  "vs_benchmark": 6.96,
+  "vs_benchmark": 6.94,
   "mode_panique": false,
   "perf_cac_semaine": -0.07,
   "positions": [
@@ -34,11 +34,11 @@
       "currency": "USD",
       "date_achat": "2026-01-02",
       "prix_achat": 115.0,
-      "prix_actuel": 220.335,
+      "prix_actuel": 220.0,
       "quantite": 20,
       "montant_investi": 1957.1,
-      "valeur_actuelle": 3741.78,
-      "performance": 91.19,
+      "valeur_actuelle": 3735.46,
+      "performance": 90.87,
       "score_entree": 94,
       "poids": 16.3
     },
@@ -50,13 +50,13 @@
       "currency": "USD",
       "date_achat": "2026-05-05",
       "prix_achat": 341.54,
-      "prix_actuel": 464.255,
+      "prix_actuel": 463.115,
       "quantite": 3,
       "montant_investi": 875.82,
-      "valeur_actuelle": 1182.61,
-      "performance": 35.03,
+      "valeur_actuelle": 1179.51,
+      "performance": 34.67,
       "score_entree": 85,
-      "poids": 5.2
+      "poids": 5.1
     },
     {
       "ticker": "AMZN",
@@ -66,11 +66,11 @@
       "currency": "USD",
       "date_achat": "2026-04-30",
       "prix_achat": 259.27,
-      "prix_actuel": 271.57,
+      "prix_actuel": 271.4,
       "quantite": 2,
       "montant_investi": 441.24,
-      "valeur_actuelle": 461.19,
-      "performance": 4.52,
+      "valeur_actuelle": 460.82,
+      "performance": 4.44,
       "score_entree": 90,
       "poids": 2.0
     },
@@ -82,11 +82,11 @@
       "currency": "USD",
       "date_achat": "2026-04-30",
       "prix_achat": 413.21,
-      "prix_actuel": 429.88,
+      "prix_actuel": 428.935,
       "quantite": 1,
       "montant_investi": 351.6,
-      "valeur_actuelle": 365.02,
-      "performance": 3.82,
+      "valeur_actuelle": 364.15,
+      "performance": 3.57,
       "score_entree": 100,
       "poids": 1.6
     },
@@ -98,11 +98,11 @@
       "currency": "USD",
       "date_achat": "2026-04-30",
       "prix_achat": 1060.9,
-      "prix_actuel": 1079.8199,
+      "prix_actuel": 1080.88,
       "quantite": 1,
       "montant_investi": 902.77,
-      "valeur_actuelle": 916.89,
-      "performance": 1.56,
+      "valeur_actuelle": 917.63,
+      "performance": 1.65,
       "score_entree": 93,
       "poids": 4.0
     },
@@ -114,11 +114,11 @@
       "currency": "USD",
       "date_achat": "2026-05-05",
       "prix_achat": 967.93,
-      "prix_actuel": 973.79,
+      "prix_actuel": 972.67,
       "quantite": 1,
       "montant_investi": 827.79,
-      "valeur_actuelle": 826.86,
-      "performance": -0.11,
+      "valeur_actuelle": 825.77,
+      "performance": -0.24,
       "score_entree": 89,
       "poids": 3.6
     },
@@ -146,14 +146,31 @@
       "currency": "USD",
       "date_achat": "2026-05-06",
       "prix_achat": 92.01,
-      "prix_actuel": 90.73,
+      "prix_actuel": 91.02,
       "quantite": 14,
       "montant_investi": 1095.08,
-      "valeur_actuelle": 1078.56,
-      "performance": -1.51,
+      "valeur_actuelle": 1081.82,
+      "performance": -1.21,
       "score_entree": 82,
       "raison_achat": "Score watchlist 82/100 avec un z=-3.4σ sous sa droite de régression — la décote est significative et représente une opportunité d'entrée à prix compressé. Death Cross présent depuis 190j mais RSI en zone favorable et croissance CA solide suggèrent un potentiel de retour vers la moyenne. Avec 5486€ de liquidités disponibles, j'achète 1 titre pour initier une position sans surpondérer un seul secteur tech.",
       "poids": 4.7
+    },
+    {
+      "ticker": "INTU",
+      "nom": "Intuit Inc.",
+      "market": "NMS",
+      "sector": "Technologie",
+      "currency": "USD",
+      "date_achat": "2026-05-06",
+      "prix_achat": 398.32,
+      "prix_actuel": 391.28,
+      "quantite": 3,
+      "montant_investi": 1015.86,
+      "valeur_actuelle": 996.55,
+      "performance": -1.9,
+      "score_entree": 82,
+      "raison_achat": "Score 82/100, z=-3.6σ sous régression — la décote est la plus marquée de la watchlist, similaire à NOW. Death Cross depuis 129j mais croissance CA solide et RSI favorable signalent une divergence bullish potentielle. L'achat d'1 titre mobilise ~400-500€ (estimation) et diversifie sur le secteur fintech/software hors positions déjà lourdes en semi-conducteurs.",
+      "poids": 4.3
     },
     {
       "ticker": "LSEG.L",
@@ -166,44 +183,11 @@
       "prix_actuel": 90.2,
       "quantite": 14,
       "montant_investi": 1492.64,
-      "valeur_actuelle": 1462.93,
-      "performance": -1.99,
+      "valeur_actuelle": 1463.1,
+      "performance": -1.98,
       "score_entree": 83,
       "raison_achat": "Score 83/100 avec Golden Cross frais (9j) — fenêtre signal optimale — et prix sous régression (-1.1σ), offrant un point d'entrée encore favorable avant retour à la moyenne. Secteur financier infrastructure de marché défensif, non représenté dans le portefeuille. Les liquidités disponibles (3173€) permettent une entrée initiale mesurée.",
       "poids": 6.4
-    },
-    {
-      "ticker": "INTU",
-      "nom": "Intuit Inc.",
-      "market": "NMS",
-      "sector": "Technologie",
-      "currency": "USD",
-      "date_achat": "2026-05-06",
-      "prix_achat": 398.32,
-      "prix_actuel": 390.58,
-      "quantite": 3,
-      "montant_investi": 1015.86,
-      "valeur_actuelle": 994.94,
-      "performance": -2.06,
-      "score_entree": 82,
-      "raison_achat": "Score 82/100, z=-3.6σ sous régression — la décote est la plus marquée de la watchlist, similaire à NOW. Death Cross depuis 129j mais croissance CA solide et RSI favorable signalent une divergence bullish potentielle. L'achat d'1 titre mobilise ~400-500€ (estimation) et diversifie sur le secteur fintech/software hors positions déjà lourdes en semi-conducteurs.",
-      "poids": 4.3
-    },
-    {
-      "ticker": "META",
-      "nom": "Meta Platforms, Inc.",
-      "market": "NMS",
-      "sector": "Médias & IA",
-      "currency": "USD",
-      "date_achat": "2026-05-05",
-      "prix_achat": 610.41,
-      "prix_actuel": 601.355,
-      "quantite": 2,
-      "montant_investi": 1044.14,
-      "valeur_actuelle": 1021.24,
-      "performance": -2.19,
-      "score_entree": 84,
-      "poids": 4.5
     },
     {
       "ticker": "V",
@@ -213,13 +197,29 @@
       "currency": "USD",
       "date_achat": "2026-04-30",
       "prix_achat": 330.69,
-      "prix_actuel": 323.8815,
+      "prix_actuel": 324.09,
       "quantite": 2,
       "montant_investi": 562.59,
-      "valeur_actuelle": 550.02,
-      "performance": -2.23,
+      "valeur_actuelle": 550.28,
+      "performance": -2.19,
       "score_entree": 93,
       "poids": 2.4
+    },
+    {
+      "ticker": "META",
+      "nom": "Meta Platforms, Inc.",
+      "market": "NMS",
+      "sector": "Médias & IA",
+      "currency": "USD",
+      "date_achat": "2026-05-05",
+      "prix_achat": 610.41,
+      "prix_actuel": 600.315,
+      "quantite": 2,
+      "montant_investi": 1044.14,
+      "valeur_actuelle": 1019.3,
+      "performance": -2.38,
+      "score_entree": 84,
+      "poids": 4.4
     },
     {
       "ticker": "CRM",
@@ -229,11 +229,11 @@
       "currency": "USD",
       "date_achat": "2026-05-06",
       "prix_achat": 181.19,
-      "prix_actuel": 176.5702,
+      "prix_actuel": 177.05,
       "quantite": 7,
       "montant_investi": 1079.26,
-      "valeur_actuelle": 1049.5,
-      "performance": -2.76,
+      "valeur_actuelle": 1052.17,
+      "performance": -2.51,
       "score_entree": 80,
       "raison_achat": "CRM score 80/100, z=-2.4σ sous régression avec Death Cross mais RSI favorable et croissance CA modérée — profil similaire à NOW/INTU mais avec moins d'écart de régression. Les liquidités disponibles (3375€) permettent l'achat d'environ 1-2 titres à ~200-250€ estimé. La semaine macro est haussière (+2.1% MSCI World) et le portefeuille surperforme largement le benchmark (+11.4pp YTD), ce qui autorise une prise de risque mesurée sur une décote fondamentale documentée. Achat de 2 titres recommandé pour conserver des liquidités de sécurité.",
       "poids": 4.6
@@ -246,11 +246,11 @@
       "currency": "USD",
       "date_achat": "2026-04-30",
       "prix_achat": 430.55,
-      "prix_actuel": 415.74,
+      "prix_actuel": 416.47,
       "quantite": 1,
       "montant_investi": 366.37,
-      "valeur_actuelle": 353.01,
-      "performance": -3.65,
+      "valeur_actuelle": 353.57,
+      "performance": -3.49,
       "score_entree": 93,
       "poids": 1.5
     },
@@ -278,11 +278,11 @@
       "currency": "USD",
       "date_achat": "2026-04-30",
       "prix_achat": 313.77,
-      "prix_actuel": 300.3,
+      "prix_actuel": 300.44,
       "quantite": 2,
       "montant_investi": 534.0,
-      "valeur_actuelle": 509.98,
-      "performance": -4.5,
+      "valeur_actuelle": 510.13,
+      "performance": -4.47,
       "score_entree": 95,
       "poids": 2.2
     },
@@ -1020,9 +1020,10 @@
     }
   ],
   "biais_detectes": [
-    "Biais de récence sur LSEG : vente stop-loss précipitée après -17.2% en 2 jours sur une thèse long terme intacte — puis rachat immédiat, coût de friction inutile",
-    "Concentration du alpha sur 2 titres (ASML + NVDA) masquant une sous-performance latente du reste du portefeuille — risque de complacency sur la perf globale",
-    "Possible biais d'ancrage sur NOW/INTU : les z-scores extrêmes (-3.6σ et -3.9σ) sont attrayants en théorie de mean-reversion mais le trend déstructuré sous swing low pour INTU contredit cette thèse — vigilance sur la rationalisation"
+    "Biais d'action sous stress (aller-retour LSEG.L en 48h) — toujours présent dans l'historique récent, à surveiller",
+    "Concentration sectorielle tech implicite (NVDA, ASML, NOW, INTU, CRM, AMD, AMZN, META) — 8 positions sur 18 en tech/semi",
+    "Anchoring sur le score watchlist élevé sans vérification de val_pts (plusieurs achats récents à val=0/5 ou val=1/5)",
+    "Biais de récence : les positions récentes en légère perte (-2% à -5%) créent une pression psychologique à agir alors que les règles interdisent la vente"
   ],
   "regles_actives": [
     {
@@ -1043,7 +1044,7 @@
       "date": "2026-05-11",
       "source": "Reuters",
       "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxNS1R4YmxvUWpZMGJaX3FrMXY2aGNsNG1TZ1JFc08weHF0cXRWd0s5a04xV2xEamNKNWFrT1VXWEZnRHIyZlczejVDblEzS1Z6N2NmTG14aVVkcHJQOUtreDd3TTZKUWtkSmp1aXRuckNFaXdJbThub1RPV3E0aDc4OHNPZnYweWt4MWR4UG1nU0NEMXpaU2V4OUhLNE5JdDVJQlZWREFFRUtqV2N4MVlnbDB0cw?oc=5",
-      "resume_fr": "L'or progresse légèrement tandis que les marchés analysent les développements du dossier US-Iran et attendent les données d'inflation américaines."
+      "resume_fr": "L'or progresse légèrement alors que les marchés attendent les données d'inflation US et suivent les développements du dossier Iran."
     },
     {
       "headline": "Indian rupee, bonds look to inflation prints as Iran conflict stays in focus - Reuters",
@@ -1051,7 +1052,7 @@
       "date": "2026-05-11",
       "source": "Reuters",
       "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxQX09BQm5DTnBBMjBCMExSQ0tTVXNQcFJFZ1VVX20wWjkwZmtFb0pkSG1xMDR2SnNPUnRuME56M0dPbHhwU0drb1ZQN3NpbE1DNEFBdHliUl93YkwwbmF1U1NUelJNY0JPUkFSRHc4MHc2OFdUMVgwTVZQLXlZZlJiSjFfcW45aXlYR3gxYlNKSzNnaXZtYUcxQUliQXpqTWdROXNQODB5Ykg1SDZrcXJhVVZGSnk?oc=5",
-      "resume_fr": "La roupie indienne et les obligations regardent vers les publications d'inflation alors que le conflit Iran reste une source d'incertitude régionale."
+      "resume_fr": "La roupie indienne et les obligations surveillent les chiffres d'inflation nationaux pendant que le conflit Iran reste au centre de l'attention."
     },
     {
       "headline": "BofA and Goldman push back Fed rate‑cut expectations on inflation risks, jobs data - Reuters",
@@ -1059,7 +1060,7 @@
       "date": "2026-05-11",
       "source": "Reuters",
       "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNUmowSnVOelhFSkZuUkVCMEN2TDl4NWRidHB2ak5jQkVHcUxRd2RoNW9mMkJlNTNLU0FkeWpvdGtSd0hKV2doZXdZN2NyeVdyOTJXSWVaYmkyeF9rb005d1lPYWZGLXQtRTdObUJFMWw3b1lBUDhVYUZJcEQxclIteTdzNW5PeHhGZUhZNGVjNkVZQ2NGMzZkNWNsb09hS1ZNV2RwamRncDg3STBiMGRVNmxpNkt2S1o3QTQyTW9Qc25oUQ?oc=5",
-      "resume_fr": "BofA et Goldman Sachs reportent leurs prévisions de baisse de taux Fed, citant des risques inflationnistes et des données d'emploi robustes."
+      "resume_fr": "BofA et Goldman Sachs repoussent leurs prévisions de baisse de taux Fed, invoquant des risques d'inflation et un marché de l'emploi résistant."
     },
     {
       "headline": "China's factory inflation hits 45-month high on energy price shock - Reuters",
@@ -1067,14 +1068,14 @@
       "date": "2026-05-11",
       "source": "Reuters",
       "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNNHBjRHlkdlRLWGN2eHNKT0pQRC1HSVBCQkpwWFZJMG9ITk1KWWZaMUVCYUpVcTVfcXpYOGFqWlFYSU1PZ0J5czRlMjdaajJoS19nWEEtVS1lN2c2LXF1SHBYYmRtRXR3LXBXUjlWdHN3bW9TWldSVjlqQWFocVV4d3Mtc2xHNDRFTzczd3V1WHM1RnlGb05oZUU2Wm56czNkMVNHZ3MtT0lSTU9qVnc?oc=5",
-      "resume_fr": "L'inflation à la production en Chine atteint son plus haut niveau en 45 mois sous l'effet d'un choc des prix de l'énergie."
+      "resume_fr": "L'inflation dans les usines chinoises atteint son plus haut niveau en 45 mois, tirée par un choc sur les prix de l'énergie."
     }
   ],
   "analyse_claude": {
-    "analyse_macro": "La semaine du 4 au 11 mai s'ouvre sur une tension discrète mais persistante : or en légère hausse, marchés qui 'digèrent' les développements US-Iran, et surtout BofA et Goldman qui repoussent désormais leurs prévisions de baisses de taux Fed — en invoquant des risques inflationnistes et des données d'emploi qui ne collaborent pas. En clair : si vous espériez un pivot Fed en juin, rangez vos confettis. La publication des chiffres d'inflation américaine cette semaine sera le test de vérité.\n\nCôté Chine, l'inflation à la production vient d'atteindre un plus haut de 45 mois sous l'effet du choc des prix énergétiques. Ce n'est pas anodin : une pression upstream en Chine finit toujours par se diffuser dans les chaînes de valeur mondiales — pertinent pour les industriels et la tech hardware en portefeuille.\n\nLe MSCI World progresse de +1.4% sur la semaine, portant son YTD à +7.7%. Signal tient son rang : le portefeuille affiche +14.70% depuis sa création (capital à 22 939€) contre +7.39% YTD pour le MSCI, soit un alpha de +7.05 points de pourcentage. C'est solide — mais l'alpha est largement porté par ASML (+100.9%) et NVDA (+91.3%), deux positions ouvertes depuis 129 jours. Le reste du portefeuille, majoritairement acquis il y a 5 à 11 jours, est en légère moins-value agrégée. La concentration du alpha sur deux titres est le principal risque structurel à surveiller.\n\nMéthodologiquement, cette semaine est calme côté décisions : aucun achat nouveau, aucune vente déclenchée. R7 est appliquée sur NOW et INTU — leurs Death Cross (194j et 133j) sont trop anciens pour être actionnables seuls, et aucun changement fondamental documenté ne justifierait de passer outre la règle 90j. DB1.DE à -5.3% reste sous surveillance — loin du stop-loss catastrophe (-25%) mais à monitorer si la dégradation s'accélère.\n\nLe signal val_pts mérite d'être souligné : JPM (val=5/5, zone Fibo 38.2%) confirme un point d'entrée de qualité malgré une performance négative à court terme de -4.5% depuis 11 jours — c'est exactement la logique du setup technique, pas de la panique.\n\nLearning de la semaine : l'épisode LSEG de la semaine dernière (achat → stop-loss -17.2% en 2 jours → rachat immédiat) illustre un biais coûteux de sur-réaction au stop-loss court terme sur une thèse long terme valide. Le process était défendable à l'achat ; la vente éclair l'était beaucoup moins. À retenir.\n\nLa semaine prochaine, les yeux seront rivés sur les données CPI américaines et leur impact sur les anticipations de taux. Une surprise inflationniste à la hausse durcirait encore le contexte pour les titres de croissance à longue duration (NOW, INTU, CRM). La patience reste la position par défaut.",
+    "analyse_macro": "Lundi 11 mai, 17h UTC — les marchés américains sont ouverts et le ton est à la prudence calibrée. Cette semaine, deux signaux macro retiennent l'attention : BofA et Goldman Sachs ont tous deux repoussé leurs anticipations de baisses de taux Fed, invoquant des risques d'inflation persistants et des données d'emploi solides. En clair : le pivot tant espéré recule encore dans le calendrier. Pendant ce temps, l'inflation dans les usines chinoises atteint un plus haut de 45 mois sous l'effet d'un choc énergétique — signal de transmission de coûts potentielle vers les chaînes d'approvisionnement mondiales.\n\nPour le portefeuille Signal, ce contexte 'higher for longer' est à double tranchant. Côté positif : les valeurs financières (JPM, BLK, V, LSEG.L, DB1.DE) bénéficient structurellement d'un environnement de taux élevés sur les marges nettes d'intérêt et les volumes. Côté négatif : les valeurs de croissance avec des multiples élevés (NOW, INTU, CRM) voient leur taux d'actualisation rester sous pression.\n\nPerformance cette semaine : le portefeuille affiche **+14.66% depuis sa création** pour un capital de **22 933€**, contre un MSCI World YTD à +7.73% — soit un **alpha de +6.96 points de pourcentage**. L'avance est confortable, mais elle repose largement sur ASML (+100.9%) et NVDA (+91%) — deux positions emblématiques depuis le premier run de janvier.\n\nMéthodologiquement, la semaine est calme : aucune vente déclenchée, aucun achat nouveau. La règle 1 (90 jours minimum) bride légitimement toute tentation de rotation sur les positions récentes en légère perte. Val=0/5 sur NOW, INTU et AMZN (proches du top 52w ou en trend déstructurée) bloque également tout renforcement. JPM est la seule exception notable avec val=5/5 en zone Fibo 38.2% — mais avec 2 059€ de liquidités et 18 positions ouvertes, la sagesse commande d'attendre.\n\nLearning de la semaine : l'aller-retour LSEG.L (achat → vente stop-loss → rachat en trois jours) illustre le biais d'action sous stress. Le titre est maintenant en portefeuille pour la durée — on ne refait pas ce film.\n\nÀ surveiller la semaine prochaine : les données d'inflation US (CPI) attendues, qui pourraient soit confirmer le scénario Goldman/BofA soit créer une surprise dovish. Le conflit Iran-US reste en arrière-plan — l'or monte légèrement, signal de prudence géopolitique diffus mais réel.",
     "conviction_globale": "neutre",
-    "message_utilisateurs": "Semaine 20 — pas de mouvement cette semaine. Le portefeuille reste à 22 939€ (+14.70% depuis la création, alpha de +7.05pp vs MSCI World). L'essentiel de la performance est porté par ASML et NVDA, nos deux positions les plus anciennes (129 jours chacune). Le reste du portefeuille, acquis entre il y a 5 et 11 jours, digère des entrées récentes dans un contexte macro qui ne facilite pas les premières semaines (reports des baisses de taux Fed, inflation persistante). Aucune vente déclenchée : règle 90j respectée, aucun stop-loss catastrophe atteint. DB1.DE (-5.3%) et JPM (-4.5% depuis l'achat) sont sous observation mais dans les limites normales. L'épisode LSEG de la semaine dernière (stop-loss déclenché en 2 jours puis rachat) est documenté comme erreur de process — une thèse valide ne devrait pas être liquidée sur une volatilité de 48h. On en tire une leçon concrète pour les prochaines semaines.",
-    "nb_decisions": 8
+    "message_utilisateurs": "Run de contrôle 17h16 UTC ce lundi 11 mai — peu de changements vs le run de ce matin. Aucune vente, aucun achat cette semaine. Le portefeuille est en mode 'tenir les positions' : 18 lignes ouvertes, 2 059€ de liquidités, et la règle des 90 jours protège les positions récentes de toute rotation impulsive. La performance reste solide à +14.66% depuis la création pour un capital de 22 933€, avec un alpha de +6.96pp sur le MSCI World. Le contexte macro (Fed qui tarde à baisser, inflation chinoise en hausse) invite à la prudence sans justifier de réallocation majeure. La prochaine fenêtre d'action significative sera autour du CPI US attendu cette semaine — si surprise dovish, les valeurs de croissance (NOW, INTU) pourraient bénéficier d'un rebond. Si confirmation hawkish, les financières (JPM en zone Fibo 38.2%) restent le meilleur refuge relatif dans le portefeuille.",
+    "nb_decisions": 7
   },
   "performance_history": [
     {
@@ -1122,8 +1123,8 @@
     },
     {
       "date": "2026-05-11",
-      "perf": 14.69,
-      "capital": 22938.99,
+      "perf": 14.67,
+      "capital": 22934.72,
       "benchmark_cac40": -1.69,
       "benchmark_msci": 7.73
     }
