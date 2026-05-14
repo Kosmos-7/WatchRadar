@@ -227,16 +227,42 @@ def get_contexte_marche():
     return ctx
 
 _MACRO_KEYWORDS = [
-    "federal reserve", "fed rate", "fed cuts", "fed hikes", "interest rate",
-    "inflation", "cpi", "pce", "pmi", "unemployment", "nonfarm payroll",
-    "gdp", "recession", "ecb", "european central bank", "bce",
-    "tariff", "trade war", "treasury yield", "yield curve", "10-year",
-    "bank of england", "boe rate", "opec",
+    # US monetary
+    "federal reserve", "fed rate", "fed cuts", "fed hikes", "fomc", "powell",
+    "interest rate", "rate cut", "rate hike", "rate decision",
+    # Inflation / activity
+    "inflation", "cpi", "ppi", "pce", "pmi", "ism",
+    "unemployment", "nonfarm payroll", "jobless claims", "jobs report",
+    "gdp", "recession", "soft landing", "stagflation",
+    # EU / UK / Asia central banks
+    "ecb", "european central bank", "bce", "lagarde",
+    "bank of england", "boe rate", "bailey",
+    "boj", "bank of japan", "ueda",
+    "pboc", "people's bank of china",
+    # Geopol / commodities / FX
+    "tariff", "trade war", "trade deal", "sanctions",
+    "treasury yield", "yield curve", "10-year", "bond market",
+    "dollar index", "dxy", "yen", "yuan",
+    "opec", "crude oil", "brent", "wti",
+    # Markets-wide
+    "vix", "volatility index", "earnings season",
 ]
 
+# Sources structurellement biaisées (thèses promo non journalistiques) — autorisées
+# mais déprimées dans le scoring pour qu'elles ne phagocytent pas la sélection
+_LOW_QUALITY_SOURCES = {"SeekingAlpha", "Seeking Alpha"}
+_PER_SOURCE_CAP = 2   # max 2 articles par source pour forcer la diversité
+
 def get_macro_news():
-    """Récupère les 4 titres macro les plus pertinents via Finnhub /news.
-    Retourne une liste de dicts {headline, date, source} ou liste vide."""
+    """Récupère les ~6 titres macro les plus pertinents via Finnhub /news.
+
+    Diversification :
+      - Pool élargi (200 articles parcourus, vs 60 avant)
+      - Cap de 2 articles par source (pas 4 articles Reuters)
+      - Sources low-quality (Seeking Alpha) déprimées dans le scoring
+      - Keyword set élargi (BoJ, PBoC, FX, commodités, VIX)
+
+    Retourne une liste de dicts {headline, summary, date, source, url}."""
     if not FINNHUB_KEY:
         return []
     try:
@@ -247,21 +273,55 @@ def get_macro_news():
         articles = r.json()
         if not isinstance(articles, list):
             return []
-        selected = []
-        for article in articles[:60]:
+
+        # Pass 1 : filtre keyword + dédup par URL
+        candidates = []
+        seen_urls = set()
+        for article in articles[:200]:
+            url_a = article.get("url", "")
+            if url_a and url_a in seen_urls:
+                continue
             text = ((article.get("headline") or "") + " " + (article.get("summary") or "")).lower()
-            if any(kw in text for kw in _MACRO_KEYWORDS):
-                dt = article.get("datetime", 0)
-                art_date = datetime.utcfromtimestamp(dt).strftime("%Y-%m-%d") if dt else ""
-                selected.append({
-                    "headline": (article.get("headline") or "")[:140],
-                    "summary":  (article.get("summary")  or "")[:600],  # contenu réel de la dépêche
-                    "date":     art_date,
-                    "source":   article.get("source", ""),
-                    "url":      article.get("url", ""),
-                })
-                if len(selected) >= 4:
-                    break
+            if not any(kw in text for kw in _MACRO_KEYWORDS):
+                continue
+            if url_a:
+                seen_urls.add(url_a)
+            # Score = nb de keywords matchés (proxy de "macro-density")
+            kw_score = sum(1 for kw in _MACRO_KEYWORDS if kw in text)
+            source = article.get("source", "")
+            if source in _LOW_QUALITY_SOURCES:
+                kw_score -= 1  # déprime mais n'élimine pas
+            candidates.append({
+                "kw_score":  kw_score,
+                "datetime":  article.get("datetime", 0),
+                "headline":  (article.get("headline") or "")[:140],
+                "summary":   (article.get("summary")  or "")[:600],
+                "source":    source,
+                "url":       url_a,
+            })
+
+        # Pass 2 : tri par (kw_score desc, datetime desc) — pertinence puis fraîcheur
+        candidates.sort(key=lambda c: (-c["kw_score"], -c["datetime"]))
+
+        # Pass 3 : sélection avec cap par source pour forcer diversité
+        selected = []
+        per_source_count = {}
+        for c in candidates:
+            src = c["source"] or "unknown"
+            if per_source_count.get(src, 0) >= _PER_SOURCE_CAP:
+                continue
+            art_date = datetime.utcfromtimestamp(c["datetime"]).strftime("%Y-%m-%d") if c["datetime"] else ""
+            selected.append({
+                "headline": c["headline"],
+                "summary":  c["summary"],
+                "date":     art_date,
+                "source":   c["source"],
+                "url":      c["url"],
+            })
+            per_source_count[src] = per_source_count.get(src, 0) + 1
+            if len(selected) >= 6:
+                break
+
         return selected
     except Exception as e:
         print(f"  ⚠️  Macro news — exception : {e}")
@@ -453,7 +513,7 @@ def construire_prompt_analyse(portfolio, watchlist, contexte, macro_news=None):
     if macro_news:
         news_lines = "\n".join(
             f"  - [{n['date']}] **{n['headline']}** ({n['source']})\n    → {n.get('summary','')[:400]}"
-            for n in macro_news[:4]
+            for n in macro_news  # plus de cap [:4] — get_macro_news() retourne déjà ≤6 articles diversifiés
         )
         macro_section = f"\n## MACRO (titres + contenu de la dépêche, exploite-les pour ton analyse)\n{news_lines}\n"
 
@@ -510,8 +570,13 @@ JSON uniquement :
 }}"""
 
 
-def construire_prompt(portfolio, watchlist, contexte, analyse=None, macro_news=None):
-    """Construit le prompt envoyé à Claude avec tout le contexte."""
+def construire_prompt(portfolio, watchlist, contexte, analyse=None, macro_news=None, regles_auto=None):
+    """Construit le prompt envoyé à Claude avec tout le contexte.
+
+    `regles_auto` : liste des règles mécaniques actuellement actives (R01/R03)
+    — injectées dans le prompt pour que Claude SACHE quelles actions seront
+    automatiquement bloquées et n'en propose plus.
+    """
 
     positions = portfolio.get("positions", [])
     liquidites = portfolio.get("liquidites", CAPITAL_INITIAL)
@@ -651,6 +716,39 @@ def construire_prompt(portfolio, watchlist, contexte, analyse=None, macro_news=N
     else:
         macro_news_section = ""
 
+    # ── Règles mécaniques actives ce run (R01 concentration / R03 liquidités)
+    # Injecté pour que Claude SACHE quelles actions seront automatiquement bloquées
+    # par le layer mécanique post-décision — évite de proposer des décisions vouées
+    # à l'échec (cause des dissonances "analyse_macro parle d'achat PANW mais
+    # le journal n'a aucun ordre" qu'on a vues sur les runs précédents).
+    regles_section = ""
+    if regles_auto:
+        regles_lignes = "\n".join(
+            f"  🚫 [{r.get('type','?')}] {r.get('message','')}" for r in regles_auto
+        )
+        regles_section = (
+            "\n## ⚠ RÈGLES MÉCANIQUES ACTIVES — TES PROPOSITIONS SERONT REJETÉES SI ELLES LES VIOLENT\n"
+            "Ces règles s'appliquent AUTOMATIQUEMENT après ton output JSON, indépendamment de ta conviction.\n"
+            "Si tu proposes une décision qui viole l'une d'elles, elle sera rejetée et n'apparaîtra PAS\n"
+            "dans le journal des ordres. Tiens-en compte AVANT de décider :\n"
+            f"{regles_lignes}\n"
+            "\n"
+            "⏳ RAPPEL VENTES : R01 (Règles non négociables ci-dessous) bloque toute vente sur position\n"
+            "détenue < 90 jours, SAUF si tu mets `conviction: \"forte\"` ET cites dans `raison` un\n"
+            "signal fondamental majeur documenté (résultats, scandale, M&A) — pas juste \"perte\" ou\n"
+            "\"Death Cross\". Ne propose pas de vente sur position récente sans ce niveau de justification.\n"
+            "\n"
+            "📝 COHÉRENCE NEWSLETTER : si tu envisages réellement une action que les règles vont bloquer\n"
+            "(p. ex. tu trouves PANW excellent mais R01 cluster Tech&IA est saturée), tu peux la\n"
+            "mentionner naturellement dans `analyse_macro` comme une frustration assumée — c'est de la\n"
+            "transparence éditoriale. Tournure type : 'PANW avait le meilleur setup du tableau cette\n"
+            "semaine — Golden Cross Day-0, pente MM21 à +6.6% — mais la règle R01 plafonne mon cluster\n"
+            "Tech&IA à 30% et nous sommes à 62%. Frustrant mais c'est la discipline.' Ne pas en\n"
+            "soumettre l'action dans `decisions` (elle sera bloquée et créera une dissonance avec le\n"
+            "journal). L'idée : le lecteur de la newsletter comprend ce que tu aurais voulu faire ET\n"
+            "pourquoi tu ne l'as pas fait, sans qu'on ait besoin d'un bandeau d'alerte sur le site.\n"
+        )
+
     # Injection du skill portfolio-analyst — single source of truth
     # Le skill local définit la persona analyste, les mantras, la pré-flight discipline.
     # Si modifié localement (~/.claude/skills/portfolio-analyst/SKILL.md), le prochain run
@@ -707,7 +805,7 @@ Positions ouvertes ({len(positions)}) :
 - CAC40 : {contexte.get('cac40', {}).get('perf_semaine', 0):+.1f}% sur la semaine, {contexte.get('cac40', {}).get('perf_ytd', 0):+.1f}% YTD
 - MSCI World : {contexte.get('msci', {}).get('perf_semaine', 0):+.1f}% sur la semaine, {contexte.get('msci', {}).get('perf_ytd', 0):+.1f}% YTD
 - Mode panique : {"OUI — Règle 03 active, aucun ordre possible" if contexte.get('mode_panique') else "NON — ordres possibles"}
-
+{regles_section}
 {ordres_section}{macro_news_section}{synthese_str}## WATCHLIST CETTE SEMAINE (top 10 sur 25)
 {chr(10).join(top10_lines)}
 Tickers watchlist complète : {', '.join(tickers_watchlist)}
@@ -757,14 +855,14 @@ Réponds UNIQUEMENT en JSON valide, sans texte avant ou après, selon ce format 
       "score_watchlist": 0
     }}
   ],
-  "analyse_macro": "TEXTE NEWSLETTER (200-350 mots, 5-8 paragraphes courts) — c'est CE QUE LE LECTEUR LIT chaque semaine sur le site. Adresse-toi DIRECTEMENT à lui ('vous', pas 'on' ni 'l'investisseur'). Ton : analyste rigoureux mais avec un brin d'humour décalé pour contraster avec les chiffres sérieux — pense à un Howard Marks qui aurait lu Charlie Munger ET aurait un sens de la formule. Tu peux te permettre une métaphore, une vanne fine sur les marchés, un clin d'œil. Pas de sarcasme méchant, pas de blagues lourdes. Reste pro mais vivant. STRUCTURE indicative : (1) accroche sur l'événement de la semaine en quelques mots (cite explicitement les news macro reçues plus haut — leur contenu réel, pas juste leur titre — par exemple si la news parle d'inflation CPI à 2.4%, dis ça, pas 'inflation reste centrale') ; (2) ce que ça veut dire concrètement pour le portefeuille ; (3) chiffres clés (perf, alpha) recopiés depuis la section ÉTAT ACTUEL DU PORTEFEUILLE ; (4) éléments méthodologiques qui ont guidé tes décisions (R7, val_pts, signal_dynamics_warning si pertinent) ; (5) biais ou learnings de la semaine ; (6) un mot pour la semaine à venir. NE PAS commencer par 'Sur la semaine écoulée du X au Y' (trop bureaucratique pour une newsletter — préfère une accroche qui pose le contexte) mais l'ancrage temporel reste obligatoire ailleurs dans le texte. Évite les formulations creuses ('le marché reste un paramètre central', 'l'attention est portée à...') — sois précis et concret.",
+  "analyse_macro": "TEXTE NEWSLETTER (200-350 mots, 4-6 paragraphes courts SÉPARÉS PAR UN DOUBLE SAUT DE LIGNE `\\n\\n` — c'est NON-NÉGOCIABLE, sinon le rendu HTML produit un mur de texte illisible). Chaque paragraphe = 2 à 4 phrases, une idée par paragraphe. C'est CE QUE LE LECTEUR LIT chaque semaine sur le site. Adresse-toi DIRECTEMENT à lui ('vous', pas 'on' ni 'l'investisseur'). Ton : analyste rigoureux mais avec un brin d'humour décalé pour contraster avec les chiffres sérieux — pense à un Howard Marks qui aurait lu Charlie Munger ET aurait un sens de la formule. Tu peux te permettre une métaphore, une vanne fine sur les marchés, un clin d'œil. Pas de sarcasme méchant, pas de blagues lourdes. Reste pro mais vivant. STRUCTURE en paragraphes distincts (chacun séparé par `\\n\\n`) : §1 accroche sur l'événement de la semaine (cite EXPLICITEMENT le contenu des news macro reçues plus haut — pas juste le titre, le chiffre : si CPI à 2.4%, dis 2.4%, pas 'inflation reste centrale') ; §2 ce que ça veut dire concrètement pour le portefeuille + chiffres clés (perf {perf:+.2f}%, alpha {vs:+.2f}pp recopiés depuis ÉTAT ACTUEL) ; §3 éléments méthodologiques qui ont guidé tes décisions (R7, val_pts, signal_dynamics_warning si pertinent — sinon zappe) ; §4 biais ou learning de la semaine (s'il y en a un saillant, sinon zappe) ; §5 mot pour la semaine à venir (ce que vous surveillerez). NE PAS commencer par 'Sur la semaine écoulée du X au Y' (trop bureaucratique — préfère une accroche éditoriale qui glisse la date naturellement) mais l'ancrage temporel reste obligatoire dans les 2 premières phrases. Évite les formulations creuses ('le marché reste un paramètre central', 'l'attention est portée à...') — sois précis et concret. RAPPEL CRITIQUE : DOUBLE SAUT DE LIGNE `\\n\\n` entre chaque paragraphe, sinon le site rend un bloc compact.",
   "biais_detectes": ["biais 1", "biais 2"],
   "conviction_globale": "haussier" | "neutre" | "baissier",
   "message_utilisateurs": "Message transparent aux utilisateurs sur les décisions de cette semaine",
-  "news_resumes_fr": ["Résumé en français de la news [0] en 1 phrase claire et factuelle", "Résumé de [1]", "Résumé de [2]", "Résumé de [3]"]
+  "news_resumes_fr": ["Résumé en français de la news [0] en 1 phrase claire et factuelle", "Résumé de [1]", "…", "un résumé pour CHAQUE news fournie plus haut (0 à 6 selon le run)"]
 }}
 
-Pour `news_resumes_fr` : un résumé français concis (1 phrase, 15-25 mots max, factuel, neutre) pour CHAQUE news listée plus haut, dans l'ordre des indices [0], [1], etc. Si une news est trop technique ou marginale, garde-la mais résume sa pertinence pour les marchés. Si aucune news n'a été fournie, retourne un tableau vide [].
+Pour `news_resumes_fr` : un résumé français concis (1 phrase, 15-25 mots max, factuel, neutre) pour CHAQUE news listée plus haut, dans l'ordre des indices [0], [1], etc. Le nombre exact de résumés DOIT correspondre au nombre de news fournies (variable selon le run — typiquement 4 à 6, mais peut être 0). Si une news est trop technique ou marginale, garde-la mais résume sa pertinence pour les marchés. Si aucune news n'a été fournie, retourne un tableau vide [].
 
 N'inclus que les décisions actionnables (achats et ventes). Les positions conservées sans changement n'ont pas besoin d'apparaître, sauf si tu veux commenter spécifiquement leur situation.
 """
@@ -778,12 +876,18 @@ def executer_decisions(decisions_claude, portfolio, watchlist, contexte, eur_usd
     Les prix unitaires restent en devise native pour l'affichage.
     Les règles mécaniques (Niveau 2) sont appliquées ici — elles bloquent les achats
     même si Claude a décidé d'acheter, garantissant leur caractère non négociable.
+
+    Retourne : (positions, liquidites, nouveaux_ordres, decisions_bloquees)
+      - decisions_bloquees : liste des décisions que Claude a proposées mais que les
+        règles mécaniques ont rejetées. Surfacé sur le site pour transparence
+        (sinon le lecteur voit Claude parler d'achats/ventes inexistants dans le journal).
     """
     positions   = portfolio.get("positions", [])
     liquidites  = portfolio.get("liquidites", CAPITAL_INITIAL)
     ordres      = portfolio.get("ordres", [])
     capital     = portfolio.get("capital_actuel", CAPITAL_INITIAL)
     nouveaux_ordres = []
+    decisions_bloquees = []  # transparence : Claude a tenté ces actions, les règles ont bloqué
     today = str(date.today())
 
     stock_map = {s["ticker"]: s for s in watchlist.get("stocks", [])}
@@ -845,11 +949,21 @@ def executer_decisions(decisions_claude, portfolio, watchlist, contexte, eur_usd
             is_catastrophe = dec.get("_stop_loss_type") == "catastrophe"
             if mode_panique and not is_catastrophe:
                 print(f"  ⚠️  VENTE {ticker} bloquée — mode panique (Règle 03)")
+                decisions_bloquees.append({
+                    "date": today, "action_tentee": "VENTE", "ticker": ticker, "nom": nom,
+                    "raison_claude": raison, "conviction": dec.get("conviction", "modérée"),
+                    "bloque_par": "R03", "explication_blocage": "Mode panique actif (CAC40 < -5% semaine) — aucune vente non-catastrophe possible",
+                })
                 continue
 
             pos = next((p for p in positions if p["ticker"] == ticker), None)
             if not pos:
                 print(f"  ⚠️  VENTE {ticker} — position introuvable")
+                decisions_bloquees.append({
+                    "date": today, "action_tentee": "VENTE", "ticker": ticker, "nom": nom,
+                    "raison_claude": raison, "conviction": dec.get("conviction", "modérée"),
+                    "bloque_par": "position_introuvable", "explication_blocage": f"Aucune position {ticker} dans le portefeuille — Claude a proposé une vente sur un titre non détenu",
+                })
                 continue
 
             date_achat = pos.get("date_achat", today)
@@ -862,6 +976,13 @@ def executer_decisions(decisions_claude, portfolio, watchlist, contexte, eur_usd
                     print(f"  ⏳ VENTE {ticker} bloquée — {jours}j < 90j et conviction non forte (Règle 01)")
                     raison = f"[BLOQUÉ — Règle 01 : {jours}j détenus < 90j requis] " + raison
                     dec["raison"] = raison
+                    decisions_bloquees.append({
+                        "date": today, "action_tentee": "VENTE", "ticker": ticker, "nom": nom,
+                        "raison_claude": dec.get("raison", "").replace("[BLOQUÉ — Règle 01 : ", "").split("] ", 1)[-1] if "[BLOQUÉ" in dec.get("raison", "") else dec.get("raison", ""),
+                        "conviction": conviction,
+                        "bloque_par": "R01", "explication_blocage": f"{jours}j détenus < 90j requis (R01) — la vente nécessite conviction='forte' avec un signal fondamental documenté pour bypasser",
+                        "jours_detention": jours,
+                    })
                     continue
 
             prix_vente = get_prix(ticker) or pos.get("prix_actuel", pos["prix_achat"])
@@ -897,20 +1018,30 @@ def executer_decisions(decisions_claude, portfolio, watchlist, contexte, eur_usd
         elif action == "ACHAT":
             if mode_panique:
                 print(f"  ⚠️  ACHAT {ticker} bloqué — mode panique (Règle 03)")
+                decisions_bloquees.append({
+                    "date": today, "action_tentee": "ACHAT", "ticker": ticker, "nom": nom,
+                    "raison_claude": raison, "conviction": dec.get("conviction", "modérée"),
+                    "bloque_par": "R03", "explication_blocage": "Mode panique actif (CAC40 < -5% sur la semaine) — aucun achat possible",
+                })
                 continue
 
             # Déjà en portefeuille ?
             if any(p["ticker"] == ticker for p in positions):
                 print(f"  ⚠️  ACHAT {ticker} — déjà en portefeuille, ignoré")
+                decisions_bloquees.append({
+                    "date": today, "action_tentee": "ACHAT", "ticker": ticker, "nom": nom,
+                    "raison_claude": raison, "conviction": dec.get("conviction", "modérée"),
+                    "bloque_par": "deja_en_portefeuille", "explication_blocage": f"{ticker} déjà détenu — Claude a proposé un achat sur une position existante (renforcement ?)",
+                })
                 continue
 
             # ── Règles mécaniques (enforcement — indépendant du raisonnement Claude)
             if regles_auto:
-                bloque = False
+                bloque_motif = None  # capture le motif de blocage pour log + transparence
                 # R3 — Liquidités < 5%
                 if any(r["type"] == "liquidites_faibles" for r in regles_auto):
                     print(f"  🚫 ACHAT {ticker} bloqué — liquidités < 5% (R3)")
-                    bloque = True
+                    bloque_motif = ("R03", "Liquidités < 5% du capital — achats bloqués jusqu'à reconstitution de la marge de manœuvre")
                 else:
                     # R1 — Cluster sectoriel surconcentré (regroupe Tech/Semi/Équip semi/Médias IA)
                     stock_tmp = stock_map.get(ticker, {})
@@ -921,8 +1052,14 @@ def executer_decisions(decisions_claude, portfolio, watchlist, contexte, eur_usd
                         for r in regles_auto
                     ):
                         print(f"  🚫 ACHAT {ticker} bloqué — cluster {cluster_tick} > 30% du portfolio (R1)")
-                        bloque = True
-                if bloque:
+                        bloque_motif = ("R01", f"Cluster {cluster_tick} > 30% du portefeuille — aucun achat supplémentaire dans ce cluster (concentration sectorielle)")
+                if bloque_motif:
+                    rule_id, expl = bloque_motif
+                    decisions_bloquees.append({
+                        "date": today, "action_tentee": "ACHAT", "ticker": ticker, "nom": nom,
+                        "raison_claude": raison, "conviction": dec.get("conviction", "modérée"),
+                        "bloque_par": rule_id, "explication_blocage": expl,
+                    })
                     continue
 
             # Allocation dynamique : slots calculés sur l'ensemble des achats décidés (order-independent)
@@ -942,11 +1079,21 @@ def executer_decisions(decisions_claude, portfolio, watchlist, contexte, eur_usd
             budget = min(capital * poids_cible, capital * POIDS_MAX, equal_weight, liquidites)
             if budget < 50:
                 print(f"  💰 ACHAT {ticker} — liquidités insuffisantes ({liquidites:.0f}€)")
+                decisions_bloquees.append({
+                    "date": today, "action_tentee": "ACHAT", "ticker": ticker, "nom": nom,
+                    "raison_claude": raison, "conviction": dec.get("conviction", "modérée"),
+                    "bloque_par": "budget_insuffisant", "explication_blocage": f"Budget calculé {budget:.0f}€ < seuil 50€ — liquidités {liquidites:.0f}€ trop faibles pour cet achat",
+                })
                 continue
 
             prix = get_prix(ticker)
             if not prix or prix <= 0:
                 print(f"  ✗ ACHAT {ticker} — prix indisponible")
+                decisions_bloquees.append({
+                    "date": today, "action_tentee": "ACHAT", "ticker": ticker, "nom": nom,
+                    "raison_claude": raison, "conviction": dec.get("conviction", "modérée"),
+                    "bloque_par": "prix_indisponible", "explication_blocage": f"yfinance n'a pas renvoyé de prix valide pour {ticker} — achat impossible à exécuter",
+                })
                 continue
 
             stock    = stock_map.get(ticker, {})
@@ -995,7 +1142,10 @@ def executer_decisions(decisions_claude, portfolio, watchlist, contexte, eur_usd
             nouveaux_ordres.append(ordre)
             print(f"  🟢 ACHAT {ticker} — {quantite} titres à {prix}{sym} = {montant_eur:.0f}€ (conviction {conviction})")
 
-    return positions, liquidites, nouveaux_ordres
+    if decisions_bloquees:
+        print(f"  ℹ️  {len(decisions_bloquees)} décision(s) Claude bloquée(s) par les règles mécaniques (cf. portfolio.json → decisions_bloquees)")
+
+    return positions, liquidites, nouveaux_ordres, decisions_bloquees
 
 # ── MAIN ─────────────────────────────────────────────────────────────────────
 def main():
@@ -1062,7 +1212,7 @@ def main():
 
     # ── Passe 2 : décisions (Sonnet — raisonnement complet avec contexte enrichi)
     print(f"   Passe 2 — décisions (Sonnet)…")
-    prompt = construire_prompt(portfolio, watchlist, contexte, analyse, macro_news)
+    prompt = construire_prompt(portfolio, watchlist, contexte, analyse, macro_news, regles_auto=regles_auto)
 
     try:
         response = client.messages.create(
@@ -1093,7 +1243,7 @@ Ne jamais inclure de balises markdown ou de backticks.""",
         decisions_claude = {"decisions": [], "analyse_macro": f"Erreur : {e}", "biais_detectes": [], "conviction_globale": "neutre"}
 
     # ── Exécution des décisions (avec enforcement mécanique Niveau 2)
-    positions, liquidites, nouveaux_ordres = executer_decisions(
+    positions, liquidites, nouveaux_ordres, decisions_bloquees = executer_decisions(
         decisions_claude, portfolio, watchlist, contexte, eur_usd, eur_gbp, regles_auto=regles_auto
     )
 
@@ -1156,6 +1306,11 @@ Ne jamais inclure de balises markdown ou de backticks.""",
         "ordres":              tous_ordres[:50],
         "biais_detectes":      decisions_claude.get("biais_detectes", []),
         "regles_actives":      regles_auto,
+        # Décisions tentées par Claude mais rejetées par les règles mécaniques.
+        # Surfacé sur le site pour éviter la dissonance entre l'analyse_macro
+        # (qui peut mentionner des décisions) et le journal des ordres (qui ne montre
+        # que les actions exécutées). Reset à chaque run — pas d'accumulation.
+        "decisions_bloquees":  decisions_bloquees,
         "nb_positions":        len(positions),
         "nb_positives":        len([p for p in positions if p.get("performance", 0) > 0]),
         "nb_negatives":        len([p for p in positions if p.get("performance", 0) < 0]),
@@ -1179,6 +1334,10 @@ Ne jamais inclure de balises markdown ou de backticks.""",
     print(f"\n✅ portfolio.json généré par Claude")
     print(f"   Capital : {capital_actuel:.0f}€ ({performance:+.1f}%) vs CAC40 {bench_cac:+.1f}%")
     print(f"   Ordres : {len(nouveaux_ordres)} ({sum(1 for o in nouveaux_ordres if o['type']=='ACHAT')} achats, {sum(1 for o in nouveaux_ordres if o['type']=='VENTE')} ventes)")
+    if decisions_bloquees:
+        print(f"   Bloquées : {len(decisions_bloquees)} décision(s) Claude rejetée(s) par les règles :")
+        for db in decisions_bloquees:
+            print(f"     ✗ {db['action_tentee']} {db['ticker']} — {db['bloque_par']} ({db['explication_blocage'][:80]})")
     print(f"   Analyse : {decisions_claude.get('conviction_globale','?')} — {decisions_claude.get('analyse_macro','')[:100]}…")
 
 if __name__ == "__main__":
