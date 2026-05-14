@@ -12,7 +12,7 @@
       "score": 88,
       "stars": 4,
       "badge": null,
-      "change": "up",
+      "change": "stable",
       "breakdown": {
         "momentum": 33,
         "fondamentaux": 50,
@@ -134,7 +134,7 @@
       "score": 80,
       "stars": 4,
       "badge": null,
-      "change": "up",
+      "change": "stable",
       "breakdown": {
         "momentum": 25,
         "fondamentaux": 50,
@@ -195,7 +195,7 @@
       "score": 79,
       "stars": 4,
       "badge": "GB",
-      "change": "up",
+      "change": "stable",
       "breakdown": {
         "momentum": 34,
         "fondamentaux": 40,
@@ -203,7 +203,7 @@
         "cross_regime": "golden",
         "cross_type": "golden",
         "cross_days_ago": 15,
-        "cross_spread_pct": 7.32,
+        "cross_spread_pct": 7.33,
         "cross_slope_mm21_pct": 0.21,
         "cross_volume_confirmed": false,
         "signal_dynamics_warning": "",
@@ -212,13 +212,13 @@
         "vol_pts": 5,
         "reg_pts": 0,
         "val_pts": 1,
-        "drawdown_52w_pct": -21.2,
+        "drawdown_52w_pct": -21.1,
         "high_52w": 115.98,
         "fibo": null,
-        "rsi": 46.3,
+        "rsi": 46.6,
         "mm21": 94.87,
         "mm200": 88.4,
-        "regression_z": -1.15,
+        "regression_z": -1.14,
         "regression_signal": "sous tendance",
         "regression_pente_pct": 16.2,
         "regression_window_years": 20,
@@ -243,7 +243,7 @@
       "score": 78,
       "stars": 4,
       "badge": null,
-      "change": "up",
+      "change": "stable",
       "breakdown": {
         "momentum": 28,
         "fondamentaux": 50,
@@ -426,7 +426,7 @@
       "score": 76,
       "stars": 4,
       "badge": "GB",
-      "change": "up",
+      "change": "stable",
       "breakdown": {
         "momentum": 26,
         "fondamentaux": 45,
@@ -435,7 +435,7 @@
         "cross_type": "golden",
         "cross_days_ago": 191,
         "cross_spread_pct": 5.07,
-        "cross_slope_mm21_pct": -2.45,
+        "cross_slope_mm21_pct": -2.46,
         "cross_volume_confirmed": false,
         "signal_dynamics_warning": "",
         "cross_pts": 8,
@@ -443,13 +443,13 @@
         "vol_pts": 0,
         "reg_pts": 5,
         "val_pts": 3,
-        "drawdown_52w_pct": -10.9,
+        "drawdown_52w_pct": -11.0,
         "high_52w": 155.42,
         "fibo": {
           "swing_low": 101.18,
           "swing_high": 155.42,
           "rally_pct": 53.6,
-          "retrace_pct": 31.2,
+          "retrace_pct": 31.5,
           "closest_fibo": "zone Fibo 23.6%",
           "fibo_levels": {
             "23.6": 142.62,
@@ -459,10 +459,10 @@
             "78.6": 112.79
           }
         },
-        "rsi": 46.0,
-        "mm21": 140.33,
+        "rsi": 45.7,
+        "mm21": 140.32,
         "mm200": 133.56,
-        "regression_z": 0.6,
+        "regression_z": 0.59,
         "regression_signal": "neutre",
         "regression_pente_pct": 9.3,
         "regression_window_years": 20,
@@ -476,7 +476,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 76/100 — cours proche de sa droite de régression, RSI en zone favorable, correction modérée -10.9% sous le top (zone Fibo 23.6%), croissance CA modérée (12%/an), marges excellentes (17%), consensus analystes très favorable.",
+      "justification": "Score 76/100 — cours proche de sa droite de régression, RSI en zone favorable, correction modérée -11.0% sous le top (zone Fibo 23.6%), croissance CA modérée (12%/an), marges excellentes (17%), consensus analystes très favorable.",
       "rank": 8
     },
     {
@@ -535,7 +535,7 @@
       "score": 75,
       "stars": 4,
       "badge": null,
-      "change": "new",
+      "change": "stable",
       "breakdown": {
         "momentum": 30,
         "fondamentaux": 40,
@@ -596,7 +596,7 @@
       "score": 74,
       "stars": 3,
       "badge": null,
-      "change": "new",
+      "change": "stable",
       "breakdown": {
         "momentum": 38,
         "fondamentaux": 33,
@@ -604,8 +604,8 @@
         "cross_regime": "golden",
         "cross_type": "golden",
         "cross_days_ago": 20,
-        "cross_spread_pct": 5.52,
-        "cross_slope_mm21_pct": 0.56,
+        "cross_spread_pct": 5.54,
+        "cross_slope_mm21_pct": 0.57,
         "cross_volume_confirmed": false,
         "signal_dynamics_warning": "",
         "cross_pts": 18,
@@ -613,13 +613,13 @@
         "vol_pts": 5,
         "reg_pts": 5,
         "val_pts": 0,
-        "drawdown_52w_pct": -0.7,
+        "drawdown_52w_pct": -0.4,
         "high_52w": 377.43,
         "fibo": {
           "swing_low": 318.73,
           "swing_high": 377.43,
           "rally_pct": 18.4,
-          "retrace_pct": 4.3,
+          "retrace_pct": 2.3,
           "closest_fibo": "< Fibo 23.6%",
           "fibo_levels": {
             "23.6": 363.58,
@@ -629,10 +629,10 @@
             "78.6": 331.29
           }
         },
-        "rsi": 58.3,
-        "mm21": 371.07,
-        "mm200": 351.64,
-        "regression_z": 1.25,
+        "rsi": 59.2,
+        "mm21": 371.13,
+        "mm200": 351.65,
+        "regression_z": 1.27,
         "regression_signal": "au-dessus",
         "regression_pente_pct": 10.9,
         "regression_window_years": 20,
@@ -646,7 +646,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 74/100 — Golden Cross récent (20j), légèrement au-dessus de sa régression (+1.2σ), RSI en zone favorable, ⚠ près du top 52w (-0.7%) — chase de rally pénalisée, croissance CA modérée (9%/an), marges positives.",
+      "justification": "Score 74/100 — Golden Cross récent (20j), légèrement au-dessus de sa régression (+1.3σ), RSI en zone favorable, ⚠ près du top 52w (-0.4%) — chase de rally pénalisée, croissance CA modérée (9%/an), marges positives.",
       "rank": 11
     },
     {
@@ -718,7 +718,7 @@
       "score": 74,
       "stars": 3,
       "badge": null,
-      "change": "new",
+      "change": "stable",
       "breakdown": {
         "momentum": 19,
         "fondamentaux": 50,
@@ -949,7 +949,7 @@
       "score": 73,
       "stars": 3,
       "badge": "EU",
-      "change": "down",
+      "change": "stable",
       "breakdown": {
         "momentum": 23,
         "fondamentaux": 45,
@@ -957,7 +957,7 @@
         "cross_regime": "golden",
         "cross_type": "golden",
         "cross_days_ago": 166,
-        "cross_spread_pct": 27.33,
+        "cross_spread_pct": 27.34,
         "cross_slope_mm21_pct": 1.19,
         "cross_volume_confirmed": true,
         "signal_dynamics_warning": "",
@@ -967,25 +967,25 @@
         "reg_pts": 5,
         "val_pts": 0,
         "drawdown_52w_pct": 0.0,
-        "high_52w": 1337.4,
+        "high_52w": 1339.8,
         "fibo": {
           "swing_low": 589.76,
-          "swing_high": 1337.4,
-          "rally_pct": 126.8,
+          "swing_high": 1339.8,
+          "rally_pct": 127.2,
           "retrace_pct": 0.0,
           "closest_fibo": "< Fibo 23.6%",
           "fibo_levels": {
-            "23.6": 1160.96,
-            "38.2": 1051.8,
-            "50.0": 963.58,
-            "61.8": 875.36,
-            "78.6": 749.75
+            "23.6": 1162.79,
+            "38.2": 1053.28,
+            "50.0": 964.78,
+            "61.8": 876.27,
+            "78.6": 750.27
           }
         },
-        "rsi": 61.3,
-        "mm21": 1250.41,
-        "mm200": 982.03,
-        "regression_z": 0.39,
+        "rsi": 61.5,
+        "mm21": 1250.53,
+        "mm200": 982.04,
+        "regression_z": 0.4,
         "regression_signal": "neutre",
         "regression_pente_pct": 25.3,
         "regression_window_years": 10,
@@ -1010,7 +1010,7 @@
       "score": 73,
       "stars": 3,
       "badge": "EU",
-      "change": "new",
+      "change": "stable",
       "breakdown": {
         "momentum": 30,
         "fondamentaux": 40,
@@ -1188,8 +1188,8 @@
         "cross_regime": "golden",
         "cross_type": "golden",
         "cross_days_ago": 18,
-        "cross_spread_pct": 4.05,
-        "cross_slope_mm21_pct": 0.01,
+        "cross_spread_pct": 4.07,
+        "cross_slope_mm21_pct": 0.03,
         "cross_volume_confirmed": false,
         "signal_dynamics_warning": "",
         "cross_pts": 18,
@@ -1197,13 +1197,13 @@
         "vol_pts": 0,
         "reg_pts": 5,
         "val_pts": 5,
-        "drawdown_52w_pct": -4.6,
+        "drawdown_52w_pct": -4.3,
         "high_52w": 40.95,
         "fibo": null,
-        "rsi": 53.9,
+        "rsi": 54.7,
         "mm21": 39.06,
         "mm200": 37.54,
-        "regression_z": 1.14,
+        "regression_z": 1.16,
         "regression_signal": "au-dessus",
         "regression_pente_pct": 9.0,
         "regression_window_years": 20,
@@ -1217,7 +1217,7 @@
           "Finnhub"
         ]
       },
-      "justification": "Score 71/100 — Golden Cross récent (18j), légèrement au-dessus de sa régression (+1.1σ), RSI en zone favorable, pullback sain -4.6% sous le top 52w (zone d'entrée idéale), marges positives, consensus analystes très favorable.",
+      "justification": "Score 71/100 — Golden Cross récent (18j), légèrement au-dessus de sa régression (+1.2σ), RSI en zone favorable, pullback sain -4.3% sous le top 52w (zone d'entrée idéale), marges positives, consensus analystes très favorable.",
       "rank": 21
     },
     {
@@ -1330,6 +1330,67 @@
       "rank": 23
     },
     {
+      "ticker": "SU.PA",
+      "name": "SCHNEIDER ELECTRIC SE",
+      "market": "PAR",
+      "sector": "Industrie",
+      "score": 69,
+      "stars": 3,
+      "badge": "EU",
+      "change": "new",
+      "breakdown": {
+        "momentum": 36,
+        "fondamentaux": 28,
+        "analystes": 5,
+        "cross_regime": "golden",
+        "cross_type": "golden",
+        "cross_days_ago": 158,
+        "cross_spread_pct": 12.73,
+        "cross_slope_mm21_pct": 1.19,
+        "cross_volume_confirmed": false,
+        "signal_dynamics_warning": "",
+        "cross_pts": 11,
+        "rsi_pts": 10,
+        "vol_pts": 5,
+        "reg_pts": 5,
+        "val_pts": 5,
+        "drawdown_52w_pct": -3.0,
+        "high_52w": 278.34,
+        "fibo": {
+          "swing_low": 206.81,
+          "swing_high": 278.34,
+          "rally_pct": 34.6,
+          "retrace_pct": 11.8,
+          "closest_fibo": "< Fibo 23.6%",
+          "fibo_levels": {
+            "23.6": 261.46,
+            "38.2": 251.02,
+            "50.0": 242.58,
+            "61.8": 234.14,
+            "78.6": 222.12
+          }
+        },
+        "rsi": 54.8,
+        "mm21": 268.57,
+        "mm200": 238.24,
+        "regression_z": 1.31,
+        "regression_signal": "au-dessus",
+        "regression_pente_pct": 12.4,
+        "regression_window_years": 20,
+        "rev_growth_pct": 4.2,
+        "net_margin_pct": 10.4,
+        "fcf_margin_pct": 9.9,
+        "death_pen": 0,
+        "confiance": 1.0,
+        "sources": [
+          "Yahoo Finance",
+          "Finnhub"
+        ]
+      },
+      "justification": "Score 69/100 — légèrement au-dessus de sa régression (+1.3σ), RSI en zone favorable, pullback sain -3.0% sous le top 52w (zone d'entrée idéale, < Fibo 23.6%), marges positives, consensus analystes très favorable.",
+      "rank": 24
+    },
+    {
       "ticker": "INTU",
       "name": "Intuit Inc.",
       "market": "NMS",
@@ -1337,7 +1398,7 @@
       "score": 69,
       "stars": 3,
       "badge": null,
-      "change": "down",
+      "change": "stable",
       "breakdown": {
         "momentum": 14,
         "fondamentaux": 50,
@@ -1388,133 +1449,40 @@
         ]
       },
       "justification": "Score 69/100 — prix sous sa droite de régression (-4.1σ), RSI en zone favorable, ⚠ -53.6% sous le top 52w — trend probablement cassée, croissance CA solide (17%/an), marges excellentes (22%), consensus analystes très favorable.",
-      "rank": 24
-    },
-    {
-      "ticker": "CRM",
-      "name": "Salesforce, Inc.",
-      "market": "NYQ",
-      "sector": "Technologie",
-      "score": 67,
-      "stars": 3,
-      "badge": null,
-      "change": "down",
-      "breakdown": {
-        "momentum": 12,
-        "fondamentaux": 50,
-        "analystes": 5,
-        "cross_regime": "death",
-        "cross_type": "death",
-        "cross_days_ago": 78,
-        "cross_spread_pct": -19.45,
-        "cross_slope_mm21_pct": 0.71,
-        "cross_volume_confirmed": true,
-        "signal_dynamics_warning": "",
-        "cross_pts": 2,
-        "rsi_pts": 5,
-        "vol_pts": 5,
-        "reg_pts": 0,
-        "val_pts": 0,
-        "drawdown_52w_pct": -42.6,
-        "high_52w": 288.99,
-        "fibo": null,
-        "rsi": 36.7,
-        "mm21": 180.72,
-        "mm200": 224.37,
-        "regression_z": -2.95,
-        "regression_signal": "survente",
-        "regression_pente_pct": 12.3,
-        "regression_window_years": 10,
-        "rev_growth_pct": 12.1,
-        "net_margin_pct": 18.0,
-        "fcf_margin_pct": 39.4,
-        "death_pen": 0,
-        "confiance": 1.0,
-        "sources": [
-          "Yahoo Finance",
-          "Finnhub"
-        ]
-      },
-      "justification": "Score 67/100 — prix sous sa droite de régression (-3.0σ), RSI en zone favorable, ⚠ -42.6% sous le top 52w — trend probablement cassée, croissance CA modérée (12%/an), marges excellentes (18%), consensus analystes très favorable.",
       "rank": 25
     }
   ],
   "changelog": [
     {
       "action": "in",
-      "ticker": "PANW",
-      "name": "Palo Alto Networks, In",
-      "score": 75,
-      "reason": "Score 75/100 — Golden Cross frais (0j) — fenêtre signal optimale, cours proche de sa droite de régression, ⚠ près du top 52w (+0.0%) — chase de rally pénalisée, croissance CA modérée (15%/an), marges positives, consensus analystes très favorable."
-    },
-    {
-      "action": "in",
-      "ticker": "ALV.DE",
-      "name": "Allianz SE            ",
-      "score": 74,
-      "reason": "Score 74/100 — Golden Cross récent (20j), légèrement au-dessus de sa régression (+1.2σ), RSI en zone favorable, ⚠ près du top 52w (-0.7%) — chase de rally pénalisée, croissance CA modérée (9%/an), marges positives."
-    },
-    {
-      "action": "in",
-      "ticker": "NFLX",
-      "name": "Netflix, Inc.",
-      "score": 74,
-      "reason": "Score 74/100 — cours proche de sa droite de régression, RSI en zone favorable, ⚠ -34.6% sous le top 52w — trend probablement cassée, croissance CA solide (16%/an), marges excellentes (29%), consensus analystes très favorable."
-    },
-    {
-      "action": "in",
-      "ticker": "VWS.CO",
-      "name": "Vestas Wind Systems A/",
-      "score": 73,
-      "reason": "Score 73/100 — cours proche de sa droite de régression, RSI en zone favorable, pullback sain -5.1% sous le top 52w (zone d'entrée idéale, < Fibo 23.6%), croissance CA modérée (14%/an), marges positives, consensus analystes positif."
-    },
-    {
-      "action": "out",
-      "ticker": "DB1.DE",
-      "name": "DEUTSCHE BOERSE AG    ",
-      "score": 73,
-      "new_score": 62,
-      "reason": "Score en forte baisse : 73 → 62 (-11 pts)."
-    },
-    {
-      "action": "out",
-      "ticker": "SPGI",
-      "name": "S&P Global Inc.",
-      "score": 73,
-      "new_score": 63,
-      "reason": "Score en forte baisse : 73 → 63 (-10 pts) · Death Cross confirmé (64j) — régime baissier persistant · Momentum quasi-nul (8/40) — tendance qui s'essouffle."
-    },
-    {
-      "action": "out",
-      "ticker": "ADYEN.AS",
-      "name": "ADYEN",
-      "score": 71,
-      "new_score": 66,
-      "reason": "Score en baisse : 71 → 66 (-5 pts) · Momentum quasi-nul (14/40) — tendance qui s'essouffle."
-    },
-    {
-      "action": "out",
-      "ticker": "SAP.DE",
-      "name": "SAP SE                ",
+      "ticker": "SU.PA",
+      "name": "SCHNEIDER ELECTRIC SE",
       "score": 69,
-      "new_score": 64,
-      "reason": "Score en baisse : 69 → 64 (-5 pts) · Momentum quasi-nul (14/40) — tendance qui s'essouffle."
+      "reason": "Score 69/100 — légèrement au-dessus de sa régression (+1.3σ), RSI en zone favorable, pullback sain -3.0% sous le top 52w (zone d'entrée idéale, < Fibo 23.6%), marges positives, consensus analystes très favorable."
+    },
+    {
+      "action": "out",
+      "ticker": "CRM",
+      "name": "Salesforce, Inc.",
+      "score": 67,
+      "new_score": 67,
+      "reason": "Score stable (67 → 67) — d'autres titres ont simplement mieux scoré cette semaine · Death Cross confirmé (78j) — régime baissier persistant · Momentum quasi-nul (12/40) — tendance qui s'essouffle."
     }
   ],
   "concentration_alerts": [
-    "Technologie : 12 titres sur 25",
+    "Technologie : 11 titres sur 25",
     "Finance : 6 titres sur 25",
     "Santé : 3 titres sur 25",
     "Médias & IA : 2 titres sur 25",
-    "Conso. cycl. : 1 titre sur 25",
-    "Industrie : 1 titre sur 25"
+    "Industrie : 2 titres sur 25",
+    "Conso. cycl. : 1 titre sur 25"
   ],
   "sector_distribution": {
-    "Technologie": 12,
+    "Technologie": 11,
     "Finance": 6,
     "Santé": 3,
     "Médias & IA": 2,
-    "Conso. cycl.": 1,
-    "Industrie": 1
+    "Industrie": 2,
+    "Conso. cycl.": 1
   }
 }
