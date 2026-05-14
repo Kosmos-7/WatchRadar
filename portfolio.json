@@ -2,13 +2,13 @@
   "updated_at": "2026-05-14",
   "week": "Sem. 20 · 2026",
   "capital_initial": 20000.0,
-  "capital_actuel": 22995.21,
-  "performance": 14.98,
-  "benchmark_cac40": -1.79,
-  "benchmark_msci": 8.78,
-  "vs_benchmark": 6.2,
+  "capital_actuel": 23010.03,
+  "performance": 15.05,
+  "benchmark_cac40": -1.7,
+  "benchmark_msci": 8.79,
+  "vs_benchmark": 6.26,
   "mode_panique": false,
-  "perf_cac_semaine": -0.79,
+  "perf_cac_semaine": -0.7,
   "positions": [
     {
       "ticker": "ASML.AS",
@@ -18,11 +18,11 @@
       "currency": "EUR",
       "date_achat": "2026-01-02",
       "prix_achat": 650.0,
-      "prix_actuel": 1338.8,
+      "prix_actuel": 1340.4,
       "quantite": 3,
       "montant_investi": 1950.0,
-      "valeur_actuelle": 4016.4,
-      "performance": 105.97,
+      "valeur_actuelle": 4021.2,
+      "performance": 106.22,
       "score_entree": 88,
       "poids": 17.5
     },
@@ -37,8 +37,8 @@
       "prix_actuel": 225.83,
       "quantite": 20,
       "montant_investi": 1957.1,
-      "valeur_actuelle": 3855.07,
-      "performance": 96.98,
+      "valeur_actuelle": 3855.73,
+      "performance": 97.01,
       "score_entree": 94,
       "poids": 16.8
     },
@@ -53,8 +53,8 @@
       "prix_actuel": 445.5,
       "quantite": 3,
       "montant_investi": 875.82,
-      "valeur_actuelle": 1140.75,
-      "performance": 30.25,
+      "valeur_actuelle": 1140.94,
+      "performance": 30.27,
       "score_entree": 85,
       "poids": 5.0
     },
@@ -69,8 +69,8 @@
       "prix_actuel": 1015.75,
       "quantite": 1,
       "montant_investi": 827.79,
-      "valeur_actuelle": 866.98,
-      "performance": 4.73,
+      "valeur_actuelle": 867.12,
+      "performance": 4.75,
       "score_entree": 89,
       "poids": 3.8
     },
@@ -85,8 +85,8 @@
       "prix_actuel": 270.13,
       "quantite": 2,
       "montant_investi": 441.24,
-      "valeur_actuelle": 461.13,
-      "performance": 4.51,
+      "valeur_actuelle": 461.21,
+      "performance": 4.53,
       "score_entree": 90,
       "poids": 2.0
     },
@@ -101,8 +101,8 @@
       "prix_actuel": 1094.1,
       "quantite": 1,
       "montant_investi": 902.77,
-      "valeur_actuelle": 933.85,
-      "performance": 3.44,
+      "valeur_actuelle": 934.01,
+      "performance": 3.46,
       "score_entree": 93,
       "poids": 4.1
     },
@@ -117,8 +117,8 @@
       "prix_actuel": 416.79,
       "quantite": 1,
       "montant_investi": 351.6,
-      "valeur_actuelle": 355.74,
-      "performance": 1.18,
+      "valeur_actuelle": 355.81,
+      "performance": 1.2,
       "score_entree": 100,
       "poids": 1.5
     },
@@ -133,8 +133,8 @@
       "prix_actuel": 616.63,
       "quantite": 2,
       "montant_investi": 1044.14,
-      "valeur_actuelle": 1052.63,
-      "performance": 0.81,
+      "valeur_actuelle": 1052.81,
+      "performance": 0.83,
       "score_entree": 84,
       "poids": 4.6
     },
@@ -146,11 +146,11 @@
       "currency": "EUR",
       "date_achat": "2026-04-30",
       "prix_achat": 180.58,
-      "prix_actuel": 179.82,
+      "prix_actuel": 180.08,
       "quantite": 3,
       "montant_investi": 541.74,
-      "valeur_actuelle": 539.46,
-      "performance": -0.42,
+      "valeur_actuelle": 540.24,
+      "performance": -0.28,
       "score_entree": 91,
       "poids": 2.3
     },
@@ -162,11 +162,11 @@
       "currency": "GBP",
       "date_achat": "2026-05-07",
       "prix_achat": 92.16,
-      "prix_actuel": 91.48,
+      "prix_actuel": 91.76,
       "quantite": 14,
       "montant_investi": 1492.64,
-      "valeur_actuelle": 1478.21,
-      "performance": -0.97,
+      "valeur_actuelle": 1482.73,
+      "performance": -0.66,
       "score_entree": 83,
       "raison_achat": "Score 83/100 avec Golden Cross frais (9j) — fenêtre signal optimale — et prix sous régression (-1.1σ), offrant un point d'entrée encore favorable avant retour à la moyenne. Secteur financier infrastructure de marché défensif, non représenté dans le portefeuille. Les liquidités disponibles (3173€) permettent une entrée initiale mesurée.",
       "poids": 6.4
@@ -182,8 +182,8 @@
       "prix_actuel": 320.31,
       "quantite": 2,
       "montant_investi": 562.59,
-      "valeur_actuelle": 546.79,
-      "performance": -2.81,
+      "valeur_actuelle": 546.88,
+      "performance": -2.79,
       "score_entree": 93,
       "poids": 2.4
     },
@@ -198,8 +198,8 @@
       "prix_actuel": 300.25,
       "quantite": 2,
       "montant_investi": 534.0,
-      "valeur_actuelle": 512.55,
-      "performance": -4.02,
+      "valeur_actuelle": 512.63,
+      "performance": -4.0,
       "score_entree": 95,
       "poids": 2.2
     },
@@ -214,8 +214,8 @@
       "prix_actuel": 87.05,
       "quantite": 14,
       "montant_investi": 1095.08,
-      "valeur_actuelle": 1040.2,
-      "performance": -5.01,
+      "valeur_actuelle": 1040.38,
+      "performance": -5.0,
       "score_entree": 82,
       "raison_achat": "Score watchlist 82/100 avec un z=-3.4σ sous sa droite de régression — la décote est significative et représente une opportunité d'entrée à prix compressé. Death Cross présent depuis 190j mais RSI en zone favorable et croissance CA solide suggèrent un potentiel de retour vers la moyenne. Avec 5486€ de liquidités disponibles, j'achète 1 titre pour initier une position sans surpondérer un seul secteur tech.",
       "poids": 4.5
@@ -231,8 +231,8 @@
       "prix_actuel": 406.94,
       "quantite": 1,
       "montant_investi": 366.37,
-      "valeur_actuelle": 347.34,
-      "performance": -5.19,
+      "valeur_actuelle": 347.4,
+      "performance": -5.18,
       "score_entree": 93,
       "poids": 1.5
     },
@@ -247,8 +247,8 @@
       "prix_actuel": 371.71,
       "quantite": 3,
       "montant_investi": 1015.86,
-      "valeur_actuelle": 951.8,
-      "performance": -6.31,
+      "valeur_actuelle": 951.96,
+      "performance": -6.29,
       "score_entree": 82,
       "raison_achat": "Score 82/100, z=-3.6σ sous régression — la décote est la plus marquée de la watchlist, similaire à NOW. Death Cross depuis 129j mais croissance CA solide et RSI favorable signalent une divergence bullish potentielle. L'achat d'1 titre mobilise ~400-500€ (estimation) et diversifie sur le secteur fintech/software hors positions déjà lourdes en semi-conducteurs.",
       "poids": 4.1
@@ -261,11 +261,11 @@
       "currency": "EUR",
       "date_achat": "2026-05-05",
       "prix_achat": 261.9,
-      "prix_actuel": 241.4,
+      "prix_actuel": 241.9,
       "quantite": 4,
       "montant_investi": 1047.6,
-      "valeur_actuelle": 965.6,
-      "performance": -7.83,
+      "valeur_actuelle": 967.6,
+      "performance": -7.64,
       "score_entree": 84,
       "poids": 4.2
     },
@@ -277,11 +277,11 @@
       "currency": "EUR",
       "date_achat": "2026-04-30",
       "prix_achat": 958.5,
-      "prix_actuel": 880.7,
+      "prix_actuel": 881.2,
       "quantite": 1,
       "montant_investi": 958.5,
-      "valeur_actuelle": 880.7,
-      "performance": -8.12,
+      "valeur_actuelle": 881.2,
+      "performance": -8.06,
       "score_entree": 93,
       "poids": 3.8
     },
@@ -296,15 +296,15 @@
       "prix_actuel": 165.84,
       "quantite": 7,
       "montant_investi": 1079.26,
-      "valeur_actuelle": 990.85,
-      "performance": -8.19,
+      "valeur_actuelle": 991.02,
+      "performance": -8.18,
       "score_entree": 80,
       "raison_achat": "CRM score 80/100, z=-2.4σ sous régression avec Death Cross mais RSI favorable et croissance CA modérée — profil similaire à NOW/INTU mais avec moins d'écart de régression. Les liquidités disponibles (3375€) permettent l'achat d'environ 1-2 titres à ~200-250€ estimé. La semaine macro est haussière (+2.1% MSCI World) et le portefeuille surperforme largement le benchmark (+11.4pp YTD), ce qui autorise une prise de risque mesurée sur une décote fondamentale documentée. Achat de 2 titres recommandé pour conserver des liquidités de sécurité.",
       "poids": 4.3
     }
   ],
   "liquidites": 2059.16,
-  "pct_liquidites": 9.0,
+  "pct_liquidites": 8.9,
   "ordres": [
     {
       "date": "2026-05-07",
@@ -1020,10 +1020,8 @@
     }
   ],
   "biais_detectes": [
-    "Resulting bias inversé (NOW/INTU) : rationalisation post-hoc de ventes avec les mêmes signaux qui avaient motivé les achats 24h plus tôt",
-    "Anchoring sur score screener : plusieurs achats récents basés sur score élevé sans thèse documentée — scores screener utilisés comme substitut d'analyse fondamentale",
-    "Suractivité (overtrading) : 17 transactions en 15 jours, plusieurs aller-retours sur les mêmes titres — bruit vs signal difficile à discriminer dans la fréquence actuelle",
-    "Biais de récence inflationniste : risque de surpondérer les news macro du jour (PPI hot) dans les décisions alors que le signal technique reste la source principale du screener"
+    "Aller-retour incohérent (resulting bias) : NOW et INTU vendus puis rachetés sur les mêmes signaux relus différemment — pattern identifié et neutralisé cette semaine",
+    "Tentation FOMO sur PANW (Golden Cross Day-0, pente forte) malgré saturation du cluster Tech&IA — règle de concentration a prévenu l'excès"
   ],
   "regles_actives": [
     {
@@ -1033,18 +1031,35 @@
       "bloque": true
     }
   ],
+  "decisions_bloquees": [],
   "nb_positions": 18,
   "nb_positives": 8,
   "nb_negatives": 10,
   "nb_neutres": 0,
   "macro_news": [
     {
+      "headline": "10-year Treasury yield hits new high for the year after very hot producer prices reading",
+      "summary": "Treasury yields climbed after a hotter-than-expected reading on the producer price index.",
+      "date": "2026-05-13",
+      "source": "CNBC",
+      "url": "https://www.cnbc.com/2026/05/13/treasury-yields-fall-as-investors-digest-hotter-than-expected-cpi-data.html",
+      "resume_fr": "Le rendement du bon du Trésor américain à 10 ans atteint un nouveau record annuel après un indice des prix producteurs (PPI) bien supérieur aux attentes."
+    },
+    {
+      "headline": "Stressed crude oil market looks to Xi-Trump summit for Iran help - Reuters",
+      "summary": "Stressed crude oil market looks to Xi-Trump summit for Iran help  Reuters",
+      "date": "2026-05-14",
+      "source": "Reuters",
+      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxNb3hmRVBZX1pVY09UblFUVEZoTE05eVBmWkpkMGhvSlVIZldtM093X0R4X21OQmx3UU05Zmg0enFKaGZKV2RqLUl4TEx2NjFZWGc2WXY0V1ZxbEpZeUtzeWtJa3hDWFZUVkpuamR3NXMzN0xyOElJbHRvWnl4Zl9sY3lPc1NyTjJJM190TVVqVDdzUHVMTHc2ODVCLWlHcjB6S2V2dGI2VFBBR091aDFlbzNJNzQxRFBwUmJQUi1GZzd6ZkJD?oc=5",
+      "resume_fr": "Le marché pétrolier sous tension attend le sommet Xi-Trump pour une éventuelle désescalade sur le dossier iranien."
+    },
+    {
       "headline": "Global oil shock from Iran war may require ECB hikes, Lane says - Reuters",
       "summary": "Global oil shock from Iran war may require ECB hikes, Lane says  Reuters",
       "date": "2026-05-13",
       "source": "Reuters",
       "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQOVdFbUVNU1BxYVZKd1ktaWpWWVp0X2dSbmg3OWZpOHBFcG8yNURXWDZJZ3RlZEw4ODFlUHQ3OXFZZkxnclJ4Qi0yMXh6QjYwaGJLQkZnOTU3SzBJNGVmQ0tRYy1hbVBlcXVEMU1qTjR3dHpkQW04d1ZkV2ttU09oTVRjRVdsMkt0Z1RBUG5pRU1WRUVjQ3pxdUxfNnQ4c0dna1B1SGZXajMwSGNCWjVB?oc=5",
-      "resume_fr": "Philip Lane (BCE) avertit qu'un choc pétrolier lié à un conflit avec l'Iran pourrait contraindre la BCE à relever ses taux directeurs."
+      "resume_fr": "La BCE pourrait être contrainte de relever ses taux en cas de choc pétrolier lié à un conflit avec l'Iran, selon le chef économiste Philip Lane."
     },
     {
       "headline": "This stock is our favorite way to hedge against the pickup in inflation",
@@ -1052,30 +1067,30 @@
       "date": "2026-05-13",
       "source": "CNBC",
       "url": "https://www.cnbc.com/2026/05/13/this-stock-is-our-favorite-way-to-hedge-against-the-pickup-in-inflation.html",
-      "resume_fr": "Le club d'investissement CNBC identifie une action comme couverture préférée contre une résurgence de l'inflation aux États-Unis."
+      "resume_fr": "CNBC recommande une action spécifique comme couverture contre la remontée de l'inflation, sans divulguer le nom du titre dans le titre de la dépêche."
     },
     {
-      "headline": "10-year Treasury yield hits new high for the year after very hot producer prices reading",
-      "summary": "Treasury yields climbed after a hotter-than-expected reading on the producer price index.",
+      "headline": "RBI Governor sees fuel price hike if crude oil stays high",
+      "summary": "His remarks came after Prime Minister Narendra Modi urged voluntary austerity, including cutting down on petrol and diesel use and putting off gold purchases, to preserve foreign exchange reserves.",
       "date": "2026-05-13",
-      "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/05/13/treasury-yields-fall-as-investors-digest-hotter-than-expected-cpi-data.html",
-      "resume_fr": "Les rendements du Treasury 10 ans atteignent un nouveau plus haut annuel après une lecture de l'indice des prix producteurs (PPI) plus chaude qu'attendu."
+      "source": "Bloomberg",
+      "url": "https://www.bloomberg.com/news/articles/2026-05-13/india-s-rbi-governor-sees-fuel-price-hike-if-oil-stays-high",
+      "resume_fr": "Le gouverneur de la Reserve Bank of India anticipe une hausse des prix du carburant si les cours du brut restent élevés."
     },
     {
-      "headline": "Global equities rise with the dollar, bond yields as US inflation soars - Reuters",
-      "summary": "Global equities rise with the dollar, bond yields as US inflation soars  Reuters",
-      "date": "2026-05-13",
-      "source": "Reuters",
-      "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE9WQ2g4TE51V0FmWDBZOFVjQVhDbVphVXVWQzVmV1RLY01taHBramJiaVNPTUdHZVZTQWtwWExtM2NUSW9fVkVLN2p4UzRMWUNla01KWnNYQVdLR3hlMUhxWlZqZEhQQnIxaThhVXQxNk44Sks1VXZHSkhEVQ?oc=5",
-      "resume_fr": "Les marchés actions mondiaux progressent en même temps que le dollar et les rendements obligataires, portés par une forte lecture de l'inflation américaine."
+      "headline": "Netflix spent $135 billion on films, TV shows in past 10 years",
+      "summary": "The streaming TV pioneer has been on a bit of a charm offensive lately after receiving criticism from the Hollywood community over its attempt to buy Warner Bros. Discovery Inc",
+      "date": "2026-05-12",
+      "source": "Bloomberg",
+      "url": "https://www.bloomberg.com/news/articles/2026-05-12/netflix-spent-135-billion-on-films-tv-shows-in-past-10-years",
+      "resume_fr": "Netflix a dépensé 135 milliards de dollars en contenus (films et séries) au cours des dix dernières années, selon Bloomberg."
     }
   ],
   "analyse_claude": {
-    "analyse_macro": "Cette semaine du 7 au 14 mai, les marchés ont digéré deux chocs de données consécutifs : un PPI américain plus chaud qu'attendu mercredi et un commentaire de Philip Lane (BCE) évoquant que *'un choc pétrolier global lié à un conflit avec l'Iran pourrait contraindre la BCE à relever ses taux'* — deux signaux qui, ensemble, remettent en cause le scénario de baisse rapide des taux des deux côtés de l'Atlantique. Les rendements du T-Note 10 ans ont touché un nouveau plus haut annuel dans la foulée.\n\nConcrètement pour le portefeuille : les positions financières (JPM, V, BLK, LSEG.L) et tech à multiples élevés (CRM, NOW, INTU) subissent une pression mécanique — la hausse des taux réels comprime les valorisations. Ce n'est pas une raison de vendre en panique, mais c'est un contexte qui justifie d'éviter tout renforcement non structurel cette semaine.\n\nLes chiffres clés au 14 mai : capital à 22 997€, performance cumulée depuis la création à +14.98%, alpha vs MSCI World à +6.23 points de pourcentage. Le MSCI World gagne +1.3% sur la semaine — le portefeuille profite moins de ce rebond car exposé à plusieurs titres en correction depuis l'achat (DB1.DE -7.8%, CRM -8.2%, ADYEN.AS -8.0%).\n\nSur la méthodologie : la règle R7 (signal en transition) a guidé la décision de ne pas renforcer JPM malgré son score encore à 81/100 — le warning 'Golden Cross en affaiblissement, pente MM21 négative' est explicite et il serait imprudent d'acheter un signal technique qui se résorbe sous prétexte que le score fondamental reste bon. Le timing d'entrée (val_pts) a aussi freiné tout renforcement sur AVGO : z=+2.1σ au-dessus de la régression, c'est un surachat technique clair même si le titre reste dans la watchlist.\n\nL'erreur de la semaine à retenir : l'aller-retour NOW/INTU les 5-6 mai en 24h reste le biais le plus coûteux récent — acheter sur une thèse (mean-reversion + Death Cross déjà connu), puis vendre 24h plus tard en citant exactement les mêmes signaux. C'est du *resulting bias* à l'envers : on rationalise la vente avec des données identiques à celles de l'achat. Ce pattern est à surveiller.\n\nPour la semaine à venir : PANW est la seule entrée cette semaine — Golden Cross frais à J0, pente la plus forte de la watchlist. Les liquidités tombent à ~1600€ après cet achat, ce qui limite les options de renforcement. Si CRM ou DB1.DE approchent -12/-13%, il faudra réévaluer avec données fraîches.",
+    "analyse_macro": "Ce jeudi 14 mai, les marchés digèrent deux signaux macro contraires publiés cette semaine : d'un côté, un PPI américain (prix producteurs) ressorti nettement au-dessus des attentes, ravivant les craintes inflationnistes et poussant le rendement du 10 ans US à son plus haut annuel ; de l'autre, une ambiance de détente commerciale US-Chine qui tire le MSCI World à +1.3% sur la semaine. Le bond sur les Treasuries, c'est la Fed qui n'a plus de calendrier de coupe confortable — et les valorisations tech qui souffrent en silence.\n\nPour le portefeuille Signal, la semaine est stable. Capital actuel : 23 011€, performance cumulée depuis la création : +15.05%, alpha vs MSCI World YTD : +6.20pp. Les locomotives ASML (+106.3%) et NVDA (+97.0%) portent encore le bilan. Les nouvelles lignes initiées fin avril / début mai (ADYEN, CRM, DB1.DE, INTU) sont en léger recul, mais aucune n'a atteint de seuil d'alerte.\n\nSur le plan méthodologique, deux points ont guidé les décisions de cette semaine. Premièrement, R7 (signal en transition) a été déclenchée sur JPM : le Golden Cross est actif depuis 15j mais la pente MM21 est négative — le signal technique est ambigu, pas exploitable seul. Deuxièmement, la règle anti-contradiction m'a empêché de solder NOW et INTU une troisième fois : ces positions avaient déjà fait l'objet d'un aller-retour incohérent la semaine passée, basé sur les mêmes signaux relus différemment. Ce serait du resulting bias, pas de l'analyse.\n\nLearning de la semaine : l'historique des décisions révèle un pattern de vacillement sur les positions à Death Cross avec forte décote (NOW, INTU, CRM) — achat sur mean-reversion, vente sur peur du cross, rachat sur les mêmes chiffres. C'est précisément le biais que ce portefeuille doit éviter. La discipline, c'est de choisir une thèse et de lui laisser le temps de se vérifier — pas 8 jours.\n\nPANW avait le meilleur setup technique du tableau cette semaine — Golden Cross Day-0, pente MM21 à +6.6% — mais la règle de concentration sectorielle bloque tout achat dans le cluster Tech&IA à 62% (plafond 30%). Frustrant, mais c'est exactement le rôle des règles : exister précisément quand on a envie de les ignorer. Pour la semaine à venir, on surveillera la conférence Xi-Trump et l'éventuelle désescalade sur l'Iran, ainsi que les résultats de retailers US (signal consommation) pour calibrer l'exposition AMZN.",
     "conviction_globale": "neutre",
-    "message_utilisateurs": "Run du jeudi 14 mai 08h36 UTC — deuxième run de la journée (le premier a déjà tourné ce matin). Peu de changements majeurs : une seule entrée cette semaine, Palo Alto Networks (PANW), sur Golden Cross frais à J0 avec la dynamique technique la plus forte de la watchlist. Le reste du portefeuille est conservé sans action.\n\nLe contexte macro s'est durci cette semaine : PPI américain plus élevé qu'attendu et un commentaire de la BCE sur un risque de hausse de taux en cas de choc pétrolier lié à l'Iran font peser un risque réel sur les positions à multiples élevés. Ce n'est pas une raison de vendre — la règle des 90 jours protège contre les décisions réactives — mais c'est un signal de vigilance.\n\nLe portefeuille reste à +14.98% depuis sa création, avec un alpha de +6.23pp vs MSCI World. La semaine a été plus poussive que le benchmark (+1.3% MSCI sur la semaine) car plusieurs positions récentes sont en correction depuis leur achat (DB1.DE, CRM, ADYEN.AS autour de -8%). Ces positions ne déclenchent aucun stop-loss — le seuil catastrophe est à -25% sans condition ou -15% après 90 jours — mais elles illustrent le risque d'une entrée groupée sur beaucoup de titres en même temps mi-avril/début mai.\n\nLe biais de la semaine à surveiller : l'aller-retour NOW/INTU les 5-6 mai (achat puis vente en 24h avec les mêmes signaux) reste le pattern le plus problématique récent. Je le note ici en transparence.",
-    "nb_decisions": 7
+    "message_utilisateurs": "Semaine calme en termes d'ordres — aucune décision d'achat ou vente exécutée ce jeudi 14 mai. Le portefeuille est à 23 011€ (+15.05% depuis la création, +6.20pp d'alpha vs MSCI World YTD). Les positions récentes (ADYEN, CRM, DB1.DE, INTU, NOW) sont en légère perte depuis leur entrée il y a 8 à 14 jours, mais aucune n'approche des seuils de stop-loss. La décision de ne pas vendre NOW/INTU une nouvelle fois est délibérée : ces positions ont déjà fait l'objet d'un aller-retour la semaine passée sur les mêmes signaux — répéter serait incohérent. Le cluster Tech&IA à 62% du portefeuille bloque tout nouvel achat dans ce secteur, y compris PANW qui avait un setup technique excellent. La discipline est là pour être respectée précisément quand elle coûte quelque chose.",
+    "nb_decisions": 9
   },
   "performance_history": [
     {
@@ -1144,10 +1159,10 @@
     },
     {
       "date": "2026-05-14",
-      "perf": 14.98,
-      "capital": 22995.21,
-      "benchmark_cac40": -1.79,
-      "benchmark_msci": 8.78
+      "perf": 15.05,
+      "capital": 23010.03,
+      "benchmark_cac40": -1.7,
+      "benchmark_msci": 8.79
     }
   ],
   "max_drawdown": -0.11
